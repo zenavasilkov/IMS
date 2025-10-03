@@ -2,12 +2,18 @@
 {
     public class FeedBack : EntityBase
     {   
-        public Task Task { get; set; } = null!;
+        public Guid TaskId { get; private set; }
+
+        public Task Task { get; private set; } = null!;
+
+        public Guid MentorId { get; private set; }
 
         public User Mentor { get; set; } = null!;
 
+        public Guid InternId { get; private set; }
+
         public User Intern { get; set; } = null!;
 
-        public string Comment { get; set; } = string.Empty;
+        public string Comment { get; set; } = null!;
     }
 }

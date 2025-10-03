@@ -2,7 +2,7 @@
 
 namespace IMS.DAL.Entities
 {
-    public abstract class User : EntityBase
+    public class User : EntityBase
     {   
         public string Email { get; set; } = null!;
          

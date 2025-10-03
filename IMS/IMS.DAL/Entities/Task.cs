@@ -2,11 +2,13 @@
 {
     public class Task : EntityBase
     {   
+        public Guid BoardId { get; set; }
+
         public Board Board { get; set; } = null!;
          
-        public string Title { get; set; } = string.Empty;
+        public string Title { get; set; } = null!;
          
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; set; } = null!;
          
         public Enums.TaskStatus Status { get; set; } = Enums.TaskStatus.Unassigned;
          
