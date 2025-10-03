@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace IMS.DAL.Enums
+﻿namespace IMS.DAL.Enums
 {
     public enum Role
     {
@@ -15,12 +9,20 @@ namespace IMS.DAL.Enums
         Intern
     }
 
-    public enum Status
+    public enum TaskStatus
     { 
         Unassigned,
         ToDo,   
         InProgress,
         PullRequest,
         Done
+    }
+
+    public enum InternshipStatus
+    {
+        NotStarted,
+        Ongoing,
+        Completed,
+        Cancelled
     }
 }
