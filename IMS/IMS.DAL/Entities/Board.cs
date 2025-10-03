@@ -2,24 +2,18 @@
 {
     public class Board : EntityBase
     {   
-        public string Title { get; set; } = string.Empty;
+        public string Title { get; set; } = null!;
           
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; set; } = null!;
          
-        public User CreatedBy { get; set; } = null!;
+        public Guid CreatedById { get; private set; }
+
+        public User CreatedBy { get; private set; } = null!;
          
+        public Guid CreatedToId { get; private set; }
+
         public User CreatedTo { get; set; } = null!;
           
         public List<Task> Tasks { get; set; } = [];
-
-        protected Board() { }
-
-        public Board(string title, string description, User createdBy, User createdTo)
-        {
-            Title = title;
-            Description = description;
-            CreatedBy = createdBy;
-            CreatedTo = createdTo;
-        } 
     }
 }

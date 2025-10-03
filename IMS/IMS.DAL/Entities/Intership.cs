@@ -4,10 +4,13 @@ namespace IMS.DAL.Entities
 {
     public class Intership : EntityBase
     {   
+        public Guid InternId { get; set; }
         public User Intern { get; set; } = null!;
-         
+
+        public Guid MentorId { get; set; }
         public User Mentor { get; set; } = null!;
-         
+
+        public Guid HRMId { get; set; }
         public User HRM { get; set; } = null!;
         // Human Resource Manager assigns mentors to interns and creates internship records, as well as adds interns and mentors into system
          
@@ -16,17 +19,5 @@ namespace IMS.DAL.Entities
         public DateOnly? EndDate { get; set; }
          
         public InternshipStatus Status { get; set; } = InternshipStatus.NotStarted;
-
-        protected Intership() { }
-
-        public Intership(User intern, User mentor, User hrm, DateOnly startDate, DateOnly? endDate, InternshipStatus status)
-        {
-            Intern = intern;
-            Mentor = mentor;
-            HRM = hrm;
-            StartDate = startDate;
-            EndDate = endDate;
-            Status = status;
-        }
     }
 }

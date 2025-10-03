@@ -2,30 +2,18 @@
 
 namespace IMS.DAL.Entities
 {
-    public class User : EntityBase
+    public abstract class User : EntityBase
     {   
-        public string Email { get; set; } = string.Empty;
+        public string Email { get; set; } = null!;
          
-        public string PhoneNumber { get; set; } = string.Empty;
+        public string PhoneNumber { get; set; } = null!;
          
-        public string Firstname { get; set; } = string.Empty;
-         
-        public string Lastname { get; set; } = string.Empty;
+        public string Firstname { get; set; } = null!;
 
-        public string? Patronymic { get; set; } 
-         
-        public Role Role { get; set; } = Role.Unassigned; 
+        public string Lastname { get; set; } = null!;
 
-        public User() { }
+        public string? Patronymic { get; set; }
 
-        public User( string email, string phoneNumber, string firstname, string lastname, string? patronymic, Role role)
-        {
-            Email = email;
-            PhoneNumber = phoneNumber;
-            Firstname = firstname;
-            Lastname = lastname;
-            Patronymic = patronymic; 
-            Role = role;
-        }
+        public Role Role { get; set; } = Role.Unassigned;
     }
 }
