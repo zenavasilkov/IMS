@@ -1,11 +1,7 @@
-﻿using System.Collections;
-
-namespace IMS.DAL.Entities
+﻿namespace IMS.DAL.Entities
 {
-    public class Board : IEnumerable<Task>
-    { 
-        public Guid ID { get; private set; }
-         
+    public class Board : EntityBase
+    {   
         public string Title { get; set; } = string.Empty;
           
         public string Description { get; set; } = string.Empty;
@@ -24,16 +20,6 @@ namespace IMS.DAL.Entities
             Description = description;
             CreatedBy = createdBy;
             CreatedTo = createdTo;
-        }
-
-        public IEnumerator<Task> GetEnumerator()
-        {
-            return Tasks.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        } 
     }
 }

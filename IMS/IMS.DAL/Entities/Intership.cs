@@ -2,10 +2,8 @@
 
 namespace IMS.DAL.Entities
 {
-    public class Intership
-    { 
-        public Guid ID { get; private set; }
-         
+    public class Intership : EntityBase
+    {   
         public User Intern { get; set; } = null!;
          
         public User Mentor { get; set; } = null!;
