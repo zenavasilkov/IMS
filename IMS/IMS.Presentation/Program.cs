@@ -1,3 +1,5 @@
+using IMS.DAL;
+using Microsoft.EntityFrameworkCore;
 
 namespace IMS.Presentation
 {
@@ -6,11 +8,13 @@ namespace IMS.Presentation
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-              
+            builder.Services.AddDbContext<IMSDbContext>(ops => ops.
+               UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
             builder.Services.AddControllers(); 
             builder.Services.AddOpenApi();
 
-            var app = builder.Build();
+            var app = builder.Build(); 
              
             if (app.Environment.IsDevelopment())
             {
