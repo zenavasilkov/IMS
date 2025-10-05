@@ -3,9 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IMS.DAL
 {
-    public class IMSDbContext : DbContext
-    {
-        public IMSDbContext(DbContextOptions options) : base(options) { }
+    public class IMSDbContext(DbContextOptions options) : DbContext(options)
+    { 
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Board> Boards { get; set; } = null!;
         public DbSet<Entities.Task> Tasks { get; set; } = null!;

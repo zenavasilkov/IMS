@@ -8,7 +8,7 @@ namespace IMS.Presentation
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddDbContext<IMSDbContext>(ops => ops.
+            builder.Services.AddDbContext<IMSDbContext>(options => options.
                UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddControllers(); 

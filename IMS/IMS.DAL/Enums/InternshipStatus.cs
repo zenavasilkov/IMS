@@ -2,9 +2,9 @@
 { 
     public enum InternshipStatus
     {
-        NotStarted,
-        Ongoing,
-        Completed,
-        Cancelled
+        NotStarted = 0,
+        Ongoing = 1,
+        Completed = 2,
+        Cancelled = 3
     }
 }
