@@ -1,6 +1,6 @@
 ﻿namespace IMS.DAL.Entities
 {
-    public class FeedBack : EntityBase
+    public class Feedback : EntityBase
     {   
         public Guid TaskId { get; private set; }
 

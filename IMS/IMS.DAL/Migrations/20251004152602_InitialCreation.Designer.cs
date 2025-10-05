@@ -60,7 +60,7 @@ namespace IMS.DAL.Migrations
                     b.ToTable("Boards");
                 });
 
-            modelBuilder.Entity("IMS.DAL.Entities.FeedBack", b =>
+            modelBuilder.Entity("IMS.DAL.Entities.Feedback", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -232,7 +232,7 @@ namespace IMS.DAL.Migrations
                     b.Navigation("CreatedTo");
                 });
 
-            modelBuilder.Entity("IMS.DAL.Entities.FeedBack", b =>
+            modelBuilder.Entity("IMS.DAL.Entities.Feedback", b =>
                 {
                     b.HasOne("IMS.DAL.Entities.User", "Intern")
                         .WithMany()

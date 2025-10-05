@@ -12,6 +12,6 @@
          
         public Enums.TaskStatus Status { get; set; } = Enums.TaskStatus.Unassigned;
          
-        public DateOnly DeadLine { get; set; }
+        public DateTime DeadLine { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace IMS.DAL.Entities
         public User HRM { get; set; } = null!; 
         // HRM assigns mentors to interns and creates internship records, as well as adds interns and mentors into system
          
-        public DateTime StartDate { get; set; } = DateTime.Now;
+        public DateTime StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
          
