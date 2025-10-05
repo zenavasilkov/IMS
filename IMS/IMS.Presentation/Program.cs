@@ -1,5 +1,4 @@
-using IMS.DAL;
-using Microsoft.EntityFrameworkCore;
+using IMS.DAL.Extensions; 
 
 namespace IMS.Presentation
 {
@@ -8,8 +7,9 @@ namespace IMS.Presentation
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddDbContext<IMSDbContext>(options => options.
-               UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            //For a time being I save it as it is. PS. Unless i implement extensions in BLL
+            builder.Services.AddDataLayerDependencies(builder.Configuration);
 
             builder.Services.AddControllers(); 
             builder.Services.AddOpenApi();
