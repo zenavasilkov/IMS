@@ -14,6 +14,6 @@
 
         public User Intern { get; set; } = null!;
 
-        public string Comment { get; set; } = null!;
+        public required string Comment { get; set; }
     }
 }

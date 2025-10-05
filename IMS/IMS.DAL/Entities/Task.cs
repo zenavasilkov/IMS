@@ -6,9 +6,9 @@
 
         public Board Board { get; set; } = null!;
          
-        public string Title { get; set; } = null!;
+        public required string Title { get; set; }
          
-        public string Description { get; set; } = null!;
+        public required string Description { get; set; }
          
         public Enums.TaskStatus Status { get; set; } = Enums.TaskStatus.Unassigned;
          

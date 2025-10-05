@@ -4,13 +4,13 @@ namespace IMS.DAL.Entities
 {
     public class User : EntityBase
     {   
-        public string Email { get; set; } = null!;
+        public required string Email { get; set; }
          
-        public string PhoneNumber { get; set; } = null!;
+        public required string PhoneNumber { get; set; }
          
-        public string Firstname { get; set; } = null!;
+        public required string Firstname { get; set; }
 
-        public string Lastname { get; set; } = null!;
+        public required string Lastname { get; set; }
 
         public string? Patronymic { get; set; }
 

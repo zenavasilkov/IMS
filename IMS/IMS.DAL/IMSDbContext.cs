@@ -5,11 +5,11 @@ namespace IMS.DAL
 {
     public class IMSDbContext(DbContextOptions options) : DbContext(options)
     { 
-        public DbSet<User> Users { get; set; } = null!;
-        public DbSet<Board> Boards { get; set; } = null!;
-        public DbSet<Entities.Task> Tasks { get; set; } = null!;
-        public DbSet<Feedback> FeedBacks { get; set; } = null!;
-        public DbSet<Internship> Internships { get; set; } = null!;
+        public DbSet<User> Users { get; set; }
+        public DbSet<Board> Boards { get; set; }
+        public DbSet<Entities.Task> Tasks { get; set; }
+        public DbSet<Feedback> FeedBacks { get; set; }
+        public DbSet<Internship> Internships { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
