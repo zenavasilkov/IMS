@@ -2,9 +2,9 @@
 {
     public class Task : EntityBase
     {   
-        public Guid BoardId { get; set; }
+        public required Guid BoardId { get; init; }
 
-        public Board Board { get; set; } = null!;
+        public required Board Board { get; set; }
          
         public required string Title { get; set; }
          
