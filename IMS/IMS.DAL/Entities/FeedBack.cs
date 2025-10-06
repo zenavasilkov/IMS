@@ -4,7 +4,7 @@
     {   
         public required Guid TaskId { get; init; }
 
-        public required Task Task { get; init; }
+        public required Ticket Task { get; init; }
 
         public required Guid LeftById { get; init; }
 

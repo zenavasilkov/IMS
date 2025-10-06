@@ -1,6 +1,6 @@
 ﻿namespace IMS.DAL.Entities
 {
-    public class Task : EntityBase
+    public class Ticket : EntityBase
     {   
         public required Guid BoardId { get; init; }
 

@@ -139,7 +139,7 @@ namespace IMS.DAL.Migrations
                     b.ToTable("Internships");
                 });
 
-            modelBuilder.Entity("IMS.DAL.Entities.Task", b =>
+            modelBuilder.Entity("IMS.DAL.Entities.Ticket", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -247,7 +247,7 @@ namespace IMS.DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("IMS.DAL.Entities.Task", "Task")
+                    b.HasOne("IMS.DAL.Entities.Ticket", "Ticket")
                         .WithMany()
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -257,7 +257,7 @@ namespace IMS.DAL.Migrations
 
                     b.Navigation("Mentor");
 
-                    b.Navigation("Task");
+                    b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("IMS.DAL.Entities.Internship", b =>
@@ -287,7 +287,7 @@ namespace IMS.DAL.Migrations
                     b.Navigation("Mentor");
                 });
 
-            modelBuilder.Entity("IMS.DAL.Entities.Task", b =>
+            modelBuilder.Entity("IMS.DAL.Entities.Ticket", b =>
                 {
                     b.HasOne("IMS.DAL.Entities.Board", "Board")
                         .WithMany("Tasks")
