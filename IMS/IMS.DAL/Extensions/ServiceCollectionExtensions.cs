@@ -14,12 +14,12 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddDataLayerDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         services
-            .AddContext(configuration);
+            .AddDbContext(configuration);
 
         return services;
     }
 
-    private static IServiceCollection AddContext(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 

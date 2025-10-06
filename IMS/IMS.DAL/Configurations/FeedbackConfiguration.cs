@@ -8,14 +8,14 @@ public class FeedbackConfiguration : IEntityTypeConfiguration<Feedback>
 {
     public void Configure(EntityTypeBuilder<Feedback> builder)
     {
-        builder.HasOne(f => f.Task)
+        builder.HasOne(f => f.Ticket)
             .WithMany()
-            .HasForeignKey(f => f.TaskId)
+            .HasForeignKey(f => f.TicketId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(f => f.SendedBy)
+        builder.HasOne(f => f.SentBy)
             .WithMany()
-            .HasForeignKey(f => f.SendedById)
+            .HasForeignKey(f => f.SentById)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(f => f.AddressedTo)

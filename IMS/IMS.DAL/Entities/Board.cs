@@ -14,5 +14,5 @@ public class Board : EntityBase
 
     public required User CreatedTo { get; set; }
       
-    public List<Ticket> Tasks { get; set; } = [];
+    public List<Ticket> Tickets { get; set; } = [];
 }

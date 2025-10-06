@@ -64,6 +64,9 @@ namespace IMS.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("AddressedToId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasColumnType("text");
@@ -71,25 +74,22 @@ namespace IMS.DAL.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("InternId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("MentorId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("TaskId")
+                    b.Property<Guid>("SentById")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TicketId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InternId");
+                    b.HasIndex("AddressedToId");
 
-                    b.HasIndex("MentorId");
+                    b.HasIndex("SentById");
 
-                    b.HasIndex("TaskId");
+                    b.HasIndex("TicketId");
 
                     b.ToTable("FeedBacks");
                 });
@@ -106,7 +106,7 @@ namespace IMS.DAL.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("HRMId")
+                    b.Property<Guid>("HumanResourcesManagerId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("InternId")
@@ -126,7 +126,7 @@ namespace IMS.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HRMId");
+                    b.HasIndex("HumanResourcesManagerId");
 
                     b.HasIndex("InternId")
                         .IsUnique();
@@ -169,7 +169,7 @@ namespace IMS.DAL.Migrations
 
                     b.HasIndex("BoardId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("IMS.DAL.Entities.User", b =>
@@ -232,36 +232,36 @@ namespace IMS.DAL.Migrations
 
             modelBuilder.Entity("IMS.DAL.Entities.Feedback", b =>
                 {
-                    b.HasOne("IMS.DAL.Entities.User", "Intern")
+                    b.HasOne("IMS.DAL.Entities.User", "AddressedTo")
                         .WithMany()
-                        .HasForeignKey("InternId")
+                        .HasForeignKey("AddressedToId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("IMS.DAL.Entities.User", "Mentor")
+                    b.HasOne("IMS.DAL.Entities.User", "SentBy")
                         .WithMany()
-                        .HasForeignKey("MentorId")
+                        .HasForeignKey("SentById")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("IMS.DAL.Entities.Ticket", "Ticket")
                         .WithMany()
-                        .HasForeignKey("TaskId")
+                        .HasForeignKey("TicketId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Intern");
+                    b.Navigation("AddressedTo");
 
-                    b.Navigation("Mentor");
+                    b.Navigation("SentBy");
 
                     b.Navigation("Ticket");
                 });
 
             modelBuilder.Entity("IMS.DAL.Entities.Internship", b =>
                 {
-                    b.HasOne("IMS.DAL.Entities.User", "HRM")
+                    b.HasOne("IMS.DAL.Entities.User", "HumanResourcesManager")
                         .WithMany()
-                        .HasForeignKey("HRMId")
+                        .HasForeignKey("HumanResourcesManagerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -277,7 +277,7 @@ namespace IMS.DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("HRM");
+                    b.Navigation("HumanResourcesManager");
 
                     b.Navigation("Intern");
 
@@ -287,7 +287,7 @@ namespace IMS.DAL.Migrations
             modelBuilder.Entity("IMS.DAL.Entities.Ticket", b =>
                 {
                     b.HasOne("IMS.DAL.Entities.Board", "Board")
-                        .WithMany("Tasks")
+                        .WithMany("Tickets")
                         .HasForeignKey("BoardId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -297,7 +297,7 @@ namespace IMS.DAL.Migrations
 
             modelBuilder.Entity("IMS.DAL.Entities.Board", b =>
                 {
-                    b.Navigation("Tasks");
+                    b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
         }

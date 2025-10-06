@@ -2,13 +2,13 @@
 
 public class Feedback : EntityBase
 {   
-    public required Guid TaskId { get; init; }
+    public required Guid TicketId { get; init; }
 
-    public required Ticket Task { get; init; }
+    public required Ticket Ticket { get; init; }
 
-    public required Guid SendedById { get; init; }
+    public required Guid SentById { get; init; }
 
-    public required User SendedBy { get; init; }
+    public required User SentBy { get; init; }
 
     public required Guid AddressedToId { get; init; }
 

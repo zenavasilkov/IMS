@@ -1,6 +1,6 @@
 ﻿namespace IMS.DAL.Enums;
 
-public enum TaskStatus
+public enum TicketStatus
 {
     Unassigned = 0,
     ToDo = 1,

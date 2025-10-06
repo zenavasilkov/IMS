@@ -1,4 +1,6 @@
-﻿namespace IMS.DAL.Entities;
+﻿using IMS.DAL.Enums;
+
+namespace IMS.DAL.Entities;
 
 public class Ticket : EntityBase
 {   
@@ -10,7 +12,7 @@ public class Ticket : EntityBase
      
     public required string Description { get; set; }
      
-    public Enums.TaskStatus Status { get; set; } = Enums.TaskStatus.Unassigned;
+    public TicketStatus Status { get; set; } = TicketStatus.Unassigned;
      
     public DateTime DeadLine { get; set; }
 }

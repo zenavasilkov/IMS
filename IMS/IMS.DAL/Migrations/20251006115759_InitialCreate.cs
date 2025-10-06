@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IMS.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreation : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -66,9 +66,9 @@ namespace IMS.DAL.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     InternId = table.Column<Guid>(type: "uuid", nullable: false),
                     MentorId = table.Column<Guid>(type: "uuid", nullable: false),
-                    HRMId = table.Column<Guid>(type: "uuid", nullable: false),
-                    StartDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    EndDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    HumanResourcesManagerId = table.Column<Guid>(type: "uuid", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -77,8 +77,8 @@ namespace IMS.DAL.Migrations
                 {
                     table.PrimaryKey("PK_Internships", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Internships_Users_HRMId",
-                        column: x => x.HRMId,
+                        name: "FK_Internships_Users_HumanResourcesManagerId",
+                        column: x => x.HumanResourcesManagerId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -97,7 +97,7 @@ namespace IMS.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tasks",
+                name: "Tickets",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -105,7 +105,7 @@ namespace IMS.DAL.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    DeadLine = table.Column<DateOnly>(type: "date", nullable: false),
+                    DeadLine = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
@@ -126,8 +126,8 @@ namespace IMS.DAL.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     TaskId = table.Column<Guid>(type: "uuid", nullable: false),
-                    MentorId = table.Column<Guid>(type: "uuid", nullable: false),
-                    InternId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SendedById = table.Column<Guid>(type: "uuid", nullable: false),
+                    AddressedToId = table.Column<Guid>(type: "uuid", nullable: false),
                     Comment = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
@@ -138,18 +138,18 @@ namespace IMS.DAL.Migrations
                     table.ForeignKey(
                         name: "FK_FeedBacks_Tasks_TaskId",
                         column: x => x.TaskId,
-                        principalTable: "Tasks",
+                        principalTable: "Tickets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_FeedBacks_Users_InternId",
-                        column: x => x.InternId,
+                        name: "FK_FeedBacks_Users_AddressedToId",
+                        column: x => x.AddressedToId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_FeedBacks_Users_MentorId",
-                        column: x => x.MentorId,
+                        name: "FK_FeedBacks_Users_SendedById",
+                        column: x => x.SendedById,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -167,24 +167,24 @@ namespace IMS.DAL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedBacks_InternId",
+                name: "IX_FeedBacks_AddressedToId",
                 table: "FeedBacks",
-                column: "InternId");
+                column: "AddressedToId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedBacks_MentorId",
+                name: "IX_FeedBacks_SendedById",
                 table: "FeedBacks",
-                column: "MentorId");
+                column: "SentById");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FeedBacks_TaskId",
                 table: "FeedBacks",
-                column: "TaskId");
+                column: "TicketId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Internships_HRMId",
+                name: "IX_Internships_HumanResourcesManagerId",
                 table: "Internships",
-                column: "HRMId");
+                column: "HumanResourcesManagerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Internships_InternId",
@@ -199,7 +199,7 @@ namespace IMS.DAL.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tasks_BoardId",
-                table: "Tasks",
+                table: "Tickets",
                 column: "BoardId");
         }
 
@@ -213,7 +213,7 @@ namespace IMS.DAL.Migrations
                 name: "Internships");
 
             migrationBuilder.DropTable(
-                name: "Tasks");
+                name: "Tickets");
 
             migrationBuilder.DropTable(
                 name: "Boards");
