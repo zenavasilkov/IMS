@@ -83,7 +83,7 @@ namespace IMS.DAL.Migrations
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("TaskId")
+                    b.Property<Guid>("SendedById")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -92,7 +92,7 @@ namespace IMS.DAL.Migrations
 
                     b.HasIndex("MentorId");
 
-                    b.HasIndex("TaskId");
+                    b.HasIndex("SendedById");
 
                     b.ToTable("FeedBacks");
                 });
@@ -249,7 +249,7 @@ namespace IMS.DAL.Migrations
 
                     b.HasOne("IMS.DAL.Entities.Ticket", "Ticket")
                         .WithMany()
-                        .HasForeignKey("TaskId")
+                        .HasForeignKey("SendedById")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

@@ -1,19 +1,18 @@
 ﻿using IMS.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace IMS.DAL
-{
-    public class IMSDbContext(DbContextOptions options) : DbContext(options)
-    { 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Board> Boards { get; set; }
-        public DbSet<Entities.Ticket> Tasks { get; set; }
-        public DbSet<Feedback> FeedBacks { get; set; }
-        public DbSet<Internship> Internships { get; set; }
+namespace IMS.DAL;
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(IMSDbContext).Assembly);
-        }
+public class IMSDbContext(DbContextOptions options) : DbContext(options)
+{ 
+    public DbSet<User> Users { get; set; }
+    public DbSet<Board> Boards { get; set; }
+    public DbSet<Entities.Ticket> Tasks { get; set; }
+    public DbSet<Feedback> FeedBacks { get; set; }
+    public DbSet<Internship> Internships { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(IMSDbContext).Assembly);
     }
 }
