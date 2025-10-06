@@ -1,3 +1,4 @@
+using IMS.DAL.Extensions; 
 
 namespace IMS.Presentation
 {
@@ -6,12 +7,14 @@ namespace IMS.Presentation
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-             
+
+            //TODO: Change it to the appropriet state
+            builder.Services.AddDataLayerDependencies(builder.Configuration);
 
             builder.Services.AddControllers(); 
             builder.Services.AddOpenApi();
 
-            var app = builder.Build();
+            var app = builder.Build(); 
              
             if (app.Environment.IsDevelopment())
             {
@@ -21,8 +24,7 @@ namespace IMS.Presentation
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
-
+             
             app.MapControllers();
 
             app.Run();
