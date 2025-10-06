@@ -8,7 +8,7 @@ namespace IMS.Presentation
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            //For a time being I save it as it is. PS. Unless i implement extensions in BLL
+            //TODO: Change it to the appropriet state
             builder.Services.AddDataLayerDependencies(builder.Configuration);
 
             builder.Services.AddControllers(); 

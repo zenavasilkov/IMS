@@ -4,20 +4,19 @@ namespace IMS.DAL.Entities
 {
     public class Internship : EntityBase
     {   
-        public Guid InternId { get; set; }
+        public required Guid InternId { get; init; }
 
-        public User Intern { get; set; } = null!;
+        public required User Intern { get; set; }
 
-        public Guid MentorId { get; set; }
+        public required Guid MentorId { get; set; }
 
-        public User Mentor { get; set; } = null!;
+        public required User Mentor { get; set; }
 
-        public Guid HRMId { get; set; }
+        public required Guid HumanResourcesManagerId { get; set; }
 
-        public User HRM { get; set; } = null!; 
-        // HRM assigns mentors to interns and creates internship records, as well as adds interns and mentors into system
+        public required User HumanResourcesManager { get; set; }
          
-        public DateTime StartDate { get; set; }
+        public DateTime StartDate { get; set; } = DateTime.UtcNow;
 
         public DateTime? EndDate { get; set; }
          

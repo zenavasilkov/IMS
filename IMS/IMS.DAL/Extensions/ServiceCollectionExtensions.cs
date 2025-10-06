@@ -14,8 +14,7 @@ namespace IMS.DAL.Extensions
         public static IServiceCollection AddDataLayerDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             services
-                .AddContext(configuration)
-                .AddRepositories();
+                .AddContext(configuration);
 
             return services;
         }
@@ -25,13 +24,6 @@ namespace IMS.DAL.Extensions
             var connectionString = configuration.GetConnectionString("DefaultConnection");
 
             return services.AddDbContext<IMSDbContext>(options => options.UseNpgsql(connectionString));
-        }
-
-        private static IServiceCollection AddRepositories(this IServiceCollection services)
-        {
-            // TODO Implement after repositories creation
-
-            return services;
-        }
+        } 
     }
 }

@@ -6,13 +6,13 @@
           
         public required string Description { get; set; }
          
-        public Guid CreatedById { get; private set; }
+        public required Guid CreatedById { get; init; }
 
-        public User CreatedBy { get; private set; } = null!;
+        public required User CreatedBy { get; init; }
          
-        public Guid CreatedToId { get; private set; }
+        public required Guid CreatedToId { get; init; }
 
-        public User CreatedTo { get; set; } = null!;
+        public required User CreatedTo { get; set; }
           
         public List<Task> Tasks { get; set; } = [];
     }

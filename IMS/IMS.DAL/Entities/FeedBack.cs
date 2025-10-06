@@ -2,17 +2,17 @@
 {
     public class Feedback : EntityBase
     {   
-        public Guid TaskId { get; private set; }
+        public required Guid TaskId { get; init; }
 
-        public Task Task { get; private set; } = null!;
+        public required Task Task { get; init; }
 
-        public Guid MentorId { get; private set; }
+        public required Guid LeftById { get; init; }
 
-        public User Mentor { get; set; } = null!;
+        public required User LeftBy { get; init; }
 
-        public Guid InternId { get; private set; }
+        public required Guid AddressedToId { get; init; }
 
-        public User Intern { get; set; } = null!;
+        public required User AddressedTo { get; init; }
 
         public required string Comment { get; set; }
     }
