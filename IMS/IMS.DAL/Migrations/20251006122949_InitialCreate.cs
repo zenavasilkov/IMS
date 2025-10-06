@@ -111,9 +111,9 @@ namespace IMS.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tasks", x => x.Id);
+                    table.PrimaryKey("PK_Tickets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tasks_Boards_BoardId",
+                        name: "FK_Tickets_Boards_BoardId",
                         column: x => x.BoardId,
                         principalTable: "Boards",
                         principalColumn: "Id",
@@ -125,8 +125,8 @@ namespace IMS.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    TaskId = table.Column<Guid>(type: "uuid", nullable: false),
-                    SendedById = table.Column<Guid>(type: "uuid", nullable: false),
+                    TicketId = table.Column<Guid>(type: "uuid", nullable: false),
+                    SentById = table.Column<Guid>(type: "uuid", nullable: false),
                     AddressedToId = table.Column<Guid>(type: "uuid", nullable: false),
                     Comment = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -136,8 +136,8 @@ namespace IMS.DAL.Migrations
                 {
                     table.PrimaryKey("PK_FeedBacks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FeedBacks_Tasks_TaskId",
-                        column: x => x.TaskId,
+                        name: "FK_FeedBacks_Tickets_TicketId",
+                        column: x => x.TicketId,
                         principalTable: "Tickets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -148,8 +148,8 @@ namespace IMS.DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_FeedBacks_Users_SendedById",
-                        column: x => x.SendedById,
+                        name: "FK_FeedBacks_Users_SentById",
+                        column: x => x.SentById,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -172,12 +172,12 @@ namespace IMS.DAL.Migrations
                 column: "AddressedToId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedBacks_SendedById",
+                name: "IX_FeedBacks_SentById",
                 table: "FeedBacks",
                 column: "SentById");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedBacks_TaskId",
+                name: "IX_FeedBacks_TicketId",
                 table: "FeedBacks",
                 column: "TicketId");
 
@@ -198,7 +198,7 @@ namespace IMS.DAL.Migrations
                 column: "MentorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tasks_BoardId",
+                name: "IX_Tickets_BoardId",
                 table: "Tickets",
                 column: "BoardId");
         }
