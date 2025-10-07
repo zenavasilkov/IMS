@@ -59,8 +59,8 @@ public class Repository<TEntity>(IMSDbContext context) : IRepository<TEntity> wh
 
     public async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        _dbSet.Update(entity);
+        var existingEntity = _dbSet.Update(entity);
         await context.SaveChangesAsync(cancellationToken);
-        return entity;
+        return existingEntity.Entity;
     }
 }

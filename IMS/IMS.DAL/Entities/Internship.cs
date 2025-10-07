@@ -1,4 +1,5 @@
 ﻿using IMS.DAL.Enums;
+using IMS.Shared.Enums;
 
 namespace IMS.DAL.Entities;
 

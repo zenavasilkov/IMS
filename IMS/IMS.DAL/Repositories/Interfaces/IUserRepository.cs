@@ -1,5 +1,5 @@
 ﻿using IMS.DAL.Entities;
-using IMS.DAL.Enums;
+using Shared.Enums;
 
 namespace IMS.DAL.Repositories.Interfaces
 {

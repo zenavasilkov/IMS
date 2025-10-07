@@ -1,4 +1,4 @@
-﻿namespace IMS.DAL.Enums;
+﻿namespace Shared.Enums;
 
 public enum InternshipStatus
 {
