@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IMS.DAL.Migrations
 {
     [DbContext(typeof(IMSDbContext))]
-    [Migration("20251006122949_InitialCreate")]
+    [Migration("20251007090333_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -94,7 +94,7 @@ namespace IMS.DAL.Migrations
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("FeedBacks");
+                    b.ToTable("Feedbacks");
                 });
 
             modelBuilder.Entity("IMS.DAL.Entities.Internship", b =>

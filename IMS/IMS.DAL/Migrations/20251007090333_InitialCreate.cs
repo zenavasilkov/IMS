@@ -121,7 +121,7 @@ namespace IMS.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FeedBacks",
+                name: "Feedbacks",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -134,21 +134,21 @@ namespace IMS.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FeedBacks", x => x.Id);
+                    table.PrimaryKey("PK_Feedbacks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FeedBacks_Tickets_TicketId",
+                        name: "FK_Feedbacks_Tickets_TicketId",
                         column: x => x.TicketId,
                         principalTable: "Tickets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_FeedBacks_Users_AddressedToId",
+                        name: "FK_Feedbacks_Users_AddressedToId",
                         column: x => x.AddressedToId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_FeedBacks_Users_SentById",
+                        name: "FK_Feedbacks_Users_SentById",
                         column: x => x.SentById,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -167,18 +167,18 @@ namespace IMS.DAL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedBacks_AddressedToId",
-                table: "FeedBacks",
+                name: "IX_Feedbacks_AddressedToId",
+                table: "Feedbacks",
                 column: "AddressedToId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedBacks_SentById",
-                table: "FeedBacks",
+                name: "IX_Feedbacks_SentById",
+                table: "Feedbacks",
                 column: "SentById");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FeedBacks_TicketId",
-                table: "FeedBacks",
+                name: "IX_Feedbacks_TicketId",
+                table: "Feedbacks",
                 column: "TicketId");
 
             migrationBuilder.CreateIndex(
@@ -207,7 +207,7 @@ namespace IMS.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FeedBacks");
+                name: "Feedbacks");
 
             migrationBuilder.DropTable(
                 name: "Internships");

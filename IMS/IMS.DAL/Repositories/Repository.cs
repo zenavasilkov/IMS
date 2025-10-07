@@ -1,6 +1,7 @@
 ﻿using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces; 
 using Microsoft.EntityFrameworkCore;
+using Shared.Pagination;
 using System.Linq.Expressions; 
 
 namespace IMS.DAL.Repositories;
@@ -36,7 +37,7 @@ public class Repository<TEntity>(IMSDbContext context) : IRepository<TEntity> wh
     }
 
     public async Task<List<TEntity>> GetPagedAsync(Expression<Func<TEntity, bool>>? predicate, 
-        int pageNumber, int pageSize, CancellationToken cancellationToken = default)
+        PaginationParameters paginationParameters, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.AsQueryable();
 
@@ -46,9 +47,9 @@ public class Repository<TEntity>(IMSDbContext context) : IRepository<TEntity> wh
         } 
 
         return await query
-                .OrderBy(e => e.Id) //To guarantee the same result
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
+                .OrderBy(e => e.Id)
+                .Skip((paginationParameters.PageNumber - 1) * paginationParameters.PageSize)
+                .Take(paginationParameters.PageSize)
                 .ToListAsync(cancellationToken); 
     }
 

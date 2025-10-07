@@ -12,7 +12,7 @@ public class Board : EntityBase
      
     public required Guid CreatedToId { get; init; }
 
-    public required User CreatedTo { get; set; }
+    public required User CreatedTo { get; init; }
       
     public List<Ticket> Tickets { get; set; } = [];
 }

@@ -1,5 +1,4 @@
-﻿using IMS.DAL.Enums;
-using IMS.Shared.Enums;
+﻿using Shared.Enums;
 
 namespace IMS.DAL.Entities;
 
@@ -7,7 +6,7 @@ public class Internship : EntityBase
 {   
     public required Guid InternId { get; init; }
 
-    public required User Intern { get; set; }
+    public required User Intern { get; init; }
 
     public required Guid MentorId { get; set; }
 
