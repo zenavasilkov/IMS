@@ -5,7 +5,7 @@ namespace IMS.DAL.Repositories.Interfaces;
 
 public interface ITicketRepository : IRepository<Ticket>
 {
-    Task<List<Ticket>> GetTicketsByBoard(Board board); 
+    Task<List<Ticket>> GetTicketsByBoardId(Guid boardId); 
 
-    Task<List<Ticket>> GetTicketsByBoardAndStatus(Board board, TicketStatus status);
+    Task<List<Ticket>> GetTicketsByBoardIdAndStatus(Guid boardId, TicketStatus status);
 }
