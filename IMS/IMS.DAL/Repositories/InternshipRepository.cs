@@ -11,6 +11,7 @@ public class InternshipRepository(IMSDbContext context) : Repository<Internship>
     public async Task<List<Internship>> GetActiveInternshipsAsync(CancellationToken cancellationToken = default)
     {
         var internships = await _internships
+            .AsNoTracking()
             .Where(i => i.Status == InternshipStatus.Ongoing)
             .ToListAsync(cancellationToken);
 
@@ -20,6 +21,7 @@ public class InternshipRepository(IMSDbContext context) : Repository<Internship>
     public async Task<List<Internship>> GetInternshipsByHumanResourcesManagerIdAsync(Guid hrManagerId, CancellationToken cancellationToken = default)
     {
         var internships = await _internships
+            .AsNoTracking()
             .Where(i => i.HumanResourcesManagerId == hrManagerId)
             .ToListAsync(cancellationToken);
 
@@ -37,6 +39,7 @@ public class InternshipRepository(IMSDbContext context) : Repository<Internship>
     public async Task<List<Internship>> GetInternshipsByMentorIdAsync(Guid mentorId, CancellationToken cancellationToken = default)
     {
         var internships = await _internships
+            .AsNoTracking()
             .Where(i => i.MentorId == mentorId)
             .ToListAsync(cancellationToken);
 

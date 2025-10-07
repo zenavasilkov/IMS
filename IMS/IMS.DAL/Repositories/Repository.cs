@@ -12,32 +12,37 @@ public class Repository<TEntity>(IMSDbContext context) : IRepository<TEntity> wh
 
     public async Task<TEntity> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        await _dbSet.AddAsync(entity, cancellationToken);
+        var createdEntity = await _dbSet.AddAsync(entity, cancellationToken);
         await context.SaveChangesAsync(cancellationToken); 
-        return entity;
+        return createdEntity.Entity;
     }
 
     public async Task<bool> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        _dbSet.Remove(entity);
-        return await context.SaveChangesAsync(cancellationToken) > 0;
+        _dbSet.Remove(entity); 
+        var isDeleted =  await context.SaveChangesAsync(cancellationToken) > 0;
+        return isDeleted;
     }
 
     public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null, 
-        CancellationToken cancellationTokent = default)
+        bool trackChanges = false, CancellationToken cancellationToken = default)
     {
         var query = _dbSet.AsQueryable();
 
-        if(predicate is not null)
+        query = trackChanges ? query : query.AsNoTracking();
+
+        if (predicate is not null)
         {
             query = query.Where(predicate);
         }
 
-        return await query.ToListAsync(cancellationTokent);
+        var entities =  await query.ToListAsync(cancellationToken);
+
+        return entities;
     }
 
-    public async Task<List<TEntity>> GetPagedAsync(Expression<Func<TEntity, bool>>? predicate, 
-        PaginationParameters paginationParameters, CancellationToken cancellationToken = default)
+    public async Task<PagedList<TEntity>> GetPagedAsync(Expression<Func<TEntity, bool>>? predicate, 
+        PaginationParameters paginationParameters, bool trackChanges = false, CancellationToken cancellationToken = default )
     {
         var query = _dbSet.AsQueryable();
 
@@ -46,16 +51,26 @@ public class Repository<TEntity>(IMSDbContext context) : IRepository<TEntity> wh
             query = query.Where(predicate);
         } 
 
-        return await query
+        query = trackChanges ? query : query.AsNoTracking();
+
+        var list =  await query
                 .OrderBy(e => e.Id)
                 .Skip((paginationParameters.PageNumber - 1) * paginationParameters.PageSize)
                 .Take(paginationParameters.PageSize)
                 .ToListAsync(cancellationToken); 
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var PagedList = new PagedList<TEntity>(list, paginationParameters.PageNumber, paginationParameters.PageSize, totalCount);
+
+        return PagedList;
     }
 
     public async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _dbSet.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+        var entity = await _dbSet.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+
+        return entity;
     }
 
     public async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)

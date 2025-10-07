@@ -19,7 +19,7 @@ public class BoardRepository(IMSDbContext context) : Repository<Board>(context),
     {
         var board = await _boards
             .Include(b => b.Tickets)
-            .FirstOrDefaultAsync(b => b.Tickets.Any(t => t.Id == ticketId), cancellationToken);
+            .FirstAsync(b => b.Tickets.Any(t => t.Id == ticketId), cancellationToken);
 
         return board!;
     }
@@ -27,6 +27,7 @@ public class BoardRepository(IMSDbContext context) : Repository<Board>(context),
     public async Task<List<Board>> GetBoardsCreatedByUserAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         var boards = await _boards
+            .AsNoTracking()
             .Where(b => b.CreatedById == userId)
             .ToListAsync(cancellationToken);
 

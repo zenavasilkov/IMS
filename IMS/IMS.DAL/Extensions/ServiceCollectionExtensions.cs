@@ -1,11 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using IMS.DAL.Repositories.Interfaces;
+using IMS.DAL.Repositories;
 
 namespace IMS.DAL.Extensions;
 
@@ -14,7 +11,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddDataLayerDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         services
-            .AddDbContext(configuration);
+            .AddDbContext(configuration)
+            .AddRepositories();
 
         return services;
     }
@@ -25,4 +23,17 @@ public static class ServiceCollectionExtensions
 
         return services.AddDbContext<IMSDbContext>(options => options.UseNpgsql(connectionString));
     } 
+
+    private static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services
+            .AddScoped(typeof(Repository<>), typeof(IRepository<>))
+            .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<ITicketRepository, TicketRepository>()
+            .AddScoped<IInternshipRepository, InternshipRepository>()
+            .AddScoped<IFeedbackRepository, FeedbackRepository>()
+            .AddScoped<IBoardRepository, BoardRepository>();
+
+        return services;
+    }
 }

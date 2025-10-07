@@ -24,7 +24,10 @@ namespace IMS.DAL.Repositories
 
         public Task<List<User>> GetByRoleAsync(Role role, CancellationToken cancellationToken = default)
         {
-            var user = _users.Where(u => u.Role == role).ToListAsync(cancellationToken);
+            var user = _users
+                .AsNoTracking()
+                .Where(u => u.Role == role)
+                .ToListAsync(cancellationToken);
 
             return user;
         }

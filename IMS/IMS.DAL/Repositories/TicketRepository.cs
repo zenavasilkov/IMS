@@ -11,6 +11,7 @@ namespace IMS.DAL.Repositories
         public async Task<List<Ticket>> GetTicketsByBoardId(Guid boardId, CancellationToken cancellationToken)
         {
             var tickets = await _tickets
+                .AsNoTracking()
                 .Where(t => t.BoardId == boardId)
                 .ToListAsync(cancellationToken);
 
@@ -20,6 +21,7 @@ namespace IMS.DAL.Repositories
         public Task<List<Ticket>> GetTicketsByBoardIdAndStatus(Guid boardId, TicketStatus status, CancellationToken cancellationToken)
         {
            var tickets = _tickets
+                .AsNoTracking()
                 .Where(t => t.BoardId == boardId && t.Status == status)
                 .ToListAsync(cancellationToken);
 
