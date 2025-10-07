@@ -1,4 +1,4 @@
-﻿using IMS.DAL.Enums;
+﻿using Shared.Enums;
 
 namespace IMS.DAL.Entities;
 
@@ -6,7 +6,7 @@ public class Ticket : EntityBase
 {   
     public required Guid BoardId { get; init; }
 
-    public required Board Board { get; set; }
+    public required Board Board { get; init; }
      
     public required string Title { get; set; }
      

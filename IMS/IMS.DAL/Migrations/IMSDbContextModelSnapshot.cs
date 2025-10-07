@@ -91,7 +91,7 @@ namespace IMS.DAL.Migrations
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("FeedBacks");
+                    b.ToTable("Feedbacks");
                 });
 
             modelBuilder.Entity("IMS.DAL.Entities.Internship", b =>
