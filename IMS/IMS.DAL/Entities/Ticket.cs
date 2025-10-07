@@ -14,5 +14,5 @@ public class Ticket : EntityBase
      
     public TicketStatus Status { get; set; } = TicketStatus.Unassigned;
      
-    public DateTime DeadLine { get; set; }
+    public required DateTime DeadLine { get; set; }
 }

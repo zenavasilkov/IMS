@@ -14,7 +14,7 @@ public class TicketModel : ModelBase
 
     public TicketStatus Status { get; set; } = TicketStatus.Unassigned;
 
-    public DateTime DeadLine { get; set; }
+    public required DateTime DeadLine { get; set; }
 
     public required List<FeedbackModel> Feedbacks { get; set; } = [];
 }
