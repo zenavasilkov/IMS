@@ -15,4 +15,6 @@ public class User : EntityBase
     public string? Patronymic { get; set; }
 
     public Role Role { get; set; } = Role.Unassigned;
+
+    public List<Internship> Internships { get; set; } = [];
 }

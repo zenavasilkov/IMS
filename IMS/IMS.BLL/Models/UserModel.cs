@@ -1,6 +1,6 @@
 ﻿namespace IMS.BLL.Models;
 
-public class UserModel : ModelBase
+public abstract class UserModel : ModelBase
 { 
     public required string Email { get; set; }
 
