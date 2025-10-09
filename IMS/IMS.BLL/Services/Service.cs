@@ -19,12 +19,10 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
         return createdModel;
     }
 
-    public virtual async Task<bool> DeleteAsync(TModel model, CancellationToken cancellationToken = default)
+    public virtual async Task DeleteAsync(TModel model, CancellationToken cancellationToken = default)
     {
         var entity = mapper.Map<TEntity>(model);
-        var isDeleted = await repository.DeleteAsync(entity, cancellationToken); 
-
-        return isDeleted;
+        await repository.DeleteAsync(entity, cancellationToken); 
     }
 
     public virtual async Task<List<TModel>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate, bool trackChanges = false, CancellationToken cancellationToken = default)

@@ -20,5 +20,5 @@ public interface IService<TModel, TEntity>
 
     Task<TModel> UpdateAsync(TModel model, CancellationToken cancellationToken = default);
 
-    Task<bool> DeleteAsync(TModel model, CancellationToken cancellationToken = default);
+    Task DeleteAsync(TModel model, CancellationToken cancellationToken = default);
 }
