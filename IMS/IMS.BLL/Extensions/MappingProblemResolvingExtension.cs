@@ -5,7 +5,6 @@ namespace IMS.BLL.Extensions;
 
 public static class MappingProblemResolvingExtension
 {
-
     public static InternshipModel AddReferences(this InternshipModel internship, IMapper mapper)
     {
         var model = mapper.Map<InternshipModel>(internship);
