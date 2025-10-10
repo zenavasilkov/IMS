@@ -8,7 +8,10 @@ using AutoMapper;
 
 namespace IMS.BLL.Services;
 
-public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper mapper) : IService<TModel, TEntity> where TModel : ModelBase where TEntity : EntityBase
+public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper mapper) 
+    : IService<TModel, TEntity> 
+    where TModel : ModelBase 
+    where TEntity : EntityBase
 {  
     public virtual async Task<TModel> CreateAsync(TModel model, CancellationToken cancellationToken = default)
     {
@@ -25,7 +28,8 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
         await repository.DeleteAsync(entity, cancellationToken); 
     }
 
-    public virtual async Task<List<TModel>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate, bool trackChanges = false, CancellationToken cancellationToken = default)
+    public virtual async Task<List<TModel>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate, 
+        bool trackChanges = false, CancellationToken cancellationToken = default)
     {
         var entities = await repository.GetAllAsync(predicate, trackChanges, cancellationToken);
         var models = mapper.Map<List<TModel>>(entities);
@@ -41,10 +45,10 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
         return model;
     }
 
-    public virtual async Task<PagedList<TModel>> GetPagedAsync(Expression<Func<TEntity, bool>>? predicate, PaginationParameters paginationParameters, 
-        bool trachChanges = false, CancellationToken cancellationTokent = default)
+    public virtual async Task<PagedList<TModel>> GetPagedAsync(Expression<Func<TEntity, bool>>? predicate, 
+        PaginationParameters paginationParameters, bool trackChanges = false, CancellationToken cancellationTokent = default)
     {
-        var entities = await repository.GetPagedAsync(predicate, paginationParameters, trachChanges, cancellationTokent);
+        var entities = await repository.GetPagedAsync(predicate, paginationParameters, trackChanges, cancellationTokent);
         var models = mapper.Map<PagedList<TModel>>(entities);
 
        return models;
