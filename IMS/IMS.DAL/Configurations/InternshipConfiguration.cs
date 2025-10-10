@@ -9,8 +9,8 @@ public class InternshipConfiguration : IEntityTypeConfiguration<Internship>
     public void Configure(EntityTypeBuilder<Internship> builder)
     { 
         builder.HasOne(i => i.Intern)
-            .WithOne()
-            .HasForeignKey<Internship>(i => i.InternId)
+            .WithMany()
+            .HasForeignKey(i => i.InternId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(i => i.Mentor)

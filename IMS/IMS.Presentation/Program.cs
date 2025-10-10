@@ -1,4 +1,4 @@
-using IMS.DAL.Extensions; 
+using IMS.BLL.Extensions;
 
 namespace IMS.Presentation
 {
@@ -7,9 +7,8 @@ namespace IMS.Presentation
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            //TODO: Change it to the appropriet state
-            builder.Services.AddDataLayerDependencies(builder.Configuration);
+             
+            builder.Services.AddBusinessLayerDedendencies(builder.Configuration);
 
             builder.Services.AddControllers(); 
             builder.Services.AddOpenApi();

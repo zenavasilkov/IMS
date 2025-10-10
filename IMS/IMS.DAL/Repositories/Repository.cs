@@ -17,11 +17,10 @@ public class Repository<TEntity>(IMSDbContext context) : IRepository<TEntity> wh
         return createdEntity.Entity;
     }
 
-    public async Task<bool> DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         _dbSet.Remove(entity); 
-        var isDeleted =  await context.SaveChangesAsync(cancellationToken) > 0;
-        return isDeleted;
+        await context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null, 
