@@ -1,6 +1,6 @@
 ﻿namespace IMS.Presentation.DTOs;
 
-public class AddBoardDTO
+public class BoardDTO
 {
     public required string Title { get; set; }
 

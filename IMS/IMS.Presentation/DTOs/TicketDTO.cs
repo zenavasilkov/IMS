@@ -2,9 +2,9 @@
 
 namespace IMS.Presentation.DTOs;
 
-public class GetTicketDTO
+public class TicketDTO
 {
-    public required Guid BoardId { get; set; }
+    public required Guid BoardId { get; set; } 
 
     public required string Title { get; set; }
 
@@ -12,5 +12,5 @@ public class GetTicketDTO
 
     public TicketStatus Status { get; set; } = TicketStatus.Unassigned;
 
-    public required DateTime DeadLine { get; set; }
+    public required DateTime DeadLine { get; set; } 
 }

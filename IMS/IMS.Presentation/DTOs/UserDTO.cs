@@ -2,7 +2,7 @@
 
 namespace IMS.Presentation.DTOs;
 
-public class AddUserDTO
+public class UserDTO
 {
     public required string Email { get; set; }
 
