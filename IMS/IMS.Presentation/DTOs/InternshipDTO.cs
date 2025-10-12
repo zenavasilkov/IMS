@@ -2,7 +2,7 @@
 
 namespace IMS.Presentation.DTOs;
 
-public class InternshipDTO
+public class InternshipDTO : DtoBase
 {
     public required Guid InternId { get; set; } 
 

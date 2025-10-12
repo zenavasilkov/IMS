@@ -1,6 +1,6 @@
 ﻿namespace IMS.Presentation.DTOs;
 
-public class BoardDTO
+public class BoardDTO : DtoBase
 {
     public required string Title { get; set; }
 
