@@ -8,6 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DTOs\UpdateDTO\UpdateBoardDTO.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="DTOs\UpdateDTO\UpdateBoardDTO.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" /> 
 	  

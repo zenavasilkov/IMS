@@ -2,7 +2,7 @@
 
 namespace IMS.Presentation.DTOs.GetDTO;
 
-public class GetTicketDTO
+public class TicketDTO
 {
     public Guid Id { get; set; }
     public Guid BoardId { get; set; } 

@@ -1,6 +1,6 @@
 ﻿namespace IMS.Presentation.DTOs.GetDTO;
 
-public class GetBoard
+public class BoardDTO
 {
     public Guid Id { get; set; }
     public required string Title { get; set; } 
