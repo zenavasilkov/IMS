@@ -10,4 +10,3 @@ public record CreateInternshipDTO(
     DateTime EndDate,
     InternshipStatus Status 
 );
-
