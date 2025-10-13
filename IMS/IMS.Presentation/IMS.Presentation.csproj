@@ -5,15 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>1d053bcf-8ca0-415c-bbb4-ce8600070aca</UserSecretsId>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="DTOs\UpdateDTO\UpdateBoardDTO.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="DTOs\UpdateDTO\UpdateBoardDTO.cs" />
-  </ItemGroup>
+  </PropertyGroup> 
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.4" />
