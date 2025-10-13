@@ -11,12 +11,12 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<CreateUserDTO, AdminModel>(); 
-        CreateMap<CreateUserDTO, InternModel>(); 
-        CreateMap<CreateUserDTO, MentorModel>(); 
+        CreateMap<CreateUserDTO, AdminModel>();
+        CreateMap<CreateUserDTO, InternModel>();
+        CreateMap<CreateUserDTO, MentorModel>();
         CreateMap<CreateUserDTO, HumanResouncesManagerModel>();
-        CreateMap<CreateFeedbackDTO, FeedbackModel>(); 
-        CreateMap<CreateBoardDTO, BoardModel>(); 
+        CreateMap<CreateFeedbackDTO, FeedbackModel>();
+        CreateMap<CreateBoardDTO, BoardModel>();
         CreateMap<CreateInternshipDTO, InternshipModel>();
         CreateMap<CreateTicketDTO, TicketModel>();
 
@@ -29,9 +29,9 @@ public class MappingProfile : Profile
         CreateMap<UpdateInternshipDTO, InternshipModel>();
         CreateMap<UpdateTicketDTO, TicketModel>();
 
-        CreateMap<BoardModel, BoardDTO>(); 
-        CreateMap<FeedbackModel, FeedbackDTO>(); 
-        CreateMap<InternshipModel, InternshipDTO>(); 
+        CreateMap<BoardModel, BoardDTO>();
+        CreateMap<FeedbackModel, FeedbackDTO>();
+        CreateMap<InternshipModel, InternshipDTO>();
         CreateMap<TicketModel, TicketDTO>();
 
         CreateMap<AdminModel, UserDTO>()
