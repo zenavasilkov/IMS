@@ -12,15 +12,12 @@ namespace IMS.Presentation.Controllers;
 [Route("api/[controller]")]
 public class FeedbacksController(IFeedbackService service, IMapper mapper) : ControllerBase
 {
-    private readonly IFeedbackService _service = service;
-    private readonly IMapper _mapper = mapper;
-
     [HttpGet]
     public async Task<ActionResult<IEnumerable<FeedbackDTO>>> GetAll(CancellationToken cancellationToken)
     {
-        var feedbacks = await _service.GetAllAsync(null, false, cancellationToken);
+        var feedbacks = await service.GetAllAsync(null, false, cancellationToken);
 
-        var feedbackDTOs = _mapper.Map<IEnumerable<FeedbackDTO>>(feedbacks);
+        var feedbackDTOs = mapper.Map<IEnumerable<FeedbackDTO>>(feedbacks);
 
         if (!feedbackDTOs.Any()) return NoContent();
 
@@ -30,11 +27,11 @@ public class FeedbacksController(IFeedbackService service, IMapper mapper) : Con
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<FeedbackDTO>> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var feedback = await _service.GetByIdAsync(id, cancellationToken);
+        var feedback = await service.GetByIdAsync(id, cancellationToken);
 
         if (feedback is null) return NotFound(new { message = $"Feedback with ID {id} was not found." });
 
-        var feedbackDTO = _mapper.Map<FeedbackDTO>(feedback);
+        var feedbackDTO = mapper.Map<FeedbackDTO>(feedback);
 
         return Ok(feedbackDTO);
     }
@@ -42,11 +39,11 @@ public class FeedbacksController(IFeedbackService service, IMapper mapper) : Con
     [HttpPost]
     public async Task<ActionResult<FeedbackDTO>> Create([FromBody] CreateFeedbackDTO createFeedbackDTO, CancellationToken cancellationToken)
     {
-        var feedbackModel = _mapper.Map<FeedbackModel>(createFeedbackDTO);
+        var feedbackModel = mapper.Map<FeedbackModel>(createFeedbackDTO);
 
-        var createdFeedbackModel = await _service.CreateAsync(feedbackModel, cancellationToken);
+        var createdFeedbackModel = await service.CreateAsync(feedbackModel, cancellationToken);
 
-        var createdFeedbackDTO = _mapper.Map<FeedbackDTO>(createdFeedbackModel);
+        var createdFeedbackDTO = mapper.Map<FeedbackDTO>(createdFeedbackModel);
 
         return CreatedAtAction(nameof(GetById), new { id = createdFeedbackDTO.Id }, createdFeedbackDTO);
     }
@@ -54,15 +51,15 @@ public class FeedbacksController(IFeedbackService service, IMapper mapper) : Con
     [HttpPut("{id:guid}")]
     public async Task<ActionResult<FeedbackDTO>> Update(Guid id, [FromBody] UpdateFeedbackDTO updateFeedbackDTO, CancellationToken cancellationToken)
     {
-        var feedbackModel = _mapper.Map<FeedbackModel>(updateFeedbackDTO);
+        var feedbackModel = mapper.Map<FeedbackModel>(updateFeedbackDTO);
 
         feedbackModel.Id = id;
 
-        var updatedFeedbackModel = await _service.UpdateAsync(feedbackModel, cancellationToken);
+        var updatedFeedbackModel = await service.UpdateAsync(feedbackModel, cancellationToken);
 
         if (updatedFeedbackModel is null) return NotFound(new { message = $"Feedback with ID {id} was not found." });
 
-        var updatedFeedbackDTO = _mapper.Map<FeedbackDTO>(updatedFeedbackModel);
+        var updatedFeedbackDTO = mapper.Map<FeedbackDTO>(updatedFeedbackModel);
 
         return Ok(updatedFeedbackDTO);
     }

@@ -12,16 +12,12 @@ namespace IMS.Presentation.Controllers;
 [Route("api/[controller]")]
 public class BoardsController(IBoardService boardService, ITicketService ticketService,  IMapper mapper) : ControllerBase
 {
-    private readonly IBoardService _boardService = boardService;
-    private readonly ITicketService _ticketService = ticketService;
-    private readonly IMapper _mapper = mapper;
-
     [HttpGet]
     public async Task<ActionResult<IEnumerable<BoardDTO>>> GetAll(CancellationToken cancellationToken)
     {
-        var boards = await _boardService.GetAllAsync(null, false, cancellationToken);
+        var boards = await boardService.GetAllAsync(null, false, cancellationToken);
 
-        var boardDTOs = _mapper.Map<IEnumerable<BoardDTO>>(boards);
+        var boardDTOs = mapper.Map<IEnumerable<BoardDTO>>(boards);
 
         if (!boardDTOs.Any()) return NoContent();
 
@@ -31,11 +27,11 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<BoardDTO>> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var board = await _boardService.GetByIdAsync(id, cancellationToken);
+        var board = await boardService.GetByIdAsync(id, cancellationToken);
 
         if (board is null) return NotFound(new { message = $"Board with ID {id} was not found." });
 
-        var boardDTO = _mapper.Map<BoardDTO>(board);
+        var boardDTO = mapper.Map<BoardDTO>(board);
 
         return Ok(boardDTO);
     }
@@ -43,11 +39,11 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
     [HttpPost]
     public async Task<ActionResult<BoardDTO>> Create([FromBody] CreateBoardDTO createBoardDTO, CancellationToken cancellationToken)
     {
-        var boardModel = _mapper.Map<BoardModel>(createBoardDTO);
+        var boardModel = mapper.Map<BoardModel>(createBoardDTO);
 
-        var createdBoardModel = await _boardService.CreateAsync(boardModel, cancellationToken);
+        var createdBoardModel = await boardService.CreateAsync(boardModel, cancellationToken);
 
-        var boardDTO = _mapper.Map<BoardDTO>(createdBoardModel);
+        var boardDTO = mapper.Map<BoardDTO>(createdBoardModel);
 
         return CreatedAtAction(nameof(GetById), new { id = boardDTO.Id }, boardDTO);
     }
@@ -55,15 +51,15 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
     [HttpPut("{id:guid}")]
     public async Task<ActionResult<BoardDTO>> Update(Guid id, [FromBody] UpdateBoardDTO updateBoardDTO, CancellationToken cancellationToken)
     {
-        var boardModel = _mapper.Map<BoardModel>(updateBoardDTO);
+        var boardModel = mapper.Map<BoardModel>(updateBoardDTO);
 
         boardModel.Id = id;
 
-        var updatedBoardModel = await _boardService.UpdateAsync(boardModel, cancellationToken);
+        var updatedBoardModel = await boardService.UpdateAsync(boardModel, cancellationToken);
 
         if (updatedBoardModel is null) return NotFound(new { message = $"Board with ID {id} was not found." });
 
-        var updatedBoardDTO = _mapper.Map<BoardDTO>(updatedBoardModel);
+        var updatedBoardDTO = mapper.Map<BoardDTO>(updatedBoardModel);
 
         return Ok(updatedBoardDTO);
     }
@@ -71,14 +67,14 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
     [HttpPatch("{boardId:guid}/tickets/{ticketId:guid}")]
     public async Task<IActionResult> AddTicketToBoardById(Guid boardId, Guid ticketId, CancellationToken cancellationToken)
     {
-        var boardModel = await _boardService.GetByIdAsync(boardId, cancellationToken);
+        var boardModel = await boardService.GetByIdAsync(boardId, cancellationToken);
 
         if(boardModel is null)
         {
             return NotFound(new { message = $"The board with id {boardId} was not found" });
         }
 
-        var ticketModel = await _ticketService.GetByIdAsync(ticketId, cancellationToken);
+        var ticketModel = await ticketService.GetByIdAsync(ticketId, cancellationToken);
 
         if(ticketModel is null)
         {
@@ -89,9 +85,9 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
 
         boardModel.Tickets.Add(ticketModel);
 
-        var updateBoardModel = await _boardService.UpdateAsync(boardModel, cancellationToken);
+        var updateBoardModel = await boardService.UpdateAsync(boardModel, cancellationToken);
 
-        var updateBoardDTO  = _mapper.Map<BoardDTO>(updateBoardModel);
+        var updateBoardDTO  = mapper.Map<BoardDTO>(updateBoardModel);
 
         return Ok(updateBoardDTO);
     }

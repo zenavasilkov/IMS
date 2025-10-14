@@ -12,16 +12,12 @@ namespace IMS.Presentation.Controllers;
 [Route("api/[controller]")]
 public class TicketsController(ITicketService ticketService, IFeedbackService feedbackService, IMapper mapper) : ControllerBase
 {
-    private readonly ITicketService _ticketService = ticketService;
-    private readonly IFeedbackService _feedbackService = feedbackService;
-    private readonly IMapper _mapper = mapper;
-
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TicketDTO>>> GetAll(CancellationToken cancellationToken)
     {
-        var tickets = await _ticketService.GetAllAsync(null, false, cancellationToken);
+        var tickets = await ticketService.GetAllAsync(null, false, cancellationToken);
 
-        var ticketDTOs = _mapper.Map<IEnumerable<TicketDTO>>(tickets);
+        var ticketDTOs = mapper.Map<IEnumerable<TicketDTO>>(tickets);
 
         if (!ticketDTOs.Any()) return NoContent();
 
@@ -31,11 +27,11 @@ public class TicketsController(ITicketService ticketService, IFeedbackService fe
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<TicketDTO>> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var ticket = await _ticketService.GetByIdAsync(id, cancellationToken);
+        var ticket = await ticketService.GetByIdAsync(id, cancellationToken);
 
         if (ticket is null) return NotFound(new { message = $"Ticket with ID {id} was not found." }); 
 
-        var ticketDTO = _mapper.Map<TicketDTO>(ticket);
+        var ticketDTO = mapper.Map<TicketDTO>(ticket);
 
         return Ok(ticketDTO);
     }
@@ -43,11 +39,11 @@ public class TicketsController(ITicketService ticketService, IFeedbackService fe
     [HttpPost]
     public async Task<ActionResult<TicketDTO>> Create([FromBody] CreateTicketDTO createTicketDTO, CancellationToken cancellationToken)
     {
-        var ticketModel = _mapper.Map<TicketModel>(createTicketDTO);
+        var ticketModel = mapper.Map<TicketModel>(createTicketDTO);
 
-        var createdTicketModel = await _ticketService.CreateAsync(ticketModel, cancellationToken);
+        var createdTicketModel = await ticketService.CreateAsync(ticketModel, cancellationToken);
 
-        var ticketDTO = _mapper.Map<TicketDTO>(createdTicketModel);
+        var ticketDTO = mapper.Map<TicketDTO>(createdTicketModel);
 
         return CreatedAtAction(nameof(GetById), new { id = ticketDTO.Id}, ticketDTO);
     }
@@ -55,15 +51,15 @@ public class TicketsController(ITicketService ticketService, IFeedbackService fe
     [HttpPut("{id:guid}")]
     public async Task<ActionResult<TicketDTO>> Update(Guid id, [FromBody] UpdateTicketDTO updateTicketDTO, CancellationToken cancellationToken)
     {
-        var ticketModel = _mapper.Map<TicketModel>(updateTicketDTO); 
+        var ticketModel = mapper.Map<TicketModel>(updateTicketDTO); 
 
         ticketModel.Id = id; 
 
-        var updatedTicketModel = await _ticketService.UpdateAsync(ticketModel, cancellationToken);
+        var updatedTicketModel = await ticketService.UpdateAsync(ticketModel, cancellationToken);
 
         if (updatedTicketModel is null) return NotFound(new { message = $"Ticket with ID {id} was not found." }); 
 
-        var updatedTicketDTO = _mapper.Map<TicketDTO>(updatedTicketModel);
+        var updatedTicketDTO = mapper.Map<TicketDTO>(updatedTicketModel);
 
         return updatedTicketDTO;
     }
@@ -71,14 +67,14 @@ public class TicketsController(ITicketService ticketService, IFeedbackService fe
     [HttpPatch("{ticketId:guid}/feedbacks/{feedbackId:guid}")]
     public async Task<ActionResult<TicketDTO>> AddFeedbackToTicketById(Guid ticketId, Guid feedbackId, CancellationToken cancellationToken)
     {
-        var ticketModel = await _ticketService.GetByIdAsync(ticketId, cancellationToken);
+        var ticketModel = await ticketService.GetByIdAsync(ticketId, cancellationToken);
 
         if (ticketModel is null)
         {
             return NotFound(new { message = $"Ticket with ID {ticketId} was not found" });
         }
 
-        var feedbackModel = await _feedbackService.GetByIdAsync(feedbackId, cancellationToken);
+        var feedbackModel = await feedbackService.GetByIdAsync(feedbackId, cancellationToken);
 
         if (feedbackModel is null)
         {
@@ -89,9 +85,9 @@ public class TicketsController(ITicketService ticketService, IFeedbackService fe
 
         ticketModel.Feedbacks.Add(feedbackModel);
 
-        var updatedTicketModel = await _ticketService.UpdateAsync(ticketModel, cancellationToken);
+        var updatedTicketModel = await ticketService.UpdateAsync(ticketModel, cancellationToken);
 
-        var updatedTicketDTO = _mapper.Map<TicketDTO>(updatedTicketModel);
+        var updatedTicketDTO = mapper.Map<TicketDTO>(updatedTicketModel);
 
         return Ok(updatedTicketDTO);
     }
