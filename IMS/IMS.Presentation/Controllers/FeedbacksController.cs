@@ -5,12 +5,13 @@ using IMS.DAL.Entities;
 using IMS.Presentation.DTOs.CreateDTO;
 using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
+using IMS.Presentation.Routing;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMS.Presentation.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route(ApiRoutes.Feedbacks.Base)]
 public class FeedbacksController(IService<FeedbackModel, Feedback> service, IMapper mapper) : ControllerBase
 {
     [HttpGet]
@@ -25,7 +26,7 @@ public class FeedbacksController(IService<FeedbackModel, Feedback> service, IMap
         return feedbackDTOs;
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet(ApiRoutes.Id)]
     public async Task<FeedbackDTO> GetById(Guid id, CancellationToken cancellationToken)
     {
         var feedback = await service.GetByIdAsync(id, cancellationToken) ?? throw new Exception($"Feedback with ID {id} was not found.");
@@ -47,7 +48,7 @@ public class FeedbacksController(IService<FeedbackModel, Feedback> service, IMap
         return createdFeedbackDTO;
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpPut(ApiRoutes.Id)]
     public async Task<FeedbackDTO> Update(Guid id, [FromBody] UpdateFeedbackDTO updateFeedbackDTO, CancellationToken cancellationToken)
     {
         var feedbackModel = mapper.Map<FeedbackModel>(updateFeedbackDTO);

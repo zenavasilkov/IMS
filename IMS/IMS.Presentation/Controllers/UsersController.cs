@@ -4,12 +4,13 @@ using IMS.BLL.Services.Interfaces;
 using IMS.Presentation.DTOs.CreateDTO;
 using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
+using IMS.Presentation.Routing;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMS.Presentation.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route(ApiRoutes.Users.Base)]
 public class UsersController(IUserService service, IMapper mapper) : ControllerBase
 {   
     [HttpGet]
@@ -24,7 +25,7 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
         return userDTOs;
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet(ApiRoutes.Id)]
     public async Task<UserDTO> GetById(Guid id, CancellationToken cancellationToken)
     {
         var user = await service.GetByIdAsync(id, cancellationToken) ?? throw new Exception($"User with ID {id} was not found.");
@@ -43,7 +44,7 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
         return userDTO;
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpPut(ApiRoutes.Id)]
     public async Task<UserDTO> Update(Guid id, [FromBody] UpdateUserDTO updateUserDTO, CancellationToken cancellationToken)
     {
         var userModel = mapper.Map<UserModel>(updateUserDTO);
@@ -57,7 +58,7 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
         return updatedUserDTO;
     }
 
-    [HttpPatch("mentor/{mentorId:guid}/intern/{internId:guid}")]
+    [HttpPatch(ApiRoutes.Users.AddInternToMentor)]
     public async Task<UserDTO> AddInternToMentorById(Guid mentorId, Guid internId, CancellationToken cancellationToken)
     { 
         var updatedMentorModel = await service.AddInternToMentorById(mentorId, internId, cancellationToken) 

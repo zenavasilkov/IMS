@@ -4,12 +4,13 @@ using IMS.BLL.Services.Interfaces;
 using IMS.Presentation.DTOs.CreateDTO;
 using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
+using IMS.Presentation.Routing;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMS.Presentation.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route(ApiRoutes.Boards.Base)]
 public class BoardsController(IBoardService boardService, ITicketService ticketService, IMapper mapper) : ControllerBase
 {
     [HttpGet]
@@ -24,7 +25,7 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
         return boardDTOs;
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet(ApiRoutes.Id)]
     public async Task<BoardDTO> GetById(Guid id, CancellationToken cancellationToken)
     {
         var board = await boardService.GetByIdAsync(id, cancellationToken) ?? throw new Exception($"Board with ID {id} was not found." );
@@ -46,7 +47,7 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
         return boardDTO;
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpPut(ApiRoutes.Id)]
     public async Task<BoardDTO> Update(Guid id, [FromBody] UpdateBoardDTO updateBoardDTO, CancellationToken cancellationToken)
     {
         var boardModel = mapper.Map<BoardModel>(updateBoardDTO);
@@ -60,7 +61,7 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
         return updatedBoardDTO;
     }
 
-    [HttpPatch("{boardId:guid}/tickets/{ticketId:guid}")]
+    [HttpPatch(ApiRoutes.Boards.AddTicket)]
     public async Task<BoardDTO> AddTicketById(Guid boardId, Guid ticketId, CancellationToken cancellationToken)
     {
         var updatedBoardModel = await boardService.AddTicketById(boardId, ticketId, ticketService, cancellationToken) ?? 

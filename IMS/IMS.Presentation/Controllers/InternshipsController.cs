@@ -5,12 +5,13 @@ using IMS.DAL.Entities;
 using IMS.Presentation.DTOs.CreateDTO;
 using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
+using IMS.Presentation.Routing;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMS.Presentation.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route(ApiRoutes.Internships.Base)]
 public class InternshipsController(IService<InternshipModel, Internship> service, IMapper mapper) : ControllerBase
 {
     [HttpGet]
@@ -25,7 +26,7 @@ public class InternshipsController(IService<InternshipModel, Internship> service
         return internshipDTOs;
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet(ApiRoutes.Id)]
     public async Task<InternshipDTO> GetById(Guid id, CancellationToken cancellationToken)
     {
         var internship = await service.GetByIdAsync(id, cancellationToken) ?? throw new Exception($"Internship with ID {id} was not found.");
@@ -47,7 +48,7 @@ public class InternshipsController(IService<InternshipModel, Internship> service
         return internshipDTO;
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpPut(ApiRoutes.Id)]
     public async Task<InternshipDTO> Update(Guid id, [FromBody] UpdateInternshipDTO updateInternshipDTO, CancellationToken cancellationToken)
     {
         var internshipModel = mapper.Map<InternshipModel>(updateInternshipDTO);

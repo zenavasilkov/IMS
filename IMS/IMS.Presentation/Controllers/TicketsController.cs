@@ -5,12 +5,13 @@ using IMS.DAL.Entities;
 using IMS.Presentation.DTOs.CreateDTO;
 using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
+using IMS.Presentation.Routing;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMS.Presentation.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route(ApiRoutes.Tickets.Base)]
 public class TicketsController(ITicketService ticketService, IService<FeedbackModel, Feedback> feedbackService, IMapper mapper) : ControllerBase
 {
     [HttpGet]
@@ -25,7 +26,7 @@ public class TicketsController(ITicketService ticketService, IService<FeedbackMo
         return ticketDTOs;
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet(ApiRoutes.Id)]
     public async Task<TicketDTO> GetById(Guid id, CancellationToken cancellationToken)
     {
         var ticket = await ticketService.GetByIdAsync(id, cancellationToken) ?? throw new Exception($"Ticket with ID {id} was not found."); 
@@ -47,7 +48,7 @@ public class TicketsController(ITicketService ticketService, IService<FeedbackMo
         return ticketDTO;
     }
 
-    [HttpPut("{id:guid}")]
+    [HttpPut(ApiRoutes.Id)]
     public async Task<TicketDTO> Update(Guid id, [FromBody] UpdateTicketDTO updateTicketDTO, CancellationToken cancellationToken)
     {
         var ticketModel = mapper.Map<TicketModel>(updateTicketDTO); 
@@ -61,7 +62,7 @@ public class TicketsController(ITicketService ticketService, IService<FeedbackMo
         return updatedTicketDTO;
     }
 
-    [HttpPatch("{ticketId:guid}/feedbacks/{feedbackId:guid}")]
+    [HttpPatch(ApiRoutes.Tickets.AddFeedback)]
     public async Task<TicketDTO> AddFeedbackToTicketById(Guid ticketId, Guid feedbackId, CancellationToken cancellationToken)
     { 
         var updatedTicketModel = await ticketService.AddFeedbackById(ticketId, feedbackId, feedbackService, cancellationToken) 
