@@ -20,9 +20,11 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
     {
         var users = await _service.GetAllAsync(null, false, cancellationToken);
 
-        var response = _mapper.Map<IEnumerable<UserDTO>>(users);
+        var userDTOs = _mapper.Map<IEnumerable<UserDTO>>(users);
 
-        return Ok(response);
+        if (!userDTOs.Any()) return NoContent();
+
+        return Ok(userDTOs);
     }
 
     [HttpGet("{id:guid}")]

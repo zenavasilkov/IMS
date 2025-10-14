@@ -21,9 +21,11 @@ public class TicketsController(ITicketService ticketService, IFeedbackService fe
     {
         var tickets = await _ticketService.GetAllAsync(null, false, cancellationToken);
 
-        var ticketDTO = _mapper.Map<IEnumerable<TicketDTO>>(tickets);
+        var ticketDTOs = _mapper.Map<IEnumerable<TicketDTO>>(tickets);
 
-        return Ok(ticketDTO);
+        if (!ticketDTOs.Any()) return NoContent();
+
+        return Ok(ticketDTOs);
     }
 
     [HttpGet("{id:guid}")]

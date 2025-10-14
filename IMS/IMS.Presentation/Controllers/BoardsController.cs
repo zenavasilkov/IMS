@@ -21,9 +21,11 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
     {
         var boards = await _boardService.GetAllAsync(null, false, cancellationToken);
 
-        var boardDTO = _mapper.Map<IEnumerable<BoardDTO>>(boards); 
+        var boardDTOs = _mapper.Map<IEnumerable<BoardDTO>>(boards);
 
-        return Ok(boardDTO);
+        if (!boardDTOs.Any()) return NoContent();
+
+        return Ok(boardDTOs);
     }
 
     [HttpGet("{id:guid}")]

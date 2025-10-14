@@ -22,6 +22,8 @@ public class InternshipsController(IInternshipService service, IMapper mapper) :
 
         var internshipDTOs = _mapper.Map<IEnumerable<InternshipDTO>>(internships);
 
+        if (!internshipDTOs.Any()) return NoContent();
+
         return Ok(internshipDTOs);
     }
 
