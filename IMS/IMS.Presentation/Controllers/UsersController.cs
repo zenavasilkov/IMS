@@ -4,7 +4,7 @@ using IMS.BLL.Services.Interfaces;
 using IMS.Presentation.DTOs.CreateDTO;
 using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc; 
 
 namespace IMS.Presentation.Controllers;
 
@@ -16,61 +16,77 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
     private readonly IUserService _service = service;
 
     [HttpGet]
-    public async Task<IEnumerable<UserDTO>> GetAll(CancellationToken cancellationToken)
+    public async Task<ActionResult<IEnumerable<UserDTO>>> GetAll(CancellationToken cancellationToken)
     {
         var users = await _service.GetAllAsync(null, false, cancellationToken);
+
         var response = _mapper.Map<IEnumerable<UserDTO>>(users);
-        return response;
+
+        return Ok(response);
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<UserDTO> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<ActionResult<UserDTO>> GetById(Guid id, CancellationToken cancellationToken)
     {
         var user = await _service.GetByIdAsync(id, cancellationToken);
+
+        if (user is null) return NotFound(new { message = $"User with ID {id} was not found." });
+
         var userDTO = _mapper.Map<UserDTO>(user);
-        return userDTO;
+
+        return Ok(userDTO);
     }
 
     [HttpPost]
-    public async Task<UserDTO> Create([FromBody] CreateUserDTO createUserDTO, CancellationToken cancellationToken)
+    public async Task<ActionResult<UserDTO>> Create([FromBody] CreateUserDTO createUserDTO, CancellationToken cancellationToken)
     {
         var userModel = _mapper.Map<UserModel>(createUserDTO);
         var createdUserModel = await _service.CreateAsync(userModel, cancellationToken);
         var userDTO = _mapper.Map<UserDTO>(createdUserModel);
-        return userDTO;
+        return CreatedAtAction(nameof(GetById), new { id = userDTO.Id }, userDTO);
     }
 
-    [HttpPut]
-    public async Task<UserDTO> Update(Guid id, [FromBody] UpdateUserDTO updateUserDTO, CancellationToken cancellationToken)
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<UserDTO>> Update(Guid id, [FromBody] UpdateUserDTO updateUserDTO, CancellationToken cancellationToken)
     {
         var userModel = _mapper.Map<UserModel>(updateUserDTO);
+
         userModel.Id = id;
+
         var updatedUserModel = await _service.UpdateAsync(userModel, cancellationToken);
-        var updatedUSerDTO = _mapper.Map<UserDTO>(updatedUserModel);
-        return updatedUSerDTO;
+
+        if (updatedUserModel is null) return NotFound(new { message = $"User with ID {id} was not found." });
+
+        var updatedUserDTO = _mapper.Map<UserDTO>(updatedUserModel);
+
+        return Ok(updatedUserDTO);
     }
 
-    [HttpPatch]
-    public async Task<IActionResult> AddInternToMentorById(Guid mentorId, Guid internId, CancellationToken cancellationToken)
+    [HttpPatch("mentor/{mentorId:guid}/intern/{internId:guid}")]
+    public async Task<ActionResult<UserDTO>> AddInternToMentorById(Guid mentorId, Guid internId, CancellationToken cancellationToken)
     {
         var mentorModel = await _service.GetMentorByIdAsync(mentorId, cancellationToken);
 
         if (mentorModel is null)
         {
-            return BadRequest(new { message = $"Mentor with id {mentorId} not found" });
+            return NotFound(new { message = $"Mentor with ID {mentorId} was not found" });
         }
 
         var internModel = await _service.GetInternByIdAsync(internId, cancellationToken);
 
         if (internModel is null)
         {
-            return BadRequest(new { message = $"Intern with id {internId} not found" });
+            return NotFound(new { message = $"Intern with ID {internId} was not found" });
         }
+
+        mentorModel.Interns ??= [];
 
         mentorModel.Interns.Add(internModel);
 
-        await _service.UpdateAsync(mentorModel, cancellationToken);
+        var updatedMentorModel = await _service.UpdateAsync(mentorModel, cancellationToken);
 
-        return Ok("Intern have been successefully added to mentor");
+        var updatedMentorDTO = _mapper.Map<UserDTO>(updatedMentorModel);
+
+        return Ok(updatedMentorDTO);
     }
 }
