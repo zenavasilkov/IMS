@@ -10,7 +10,7 @@ namespace IMS.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BoardController(IBoardService boardService, ITicketService ticketService,  IMapper mapper) : ControllerBase
+public class BoardsController(IBoardService boardService, ITicketService ticketService,  IMapper mapper) : ControllerBase
 {
     private readonly IBoardService _boardService = boardService;
     private readonly ITicketService _ticketService = ticketService;
