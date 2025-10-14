@@ -10,7 +10,7 @@ namespace IMS.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class BoardsController(IBoardService boardService, ITicketService ticketService,  IMapper mapper) : ControllerBase
+public class BoardsController(IBoardService boardService, ITicketService ticketService, IMapper mapper) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<BoardDTO>>> GetAll(CancellationToken cancellationToken)
