@@ -17,7 +17,7 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
     {
         var boards = await boardService.GetAllAsync(null, false, cancellationToken);
 
-        if (boards.Count == 0) throw new Exception("No boards found");
+        if (boards.Count == 0) throw new Exception("No boards have been found");
 
         var boardDTOs = mapper.Map<IEnumerable<BoardDTO>>(boards); 
 
