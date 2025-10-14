@@ -15,26 +15,22 @@ public class UserService(IUserRepository repository, IMapper mapper) : Service<U
     {
         var user = await repository.GetByIdAsync(id, cancellationToken);
 
-        if (user is not null && user.Role == Role.Intern)
-        {
-            var internModel = _mapper.Map<InternModel>(user);
-            return internModel;
-        }
+        if (user is null || (user is not null && user.Role != Role.Intern)) throw new Exception($"User with ID {id} is not an intern"); // TODO: Add custom exception
 
-        return null;
+        var internModel = _mapper.Map<InternModel>(user);
+
+        return internModel;  
     }
 
     public async Task<MentorModel?> GetMentorByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var user = await repository.GetByIdAsync(id, cancellationToken);
 
-        if (user is not null && user.Role == Role.Mentor)
-        {
-            var mentorModel = _mapper.Map<MentorModel>(user);
-            return mentorModel;
-        }
+        if (user is null || ( user is not null && user.Role != Role.Mentor)) throw new Exception($"User with ID {id} is not a mentor"); // TODO: Add custom exception
 
-        return null;
+        var mentorModel = _mapper.Map<MentorModel>(user);
+
+        return mentorModel;
     }
 
     public async Task<MentorModel?> AddInternToMentorById(Guid mentorId, Guid internId, CancellationToken cancellationToken)
