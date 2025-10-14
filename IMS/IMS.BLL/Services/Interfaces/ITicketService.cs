@@ -5,4 +5,5 @@ namespace IMS.BLL.Services.Interfaces;
 
 public interface ITicketService : IService<TicketModel, Ticket>
 {
+    Task<TicketModel?> AddFeedbackById(Guid ticketId, Guid feedbackId, IService<FeedbackModel, Feedback> feedbackService, CancellationToken cancellationToken = default);
 }

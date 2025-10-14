@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using IMS.BLL.Models;
-using IMS.BLL.Services.Interfaces; 
+using IMS.BLL.Services.Interfaces;
+using IMS.DAL.Entities;
 using IMS.Presentation.DTOs.CreateDTO;
 using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
@@ -10,34 +11,32 @@ namespace IMS.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class TicketsController(ITicketService ticketService, IFeedbackService feedbackService, IMapper mapper) : ControllerBase
+public class TicketsController(ITicketService ticketService, IService<FeedbackModel, Feedback> feedbackService, IMapper mapper) : ControllerBase
 {
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<TicketDTO>>> GetAll(CancellationToken cancellationToken)
+    public async Task<IEnumerable<TicketDTO>> GetAll(CancellationToken cancellationToken)
     {
         var tickets = await ticketService.GetAllAsync(null, false, cancellationToken);
          
-        if (tickets.Count == 0) return NoContent();
+        if (tickets.Count == 0) throw new Exception("No tickets have been found");
 
         var ticketDTOs = mapper.Map<IEnumerable<TicketDTO>>(tickets);
 
-        return Ok(ticketDTOs);
+        return ticketDTOs;
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<TicketDTO>> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<TicketDTO> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var ticket = await ticketService.GetByIdAsync(id, cancellationToken);
-
-        if (ticket is null) return NotFound(new { message = $"Ticket with ID {id} was not found." }); 
+        var ticket = await ticketService.GetByIdAsync(id, cancellationToken) ?? throw new Exception($"Ticket with ID {id} was not found."); 
 
         var ticketDTO = mapper.Map<TicketDTO>(ticket);
 
-        return Ok(ticketDTO);
+        return ticketDTO;
     }
 
     [HttpPost]
-    public async Task<ActionResult<TicketDTO>> Create([FromBody] CreateTicketDTO createTicketDTO, CancellationToken cancellationToken)
+    public async Task<TicketDTO> Create([FromBody] CreateTicketDTO createTicketDTO, CancellationToken cancellationToken)
     {
         var ticketModel = mapper.Map<TicketModel>(createTicketDTO);
 
@@ -45,19 +44,17 @@ public class TicketsController(ITicketService ticketService, IFeedbackService fe
 
         var ticketDTO = mapper.Map<TicketDTO>(createdTicketModel);
 
-        return CreatedAtAction(nameof(GetById), new { id = ticketDTO.Id}, ticketDTO);
+        return ticketDTO;
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<ActionResult<TicketDTO>> Update(Guid id, [FromBody] UpdateTicketDTO updateTicketDTO, CancellationToken cancellationToken)
+    public async Task<TicketDTO> Update(Guid id, [FromBody] UpdateTicketDTO updateTicketDTO, CancellationToken cancellationToken)
     {
         var ticketModel = mapper.Map<TicketModel>(updateTicketDTO); 
 
         ticketModel.Id = id; 
 
-        var updatedTicketModel = await ticketService.UpdateAsync(ticketModel, cancellationToken);
-
-        if (updatedTicketModel is null) return NotFound(new { message = $"Ticket with ID {id} was not found." }); 
+        var updatedTicketModel = await ticketService.UpdateAsync(ticketModel, cancellationToken) ?? throw new Exception($"Ticket with ID {id} was not found."); 
 
         var updatedTicketDTO = mapper.Map<TicketDTO>(updatedTicketModel);
 
@@ -65,30 +62,13 @@ public class TicketsController(ITicketService ticketService, IFeedbackService fe
     }
 
     [HttpPatch("{ticketId:guid}/feedbacks/{feedbackId:guid}")]
-    public async Task<ActionResult<TicketDTO>> AddFeedbackToTicketById(Guid ticketId, Guid feedbackId, CancellationToken cancellationToken)
-    {
-        var ticketModel = await ticketService.GetByIdAsync(ticketId, cancellationToken);
-
-        if (ticketModel is null)
-        {
-            return NotFound(new { message = $"Ticket with ID {ticketId} was not found" });
-        }
-
-        var feedbackModel = await feedbackService.GetByIdAsync(feedbackId, cancellationToken);
-
-        if (feedbackModel is null)
-        {
-            return NotFound(new { message = $"Feedback with ID {feedbackId} was not found" });
-        }
-
-        ticketModel.Feedbacks ??= [];
-
-        ticketModel.Feedbacks.Add(feedbackModel);
-
-        var updatedTicketModel = await ticketService.UpdateAsync(ticketModel, cancellationToken);
+    public async Task<TicketDTO> AddFeedbackToTicketById(Guid ticketId, Guid feedbackId, CancellationToken cancellationToken)
+    { 
+        var updatedTicketModel = await ticketService.AddFeedbackById(ticketId, feedbackId, feedbackService, cancellationToken) 
+            ?? throw new Exception($"Ticket with ID {ticketId} was not found.");
 
         var updatedTicketDTO = mapper.Map<TicketDTO>(updatedTicketModel);
 
-        return Ok(updatedTicketDTO);
+        return updatedTicketDTO;
     }
 }
