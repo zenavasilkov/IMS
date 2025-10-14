@@ -15,11 +15,11 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserDTO>>> GetAll(CancellationToken cancellationToken)
     {
-        var users = await service.GetAllAsync(null, false, cancellationToken);
+        var users = await service.GetAllAsync(null, false, cancellationToken); 
+
+        if (users.Count == 0) return NoContent();
 
         var userDTOs = mapper.Map<IEnumerable<UserDTO>>(users);
-
-        if (!userDTOs.Any()) return NoContent();
 
         return Ok(userDTOs);
     }

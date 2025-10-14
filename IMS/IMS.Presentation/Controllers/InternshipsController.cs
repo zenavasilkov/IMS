@@ -17,9 +17,9 @@ public class InternshipsController(IInternshipService service, IMapper mapper) :
     {
         var internships = await service.GetAllAsync(null, false, cancellationToken);
 
-        var internshipDTOs = mapper.Map<IEnumerable<InternshipDTO>>(internships);
+        if (internships.Count == 0) return NoContent();
 
-        if (!internshipDTOs.Any()) return NoContent();
+        var internshipDTOs = mapper.Map<IEnumerable<InternshipDTO>>(internships); 
 
         return Ok(internshipDTOs);
     }

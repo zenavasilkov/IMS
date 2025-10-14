@@ -17,10 +17,10 @@ public class FeedbacksController(IFeedbackService service, IMapper mapper) : Con
     {
         var feedbacks = await service.GetAllAsync(null, false, cancellationToken);
 
+        if (feedbacks.Count == 0) return NoContent();
+
         var feedbackDTOs = mapper.Map<IEnumerable<FeedbackDTO>>(feedbacks);
-
-        if (!feedbackDTOs.Any()) return NoContent();
-
+         
         return Ok(feedbackDTOs);
     }
 

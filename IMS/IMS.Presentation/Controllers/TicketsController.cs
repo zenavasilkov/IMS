@@ -16,10 +16,10 @@ public class TicketsController(ITicketService ticketService, IFeedbackService fe
     public async Task<ActionResult<IEnumerable<TicketDTO>>> GetAll(CancellationToken cancellationToken)
     {
         var tickets = await ticketService.GetAllAsync(null, false, cancellationToken);
+         
+        if (tickets.Count == 0) return NoContent();
 
         var ticketDTOs = mapper.Map<IEnumerable<TicketDTO>>(tickets);
-
-        if (!ticketDTOs.Any()) return NoContent();
 
         return Ok(ticketDTOs);
     }

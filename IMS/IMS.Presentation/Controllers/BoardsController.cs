@@ -17,9 +17,9 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
     {
         var boards = await boardService.GetAllAsync(null, false, cancellationToken);
 
-        var boardDTOs = mapper.Map<IEnumerable<BoardDTO>>(boards);
+        if (boards.Count == 0) return NoContent();
 
-        if (!boardDTOs.Any()) return NoContent();
+        var boardDTOs = mapper.Map<IEnumerable<BoardDTO>>(boards); 
 
         return Ok(boardDTOs);
     }
