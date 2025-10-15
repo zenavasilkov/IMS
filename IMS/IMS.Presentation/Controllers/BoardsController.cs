@@ -57,7 +57,7 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
         return updatedBoardDTO;
     }
 
-    [HttpPatch(ApiRoutes.Boards.AddTicket)]
+    [HttpPut(ApiRoutes.Boards.AddTicket)]
     public async Task<BoardDTO> AddTicketToBoard([FromRoute] Guid boardId, Guid ticketId, CancellationToken cancellationToken)
     {
         var updatedBoardModel = await boardService.AddTicketToBoard(boardId, ticketId, ticketService, cancellationToken);

@@ -58,7 +58,7 @@ public class TicketsController(ITicketService ticketService, IService<FeedbackMo
         return updatedTicketDTO;
     }
 
-    [HttpPatch(ApiRoutes.Tickets.AddFeedback)]
+    [HttpPut(ApiRoutes.Tickets.AddFeedback)]
     public async Task<TicketDTO> AddFeedbackToTicket([FromRoute] Guid ticketId, [FromRoute] Guid feedbackId, CancellationToken cancellationToken)
     { 
         var updatedTicketModel = await ticketService.AddFeedbackToTicket(ticketId, feedbackId, feedbackService, cancellationToken);
