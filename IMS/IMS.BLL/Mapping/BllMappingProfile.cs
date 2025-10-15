@@ -35,6 +35,8 @@ public class BllMappingProfile : Profile
         //    .ReverseMap()
         //    .ForMember(d => d.Role, opt => opt.MapFrom(_ => Role.Admin));
 
+        CreateMap<User, UserModel>().ReverseMap();
+
         CreateMap<Internship, InternshipModel>()
             .ForMember(d => d.Intern, opt => opt.MapFrom(s => s.Intern))
             .ForMember(d => d.Mentor, opt => opt.MapFrom(s => s.Mentor))
