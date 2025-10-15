@@ -1,5 +1,4 @@
-﻿using IMS.DAL.Entities;
-using Shared.Enums;
+﻿using Shared.Enums;
 
 namespace IMS.BLL.Models;
 

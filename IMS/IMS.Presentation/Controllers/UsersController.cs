@@ -56,14 +56,4 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
 
         return updatedUserDTO;
     }
-
-    //[HttpPut(ApiRoutes.Users.AddInternToMentor)]
-    //public async Task<UserDTO> AddInternToMentorById([FromRoute] Guid mentorId, [FromRoute] Guid internId, CancellationToken cancellationToken)
-    //{
-    //    var updatedMentorModel = await service.AddInternToMentor(mentorId, internId, cancellationToken);
-
-    //    var updatedMentorDTO = mapper.Map<UserDTO>(updatedMentorModel);
-
-    //    return updatedMentorDTO;
-    //}
 }

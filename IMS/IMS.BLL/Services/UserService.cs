@@ -22,24 +22,5 @@ public class UserService(IUserRepository repository, IMapper mapper) : Service<U
         var internModel = _mapper.Map<UserModel>(user);
 
         return internModel;  
-    } 
-
-    //public async Task<UserModel?> AddInternToMentor(Guid mentorId, Guid internId, CancellationToken cancellationToken)
-    //{
-    //    var mentor = await GetUserByIdAndRoleAsync(mentorId, Role.Mentor, cancellationToken);
-
-    //    var intern = await GetUserByIdAndRoleAsync(mentorId, Role.Intern, cancellationToken); 
-
-    //    var mentorModel = _mapper.Map<UserModel>(mentor);
-
-    //    mentorModel.Interns ??= [];
-
-    //    var internModel = _mapper.Map<InternModel>(intern);
-
-    //    mentorModel.Interns.Add(internModel);
-
-    //    var updatedMentor = await UpdateAsync(mentorId, mentorModel, cancellationToken) as MentorModel;
-
-    //    return updatedMentor;
-    //}
+    }
 }

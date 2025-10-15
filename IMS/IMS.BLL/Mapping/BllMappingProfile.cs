@@ -2,7 +2,6 @@
 using AutoMapper.Internal;
 using IMS.BLL.Models;
 using IMS.DAL.Entities;
-using Shared.Enums;
 
 namespace IMS.BLL.Mapping;
 
@@ -10,31 +9,6 @@ public class BllMappingProfile : Profile
 {
     public BllMappingProfile()
     {
-        //CreateMap<User, InternModel>()
-        //    .ForMember(d => d.Mentor, opt => opt.Ignore())
-        //    .ForMember(d => d.Internship, opt => opt.Ignore())
-        //    .ForMember(d => d.Board, opt => opt.Ignore())
-        //    .ForMember(d => d.HRManager, opt => opt.Ignore())
-        //    .ReverseMap()
-        //    .ForMember(d => d.Role, opt => opt.MapFrom(_ => Role.Intern));
-
-        //CreateMap<User, MentorModel>()
-        //    .ForMember(d => d.Internships, opt => opt.Ignore())
-        //    .ForMember(d => d.Internships, opt => opt.Ignore())
-        //    .ForMember(d => d.HRManager, opt => opt.Ignore())
-        //    .ForMember(d => d.Boards, opt => opt.Ignore())
-        //    .ReverseMap()
-        //    .ForMember(d => d.Role, opt => opt.MapFrom(_ => Role.Mentor));
-
-        //CreateMap<User, HumanResouncesManagerModel>()
-        //    .ForMember(d => d.Interships, opt => opt.Ignore())
-        //    .ReverseMap()
-        //    .ForMember(d => d.Role, opt => opt.MapFrom(_ => Role.Mentor));
-
-        //CreateMap<User, AdminModel>()
-        //    .ReverseMap()
-        //    .ForMember(d => d.Role, opt => opt.MapFrom(_ => Role.Admin));
-
         CreateMap<User, UserModel>().ReverseMap();
 
         CreateMap<Internship, InternshipModel>()
