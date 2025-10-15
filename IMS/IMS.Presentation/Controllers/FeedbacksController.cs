@@ -17,9 +17,7 @@ public class FeedbacksController(IService<FeedbackModel, Feedback> service, IMap
     [HttpGet]
     public async Task<IEnumerable<FeedbackDTO>> GetAll(CancellationToken cancellationToken)
     {
-        var feedbacks = await service.GetAllAsync(null, false, cancellationToken);
-
-        if (feedbacks.Count == 0) throw new Exception($"No feedbacks have been found");
+        var feedbacks = await service.GetAllAsync(null, false, cancellationToken); 
 
         var feedbackDTOs = mapper.Map<IEnumerable<FeedbackDTO>>(feedbacks);
          
@@ -29,7 +27,7 @@ public class FeedbacksController(IService<FeedbackModel, Feedback> service, IMap
     [HttpGet(ApiRoutes.Id)]
     public async Task<FeedbackDTO> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var feedback = await service.GetByIdAsync(id, cancellationToken) ?? throw new Exception($"Feedback with ID {id} was not found.");
+        var feedback = await service.GetByIdAsync(id, cancellationToken);
 
         var feedbackDTO = mapper.Map<FeedbackDTO>(feedback);
 
@@ -51,11 +49,9 @@ public class FeedbacksController(IService<FeedbackModel, Feedback> service, IMap
     [HttpPut(ApiRoutes.Id)]
     public async Task<FeedbackDTO> Update(Guid id, [FromBody] UpdateFeedbackDTO updateFeedbackDTO, CancellationToken cancellationToken)
     {
-        var feedbackModel = mapper.Map<FeedbackModel>(updateFeedbackDTO);
+        var feedbackModel = mapper.Map<FeedbackModel>(updateFeedbackDTO); 
 
-        feedbackModel.Id = id;
-
-        var updatedFeedbackModel = await service.UpdateAsync(feedbackModel, cancellationToken) ?? throw new Exception($"Feedback with ID {id} was not found.");
+        var updatedFeedbackModel = await service.UpdateAsync(id, feedbackModel, cancellationToken);
 
         var updatedFeedbackDTO = mapper.Map<FeedbackDTO>(updatedFeedbackModel);
 

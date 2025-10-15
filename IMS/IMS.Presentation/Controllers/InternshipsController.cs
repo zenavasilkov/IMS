@@ -19,8 +19,6 @@ public class InternshipsController(IService<InternshipModel, Internship> service
     {
         var internships = await service.GetAllAsync(null, false, cancellationToken);
 
-        if (internships.Count == 0) throw new Exception("No internships have been found");
-
         var internshipDTOs = mapper.Map<IEnumerable<InternshipDTO>>(internships); 
 
         return internshipDTOs;
@@ -29,7 +27,7 @@ public class InternshipsController(IService<InternshipModel, Internship> service
     [HttpGet(ApiRoutes.Id)]
     public async Task<InternshipDTO> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var internship = await service.GetByIdAsync(id, cancellationToken) ?? throw new Exception($"Internship with ID {id} was not found.");
+        var internship = await service.GetByIdAsync(id, cancellationToken);
 
         var internshipDTO = mapper.Map<InternshipDTO>(internship);
 
@@ -53,9 +51,7 @@ public class InternshipsController(IService<InternshipModel, Internship> service
     {
         var internshipModel = mapper.Map<InternshipModel>(updateInternshipDTO);
 
-        internshipModel.Id = id;
-
-        var updatedInternshipModel = await service.UpdateAsync(internshipModel, cancellationToken) ?? throw new Exception($"Internship with ID {id} was not found." );
+        var updatedInternshipModel = await service.UpdateAsync(id, internshipModel, cancellationToken);
 
         var updatedInternshipDTO = mapper.Map<InternshipDTO>(updatedInternshipModel);
 

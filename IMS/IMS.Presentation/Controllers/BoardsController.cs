@@ -16,9 +16,7 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
     [HttpGet]
     public async Task<IEnumerable<BoardDTO>> GetAll(CancellationToken cancellationToken)
     {
-        var boards = await boardService.GetAllAsync(null, false, cancellationToken);
-
-        if (boards.Count == 0) throw new Exception("No boards have been found");
+        var boards = await boardService.GetAllAsync(null, false, cancellationToken); 
 
         var boardDTOs = mapper.Map<IEnumerable<BoardDTO>>(boards); 
 
@@ -28,7 +26,7 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
     [HttpGet(ApiRoutes.Id)]
     public async Task<BoardDTO> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var board = await boardService.GetByIdAsync(id, cancellationToken) ?? throw new Exception($"Board with ID {id} was not found." );
+        var board = await boardService.GetByIdAsync(id, cancellationToken);
 
         var boardDTO = mapper.Map<BoardDTO>(board);
 
@@ -50,11 +48,9 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
     [HttpPut(ApiRoutes.Id)]
     public async Task<BoardDTO> Update(Guid id, [FromBody] UpdateBoardDTO updateBoardDTO, CancellationToken cancellationToken)
     {
-        var boardModel = mapper.Map<BoardModel>(updateBoardDTO);
+        var boardModel = mapper.Map<BoardModel>(updateBoardDTO); 
 
-        boardModel.Id = id;
-
-        var updatedBoardModel = await boardService.UpdateAsync(boardModel, cancellationToken) ?? throw new Exception($"Board with ID {id} was not found.");
+        var updatedBoardModel = await boardService.UpdateAsync(id, boardModel, cancellationToken) ?? throw new Exception($"Board with ID {id} was not found.");
 
         var updatedBoardDTO = mapper.Map<BoardDTO>(updatedBoardModel);
 
@@ -62,10 +58,9 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
     }
 
     [HttpPatch(ApiRoutes.Boards.AddTicket)]
-    public async Task<BoardDTO> AddTicketById(Guid boardId, Guid ticketId, CancellationToken cancellationToken)
+    public async Task<BoardDTO> AddTicketToBoard(Guid boardId, Guid ticketId, CancellationToken cancellationToken)
     {
-        var updatedBoardModel = await boardService.AddTicketById(boardId, ticketId, ticketService, cancellationToken) ?? 
-            throw new Exception($"Board with ID {boardId} or Ticket with ID {ticketId} was not found.");
+        var updatedBoardModel = await boardService.AddTicketToBoard(boardId, ticketId, ticketService, cancellationToken);
 
         var updatedBoardDTO  = mapper.Map<BoardDTO>(updatedBoardModel);
 

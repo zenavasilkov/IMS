@@ -8,7 +8,7 @@ namespace IMS.BLL.Services;
 
 public class BoardService(IBoardRepository repository, IMapper mapper) : Service<BoardModel, Board>(repository, mapper), IBoardService
 {
-    public async Task<BoardModel?> AddTicketById(Guid boardId, Guid ticketId, IService<TicketModel, Ticket> ticketService, CancellationToken cancellationToken = default)
+    public async Task<BoardModel?> AddTicketToBoard(Guid boardId, Guid ticketId, IService<TicketModel, Ticket> ticketService, CancellationToken cancellationToken = default)
     {
         var board = await GetByIdAsync(boardId, cancellationToken) ?? throw new Exception($"Board with ID {boardId} was not found"); // TODO: Add custom exception
 
@@ -18,7 +18,7 @@ public class BoardService(IBoardRepository repository, IMapper mapper) : Service
 
         board.Tickets.Add(ticket);
 
-        var updatedBoard = await UpdateAsync(board, cancellationToken);
+        var updatedBoard = await UpdateAsync(boardId, board, cancellationToken);
 
         return updatedBoard;
     }

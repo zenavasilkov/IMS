@@ -16,9 +16,7 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
     [HttpGet]
     public async Task<IEnumerable<UserDTO>> GetAll(CancellationToken cancellationToken)
     {
-        var users = await service.GetAllAsync(null, false, cancellationToken); 
-
-        if (users.Count == 0) throw new Exception("No users have been found");
+        var users = await service.GetAllAsync(null, false, cancellationToken);
 
         var userDTOs = mapper.Map<IEnumerable<UserDTO>>(users);
 
@@ -28,7 +26,7 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
     [HttpGet(ApiRoutes.Id)]
     public async Task<UserDTO> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var user = await service.GetByIdAsync(id, cancellationToken) ?? throw new Exception($"User with ID {id} was not found.");
+        var user = await service.GetByIdAsync(id, cancellationToken);
 
         var userDTO = mapper.Map<UserDTO>(user);
 
@@ -39,8 +37,11 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
     public async Task<UserDTO> Create([FromBody] CreateUserDTO createUserDTO, CancellationToken cancellationToken)
     {
         var userModel = mapper.Map<UserModel>(createUserDTO);
+
         var createdUserModel = await service.CreateAsync(userModel, cancellationToken);
+
         var userDTO = mapper.Map<UserDTO>(createdUserModel);
+
         return userDTO;
     }
 
@@ -49,9 +50,7 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
     {
         var userModel = mapper.Map<UserModel>(updateUserDTO);
 
-        userModel.Id = id;
-
-        var updatedUserModel = await service.UpdateAsync(userModel, cancellationToken) ?? throw new Exception($"User with ID {id} was not found.");
+        var updatedUserModel = await service.UpdateAsync(id, userModel, cancellationToken);
 
         var updatedUserDTO = mapper.Map<UserDTO>(updatedUserModel);
 
@@ -60,9 +59,8 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
 
     [HttpPatch(ApiRoutes.Users.AddInternToMentor)]
     public async Task<UserDTO> AddInternToMentorById(Guid mentorId, Guid internId, CancellationToken cancellationToken)
-    { 
-        var updatedMentorModel = await service.AddInternToMentorById(mentorId, internId, cancellationToken) 
-            ?? throw new Exception($"Mentor or intern was not found.");
+    {
+        var updatedMentorModel = await service.AddInternToMentor(mentorId, internId, cancellationToken);
 
         var updatedMentorDTO = mapper.Map<UserDTO>(updatedMentorModel);
 

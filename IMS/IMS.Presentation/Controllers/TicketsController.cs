@@ -18,8 +18,6 @@ public class TicketsController(ITicketService ticketService, IService<FeedbackMo
     public async Task<IEnumerable<TicketDTO>> GetAll(CancellationToken cancellationToken)
     {
         var tickets = await ticketService.GetAllAsync(null, false, cancellationToken);
-         
-        if (tickets.Count == 0) throw new Exception("No tickets have been found");
 
         var ticketDTOs = mapper.Map<IEnumerable<TicketDTO>>(tickets);
 
@@ -29,7 +27,7 @@ public class TicketsController(ITicketService ticketService, IService<FeedbackMo
     [HttpGet(ApiRoutes.Id)]
     public async Task<TicketDTO> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var ticket = await ticketService.GetByIdAsync(id, cancellationToken) ?? throw new Exception($"Ticket with ID {id} was not found."); 
+        var ticket = await ticketService.GetByIdAsync(id, cancellationToken); 
 
         var ticketDTO = mapper.Map<TicketDTO>(ticket);
 
@@ -51,11 +49,9 @@ public class TicketsController(ITicketService ticketService, IService<FeedbackMo
     [HttpPut(ApiRoutes.Id)]
     public async Task<TicketDTO> Update(Guid id, [FromBody] UpdateTicketDTO updateTicketDTO, CancellationToken cancellationToken)
     {
-        var ticketModel = mapper.Map<TicketModel>(updateTicketDTO); 
+        var ticketModel = mapper.Map<TicketModel>(updateTicketDTO);
 
-        ticketModel.Id = id; 
-
-        var updatedTicketModel = await ticketService.UpdateAsync(ticketModel, cancellationToken) ?? throw new Exception($"Ticket with ID {id} was not found."); 
+        var updatedTicketModel = await ticketService.UpdateAsync(id, ticketModel, cancellationToken); 
 
         var updatedTicketDTO = mapper.Map<TicketDTO>(updatedTicketModel);
 
@@ -63,10 +59,9 @@ public class TicketsController(ITicketService ticketService, IService<FeedbackMo
     }
 
     [HttpPatch(ApiRoutes.Tickets.AddFeedback)]
-    public async Task<TicketDTO> AddFeedbackToTicketById(Guid ticketId, Guid feedbackId, CancellationToken cancellationToken)
+    public async Task<TicketDTO> AddFeedbackToTicket(Guid ticketId, Guid feedbackId, CancellationToken cancellationToken)
     { 
-        var updatedTicketModel = await ticketService.AddFeedbackById(ticketId, feedbackId, feedbackService, cancellationToken) 
-            ?? throw new Exception($"Ticket with ID {ticketId} was not found.");
+        var updatedTicketModel = await ticketService.AddFeedbackToTicket(ticketId, feedbackId, feedbackService, cancellationToken);
 
         var updatedTicketDTO = mapper.Map<TicketDTO>(updatedTicketModel);
 

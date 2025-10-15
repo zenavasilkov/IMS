@@ -5,5 +5,5 @@ namespace IMS.BLL.Services.Interfaces;
 
 public interface IBoardService : IService<BoardModel, Board>
 {
-    Task<BoardModel?> AddTicketById(Guid boardId, Guid ticketId, IService<TicketModel, Ticket> ticketService, CancellationToken cancellationToken = default);
+    Task<BoardModel?> AddTicketToBoard(Guid boardId, Guid ticketId, IService<TicketModel, Ticket> ticketService, CancellationToken cancellationToken = default);
 }

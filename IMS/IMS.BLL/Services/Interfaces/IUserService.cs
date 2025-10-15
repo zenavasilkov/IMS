@@ -1,13 +1,12 @@
 ﻿using IMS.BLL.Models;
 using IMS.DAL.Entities;
+using Shared.Enums;
 
 namespace IMS.BLL.Services.Interfaces;
 
 public interface IUserService : IService<UserModel, User>
 {
-    Task<InternModel?> GetInternByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<InternModel?> GetUserByIdAndRoleAsync(Guid id, Role role, CancellationToken cancellationToken); 
 
-    Task<MentorModel?> GetMentorByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<MentorModel?> AddInternToMentorById(Guid mentorId, Guid internId, CancellationToken cancellationToken);
+    Task<MentorModel?> AddInternToMentor(Guid mentorId, Guid internId, CancellationToken cancellationToken);
 }
