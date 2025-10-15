@@ -16,7 +16,7 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
     [HttpGet]
     public async Task<IEnumerable<UserDTO>> GetAll(CancellationToken cancellationToken)
     {
-        var users = await service.GetAllAsync(null, false, cancellationToken);
+        var users = await service.GetAllAsync(cancellationToken: cancellationToken);
 
         var userDTOs = mapper.Map<IEnumerable<UserDTO>>(users);
 
@@ -46,7 +46,7 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
     }
 
     [HttpPut(ApiRoutes.Id)]
-    public async Task<UserDTO> Update(Guid id, [FromBody] UpdateUserDTO updateUserDTO, CancellationToken cancellationToken)
+    public async Task<UserDTO> Update([FromRoute] Guid id, [FromBody] UpdateUserDTO updateUserDTO, CancellationToken cancellationToken)
     {
         var userModel = mapper.Map<UserModel>(updateUserDTO);
 
@@ -58,7 +58,7 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
     }
 
     [HttpPatch(ApiRoutes.Users.AddInternToMentor)]
-    public async Task<UserDTO> AddInternToMentorById(Guid mentorId, Guid internId, CancellationToken cancellationToken)
+    public async Task<UserDTO> AddInternToMentorById([FromRoute] Guid mentorId, [FromRoute] Guid internId, CancellationToken cancellationToken)
     {
         var updatedMentorModel = await service.AddInternToMentor(mentorId, internId, cancellationToken);
 

@@ -17,7 +17,7 @@ public class TicketsController(ITicketService ticketService, IService<FeedbackMo
     [HttpGet]
     public async Task<IEnumerable<TicketDTO>> GetAll(CancellationToken cancellationToken)
     {
-        var tickets = await ticketService.GetAllAsync(null, false, cancellationToken);
+        var tickets = await ticketService.GetAllAsync(cancellationToken: cancellationToken);
 
         var ticketDTOs = mapper.Map<IEnumerable<TicketDTO>>(tickets);
 
@@ -25,7 +25,7 @@ public class TicketsController(ITicketService ticketService, IService<FeedbackMo
     }
 
     [HttpGet(ApiRoutes.Id)]
-    public async Task<TicketDTO> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<TicketDTO> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var ticket = await ticketService.GetByIdAsync(id, cancellationToken); 
 
@@ -47,7 +47,7 @@ public class TicketsController(ITicketService ticketService, IService<FeedbackMo
     }
 
     [HttpPut(ApiRoutes.Id)]
-    public async Task<TicketDTO> Update(Guid id, [FromBody] UpdateTicketDTO updateTicketDTO, CancellationToken cancellationToken)
+    public async Task<TicketDTO> Update([FromRoute] Guid id, [FromBody] UpdateTicketDTO updateTicketDTO, CancellationToken cancellationToken)
     {
         var ticketModel = mapper.Map<TicketModel>(updateTicketDTO);
 
@@ -59,7 +59,7 @@ public class TicketsController(ITicketService ticketService, IService<FeedbackMo
     }
 
     [HttpPatch(ApiRoutes.Tickets.AddFeedback)]
-    public async Task<TicketDTO> AddFeedbackToTicket(Guid ticketId, Guid feedbackId, CancellationToken cancellationToken)
+    public async Task<TicketDTO> AddFeedbackToTicket([FromRoute] Guid ticketId, [FromRoute] Guid feedbackId, CancellationToken cancellationToken)
     { 
         var updatedTicketModel = await ticketService.AddFeedbackToTicket(ticketId, feedbackId, feedbackService, cancellationToken);
 

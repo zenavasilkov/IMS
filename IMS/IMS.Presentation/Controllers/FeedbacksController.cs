@@ -17,7 +17,7 @@ public class FeedbacksController(IService<FeedbackModel, Feedback> service, IMap
     [HttpGet]
     public async Task<IEnumerable<FeedbackDTO>> GetAll(CancellationToken cancellationToken)
     {
-        var feedbacks = await service.GetAllAsync(null, false, cancellationToken); 
+        var feedbacks = await service.GetAllAsync(cancellationToken: cancellationToken); 
 
         var feedbackDTOs = mapper.Map<IEnumerable<FeedbackDTO>>(feedbacks);
          
@@ -25,7 +25,7 @@ public class FeedbacksController(IService<FeedbackModel, Feedback> service, IMap
     }
 
     [HttpGet(ApiRoutes.Id)]
-    public async Task<FeedbackDTO> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<FeedbackDTO> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var feedback = await service.GetByIdAsync(id, cancellationToken);
 
@@ -47,7 +47,7 @@ public class FeedbacksController(IService<FeedbackModel, Feedback> service, IMap
     }
 
     [HttpPut(ApiRoutes.Id)]
-    public async Task<FeedbackDTO> Update(Guid id, [FromBody] UpdateFeedbackDTO updateFeedbackDTO, CancellationToken cancellationToken)
+    public async Task<FeedbackDTO> Update([FromRoute] Guid id, [FromBody] UpdateFeedbackDTO updateFeedbackDTO, CancellationToken cancellationToken)
     {
         var feedbackModel = mapper.Map<FeedbackModel>(updateFeedbackDTO); 
 

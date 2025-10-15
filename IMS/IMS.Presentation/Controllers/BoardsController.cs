@@ -16,7 +16,7 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
     [HttpGet]
     public async Task<IEnumerable<BoardDTO>> GetAll(CancellationToken cancellationToken)
     {
-        var boards = await boardService.GetAllAsync(null, false, cancellationToken); 
+        var boards = await boardService.GetAllAsync(cancellationToken: cancellationToken); 
 
         var boardDTOs = mapper.Map<IEnumerable<BoardDTO>>(boards); 
 
@@ -24,7 +24,7 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
     }
 
     [HttpGet(ApiRoutes.Id)]
-    public async Task<BoardDTO> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<BoardDTO> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var board = await boardService.GetByIdAsync(id, cancellationToken);
 
@@ -46,11 +46,11 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
     }
 
     [HttpPut(ApiRoutes.Id)]
-    public async Task<BoardDTO> Update(Guid id, [FromBody] UpdateBoardDTO updateBoardDTO, CancellationToken cancellationToken)
+    public async Task<BoardDTO> Update([FromRoute] Guid id, [FromBody] UpdateBoardDTO updateBoardDTO, CancellationToken cancellationToken)
     {
-        var boardModel = mapper.Map<BoardModel>(updateBoardDTO); 
+        var boardModel = mapper.Map<BoardModel>(updateBoardDTO);
 
-        var updatedBoardModel = await boardService.UpdateAsync(id, boardModel, cancellationToken) ?? throw new Exception($"Board with ID {id} was not found.");
+        var updatedBoardModel = await boardService.UpdateAsync(id, boardModel, cancellationToken);
 
         var updatedBoardDTO = mapper.Map<BoardDTO>(updatedBoardModel);
 
@@ -58,7 +58,7 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
     }
 
     [HttpPatch(ApiRoutes.Boards.AddTicket)]
-    public async Task<BoardDTO> AddTicketToBoard(Guid boardId, Guid ticketId, CancellationToken cancellationToken)
+    public async Task<BoardDTO> AddTicketToBoard([FromRoute] Guid boardId, Guid ticketId, CancellationToken cancellationToken)
     {
         var updatedBoardModel = await boardService.AddTicketToBoard(boardId, ticketId, ticketService, cancellationToken);
 

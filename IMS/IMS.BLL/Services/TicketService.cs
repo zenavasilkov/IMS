@@ -11,9 +11,11 @@ public class TicketService(ITicketRepository repository, IMapper mapper) : Servi
     public async Task<TicketModel?> AddFeedbackToTicket(Guid ticketId, Guid feedbackId, 
         IService<FeedbackModel, Feedback> feedbackService, CancellationToken cancellationToken = default)
     {
-        var ticket = await GetByIdAsync(ticketId, cancellationToken) ?? throw new Exception($"Ticket with ID {ticketId} was not found"); // TODO: Add custom exception
+        var ticket = await GetByIdAsync(ticketId, cancellationToken) 
+            ?? throw new Exception($"Ticket with ID {ticketId} was not found"); // TODO: Add custom exception
 
-        var feedback = await feedbackService.GetByIdAsync(feedbackId, cancellationToken) ?? throw new Exception($"Feedback with ID {feedbackId} was not found"); // TODO: Add custom exception
+        var feedback = await feedbackService.GetByIdAsync(feedbackId, cancellationToken)
+            ?? throw new Exception($"Feedback with ID {feedbackId} was not found"); // TODO: Add custom exception
 
         ticket.Feedbacks ??= [];
 

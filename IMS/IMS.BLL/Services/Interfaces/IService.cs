@@ -9,7 +9,8 @@ public interface IService<TModel, TEntity>
     where TModel : ModelBase 
     where TEntity : EntityBase
 {
-    Task<List<TModel>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate, bool trackChanges = false, CancellationToken cancellationToken = default);
+    Task<List<TModel>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null, 
+        bool trackChanges = false, CancellationToken cancellationToken = default);
 
     Task<PagedList<TModel>> GetPagedAsync(Expression<Func<TEntity, bool>>? predicate,
          PaginationParameters paginationParameters, bool trachChanges = false, CancellationToken cancellationTokent = default);

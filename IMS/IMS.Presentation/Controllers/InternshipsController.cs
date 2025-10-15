@@ -17,7 +17,7 @@ public class InternshipsController(IService<InternshipModel, Internship> service
     [HttpGet]
     public async Task<IEnumerable<InternshipDTO>> GetAll(CancellationToken cancellationToken)
     {
-        var internships = await service.GetAllAsync(null, false, cancellationToken);
+        var internships = await service.GetAllAsync(cancellationToken: cancellationToken);
 
         var internshipDTOs = mapper.Map<IEnumerable<InternshipDTO>>(internships); 
 
@@ -25,7 +25,7 @@ public class InternshipsController(IService<InternshipModel, Internship> service
     }
 
     [HttpGet(ApiRoutes.Id)]
-    public async Task<InternshipDTO> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<InternshipDTO> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var internship = await service.GetByIdAsync(id, cancellationToken);
 
@@ -47,7 +47,7 @@ public class InternshipsController(IService<InternshipModel, Internship> service
     }
 
     [HttpPut(ApiRoutes.Id)]
-    public async Task<InternshipDTO> Update(Guid id, [FromBody] UpdateInternshipDTO updateInternshipDTO, CancellationToken cancellationToken)
+    public async Task<InternshipDTO> Update([FromRoute] Guid id, [FromBody] UpdateInternshipDTO updateInternshipDTO, CancellationToken cancellationToken)
     {
         var internshipModel = mapper.Map<InternshipModel>(updateInternshipDTO);
 

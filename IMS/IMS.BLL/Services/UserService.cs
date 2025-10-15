@@ -13,9 +13,11 @@ public class UserService(IUserRepository repository, IMapper mapper) : Service<U
 
     public async Task<InternModel?> GetUserByIdAndRoleAsync(Guid id, Role role, CancellationToken cancellationToken)
     {
-        var user = await repository.GetByIdAsync(id, cancellationToken) ?? throw new Exception($"User with ID {id} was not found"); // TODO: Add custom exception
+        var user = await repository.GetByIdAsync(id, cancellationToken)
+            ?? throw new Exception($"User with ID {id} was not found"); // TODO: Add custom exception
 
-        if (user is null || (user is not null && user.Role != role)) throw new Exception($"User with ID {id} is not an {role}"); // TODO: Add custom exception
+        if (user is null || (user is not null && user.Role != role))
+            throw new Exception($"User with ID {id} is not an {role}"); // TODO: Add custom exception
 
         var internModel = _mapper.Map<InternModel>(user);
 

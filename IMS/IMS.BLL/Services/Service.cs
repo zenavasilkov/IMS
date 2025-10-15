@@ -59,6 +59,7 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
     public virtual async Task<TModel> UpdateAsync(Guid id, TModel model, CancellationToken cancellationToken = default)
     {
         model.Id = id; 
+
         var entity = mapper.Map<TEntity>(model);
 
         var updatedEntity = await repository.UpdateAsync(entity, cancellationToken) 
