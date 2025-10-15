@@ -2,7 +2,7 @@
 
 public class MentorModel : UserModel
 {  
-    public required List<InternModel> Inters { get; set; } = [];
+    public required List<InternModel> Interns { get; set; } = [];
 
     public required HumanResouncesManagerModel HRManager { get; set; }
 

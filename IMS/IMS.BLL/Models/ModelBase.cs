@@ -2,7 +2,7 @@
 
 public abstract class ModelBase
 {
-    public Guid Id { get; private set; }
+    public Guid Id { get; set; }
 
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
 

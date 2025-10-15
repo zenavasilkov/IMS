@@ -10,7 +10,7 @@ public static class MappingProblemResolvingExtension
         var model = mapper.Map<InternshipModel>(internship);
 
         model.Intern.Mentor = model.Mentor;
-        model.Mentor.Inters.Add(model.Intern);
+        model.Mentor.Interns.Add(model.Intern);
         model.Intern.HRManager = model.HumanResourcesManager;
         model.Mentor.HRManager = model.HumanResourcesManager;
         model.HumanResourcesManager.Interships.Add(model);

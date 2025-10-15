@@ -39,7 +39,9 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
 
     public virtual async Task<TModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await repository.GetByIdAsync(id, cancellationToken);
+        var entity = await repository.GetByIdAsync(id, cancellationToken) 
+            ?? throw new Exception("No entity has been found by given ID");
+
         var model = mapper.Map<TModel>(entity);
 
         return model;
@@ -48,16 +50,21 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
     public virtual async Task<PagedList<TModel>> GetPagedAsync(Expression<Func<TEntity, bool>>? predicate, 
         PaginationParameters paginationParameters, bool trackChanges = false, CancellationToken cancellationTokent = default)
     {
-        var entities = await repository.GetPagedAsync(predicate, paginationParameters, trackChanges, cancellationTokent);
+        var entities = await repository.GetPagedAsync(predicate, paginationParameters, trackChanges, cancellationTokent); 
         var models = mapper.Map<PagedList<TModel>>(entities);
 
        return models;
     }
 
-    public virtual async Task<TModel> UpdateAsync(TModel model, CancellationToken cancellationToken = default)
+    public virtual async Task<TModel> UpdateAsync(Guid id, TModel model, CancellationToken cancellationToken = default)
     {
+        model.Id = id; 
+
         var entity = mapper.Map<TEntity>(model);
-        var updatedEntity = await repository.UpdateAsync(entity, cancellationToken);
+
+        var updatedEntity = await repository.UpdateAsync(entity, cancellationToken) 
+            ?? throw new Exception($"Entity with ID {id} was not found");
+
         var updatedModel = mapper.Map<TModel>(updatedEntity);
 
         return updatedModel;
