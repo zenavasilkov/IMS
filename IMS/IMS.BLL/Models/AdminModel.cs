@@ -1,5 +1,5 @@
-﻿namespace IMS.BLL.Models;
+﻿//namespace IMS.BLL.Models;
 
-public class AdminModel : UserModel
-{ 
-}
+//public class AdminModel : UserModel
+//{ 
+//}

@@ -21,7 +21,7 @@ namespace IMS.BLL.Extensions
 
         public static IServiceCollection AddMapping(this IServiceCollection services)
         {
-            return services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
+            return services.AddAutoMapper(cfg => cfg.AddProfile<BllMappingProfile>());
         }
 
         public static IServiceCollection AddServices(this IServiceCollection services)
