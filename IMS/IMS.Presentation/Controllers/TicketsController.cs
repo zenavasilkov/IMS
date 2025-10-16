@@ -12,7 +12,7 @@ namespace IMS.Presentation.Controllers;
 
 [ApiController]
 [Route(ApiRoutes.Tickets.Base)]
-public class TicketsController(ITicketService ticketService, IService<FeedbackModel, Feedback> feedbackService, IMapper mapper) : ControllerBase
+public class TicketsController(IService<TicketModel, Ticket> ticketService, IMapper mapper) : ControllerBase
 {
     [HttpGet]
     public async Task<IEnumerable<TicketDTO>> GetAll(CancellationToken cancellationToken)
@@ -52,16 +52,6 @@ public class TicketsController(ITicketService ticketService, IService<FeedbackMo
         var ticketModel = mapper.Map<TicketModel>(updateTicketDTO);
 
         var updatedTicketModel = await ticketService.UpdateAsync(id, ticketModel, cancellationToken); 
-
-        var updatedTicketDTO = mapper.Map<TicketDTO>(updatedTicketModel);
-
-        return updatedTicketDTO;
-    }
-
-    [HttpPut(ApiRoutes.Tickets.AddFeedback)]
-    public async Task<TicketDTO> AddFeedbackToTicket([FromRoute] Guid ticketId, [FromRoute] Guid feedbackId, CancellationToken cancellationToken)
-    { 
-        var updatedTicketModel = await ticketService.AddFeedbackToTicket(ticketId, feedbackId, feedbackService, cancellationToken);
 
         var updatedTicketDTO = mapper.Map<TicketDTO>(updatedTicketModel);
 

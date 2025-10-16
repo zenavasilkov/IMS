@@ -23,7 +23,6 @@ public static class ApiRoutes
     public static class Tickets
     {
         public const string Base = "api/tickets";
-        public const string AddFeedback = "{ticketId:guid}/feedbacks/{feedbackId:guid}";
     }
 
     public static class Users

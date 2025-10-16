@@ -1,28 +1,28 @@
 ﻿using AutoMapper;
 using IMS.BLL.Models;
-using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
 
 namespace IMS.BLL.Services;
 
-public class TicketService(ITicketRepository repository, IMapper mapper) : Service<TicketModel, Ticket>(repository, mapper), ITicketService
+public class TicketService(ITicketRepository repository, IMapper mapper) : Service<TicketModel, Ticket>(repository, mapper)
 {
-    public async Task<TicketModel?> AddFeedbackToTicket(Guid ticketId, Guid feedbackId, 
-        IService<FeedbackModel, Feedback> feedbackService, CancellationToken cancellationToken = default)
+    private readonly IMapper _mapper = mapper;
+
+    public override async Task<TicketModel> UpdateAsync(Guid id, TicketModel model, CancellationToken cancellationToken = default)
     {
-        var ticket = await GetByIdAsync(ticketId, cancellationToken) 
-            ?? throw new Exception($"Ticket with ID {ticketId} was not found"); // TODO: Add custom exception
+        var existingTicket = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)
+            ?? throw new Exception($"Ticket with ID {id} was not found");
 
-        var feedback = await feedbackService.GetByIdAsync(feedbackId, cancellationToken)
-            ?? throw new Exception($"Feedback with ID {feedbackId} was not found"); // TODO: Add custom exception
+        existingTicket.Title = model.Title;
+        existingTicket.Description = model.Description;
+        existingTicket.DeadLine = model.DeadLine;
+        existingTicket.Status = model.Status;
 
-        ticket.Feedbacks ??= [];
+        var updatedTicket = await repository.UpdateAsync(existingTicket, cancellationToken: cancellationToken);
 
-        ticket.Feedbacks.Add(feedback);
+        var updatedTicketModel = _mapper.Map<TicketModel>(updatedTicket);
 
-        var updatedTicket = await UpdateAsync(ticketId, ticket, cancellationToken);
-
-        return updatedTicket;
+        return updatedTicketModel;
     }
 }

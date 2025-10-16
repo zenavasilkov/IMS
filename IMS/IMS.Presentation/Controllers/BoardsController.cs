@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
+using IMS.DAL.Entities;
 using IMS.Presentation.DTOs.CreateDTO;
 using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
@@ -11,7 +12,7 @@ namespace IMS.Presentation.Controllers;
 
 [ApiController]
 [Route(ApiRoutes.Boards.Base)]
-public class BoardsController(IBoardService boardService, ITicketService ticketService, IMapper mapper) : ControllerBase
+public class BoardsController(IService<BoardModel, Board> boardService, IMapper mapper) : ControllerBase
 {
     [HttpGet]
     public async Task<IEnumerable<BoardDTO>> GetAll(CancellationToken cancellationToken)
@@ -53,16 +54,6 @@ public class BoardsController(IBoardService boardService, ITicketService ticketS
         var updatedBoardModel = await boardService.UpdateAsync(id, boardModel, cancellationToken);
 
         var updatedBoardDTO = mapper.Map<BoardDTO>(updatedBoardModel);
-
-        return updatedBoardDTO;
-    }
-
-    [HttpPut(ApiRoutes.Boards.AddTicket)]
-    public async Task<BoardDTO> AddTicketToBoard([FromRoute] Guid boardId, Guid ticketId, CancellationToken cancellationToken)
-    {
-        var updatedBoardModel = await boardService.AddTicketToBoard(boardId, ticketId, ticketService, cancellationToken);
-
-        var updatedBoardDTO  = mapper.Map<BoardDTO>(updatedBoardModel);
 
         return updatedBoardDTO;
     }

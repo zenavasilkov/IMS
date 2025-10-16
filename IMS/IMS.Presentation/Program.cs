@@ -1,5 +1,4 @@
-using IMS.BLL.Extensions;
-using Microsoft.AspNetCore.Builder;
+using IMS.Presentation.Extenssions;
 
 namespace IMS.Presentation
 {
@@ -9,7 +8,7 @@ namespace IMS.Presentation
         {
             var builder = WebApplication.CreateBuilder(args);
              
-            builder.Services.AddBusinessLayerDedendencies(builder.Configuration);
+            builder.Services.AddApiDependencies(builder.Configuration); 
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
@@ -26,7 +25,6 @@ namespace IMS.Presentation
                 app.UseSwagger();
                 app.UseSwaggerUI(options =>
                 {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "IMS API v1");
                     options.RoutePrefix = string.Empty;
                 }); 
             }

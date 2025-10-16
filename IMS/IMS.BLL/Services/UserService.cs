@@ -11,35 +11,35 @@ public class UserService(IUserRepository repository, IMapper mapper) : Service<U
 {
     private readonly IMapper _mapper = mapper;
 
-    public async Task<InternModel?> GetUserByIdAndRoleAsync(Guid id, Role role, CancellationToken cancellationToken)
+    public async Task<UserModel?> GetUserByIdAndRoleAsync(Guid id, Role role, CancellationToken cancellationToken)
     {
-        var user = await repository.GetByIdAsync(id, cancellationToken)
+        var user = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)
             ?? throw new Exception($"User with ID {id} was not found"); // TODO: Add custom exception
 
         if (user is null || (user is not null && user.Role != role))
             throw new Exception($"User with ID {id} is not an {role}"); // TODO: Add custom exception
 
-        var internModel = _mapper.Map<InternModel>(user);
+        var internModel = _mapper.Map<UserModel>(user);
 
         return internModel;  
-    } 
+    }
 
-    public async Task<MentorModel?> AddInternToMentor(Guid mentorId, Guid internId, CancellationToken cancellationToken)
+    public override async Task<UserModel> UpdateAsync(Guid id, UserModel model, CancellationToken cancellationToken = default)
     {
-        var mentor = await GetUserByIdAndRoleAsync(mentorId, Role.Mentor, cancellationToken);
+        var existingUser = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)
+            ?? throw new Exception($"User with ID {id} was not found");
 
-        var intern = await GetUserByIdAndRoleAsync(mentorId, Role.Intern, cancellationToken); 
+        existingUser.Email = model.Email;
+        existingUser.Firstname = model.Firstname;
+        existingUser.Lastname = model.Lastname;
+        existingUser.Patronymic = model.Patronymic;
+        existingUser.PhoneNumber = model.PhoneNumber;
+        existingUser.Role = model.Role;
 
-        var mentorModel = _mapper.Map<MentorModel>(mentor);
+        var updatedUser = await repository.UpdateAsync(existingUser, cancellationToken: cancellationToken);
 
-        mentorModel.Interns ??= [];
+        var updatedUserModel = _mapper.Map<UserModel>(updatedUser);
 
-        var internModel = _mapper.Map<InternModel>(intern);
-
-        mentorModel.Interns.Add(internModel);
-
-        var updatedMentor = await UpdateAsync(mentorId, mentorModel, cancellationToken) as MentorModel;
-
-        return updatedMentor;
+        return updatedUserModel;
     }
 }

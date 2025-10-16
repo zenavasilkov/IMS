@@ -8,11 +8,11 @@ public class BoardModel : ModelBase
 
     public required Guid CreatedById { get; init; }
 
-    public required MentorModel CreatedBy { get; init; }
+    public required UserModel CreatedBy { get; init; }
 
     public required Guid CreatedToId { get; init; }
 
-    public required InternModel CreatedTo { get; init; }
+    public required UserModel CreatedTo { get; init; }
 
     public List<TicketModel> Tickets { get; set; } = [];
 }

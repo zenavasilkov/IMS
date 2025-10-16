@@ -10,7 +10,7 @@ namespace IMS.BLL.Services;
 
 public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper mapper) 
     : IService<TModel, TEntity> 
-    where TModel : ModelBase 
+    where TModel : ModelBase
     where TEntity : EntityBase
 {  
     public virtual async Task<TModel> CreateAsync(TModel model, CancellationToken cancellationToken = default)
@@ -39,7 +39,7 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
 
     public virtual async Task<TModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await repository.GetByIdAsync(id, cancellationToken) 
+        var entity = await repository.GetByIdAsync(id, cancellationToken: cancellationToken) 
             ?? throw new Exception("No entity has been found by given ID");
 
         var model = mapper.Map<TModel>(entity);
@@ -58,6 +58,9 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
 
     public virtual async Task<TModel> UpdateAsync(Guid id, TModel model, CancellationToken cancellationToken = default)
     {
+        _ = await repository.GetByIdAsync(id, cancellationToken: cancellationToken) 
+            ?? throw new Exception($"There is no data have been found with ID {id}");
+
         model.Id = id; 
 
         var entity = mapper.Map<TEntity>(model);

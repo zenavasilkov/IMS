@@ -1,4 +1,8 @@
 ﻿using IMS.BLL.Mapping;
+using IMS.BLL.Models;
+using IMS.BLL.Services;
+using IMS.BLL.Services.Interfaces;
+using IMS.DAL.Entities;
 using IMS.DAL.Extensions; 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection; 
@@ -11,14 +15,26 @@ namespace IMS.BLL.Extensions
         {
             services.
                 AddDataLayerDependencies(configuration)
-                .AddMapping();
+                .AddMapping()
+                .AddServices();
 
             return services;
         }
 
         public static IServiceCollection AddMapping(this IServiceCollection services)
         {
-            return services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
+            return services.AddAutoMapper(cfg => cfg.AddProfile<BllMappingProfile>());
+        }
+
+        public static IServiceCollection AddServices(this IServiceCollection services)
+        {
+            services.AddScoped<IUserService, UserService>()
+                    .AddScoped<IService<TicketModel, Ticket>, TicketService>() 
+                    .AddScoped<IService<BoardModel, Board>, BoardService>()
+                    .AddScoped<IInternshipService, InternshipService>()
+                    .AddScoped<IService<FeedbackModel, Feedback>, FeedbackService>();
+
+            return services;
         }
     }
 }

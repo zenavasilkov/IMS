@@ -1,6 +1,8 @@
-﻿namespace IMS.BLL.Models;
+﻿using Shared.Enums;
 
-public abstract class UserModel : ModelBase
+namespace IMS.BLL.Models;
+
+public class UserModel : ModelBase
 { 
     public required string Email { get; set; }
 
@@ -11,4 +13,8 @@ public abstract class UserModel : ModelBase
     public required string Lastname { get; set; }
 
     public string? Patronymic { get; set; }
+
+    public Role Role { get; set; }
+
+    public List<InternshipModel> Internships { get; set; } = [];
 }

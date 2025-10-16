@@ -1,28 +1,26 @@
 ﻿using AutoMapper;
 using IMS.BLL.Models;
-using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
 
 namespace IMS.BLL.Services;
 
-public class BoardService(IBoardRepository repository, IMapper mapper) : Service<BoardModel, Board>(repository, mapper), IBoardService
+public class BoardService(IBoardRepository repository, IMapper mapper) : Service<BoardModel, Board>(repository, mapper)
 {
-    public async Task<BoardModel?> AddTicketToBoard(Guid boardId, Guid ticketId,
-        IService<TicketModel, Ticket> ticketService, CancellationToken cancellationToken = default)
+    private readonly IMapper _mapper = mapper;
+
+    public override async Task<BoardModel> UpdateAsync(Guid id, BoardModel model, CancellationToken cancellationToken = default)
     {
-        var board = await GetByIdAsync(boardId, cancellationToken)
-            ?? throw new Exception($"Board with ID {boardId} was not found"); // TODO: Add custom exception
+        var existingBoard = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)
+            ?? throw new Exception($"Board with ID {id} was not found");
 
-        var ticket = await ticketService.GetByIdAsync(ticketId, cancellationToken)
-            ?? throw new Exception($"Ticket with ID {ticketId} was not found"); // TODO: Add custom exception
+        existingBoard.Title = model.Title;
+        existingBoard.Description = model.Description;
 
-        board.Tickets ??= [];
+        var updatedBoard = await repository.UpdateAsync(existingBoard, cancellationToken: cancellationToken);
 
-        board.Tickets.Add(ticket);
+        var updatedBoardModel = _mapper.Map<BoardModel>(updatedBoard);
 
-        var updatedBoard = await UpdateAsync(boardId, board, cancellationToken);
-
-        return updatedBoard;
+        return updatedBoardModel;
     }
 }
