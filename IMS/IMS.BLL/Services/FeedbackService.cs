@@ -6,6 +6,7 @@ using IMS.DAL.Repositories.Interfaces;
 
 namespace IMS.BLL.Services;
 
-public class TicketService(ITicketRepository repository, IMapper mapper) : Service<TicketModel, Ticket>(repository, mapper), ITicketService
+public class FeedbackService(IFeedbackRepository repository, IMapper mapper)
+    : Service<FeedbackModel, Feedback>(repository, mapper), IFeedbackService
 {
 }

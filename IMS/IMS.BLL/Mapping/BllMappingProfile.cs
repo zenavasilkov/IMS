@@ -27,7 +27,6 @@ public class BllMappingProfile : Profile
 
         CreateMap<Ticket, TicketModel>()
             .ForMember(d => d.Board, opt => opt.MapFrom(s => s.Board))
-            .ForMember(d => d.Feedbacks, opt => opt.MapFrom(s => s.Feedbacks))
             .PreserveReferences()
             .ReverseMap();
 

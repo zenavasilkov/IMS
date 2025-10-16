@@ -29,14 +29,25 @@ public class DtoMappingProfile : Profile
             .ForMember(d => d.Internships, ops => ops.Ignore());
 
         CreateMap<UpdateFeedbackDTO, FeedbackModel>();
+
         CreateMap<UpdateBoardDTO, BoardModel>();
-        CreateMap<UpdateInternshipDTO, InternshipModel>();
+
+        CreateMap<UpdateInternshipDTO, InternshipModel>()
+            .ForMember(d => d.InternId, ops => ops.Ignore())
+            .ForMember(d => d.Intern, ops => ops.Ignore())
+            .ForMember(d => d.Mentor, ops => ops.Ignore())
+            .ForMember(d => d.HumanResourcesManager, ops => ops.Ignore());
+
         CreateMap<UpdateTicketDTO, TicketModel>();
 
         CreateMap<BoardModel, BoardDTO>();
+
         CreateMap<FeedbackModel, FeedbackDTO>();
+
         CreateMap<InternshipModel, InternshipDTO>();
+
         CreateMap<TicketModel, TicketDTO>();
+
         CreateMap<UserModel, UserDTO>();
     }
 }

@@ -7,6 +7,7 @@ namespace IMS.DAL.Repositories;
 public class FeedbackRepository(IMSDbContext context) : Repository<Feedback>(context), IFeedbackRepository
 {
     private readonly DbSet<Feedback> _feedbacks = context.Set<Feedback>();
+    private readonly IMSDbContext _context = context;
     public async Task<List<Feedback>> GetFeedbacksAddressedToUserAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         var feedbacks = await _feedbacks
@@ -35,5 +36,16 @@ public class FeedbackRepository(IMSDbContext context) : Repository<Feedback>(con
             .ToListAsync(cancellationToken);
 
         return feedbacks;
+    }
+
+    public override async Task<Feedback> UpdateAsync(Feedback feedback, CancellationToken cancellationToken = default)
+    {
+        var existingFeedback = await _feedbacks.FirstAsync(i => i.Id == feedback.Id, cancellationToken);
+
+        existingFeedback.Comment = feedback.Comment;
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return existingFeedback;
     }
 }

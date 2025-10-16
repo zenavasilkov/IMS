@@ -3,6 +3,6 @@ using IMS.DAL.Entities;
 
 namespace IMS.BLL.Services.Interfaces;
 
-public interface ITicketService : IService<TicketModel, Ticket>
+public interface IFeedbackService : IService<FeedbackModel, Feedback>
 {
 }

@@ -8,6 +8,7 @@ namespace IMS.DAL.Repositories
     public class TicketRepository(IMSDbContext context) : Repository<Ticket>(context), ITicketRepository
     {
         private readonly DbSet<Ticket> _tickets = context.Set<Ticket>();
+        private readonly IMSDbContext _context = context;
         public async Task<List<Ticket>> GetTicketsByBoardId(Guid boardId, CancellationToken cancellationToken)
         {
             var tickets = await _tickets
@@ -26,6 +27,20 @@ namespace IMS.DAL.Repositories
                 .ToListAsync(cancellationToken);
 
             return tickets;
+        }
+
+        public override async Task<Ticket> UpdateAsync(Ticket ticket, CancellationToken cancellationToken = default)
+        {
+            var existingTicket = await _tickets.FirstAsync(i => i.Id == ticket.Id, cancellationToken);
+
+            existingTicket.Title = ticket.Title;
+            existingTicket.Description = ticket.Description;
+            existingTicket.Status = ticket.Status;
+            existingTicket.DeadLine = ticket.DeadLine;
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return existingTicket;
         }
     }
 }

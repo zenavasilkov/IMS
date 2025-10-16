@@ -58,6 +58,9 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
 
     public virtual async Task<TModel> UpdateAsync(Guid id, TModel model, CancellationToken cancellationToken = default)
     {
+        _ = await repository.GetByIdAsync(id, cancellationToken: cancellationToken) 
+            ?? throw new Exception($"There is no data have been found with ID {id}");
+
         model.Id = id; 
 
         var entity = mapper.Map<TEntity>(model);

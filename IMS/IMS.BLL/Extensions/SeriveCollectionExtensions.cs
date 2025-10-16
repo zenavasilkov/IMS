@@ -1,6 +1,8 @@
 ﻿using IMS.BLL.Mapping;
+using IMS.BLL.Models;
 using IMS.BLL.Services;
 using IMS.BLL.Services.Interfaces;
+using IMS.DAL.Entities;
 using IMS.DAL.Extensions; 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection; 
@@ -29,7 +31,8 @@ namespace IMS.BLL.Extensions
             services.AddScoped<IUserService, UserService>()
                     .AddScoped<ITicketService, TicketService>() 
                     .AddScoped<IBoardService, BoardService>()
-                    .AddScoped<IInternshipService, InternshipService>();
+                    .AddScoped<IInternshipService, InternshipService>()
+                    .AddScoped<IFeedbackService, FeedbackService>();
 
             return services;
         }
