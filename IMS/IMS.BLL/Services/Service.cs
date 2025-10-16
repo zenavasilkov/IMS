@@ -39,7 +39,7 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
 
     public virtual async Task<TModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        var entity = await repository.GetByIdAsync(id, cancellationToken) 
+        var entity = await repository.GetByIdAsync(id, cancellationToken: cancellationToken) 
             ?? throw new Exception("No entity has been found by given ID");
 
         var model = mapper.Map<TModel>(entity);

@@ -13,7 +13,7 @@ public class UserService(IUserRepository repository, IMapper mapper) : Service<U
 
     public async Task<UserModel?> GetUserByIdAndRoleAsync(Guid id, Role role, CancellationToken cancellationToken)
     {
-        var user = await repository.GetByIdAsync(id, cancellationToken)
+        var user = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)
             ?? throw new Exception($"User with ID {id} was not found"); // TODO: Add custom exception
 
         if (user is null || (user is not null && user.Role != role))

@@ -6,7 +6,7 @@ public class InternshipModel : ModelBase
 {
     public required Guid InternId { get; init; }
 
-    public required UserModel Intern { get; init; }
+    public required UserModel Intern { get; set; }
 
     public required Guid MentorId { get; set; }
 

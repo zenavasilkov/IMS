@@ -28,7 +28,8 @@ namespace IMS.BLL.Extensions
         {
             services.AddScoped<IUserService, UserService>()
                     .AddScoped<ITicketService, TicketService>() 
-                    .AddScoped<IBoardService, BoardService>();
+                    .AddScoped<IBoardService, BoardService>()
+                    .AddScoped<IInternshipService, InternshipService>();
 
             return services;
         }

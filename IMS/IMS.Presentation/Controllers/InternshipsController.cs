@@ -34,7 +34,8 @@ public class InternshipsController(IInternshipService service, IMapper mapper) :
     }
 
     [HttpPost]
-    public async Task<InternshipDTO> Create([FromBody] CreateInternshipDTO createInternshipDTO, CancellationToken cancellationToken)
+    public async Task<InternshipDTO> Create([FromBody] CreateInternshipDTO createInternshipDTO, 
+        CancellationToken cancellationToken)
     {
         var internshipModel = mapper.Map<InternshipModel>(createInternshipDTO);
 
@@ -46,7 +47,8 @@ public class InternshipsController(IInternshipService service, IMapper mapper) :
     }
 
     [HttpPut(ApiRoutes.Id)]
-    public async Task<InternshipDTO> Update([FromRoute] Guid id, [FromBody] UpdateInternshipDTO updateInternshipDTO, CancellationToken cancellationToken)
+    public async Task<InternshipDTO> Update([FromRoute] Guid id, 
+        [FromBody] UpdateInternshipDTO updateInternshipDTO, CancellationToken cancellationToken)
     {
         var internshipModel = mapper.Map<InternshipModel>(updateInternshipDTO);
 

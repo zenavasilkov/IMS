@@ -65,9 +65,13 @@ public class Repository<TEntity>(IMSDbContext context) : IRepository<TEntity> wh
         return PagedList;
     }
 
-    public async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<TEntity?> GetByIdAsync(Guid id, bool trackChanges = false, CancellationToken cancellationToken = default)
     {
-        var entity = await _dbSet.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+        var query = _dbSet.AsQueryable();
+
+        query = trackChanges ? query : query.AsNoTracking();
+
+        var entity = await query.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
 
         return entity;
     }
