@@ -12,7 +12,7 @@ namespace IMS.Presentation.Controllers;
 
 [ApiController]
 [Route(ApiRoutes.Tickets.Base)]
-public class TicketsController(ITicketService ticketService, IService<FeedbackModel, Feedback> feedbackService, IMapper mapper) : ControllerBase
+public class TicketsController(IService<TicketModel, Ticket> ticketService, IMapper mapper) : ControllerBase
 {
     [HttpGet]
     public async Task<IEnumerable<TicketDTO>> GetAll(CancellationToken cancellationToken)

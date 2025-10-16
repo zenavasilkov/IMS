@@ -28,19 +28,5 @@ namespace IMS.DAL.Repositories
 
             return tickets;
         }
-
-        public override async Task<Ticket> UpdateAsync(Ticket ticket, CancellationToken cancellationToken = default)
-        {
-            var existingTicket = await _tickets.FirstAsync(i => i.Id == ticket.Id, cancellationToken);
-
-            existingTicket.Title = ticket.Title;
-            existingTicket.Description = ticket.Description;
-            existingTicket.Status = ticket.Status;
-            existingTicket.DeadLine = ticket.DeadLine;
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return existingTicket;
-        }
     }
 }

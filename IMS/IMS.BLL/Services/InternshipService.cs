@@ -12,6 +12,25 @@ public class InternshipService(IInternshipRepository repository, IUserRepository
 {
     private readonly IMapper _mapper = mapper;
 
+    public override async Task<InternshipModel> UpdateAsync(Guid id, InternshipModel model, CancellationToken cancellationToken = default)
+    {
+        var existingInternship = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)
+            ?? throw new Exception($"Internship with ID {id} was not found");
+
+        existingInternship.MentorId = model.MentorId;
+        existingInternship.HumanResourcesManagerId = model.HumanResourcesManagerId;
+        existingInternship.MentorId = model.MentorId;
+        existingInternship.StartDate = model.StartDate;
+        existingInternship.EndDate = model.EndDate;
+        existingInternship.Status = model.Status;
+
+        var updatedInternship = await repository.UpdateAsync(existingInternship, cancellationToken: cancellationToken);
+
+        var updatedInternshipModel = _mapper.Map<InternshipModel>(updatedInternship);
+
+        return updatedInternshipModel;
+    }
+
     public async Task<InternshipModel> CreateInternshipAsync(InternshipModel model, CancellationToken cancellationToken = default)
     {
         var intern = await userRepository.GetByIdAsync(model.InternId, cancellationToken: cancellationToken) ??

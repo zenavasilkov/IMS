@@ -17,7 +17,7 @@ public static class ApiRoutes
 
     public static class Internships
     {
-        public const string Base = "api/Internships";
+        public const string Base = "api/internships";
     } 
 
     public static class Tickets

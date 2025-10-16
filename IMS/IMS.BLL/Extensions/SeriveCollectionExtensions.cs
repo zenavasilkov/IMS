@@ -29,10 +29,10 @@ namespace IMS.BLL.Extensions
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>()
-                    .AddScoped<ITicketService, TicketService>() 
-                    .AddScoped<IBoardService, BoardService>()
+                    .AddScoped<IService<TicketModel, Ticket>, TicketService>() 
+                    .AddScoped<IService<BoardModel, Board>, BoardService>()
                     .AddScoped<IInternshipService, InternshipService>()
-                    .AddScoped<IFeedbackService, FeedbackService>();
+                    .AddScoped<IService<FeedbackModel, Feedback>, FeedbackService>();
 
             return services;
         }

@@ -23,4 +23,23 @@ public class UserService(IUserRepository repository, IMapper mapper) : Service<U
 
         return internModel;  
     }
+
+    public override async Task<UserModel> UpdateAsync(Guid id, UserModel model, CancellationToken cancellationToken = default)
+    {
+        var existingUser = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)
+            ?? throw new Exception($"User with ID {id} was not found");
+
+        existingUser.Email = model.Email;
+        existingUser.Firstname = model.Firstname;
+        existingUser.Lastname = model.Lastname;
+        existingUser.Patronymic = model.Patronymic;
+        existingUser.PhoneNumber = model.PhoneNumber;
+        existingUser.Role = model.Role;
+
+        var updatedUser = await repository.UpdateAsync(existingUser, cancellationToken: cancellationToken);
+
+        var updatedUserModel = _mapper.Map<UserModel>(updatedUser);
+
+        return updatedUserModel;
+    }
 }
