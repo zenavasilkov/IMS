@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
-using IMS.DAL.Entities;
 using IMS.Presentation.DTOs.CreateDTO;
 using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
@@ -12,7 +11,7 @@ namespace IMS.Presentation.Controllers;
 
 [ApiController]
 [Route(ApiRoutes.Internships.Base)]
-public class InternshipsController(IService<InternshipModel, Internship> service, IMapper mapper) : ControllerBase
+public class InternshipsController(IInternshipService service, IMapper mapper) : ControllerBase
 {
     [HttpGet]
     public async Task<IEnumerable<InternshipDTO>> GetAll(CancellationToken cancellationToken)
@@ -39,7 +38,7 @@ public class InternshipsController(IService<InternshipModel, Internship> service
     {
         var internshipModel = mapper.Map<InternshipModel>(createInternshipDTO);
 
-        var createdInternshipModel = await service.CreateAsync(internshipModel, cancellationToken);
+        var createdInternshipModel = await service.CreateInternshipAsync(internshipModel, cancellationToken);
 
         var internshipDTO = mapper.Map<InternshipDTO>(createdInternshipModel);
 

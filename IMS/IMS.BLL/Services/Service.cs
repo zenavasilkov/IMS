@@ -10,7 +10,7 @@ namespace IMS.BLL.Services;
 
 public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper mapper) 
     : IService<TModel, TEntity> 
-    where TModel : ModelBase 
+    where TModel : ModelBase
     where TEntity : EntityBase
 {  
     public virtual async Task<TModel> CreateAsync(TModel model, CancellationToken cancellationToken = default)
