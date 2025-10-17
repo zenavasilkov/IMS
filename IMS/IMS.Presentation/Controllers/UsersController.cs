@@ -6,6 +6,7 @@ using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
 using IMS.Presentation.Routing;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Enums;
 
 namespace IMS.Presentation.Controllers;
 
@@ -31,6 +32,16 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
         var userDTO = mapper.Map<UserDTO>(user);
 
         return userDTO;
+    }
+
+    [HttpGet(ApiRoutes.Users.Role)]
+    public async Task<List<UserDTO>> GetUsersByRole([FromQuery] Role role, CancellationToken cancellationToken)
+    { 
+        var users = await GetUsersByRole(role, cancellationToken:  cancellationToken);
+
+        var userDTOs = mapper.Map<List<UserDTO>>(users);
+
+        return userDTOs;
     }
 
     [HttpPost]

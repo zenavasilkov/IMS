@@ -24,6 +24,13 @@ public class UserService(IUserRepository repository, IMapper mapper) : Service<U
         return internModel;  
     }
 
+    public async Task<List<UserModel>> GetUsersByRoleAsync(Role role, bool trackCanges = false, CancellationToken cancellationToken = default)
+    {
+        var users = await GetAllAsync(u => u.Role == role, cancellationToken : cancellationToken);
+
+        return users;
+    }
+
     public override async Task<UserModel> UpdateAsync(Guid id, UserModel model, CancellationToken cancellationToken = default)
     {
         var existingUser = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)

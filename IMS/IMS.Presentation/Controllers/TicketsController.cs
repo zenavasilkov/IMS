@@ -57,7 +57,7 @@ public class TicketsController(ITicketService ticketService, IMapper mapper) : C
         return updatedTicketDTO;
     }
 
-    [HttpGet]
+    [HttpGet(ApiRoutes.Id)]
     public async Task<List<TicketDTO>> GetTicketsByBoardId([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var tickets = await GetTicketsByBoardId(id, cancellationToken : cancellationToken);

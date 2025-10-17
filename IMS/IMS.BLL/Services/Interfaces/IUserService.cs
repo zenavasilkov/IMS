@@ -6,5 +6,7 @@ namespace IMS.BLL.Services.Interfaces;
 
 public interface IUserService : IService<UserModel, User>
 {
-    Task<UserModel?> GetUserByIdAndRoleAsync(Guid id, Role role, CancellationToken cancellationToken);
+    Task<UserModel?> GetUserByIdAndRoleAsync(Guid id, Role role, CancellationToken cancellationToken = default);
+
+    Task<List<UserModel>> GetUsersByRoleAsync(Role role, bool trackCanges = false, CancellationToken cancellationToken = default);
 }
