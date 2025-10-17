@@ -1,6 +1,4 @@
-﻿using Shared.Enums;
-
-namespace IMS.Presentation.Routing;
+﻿namespace IMS.Presentation.Routing;
 
 public static class ApiRoutes
 {
@@ -33,6 +31,5 @@ public static class ApiRoutes
     {
         public const string Base = $"{api}/users";
         public const string AddInternToMentor = "mentor/{mentorId:guid}/intern/{internId:guid}";
-        public const string Role = "Role/{Role:role}";
     }
 }

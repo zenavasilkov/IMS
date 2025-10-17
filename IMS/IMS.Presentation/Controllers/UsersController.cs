@@ -34,7 +34,7 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
         return userDTO;
     }
 
-    [HttpGet(ApiRoutes.Users.Role)]
+    [HttpGet]
     public async Task<List<UserDTO>> GetUsersByRole([FromQuery] Role role, CancellationToken cancellationToken)
     { 
         var users = await GetUsersByRole(role, cancellationToken:  cancellationToken);
