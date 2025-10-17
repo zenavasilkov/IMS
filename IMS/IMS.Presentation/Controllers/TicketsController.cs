@@ -64,6 +64,6 @@ public class TicketsController(ITicketService service, IMapper mapper) : Control
 
         var ticketsDTO = mapper.Map<List<TicketDTO>>(tickets);
 
-        return ticketsDTO; ;
+        return ticketsDTO;
     }
 }
