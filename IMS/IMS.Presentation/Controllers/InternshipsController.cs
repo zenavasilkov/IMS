@@ -58,4 +58,14 @@ public class InternshipsController(IInternshipService service, IMapper mapper) :
 
         return updatedInternshipDTO;
     }
+
+    [HttpGet(ApiRoutes.Internships.InternshipsByMentorId)]
+    public async Task<List<InternshipDTO>> GetInternshipsByMentorId([FromRoute] Guid mentorId,  CancellationToken cancellationToken)
+    {
+        var internships = await service.GetInternshipsByMentorIdAsync(mentorId, cancellationToken : cancellationToken);
+
+        var internshipDTOs = mapper.Map<List<InternshipDTO>>(internships);
+
+        return internshipDTOs;
+    }
 }

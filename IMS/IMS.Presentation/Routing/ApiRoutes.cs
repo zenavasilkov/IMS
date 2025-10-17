@@ -21,6 +21,7 @@ public static class ApiRoutes
     public static class Internships
     {
         public const string Base = $"{api}/internships";
+        public const string InternshipsByMentorId = "by-mentor/{mentorId:guid}";
     } 
 
     public static class Tickets

@@ -3,7 +3,7 @@ using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
-using Shared.Enums; 
+using Shared.Enums;
 
 namespace IMS.BLL.Services;
 
@@ -55,5 +55,13 @@ public class InternshipService(IInternshipRepository repository, IUserRepository
         var createdInternshipModel = _mapper.Map<InternshipModel>(createdInternship);
 
         return createdInternshipModel;
+    }
+
+    public async Task<List<InternshipModel>> GetInternshipsByMentorIdAsync(Guid id, 
+        bool trackChanges = false, CancellationToken cancellationToken = default)
+    {
+        var internships = await GetAllAsync(i => i.MentorId == id, cancellationToken: cancellationToken);
+
+        return internships;
     }
 }
