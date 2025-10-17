@@ -18,9 +18,9 @@ namespace IMS.DAL.Repositories
                  .AsQueryable();
 
             var tickets = await filterBuilder
-            .ForBoard(boardId)
-            .Build(query, cancellationToken)
-            .ToListAsync(cancellationToken);
+                .ForBoard(boardId)
+                .Build(query, cancellationToken)
+                .ToListAsync(cancellationToken);
 
             return tickets;
         }
@@ -33,10 +33,10 @@ namespace IMS.DAL.Repositories
                  .AsQueryable();
 
              var tickets = await filterBuilder
-                .ForBoard(boardId)
-                .WithStatus(status)
-                .Build(query, cancellationToken)
-                .ToListAsync(cancellationToken);
+                 .ForBoard(boardId)
+                 .WithStatus(status)
+                 .Build(query, cancellationToken)
+                 .ToListAsync(cancellationToken);
 
             return tickets;
         }

@@ -10,7 +10,7 @@ public interface ITicketFilterBuilder
     ITicketFilterBuilder WithStatus(TicketStatus? status);
     ITicketFilterBuilder ForBoard(Guid? boardId);
     ITicketFilterBuilder WithDeadline(DateTime? deadline);
-    IQueryable<Ticket> Build(IQueryable<Ticket> query, CancellationToken cancellation = default);
+    IQueryable<Ticket> Build(IQueryable<Ticket> query);
 }
 
 public class TicketFilterBuilder : ITicketFilterBuilder
@@ -21,7 +21,7 @@ public class TicketFilterBuilder : ITicketFilterBuilder
     private Guid? _boardId;
     private DateTime? _deadline;
 
-    public IQueryable<Ticket> Build(IQueryable<Ticket> query, CancellationToken cancellation = default)
+    public IQueryable<Ticket> Build(IQueryable<Ticket> query)
     {
         if(!string.IsNullOrEmpty(_title)) 
             query = query.Where(t => t.Title == _title);
