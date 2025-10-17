@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
-using IMS.DAL.Entities;
 using IMS.Presentation.DTOs.CreateDTO;
 using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
@@ -12,7 +11,7 @@ namespace IMS.Presentation.Controllers;
 
 [ApiController]
 [Route(ApiRoutes.Tickets.Base)]
-public class TicketsController(IService<TicketModel, Ticket> ticketService, IMapper mapper) : ControllerBase
+public class TicketsController(ITicketService ticketService, IMapper mapper) : ControllerBase
 {
     [HttpGet]
     public async Task<IEnumerable<TicketDTO>> GetAll(CancellationToken cancellationToken)
@@ -56,5 +55,15 @@ public class TicketsController(IService<TicketModel, Ticket> ticketService, IMap
         var updatedTicketDTO = mapper.Map<TicketDTO>(updatedTicketModel);
 
         return updatedTicketDTO;
+    }
+
+    [HttpGet]
+    public async Task<List<TicketDTO>> GetTicketsByBoardId([FromRoute] Guid id, CancellationToken cancellationToken)
+    {
+        var tickets = await GetTicketsByBoardId(id, cancellationToken : cancellationToken);
+
+        var ticketsDTO = mapper.Map<List<TicketDTO>>(tickets);
+
+        return ticketsDTO; ;
     }
 }
