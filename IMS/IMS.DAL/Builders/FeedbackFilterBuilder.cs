@@ -8,7 +8,7 @@ public interface IFeedbackFilterBuilder
     IFeedbackFilterBuilder SentBy(Guid? sentById);
     IFeedbackFilterBuilder SentTo(Guid? sentToId);
     IFeedbackFilterBuilder WithComment(string? comment);
-    IQueryable<Feedback> Build(IQueryable<Feedback> query, CancellationToken cancellation = default);
+    IQueryable<Feedback> Build(IQueryable<Feedback> query);
 }
 
 public class FeedbackFilterBuilder : IFeedbackFilterBuilder

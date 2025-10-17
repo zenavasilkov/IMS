@@ -19,7 +19,7 @@ namespace IMS.DAL.Repositories
 
             var tickets = await filterBuilder
                 .ForBoard(boardId)
-                .Build(query, cancellationToken)
+                .Build(query)
                 .ToListAsync(cancellationToken);
 
             return tickets;
@@ -35,7 +35,7 @@ namespace IMS.DAL.Repositories
              var tickets = await filterBuilder
                  .ForBoard(boardId)
                  .WithStatus(status)
-                 .Build(query, cancellationToken)
+                 .Build(query)
                  .ToListAsync(cancellationToken);
 
             return tickets;
