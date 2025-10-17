@@ -33,10 +33,10 @@ public class FeedbacksController(IFeedbackService service, IMapper mapper) : Con
         return feedbackDTO;
     }
 
-    [HttpGet(ApiRoutes.Id)]
-    public async Task<List<FeedbackDTO>> GetFeedbacksByTicketId(Guid id, CancellationToken cancellationToken)
+    [HttpGet(ApiRoutes.Feedbacks.FeedbacksByTicketId)]
+    public async Task<List<FeedbackDTO>> GetFeedbacksByTicketId(Guid ticketId, CancellationToken cancellationToken)
     {
-        var feedbacks = await GetFeedbacksByTicketId(id, cancellationToken: cancellationToken);
+        var feedbacks = await service.GetFeedbacksByTicketIdAsync(ticketId, cancellationToken: cancellationToken);
 
         var feedbackDTOs = mapper.Map<List<FeedbackDTO>>(feedbacks);
 
