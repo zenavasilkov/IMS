@@ -29,10 +29,10 @@ public class TicketService(ITicketRepository repository, IMapper mapper)
         return updatedTicketModel;
     }
 
-    public async Task<List<TicketModel>> GetTicketsByBoardIdAsync(Guid id, bool trackChanges = false, 
+    public async Task<List<TicketModel>> GetTicketsByBoardIdAsync(Guid boardId, bool trackChanges = false, 
         CancellationToken cancellationToken = default)
     {
-        var tickets = await GetAllAsync(t => t.BoardId == id, cancellationToken: cancellationToken);
+        var tickets = await GetAllAsync(t => t.BoardId == boardId, cancellationToken: cancellationToken);
 
         return tickets;
     }

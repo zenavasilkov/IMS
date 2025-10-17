@@ -57,10 +57,10 @@ public class InternshipService(IInternshipRepository repository, IUserRepository
         return createdInternshipModel;
     }
 
-    public async Task<List<InternshipModel>> GetInternshipsByMentorIdAsync(Guid id, 
+    public async Task<List<InternshipModel>> GetInternshipsByMentorIdAsync(Guid mentorId, 
         bool trackChanges = false, CancellationToken cancellationToken = default)
     {
-        var internships = await GetAllAsync(i => i.MentorId == id, cancellationToken: cancellationToken);
+        var internships = await GetAllAsync(i => i.MentorId == mentorId, cancellationToken: cancellationToken);
 
         return internships;
     }
