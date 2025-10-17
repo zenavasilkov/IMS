@@ -36,7 +36,8 @@ public static class ServiceCollectionExtensions
             .AddScoped<IBoardRepository, BoardRepository>()
             .AddScoped<ITicketFilterBuilder, TicketFilterBuilder>()
             .AddScoped<IFeedbackFilterBuilder, FeedbackFilterBuilder>()
-            .AddScoped<IInternshipFilterBuilder, InternshipFilterBuilder>();
+            .AddScoped<IInternshipFilterBuilder, InternshipFilterBuilder>()
+            .AddScoped<IUserFilterBuilder, UserFilterBuilder>();
 
         return services;
     }
