@@ -41,6 +41,7 @@ namespace IMS.DAL.Repositories
             var users = await filterBuilder
                 .WithRole(role)
                 .Build(query)
+                .OrderBy(u => u.Id)
                 .ToListAsync(cancellationToken);
 
             return users;

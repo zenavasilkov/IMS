@@ -19,6 +19,7 @@ public class FeedbackRepository(IMSDbContext context, IFeedbackFilterBuilder fil
         var feedbacks = await filterBuilder
             .SentTo(sentToId)
             .Build(query)
+            .OrderBy(f => f.Id)
             .ToListAsync(cancellationToken);
             
         return feedbacks;
@@ -34,6 +35,7 @@ public class FeedbackRepository(IMSDbContext context, IFeedbackFilterBuilder fil
         var feedbacks = await filterBuilder
             .ForTicket(ticketId)
             .Build(query)
+            .OrderBy(f => f.Id)
             .ToListAsync(cancellationToken);
 
         return feedbacks;
@@ -49,6 +51,7 @@ public class FeedbackRepository(IMSDbContext context, IFeedbackFilterBuilder fil
         var feedbacks = await filterBuilder
             .SentTo(sentById)
             .Build(query)
+            .OrderBy(f => f.Id)
             .ToListAsync(cancellationToken);
             
         return feedbacks;

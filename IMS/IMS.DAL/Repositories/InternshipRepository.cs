@@ -37,6 +37,7 @@ public class InternshipRepository(IMSDbContext context, IInternshipFilterBuilder
         var internships = await filterBuilder
             .WithStatus(status)
             .Build(query)
+            .OrderBy(f => f.Id)
             .ToListAsync(cancellationToken);
 
         return internships;
