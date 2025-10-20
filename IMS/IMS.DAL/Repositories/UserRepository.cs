@@ -48,18 +48,7 @@ namespace IMS.DAL.Repositories
             if(filter.FirstName != null) query = query.Where(u => u.Firstname == filter.FirstName);
             if(filter.LastName != null) query = query.Where(u => u.Lastname == filter.LastName);
 
-            query = sorter switch
-            {
-                UserSortingParameter.AscendingId => query.OrderBy(u => u.Id),
-                UserSortingParameter.AscendingFirstName => query.OrderBy(u => u.Firstname),
-                UserSortingParameter.AscendingLastName => query.OrderBy(u => u.Lastname),
-                UserSortingParameter.AscendingRole => query.OrderBy(u => u.Role),
-                UserSortingParameter.DescendingId => query.OrderByDescending(u => u.Id),
-                UserSortingParameter.DescendingFirstName => query.OrderByDescending(u => u.Firstname),
-                UserSortingParameter.DescendingLastName => query.OrderByDescending(u => u.Lastname),
-                UserSortingParameter.DescendingRole => query.OrderByDescending(u => u.Role),
-                _ => query
-            };
+            query = AplySortingOption(query, sorter);
 
             var users = await query
                 .Skip((paginationParameters.PageNumber - 1) * paginationParameters.PageSize)
@@ -72,6 +61,24 @@ namespace IMS.DAL.Repositories
                 paginationParameters.PageSize, totalCount);
 
             return pagedList;
+        }
+
+        private IQueryable<User> AplySortingOption(IQueryable<User> query, UserSortingParameter sortingParameter)
+        {
+            query = sortingParameter switch
+            {
+                UserSortingParameter.AscendingId => query.OrderBy(u => u.Id),
+                UserSortingParameter.AscendingFirstName => query.OrderBy(u => u.Firstname),
+                UserSortingParameter.AscendingLastName => query.OrderBy(u => u.Lastname),
+                UserSortingParameter.AscendingRole => query.OrderBy(u => u.Role),
+                UserSortingParameter.DescendingId => query.OrderByDescending(u => u.Id),
+                UserSortingParameter.DescendingFirstName => query.OrderByDescending(u => u.Firstname),
+                UserSortingParameter.DescendingLastName => query.OrderByDescending(u => u.Lastname),
+                UserSortingParameter.DescendingRole => query.OrderByDescending(u => u.Role),
+                _ => query
+            };
+
+            return query;
         }
     }
 }

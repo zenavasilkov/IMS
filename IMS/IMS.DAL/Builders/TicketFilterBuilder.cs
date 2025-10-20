@@ -8,7 +8,7 @@ public interface ITicketFilterBuilder
     ITicketFilterBuilder WithTitle(string? Title);
     ITicketFilterBuilder WithDescription(string? Description);
     ITicketFilterBuilder WithStatus(TicketStatus? status);
-    ITicketFilterBuilder ForBoard(Guid? boardId);
+    ITicketFilterBuilder WithBoard(Guid? boardId);
     ITicketFilterBuilder WithDeadline(DateTime? deadline);
     IQueryable<Ticket> Build(IQueryable<Ticket> query);
 }
@@ -41,7 +41,7 @@ public class TicketFilterBuilder : ITicketFilterBuilder
         return  query;
     }
 
-    public ITicketFilterBuilder ForBoard(Guid? boardId)
+    public ITicketFilterBuilder WithBoard(Guid? boardId)
     {
         _boardId = boardId;
         return this;

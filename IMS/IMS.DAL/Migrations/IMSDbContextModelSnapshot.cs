@@ -242,7 +242,7 @@ namespace IMS.DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("IMS.DAL.Entities.User", "SentBy")
+                    b.HasOne("IMS.DAL.Entities.User", "WithSentBy")
                         .WithMany()
                         .HasForeignKey("SentById")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -256,7 +256,7 @@ namespace IMS.DAL.Migrations
 
                     b.Navigation("AddressedTo");
 
-                    b.Navigation("SentBy");
+                    b.Navigation("WithSentBy");
 
                     b.Navigation("Ticket");
                 });

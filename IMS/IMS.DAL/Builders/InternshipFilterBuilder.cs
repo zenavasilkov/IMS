@@ -8,8 +8,8 @@ public interface IInternshipFilterBuilder
     IInternshipFilterBuilder WithIntern(Guid? internId);
     IInternshipFilterBuilder WithMentor(Guid? mentorId);
     IInternshipFilterBuilder WithHumanResourcesManager(Guid? HumanResourcesManagerId);
-    IInternshipFilterBuilder StartingFrom(DateTime? startDate);
-    IInternshipFilterBuilder EntingTo(DateTime? endDate);
+    IInternshipFilterBuilder WithStartingFrom(DateTime? startDate);
+    IInternshipFilterBuilder WithEntingTo(DateTime? endDate);
     IInternshipFilterBuilder WithStatus(InternshipStatus? status);
     IQueryable<Internship> Build(IQueryable<Internship> query);
 }
@@ -46,13 +46,13 @@ public class InternshipFilterBuilder : IInternshipFilterBuilder
         return query;
     }
 
-    public IInternshipFilterBuilder EntingTo(DateTime? endingDate)
+    public IInternshipFilterBuilder WithEntingTo(DateTime? endingDate)
     {
         _endDate = endingDate;
         return this;
     }
 
-    public IInternshipFilterBuilder StartingFrom(DateTime? startDate)
+    public IInternshipFilterBuilder WithStartingFrom(DateTime? startDate)
     {
         _startDate = startDate;
         return this;

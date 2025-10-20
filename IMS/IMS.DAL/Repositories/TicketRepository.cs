@@ -18,7 +18,7 @@ namespace IMS.DAL.Repositories
                  .AsQueryable();
 
             var tickets = await filterBuilder
-                .ForBoard(boardId)
+                .WithBoard(boardId)
                 .Build(query)
                 .OrderBy(t => t.Id)
                 .ToListAsync(cancellationToken);
@@ -34,7 +34,7 @@ namespace IMS.DAL.Repositories
                  .AsQueryable();
 
              var tickets = await filterBuilder
-                 .ForBoard(boardId)
+                 .WithBoard(boardId)
                  .WithStatus(status)
                  .Build(query)
                  .OrderBy(t => t.Id)
