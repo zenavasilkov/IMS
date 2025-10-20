@@ -1,4 +1,5 @@
 using IMS.Presentation.Extenssions;
+using IMS.Presentation.Middleware;
 
 namespace IMS.Presentation
 {
@@ -16,8 +17,10 @@ namespace IMS.Presentation
 
             builder.Services.AddSwaggerGen();
 
-            var app = builder.Build(); 
-             
+            var app = builder.Build();
+
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
