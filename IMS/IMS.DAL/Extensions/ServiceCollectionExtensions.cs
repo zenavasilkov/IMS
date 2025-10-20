@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using IMS.DAL.Repositories.Interfaces;
 using IMS.DAL.Repositories;
+using IMS.DAL.Builders;
 
 namespace IMS.DAL.Extensions;
 
@@ -32,7 +33,11 @@ public static class ServiceCollectionExtensions
             .AddScoped<ITicketRepository, TicketRepository>()
             .AddScoped<IInternshipRepository, InternshipRepository>()
             .AddScoped<IFeedbackRepository, FeedbackRepository>()
-            .AddScoped<IBoardRepository, BoardRepository>();
+            .AddScoped<IBoardRepository, BoardRepository>()
+            .AddScoped<ITicketFilterBuilder, TicketFilterBuilder>()
+            .AddScoped<IFeedbackFilterBuilder, FeedbackFilterBuilder>()
+            .AddScoped<IInternshipFilterBuilder, InternshipFilterBuilder>()
+            .AddScoped<IUserFilterBuilder, UserFilterBuilder>();
 
         return services;
     }

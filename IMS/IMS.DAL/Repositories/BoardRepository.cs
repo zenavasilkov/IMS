@@ -30,6 +30,7 @@ public class BoardRepository(IMSDbContext context) : Repository<Board>(context),
         var boards = await _boards
             .AsNoTracking()
             .Where(b => b.CreatedById == userId)
+            .OrderBy(b => b.Id)
             .ToListAsync(cancellationToken);
 
         return boards;

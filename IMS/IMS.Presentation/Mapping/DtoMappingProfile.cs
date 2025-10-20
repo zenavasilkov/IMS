@@ -3,6 +3,7 @@ using IMS.BLL.Models;
 using IMS.Presentation.DTOs.CreateDTO;
 using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
+using Shared.Pagination;
 
 namespace IMS.Presentation.Mapping;
 
@@ -49,5 +50,7 @@ public class DtoMappingProfile : Profile
         CreateMap<TicketModel, TicketDTO>();
 
         CreateMap<UserModel, UserDTO>();
+
+        CreateMap<PagedList<UserModel>, PagedList<UserDTO>>();
     }
 }

@@ -35,7 +35,7 @@ public class Repository<TEntity>(IMSDbContext context) : IRepository<TEntity> wh
             query = query.Where(predicate);
         }
 
-        var entities =  await query.ToListAsync(cancellationToken);
+        var entities =  await query.OrderBy(e => e.Id).ToListAsync(cancellationToken);
 
         return entities;
     }

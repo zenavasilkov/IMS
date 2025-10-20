@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
-using IMS.DAL.Entities;
 using IMS.Presentation.DTOs.CreateDTO;
 using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
@@ -12,7 +11,7 @@ namespace IMS.Presentation.Controllers;
 
 [ApiController]
 [Route(ApiRoutes.Feedbacks.Base)]
-public class FeedbacksController(IService<FeedbackModel, Feedback> service, IMapper mapper) : ControllerBase
+public class FeedbacksController(IFeedbackService service, IMapper mapper) : ControllerBase
 {
     [HttpGet]
     public async Task<IEnumerable<FeedbackDTO>> GetAll(CancellationToken cancellationToken)
@@ -32,6 +31,16 @@ public class FeedbacksController(IService<FeedbackModel, Feedback> service, IMap
         var feedbackDTO = mapper.Map<FeedbackDTO>(feedback);
 
         return feedbackDTO;
+    }
+
+    [HttpGet(ApiRoutes.Feedbacks.FeedbacksByTicketId)]
+    public async Task<List<FeedbackDTO>> GetFeedbacksByTicketId(Guid ticketId, CancellationToken cancellationToken)
+    {
+        var feedbacks = await service.GetFeedbacksByTicketIdAsync(ticketId, cancellationToken: cancellationToken);
+
+        var feedbackDTOs = mapper.Map<List<FeedbackDTO>>(feedbacks);
+
+        return feedbackDTOs;
     }
 
     [HttpPost]

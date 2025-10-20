@@ -6,6 +6,8 @@ using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
 using IMS.Presentation.Routing;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Enums;
+using Shared.Pagination;
 
 namespace IMS.Presentation.Controllers;
 
@@ -14,11 +16,16 @@ namespace IMS.Presentation.Controllers;
 public class UsersController(IUserService service, IMapper mapper) : ControllerBase
 {   
     [HttpGet]
-    public async Task<IEnumerable<UserDTO>> GetAll(CancellationToken cancellationToken)
+    public async Task<PagedList<UserDTO>> GetAll(
+        [FromQuery] PaginationParameters paginationParameters,
+        [FromQuery] UserFilteringParameters filter,
+        [FromQuery] UserSortingParameter sorter, 
+        CancellationToken cancellationToken)
     {
-        var users = await service.GetAllAsync(cancellationToken: cancellationToken);
+        var users = await service.GetUsersAsync(paginationParameters, 
+            filter, sorter, cancellationToken: cancellationToken);
 
-        var userDTOs = mapper.Map<IEnumerable<UserDTO>>(users);
+        var userDTOs = mapper.Map<PagedList<UserDTO>>(users);
 
         return userDTOs;
     }
@@ -31,6 +38,16 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
         var userDTO = mapper.Map<UserDTO>(user);
 
         return userDTO;
+    }
+
+    [HttpGet(ApiRoutes.Users.UsersByRole)]
+    public async Task<List<UserDTO>> GetUsersByRole([FromRoute] Role role, CancellationToken cancellationToken)
+    { 
+        var users = await service.GetUsersByRoleAsync(role, cancellationToken:  cancellationToken);
+
+        var userDTOs = mapper.Map<List<UserDTO>>(users);
+
+        return userDTOs;
     }
 
     [HttpPost]
@@ -46,7 +63,8 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
     }
 
     [HttpPut(ApiRoutes.Id)]
-    public async Task<UserDTO> Update([FromRoute] Guid id, [FromBody] UpdateUserDTO updateUserDTO, CancellationToken cancellationToken)
+    public async Task<UserDTO> Update([FromRoute] Guid id, 
+        [FromBody] UpdateUserDTO updateUserDTO, CancellationToken cancellationToken)
     {
         var userModel = mapper.Map<UserModel>(updateUserDTO);
 

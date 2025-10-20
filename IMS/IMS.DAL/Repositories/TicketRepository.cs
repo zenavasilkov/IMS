@@ -1,30 +1,44 @@
-﻿using IMS.DAL.Entities;
+﻿using IMS.DAL.Builders;
+using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Shared.Enums; 
 
 namespace IMS.DAL.Repositories
 {
-    public class TicketRepository(IMSDbContext context) : Repository<Ticket>(context), ITicketRepository
+    public class TicketRepository(IMSDbContext context, ITicketFilterBuilder filterBuilder) : Repository<Ticket>(context), ITicketRepository
     {
         private readonly DbSet<Ticket> _tickets = context.Set<Ticket>();
-        private readonly IMSDbContext _context = context;
+
         public async Task<List<Ticket>> GetTicketsByBoardId(Guid boardId, CancellationToken cancellationToken)
         {
-            var tickets = await _tickets
-                .AsNoTracking()
-                .Where(t => t.BoardId == boardId)
+            var query = _tickets
+                 .AsNoTracking()
+                 .Include(t => t.Board)
+                 .AsQueryable();
+
+            var tickets = await filterBuilder
+                .WithBoard(boardId)
+                .Build(query)
+                .OrderBy(t => t.Id)
                 .ToListAsync(cancellationToken);
 
             return tickets;
         }
 
-        public Task<List<Ticket>> GetTicketsByBoardIdAndStatus(Guid boardId, TicketStatus status, CancellationToken cancellationToken)
+        public async Task<List<Ticket>> GetTicketsByBoardIdAndStatus(Guid boardId, TicketStatus status, CancellationToken cancellationToken)
         {
-           var tickets = _tickets
-                .AsNoTracking()
-                .Where(t => t.BoardId == boardId && t.Status == status)
-                .ToListAsync(cancellationToken);
+            var query = _tickets
+                 .AsNoTracking()
+                 .Include(t => t.Board)
+                 .AsQueryable();
+
+             var tickets = await filterBuilder
+                 .WithBoard(boardId)
+                 .WithStatus(status)
+                 .Build(query)
+                 .OrderBy(t => t.Id)
+                 .ToListAsync(cancellationToken);
 
             return tickets;
         }
