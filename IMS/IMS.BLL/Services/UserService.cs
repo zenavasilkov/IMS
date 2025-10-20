@@ -4,34 +4,25 @@ using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
 using Shared.Enums;
+using Shared.Pagination;
 
 namespace IMS.BLL.Services;
 
-public class UserService(IUserRepository repository, IMapper mapper) : Service<UserModel, User>(repository, mapper), IUserService
+public class UserService(IUserRepository repository, IMapper mapper) 
+    : Service<UserModel, User>(repository, mapper), IUserService
 {
     private readonly IMapper _mapper = mapper;
 
-    public async Task<UserModel?> GetUserByIdAndRoleAsync(Guid id, Role role, CancellationToken cancellationToken)
-    {
-        var user = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)
-            ?? throw new Exception($"User with ID {id} was not found"); // TODO: Add custom exception
-
-        if (user is null || (user is not null && user.Role != role))
-            throw new Exception($"User with ID {id} is not an {role}"); // TODO: Add custom exception
-
-        var internModel = _mapper.Map<UserModel>(user);
-
-        return internModel;  
-    }
-
-    public async Task<List<UserModel>> GetUsersByRoleAsync(Role role, bool trackCanges = false, CancellationToken cancellationToken = default)
+    public async Task<List<UserModel>> GetUsersByRoleAsync(Role role, 
+        bool trackCanges = false, CancellationToken cancellationToken = default)
     {
         var users = await GetAllAsync(u => u.Role == role, cancellationToken : cancellationToken);
 
         return users;
     }
 
-    public override async Task<UserModel> UpdateAsync(Guid id, UserModel model, CancellationToken cancellationToken = default)
+    public override async Task<UserModel> UpdateAsync(Guid id, 
+        UserModel model, CancellationToken cancellationToken = default)
     {
         var existingUser = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)
             ?? throw new Exception($"User with ID {id} was not found");
@@ -48,5 +39,19 @@ public class UserService(IUserRepository repository, IMapper mapper) : Service<U
         var updatedUserModel = _mapper.Map<UserModel>(updatedUser);
 
         return updatedUserModel;
+    }
+
+    public async Task<PagedList<UserModel>> GetUsersAsync(
+        PaginationParameters paginationParameters, 
+        UserFilteringParameters filter, 
+        UserSortingParameter sorter, 
+        CancellationToken cancellationToken = default)
+    {
+        var users = await repository.GetAllAsync(paginationParameters, 
+            filter, sorter, cancellationToken: cancellationToken);
+
+        var userModels = _mapper.Map<PagedList<UserModel>>(users);
+
+        return userModels;
     }
 }
