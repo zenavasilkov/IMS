@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IMS.BLL.Exceptions;
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
@@ -22,7 +23,7 @@ public class FeedbackService(IFeedbackRepository repository, IMapper mapper)
     public override async Task<FeedbackModel> UpdateAsync(Guid id, FeedbackModel model, CancellationToken cancellationToken = default)
     {
         var existingFeedback = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)
-            ?? throw new Exception($"Feedback with ID {id} was not found");
+            ?? throw new NotFoundException($"Feedback with ID {id} was not found");
 
         existingFeedback.Comment = model.Comment;
 

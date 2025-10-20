@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IMS.BLL.Exceptions;
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
@@ -15,7 +16,7 @@ public class TicketService(ITicketRepository repository, IMapper mapper)
         TicketModel model, CancellationToken cancellationToken = default)
     {
         var existingTicket = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)
-            ?? throw new Exception($"Ticket with ID {id} was not found");
+            ?? throw new NotFoundException($"Ticket with ID {id} was not found");
 
         existingTicket.Title = model.Title;
         existingTicket.Description = model.Description;

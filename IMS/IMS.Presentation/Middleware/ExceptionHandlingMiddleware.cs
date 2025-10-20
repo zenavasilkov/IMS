@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using IMS.BLL.Exceptions;
+using System.Net;
 
 namespace IMS.Presentation.Middleware;
 
@@ -10,7 +11,15 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         {
             await next(httpContext);
         }
-        catch(Exception ex)
+        catch (NotFoundException ex)
+        {
+            await HandleExceptionAsync(httpContext, ex, (int)HttpStatusCode.NotFound);
+        }
+        catch (IncorrectAssignmentException ex) 
+        {
+            await HandleExceptionAsync(httpContext, ex, (int)HttpStatusCode.Conflict);
+        }
+        catch (Exception ex)
         {
             await HandleExceptionAsync(httpContext, ex, (int)HttpStatusCode.InternalServerError);
         }
