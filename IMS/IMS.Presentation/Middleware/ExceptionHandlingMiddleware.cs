@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace IMS.Presentation.Middleware;
+﻿namespace IMS.Presentation.Middleware;
 
 public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
 {
@@ -12,24 +10,29 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         }
         catch(Exception ex)
         {
-            await HandleExceptionAsync(httpContext, ex);
+            await HandleExceptionAsync(httpContext, ex, 500);
         }
     }
 
-    private async Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
+    private async Task HandleExceptionAsync(HttpContext httpContext, Exception exception, int statusCode)
     {
-        logger.LogError(exception, "Unhandled exception occurred.");
+        httpContext.Response.StatusCode = statusCode;
 
         //TODO: Add custom exceptions and catch them
 
-        var statusCode = HttpStatusCode.InternalServerError;
+        var message = exception.Message;
 
-        var message = "An unexpected error occured.";
+        var details = new ExceptionDetails(message, statusCode, DateTime.UtcNow);
 
-        var details = new ExceptionDetails(message, (int)statusCode, DateTime.UtcNow);
+        httpContext.Response.ContentType = ApiConstants.ApiConstants.ContentType;
 
-        httpContext.Response.ContentType = "application/json";
-        httpContext.Response.StatusCode = details.StatusCode;
+        logger.LogError("{message} {newLine} {innerExceptionMessage}", 
+            exception.Message, Environment.NewLine, exception.InnerException?.Message);
+
+        logger.LogError("Error query: {query}", httpContext.Request.Path);
+
+        logger.LogError("{stackTrace}", exception.StackTrace);
+
         await httpContext.Response.WriteAsJsonAsync(details);
     }
 }
