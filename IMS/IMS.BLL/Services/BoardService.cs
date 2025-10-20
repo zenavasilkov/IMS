@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IMS.BLL.Exceptions;
 using IMS.BLL.Models;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
@@ -12,7 +13,7 @@ public class BoardService(IBoardRepository repository, IMapper mapper) : Service
     public override async Task<BoardModel> UpdateAsync(Guid id, BoardModel model, CancellationToken cancellationToken = default)
     {
         var existingBoard = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)
-            ?? throw new Exception($"Board with ID {id} was not found");
+            ?? throw new NotFoundException($"Board with ID {id} was not found");
 
         existingBoard.Title = model.Title;
         existingBoard.Description = model.Description;

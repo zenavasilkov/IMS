@@ -5,6 +5,7 @@ using IMS.DAL.Entities;
 using Shared.Pagination;
 using IMS.DAL.Repositories.Interfaces;
 using AutoMapper;
+using IMS.BLL.Exceptions;
 
 namespace IMS.BLL.Services;
 
@@ -40,7 +41,7 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
     public virtual async Task<TModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity = await repository.GetByIdAsync(id, cancellationToken: cancellationToken) 
-            ?? throw new Exception("No entity has been found by given ID");
+            ?? throw new NotFoundException($"No {nameof(TEntity)} has been found by given ID {id}");
 
         var model = mapper.Map<TModel>(entity);
 
