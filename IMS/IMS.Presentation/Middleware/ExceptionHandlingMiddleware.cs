@@ -1,4 +1,6 @@
-﻿namespace IMS.Presentation.Middleware;
+﻿using System.Net;
+
+namespace IMS.Presentation.Middleware;
 
 public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
 {
@@ -10,7 +12,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         }
         catch(Exception ex)
         {
-            await HandleExceptionAsync(httpContext, ex, 500);
+            await HandleExceptionAsync(httpContext, ex, (int)HttpStatusCode.InternalServerError);
         }
     }
 
