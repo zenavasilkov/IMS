@@ -33,7 +33,7 @@ public class FeedbackRepository(IMSDbContext context, IFeedbackFilterBuilder fil
             .AsQueryable();
 
         var feedbacks = await filterBuilder
-            .ForTicket(ticketId)
+            .ToTicket(ticketId)
             .Build(query)
             .OrderBy(f => f.Id)
             .ToListAsync(cancellationToken);

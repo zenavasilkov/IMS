@@ -79,13 +79,6 @@ public class UserFilterBuilder : IUserFilterBuilder
         if (_role.HasValue)
             query = query.Where(u => u.Role == _role.Value);
 
-        _email = null;
-        _phoneNumber = null;
-        _firstname = null;
-        _lastname = null;
-        _patronymic = null;
-        _role = null;
-
         return query;
     }
 }

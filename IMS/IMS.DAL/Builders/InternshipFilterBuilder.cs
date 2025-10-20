@@ -43,13 +43,6 @@ public class InternshipFilterBuilder : IInternshipFilterBuilder
         if (_status.HasValue)
             query = query.Where(i => i.Status == _status.Value);
 
-        _internId = null;
-        _mentorId = null;
-        _humanResourcesManagerId = null;
-        _startDate = null;
-        _endDate = null;
-        _status = null;
-
         return query;
     }
 

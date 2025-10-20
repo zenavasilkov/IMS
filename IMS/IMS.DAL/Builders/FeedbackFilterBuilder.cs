@@ -4,7 +4,7 @@ namespace IMS.DAL.Builders;
 
 public interface IFeedbackFilterBuilder
 {
-    IFeedbackFilterBuilder ForTicket(Guid? ticketId);
+    IFeedbackFilterBuilder ToTicket(Guid? ticketId);
     IFeedbackFilterBuilder SentBy(Guid? sentById);
     IFeedbackFilterBuilder SentTo(Guid? sentToId);
     IFeedbackFilterBuilder WithComment(string? comment);
@@ -32,15 +32,10 @@ public class FeedbackFilterBuilder : IFeedbackFilterBuilder
         if(!string.IsNullOrEmpty(_comment))
             query = query.Where(f => f.Comment == _comment);
 
-        _ticketId = null;
-        _sentById = null;
-        _sentToId = null;
-        _comment = null;
-
         return query;
     }
 
-    public IFeedbackFilterBuilder ForTicket(Guid? ticketId)
+    public IFeedbackFilterBuilder ToTicket(Guid? ticketId)
     {
         _ticketId = ticketId;
         return this;

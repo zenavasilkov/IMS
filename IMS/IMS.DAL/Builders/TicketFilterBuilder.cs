@@ -38,12 +38,6 @@ public class TicketFilterBuilder : ITicketFilterBuilder
         if(_deadline.HasValue)
             query = query.Where(t => t.DeadLine == _deadline.Value);
 
-        _title = null;
-        _description = null;
-        _status = null;
-        _boardId = null;
-        _deadline = null;
-
         return  query;
     }
 
