@@ -41,7 +41,7 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
     public virtual async Task<TModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity = await repository.GetByIdAsync(id, cancellationToken: cancellationToken) 
-            ?? throw new NotFoundException($"No {nameof(TEntity)} has been found by given ID {id}");
+            ?? throw new NotFoundException($"No record has been found by given ID {id}");
 
         var model = mapper.Map<TModel>(entity);
 
