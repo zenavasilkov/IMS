@@ -29,8 +29,6 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
     {
         httpContext.Response.StatusCode = statusCode;
 
-        //TODO: Add custom exceptions and catch them
-
         var message = exception.Message;
 
         var details = new ExceptionDetails(message, statusCode, DateTime.UtcNow);
