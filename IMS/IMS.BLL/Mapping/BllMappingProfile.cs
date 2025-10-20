@@ -2,6 +2,7 @@
 using AutoMapper.Internal;
 using IMS.BLL.Models;
 using IMS.DAL.Entities;
+using Shared.Pagination;
 
 namespace IMS.BLL.Mapping;
 
@@ -36,6 +37,8 @@ public class BllMappingProfile : Profile
             .ForMember(d => d.Ticket, opt => opt.MapFrom(s => s.Ticket))
             .PreserveReferences()
             .ReverseMap();
+
+        CreateMap<PagedList<User>, PagedList<UserModel>>();
 
         this.Internal().ForAllMaps((typeMap, mapExpr) =>
         {

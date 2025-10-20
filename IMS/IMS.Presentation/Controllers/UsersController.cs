@@ -17,9 +17,9 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
 {   
     [HttpGet]
     public async Task<PagedList<UserDTO>> GetAll(
-        PaginationParameters paginationParameters, 
-        UserFilteringParameters filter,
-        UserSortingParameter sorter, 
+        [FromQuery] PaginationParameters paginationParameters,
+        [FromQuery] UserFilteringParameters filter,
+        [FromQuery] UserSortingParameter sorter, 
         CancellationToken cancellationToken)
     {
         var users = await service.GetUsersAsync(paginationParameters, 
