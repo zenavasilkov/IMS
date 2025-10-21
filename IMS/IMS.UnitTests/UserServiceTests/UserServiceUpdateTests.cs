@@ -1,4 +1,6 @@
-﻿namespace IMS.UnitTests.UserServiceTests;
+﻿using IMS.BLL.Exceptions;
+
+namespace IMS.UnitTests.UserServiceTests;
 
 public class UserServiceUpdateTests : UserServiceTestsBase
 {
@@ -53,8 +55,8 @@ public class UserServiceUpdateTests : UserServiceTestsBase
         var act = async() => await UserService.UpdateAsync(id, model);
 
         // Assert
-        await act.Should().ThrowAsync<Exception>()
-            .WithMessage($"User with ID {id} was not found"); //TODO: Change to custom exception
+        await act.Should().ThrowAsync<NotFoundException>()
+            .WithMessage($"User with ID {id} was not found");
 
         UserRepositoryMock.Verify(r => r.GetByIdAsync(id, false, default), Times.Once);
         UserRepositoryMock.Verify(r => r.UpdateAsync(It.IsAny<User>(), default), Times.Never);

@@ -1,4 +1,6 @@
-﻿namespace IMS.UnitTests.UserServiceTests;
+﻿using IMS.BLL.Exceptions;
+
+namespace IMS.UnitTests.UserServiceTests;
 
 public class UserServiceGetByIdTests : UserServiceTestsBase
 {
@@ -33,8 +35,8 @@ public class UserServiceGetByIdTests : UserServiceTestsBase
         var act = async() => await UserService.GetByIdAsync(id);
 
         //Assert
-        await act.Should().ThrowAsync<Exception>()
-            .WithMessage("No entity has been found by given ID"); //TODO: Change to custom exception after merging
+        await act.Should().ThrowAsync<NotFoundException>()
+            .WithMessage($"There is no data have been found with ID {id}");
 
         UserRepositoryMock.Verify(r => r.GetByIdAsync(id, false, default), Times.Once);
     }
