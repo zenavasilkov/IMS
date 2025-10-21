@@ -11,27 +11,24 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         {
             await next(httpContext);
         }
-        catch (NotFoundException ex)
-        {
-            await HandleExceptionAsync(httpContext, ex, (int)HttpStatusCode.NotFound);
-        }
-        catch (IncorrectAssignmentException ex) 
-        {
-            await HandleExceptionAsync(httpContext, ex, (int)HttpStatusCode.Conflict);
-        }
         catch (Exception ex)
         {
-            await HandleExceptionAsync(httpContext, ex, (int)HttpStatusCode.InternalServerError);
+            await HandleExceptionAsync(httpContext, ex);
         }
     }
 
-    private async Task HandleExceptionAsync(HttpContext httpContext, Exception exception, int statusCode)
+    private async Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
     {
-        httpContext.Response.StatusCode = statusCode;
-
         var message = exception.Message;
 
-        var details = new ExceptionDetails(message, statusCode, DateTime.UtcNow);
+        var details = exception switch
+        {
+            NotFoundException => new ExceptionDetails(message, (int)HttpStatusCode.NotFound, DateTime.UtcNow),
+
+            IncorrectAssignmentException => new ExceptionDetails(message, (int)HttpStatusCode.Conflict, DateTime.UtcNow),
+
+            _ => new ExceptionDetails(message, (int)HttpStatusCode.InternalServerError, DateTime.UtcNow)
+        };
 
         httpContext.Response.ContentType = ApiConstants.ApiConstants.ContentType;
 
