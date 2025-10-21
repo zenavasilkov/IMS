@@ -40,16 +40,6 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
         return userDTO;
     }
 
-    [HttpGet(ApiRoutes.Users.UsersByRole)]
-    public async Task<List<UserDTO>> GetUsersByRole([FromRoute] Role role, CancellationToken cancellationToken)
-    { 
-        var users = await service.GetUsersByRoleAsync(role, cancellationToken: cancellationToken);
-
-        var userDTOs = mapper.Map<List<UserDTO>>(users);
-
-        return userDTOs;
-    }
-
     [HttpPost]
     public async Task<UserDTO> Create([FromBody] CreateUserDTO createUserDTO, CancellationToken cancellationToken)
     {

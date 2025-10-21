@@ -12,9 +12,6 @@ public interface IService<TModel, TEntity>
     Task<List<TModel>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null, 
         bool trackChanges = false, CancellationToken cancellationToken = default);
 
-    Task<PagedList<TModel>> GetPagedAsync(Expression<Func<TEntity, bool>>? predicate,
-         PaginationParameters paginationParameters, bool trachChanges = false, CancellationToken cancellationTokent = default);
-
     Task<TModel?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     Task<TModel> CreateAsync(TModel model, CancellationToken cancellationToken = default);
