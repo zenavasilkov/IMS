@@ -1,6 +1,4 @@
-﻿using IMS.UnitTests.UserServiceTests;
-
-namespace IMS.UnitTests.UserServiceTests;
+﻿namespace IMS.UnitTests.UserServiceTests;
 
 public class UserServiceGetById : UserServiceTestsBase
 {

@@ -12,3 +12,6 @@ global using IMS.BLL.Models;
 global using IMS.DAL.Entities;
 global using IMS.DAL.Repositories.Interfaces;
 
+//Shared
+global using Shared.Enums;
+global using Shared.Pagination;
