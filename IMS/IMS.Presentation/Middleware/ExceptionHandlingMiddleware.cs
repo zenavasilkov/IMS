@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using IMS.BLL.Exceptions;
+using System.Net;
 
 namespace IMS.Presentation.Middleware;
 
@@ -10,21 +11,24 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         {
             await next(httpContext);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            await HandleExceptionAsync(httpContext, ex, (int)HttpStatusCode.InternalServerError);
+            await HandleExceptionAsync(httpContext, ex);
         }
     }
 
-    private async Task HandleExceptionAsync(HttpContext httpContext, Exception exception, int statusCode)
+    private async Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
     {
-        httpContext.Response.StatusCode = statusCode;
-
-        //TODO: Add custom exceptions and catch them
-
         var message = exception.Message;
 
-        var details = new ExceptionDetails(message, statusCode, DateTime.UtcNow);
+        var details = exception switch
+        {
+            NotFoundException => new ExceptionDetails(message, (int)HttpStatusCode.NotFound, DateTime.UtcNow),
+
+            IncorrectAssignmentException => new ExceptionDetails(message, (int)HttpStatusCode.Conflict, DateTime.UtcNow),
+
+            _ => new ExceptionDetails(message, (int)HttpStatusCode.InternalServerError, DateTime.UtcNow)
+        };
 
         httpContext.Response.ContentType = ApiConstants.ApiConstants.ContentType;
 

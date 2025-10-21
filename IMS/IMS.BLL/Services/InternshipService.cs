@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IMS.BLL.Exceptions;
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
@@ -15,7 +16,7 @@ public class InternshipService(IInternshipRepository repository, IUserRepository
     public override async Task<InternshipModel> UpdateAsync(Guid id, InternshipModel model, CancellationToken cancellationToken = default)
     {
         var existingInternship = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)
-            ?? throw new Exception($"Internship with ID {id} was not found");
+            ?? throw new NotFoundException($"Internship with ID {id} was not found");
 
         existingInternship.MentorId = model.MentorId;
         existingInternship.HumanResourcesManagerId = model.HumanResourcesManagerId;
@@ -34,19 +35,19 @@ public class InternshipService(IInternshipRepository repository, IUserRepository
     public async Task<InternshipModel> CreateInternshipAsync(InternshipModel model, CancellationToken cancellationToken = default)
     {
         var intern = await userRepository.GetByIdAsync(model.InternId, cancellationToken: cancellationToken) ??
-            throw new Exception($"User with ID {model.InternId} was not found");
+            throw new NotFoundException($"User with ID {model.InternId} was not found");
 
         var mentor = await userRepository.GetByIdAsync(model.MentorId, cancellationToken: cancellationToken) ??
-            throw new Exception($"User with ID {model.MentorId} was not found");
+            throw new NotFoundException($"User with ID {model.MentorId} was not found");
 
         var hrManager = await userRepository.GetByIdAsync(model.HumanResourcesManagerId, cancellationToken: cancellationToken) ??
-            throw new Exception($"User with ID {model.HumanResourcesManagerId} was not found");
+            throw new NotFoundException($"User with ID {model.HumanResourcesManagerId} was not found");
 
-        if (intern.Role != Role.Intern) throw new Exception("User assigned to role intern is not an intern");
+        if (intern.Role != Role.Intern) throw new IncorrectAssignmentException("User assigned to role intern is not an intern");
 
-        if (mentor.Role != Role.Mentor) throw new Exception("User assigned to role mentor is not a mentor");
+        if (mentor.Role != Role.Mentor) throw new IncorrectAssignmentException("User assigned to role mentor is not a mentor");
 
-        if (hrManager.Role != Role.HRManager) throw new Exception("User assigned to role HRManager is not a HRManager");
+        if (hrManager.Role != Role.HRManager) throw new IncorrectAssignmentException("User assigned to role HRManager is not a HRManager");
 
         var internship = _mapper.Map<Internship>(model);
 
