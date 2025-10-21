@@ -1,4 +1,4 @@
-﻿namespace IMS.UnitTests.Service;
+﻿namespace IMS.UnitTests.UserServiceTests;
 
 public class UserServiceTestsBase
 {
