@@ -48,7 +48,7 @@ namespace IMS.DAL.Repositories
             if(filter.FirstName != null) query = query.Where(u => u.Firstname == filter.FirstName);
             if(filter.LastName != null) query = query.Where(u => u.Lastname == filter.LastName);
 
-            query = AplySortingOption(query, sorter);
+            query = ApplySortingOption(query, sorter);
 
             var users = await query
                 .Skip((paginationParameters.PageNumber - 1) * paginationParameters.PageSize)
@@ -63,7 +63,7 @@ namespace IMS.DAL.Repositories
             return pagedList;
         }
 
-        private IQueryable<User> AplySortingOption(IQueryable<User> query, UserSortingParameter sortingParameter)
+        private static IQueryable<User> ApplySortingOption(IQueryable<User> query, UserSortingParameter sortingParameter)
         {
             query = sortingParameter switch
             {
