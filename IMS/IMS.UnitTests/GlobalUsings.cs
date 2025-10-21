@@ -3,6 +3,7 @@ global using AutoMapper;
 global using FluentAssertions;
 global using Moq;
 global using AutoFixture;
+global using AutoFixture.Xunit2;
 
 //BLL
 global using IMS.BLL.Services;
