@@ -47,6 +47,15 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
         return model;
     }
 
+    public virtual async Task<PagedList<TModel>> GetPagedAsync(Expression<Func<TEntity, bool>>? predicate, 
+        PaginationParameters paginationParameters, bool trackChanges = false, CancellationToken cancellationTokent = default)
+    {
+        var entities = await repository.GetPagedAsync(predicate, paginationParameters, trackChanges, cancellationTokent); 
+        var models = mapper.Map<PagedList<TModel>>(entities);
+
+       return models;
+    }
+
     public virtual async Task<TModel> UpdateAsync(Guid id, TModel model, CancellationToken cancellationToken = default)
     {
         _ = await repository.GetByIdAsync(id, cancellationToken: cancellationToken) 
