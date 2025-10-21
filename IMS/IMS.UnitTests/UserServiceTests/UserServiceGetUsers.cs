@@ -3,8 +3,39 @@
 public class UserServiceGetUsers : UserServiceTestsBase
 {
     [Fact]
+    public async Task GetUsersAsync_ShouldReturnEmptyMappedPagedList_WhenRepositoryReturnsEmptyPagedList()
+    {
+        //Arrange
+        var paginationParameters = Fixture.Create<PaginationParameters>();
+        var filter = Fixture.Create<UserFilteringParameters>();
+        var sorter = Fixture.Create<UserSortingParameter>();
+
+        var emptyPagedUsers = new PagedList<User>([], 1, 10, 0);
+        var emptyMappedPagedUsers = new PagedList<UserModel>([], 1, 10, 0);
+
+        UserRepositoryMock.Setup(r => r.GetAllAsync(paginationParameters, filter, sorter, false, default))
+            .ReturnsAsync(emptyPagedUsers);
+
+        MapperMock.Setup(m => m.Map<PagedList<UserModel>>(emptyPagedUsers)).Returns(emptyMappedPagedUsers);
+
+        //Act
+        var result = await UserService.GetUsersAsync(paginationParameters, filter, sorter);
+
+        //Assert
+        result.Should().NotBeNull();
+        result.Items.Should().BeEquivalentTo(emptyMappedPagedUsers.Items);
+        result.PageNumber.Should().Be(emptyMappedPagedUsers.PageNumber);
+        result.PageSize.Should().Be(emptyMappedPagedUsers.PageSize);
+        result.TotalCount.Should().Be(emptyMappedPagedUsers.TotalCount);
+
+        UserRepositoryMock.Verify(r => r.GetAllAsync(paginationParameters, filter, sorter, false, default), Times.Once());
+        MapperMock.Verify(m => m.Map<PagedList<UserModel>>(emptyPagedUsers), Times.Once());
+    }
+
+    [Fact]
     public async Task GetUsersAsync_ShouldReturnMappedPagedList_WhenUsersExist()
     {
+        
         //Arrange
         var paginationParameters = Fixture.Create<PaginationParameters>();
         var filter = Fixture.Create<UserFilteringParameters>();
@@ -33,5 +64,6 @@ public class UserServiceGetUsers : UserServiceTestsBase
 
         UserRepositoryMock.Verify(r => r.GetAllAsync(paginationParameters, filter, sorter, false, default), Times.Once());
         MapperMock.Verify(m => m.Map<PagedList<UserModel>>(pagedUsers), Times.Once());
+        
     }
 }
