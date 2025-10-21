@@ -7,29 +7,9 @@ public class UserServiceCreateTests : UserServiceTestsBase
     {
         //Arrange
         var inputModel = Fixture.Create<UserModel>();
-
-        var mappedEntity = Fixture.Build<User>()
-            .With(u => u.Email, inputModel.Email)
-            .With(u => u.Firstname, inputModel.Firstname)
-            .With(u => u.Lastname, inputModel.Lastname)
-            .With(u => u.PhoneNumber, inputModel.PhoneNumber)
-            .Create();
-
-        var createdEntity = Fixture.Build<User>()
-            .With(u => u.Id, Guid.NewGuid())
-            .With(u => u.Email, mappedEntity.Email)
-            .With(u => u.Firstname, mappedEntity.Firstname)
-            .With(u => u.Lastname, mappedEntity.Lastname)
-            .With(u => u.PhoneNumber, mappedEntity.PhoneNumber)
-            .Create();
-
-        var mappedBackModel = Fixture.Build<UserModel>()
-            .With(m => m.Id, createdEntity.Id)
-            .With(m => m.Email, createdEntity.Email)
-            .With(m => m.Firstname, createdEntity.Firstname)
-            .With(m => m.Lastname, createdEntity.Lastname)
-            .With(m => m.PhoneNumber, createdEntity.PhoneNumber)
-            .Create();
+        var mappedEntity = Fixture.Create<User>();
+        var createdEntity = Fixture.Create<User>();
+        var mappedBackModel = inputModel;
 
         MapperMock.Setup(m => m.Map<User>(inputModel)).Returns(mappedEntity);
         UserRepositoryMock.Setup(r => r.CreateAsync(mappedEntity, default)).ReturnsAsync(createdEntity);
