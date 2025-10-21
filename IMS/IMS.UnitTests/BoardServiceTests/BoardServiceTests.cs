@@ -1,6 +1,4 @@
-﻿using IMS.BLL.Exceptions;
-
-namespace IMS.UnitTests.BoardServiceTests;
+﻿namespace IMS.UnitTests.BoardServiceTests;
 
 public class BoardServiceTests
 {
@@ -49,19 +47,17 @@ public class BoardServiceTests
     }
 
     [Theory, CustomAutoData]
-    public async Task UpdateAsync_ShouldThrowException_WhenBoardDoesNotExist(Board existingBoard, BoardModel inputModel)
+    public async Task UpdateAsync_ShouldThrowException_WhenBoardDoesNotExist(Guid id, BoardModel inputModel)
     {
         //Arrange
-        existingBoard.Id = Guid.NewGuid();
-
-        _boardRepositoryMock.Setup(r => r.GetByIdAsync(existingBoard.Id, false, default)).ReturnsAsync(existingBoard);
+        _boardRepositoryMock.Setup(r => r.GetByIdAsync(id, false, default)).ReturnsAsync((Board?)null);
 
         //Act 
-        var act = async() => await _boardService.UpdateAsync(existingBoard.Id, inputModel);
+        var act = async() => await _boardService.UpdateAsync(id, inputModel);
 
         //Assert
-        await act.Should().ThrowAsync<NotFoundException>().WithMessage($"Board with ID {existingBoard.Id} was not found");
+        await act.Should().ThrowAsync<NotFoundException>().WithMessage($"Board with ID {id} was not found");
 
-        _boardRepositoryMock.Verify(r => r.GetByIdAsync(existingBoard.Id, false, default), Times.Once);
+        _boardRepositoryMock.Verify(r => r.GetByIdAsync(id, false, default), Times.Once);
     }
 }

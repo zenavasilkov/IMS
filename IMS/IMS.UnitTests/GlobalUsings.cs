@@ -8,6 +8,7 @@ global using AutoFixture.Xunit2;
 //BLL
 global using IMS.BLL.Services;
 global using IMS.BLL.Models;
+global using IMS.BLL.Exceptions;
 
 //DAL
 global using IMS.DAL.Entities;

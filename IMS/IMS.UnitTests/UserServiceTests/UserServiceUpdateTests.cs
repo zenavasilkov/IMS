@@ -1,6 +1,4 @@
-﻿using IMS.BLL.Exceptions;
-
-namespace IMS.UnitTests.UserServiceTests;
+﻿namespace IMS.UnitTests.UserServiceTests;
 
 public class UserServiceUpdateTests : UserServiceTestsBase
 {

@@ -1,6 +1,4 @@
-﻿using IMS.BLL.Exceptions;
-
-namespace IMS.UnitTests.UserServiceTests;
+﻿namespace IMS.UnitTests.UserServiceTests;
 
 public class UserServiceGetByIdTests : UserServiceTestsBase
 {
@@ -36,7 +34,7 @@ public class UserServiceGetByIdTests : UserServiceTestsBase
 
         //Assert
         await act.Should().ThrowAsync<NotFoundException>()
-            .WithMessage($"There is no data have been found with ID {id}");
+            .WithMessage($"No record has been found by given ID {id}");
 
         UserRepositoryMock.Verify(r => r.GetByIdAsync(id, false, default), Times.Once);
     }
