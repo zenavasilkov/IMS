@@ -63,7 +63,7 @@ namespace IMS.DAL.Repositories
             return pagedList;
         }
 
-        private static IQueryable<User> AplySortingOption(IQueryable<User> query, UserSortingParameter sortingParameter)
+        private static IQueryable<User> ApplySortingOption(IQueryable<User> query, UserSortingParameter sortingParameter)
         {
             query = sortingParameter switch
             {
