@@ -13,6 +13,14 @@ public class UserService(IUserRepository repository, IMapper mapper)
 {
     private readonly IMapper _mapper = mapper;
 
+    public async Task<List<UserModel>> GetUsersByRoleAsync(Role role, 
+        bool trackCanges = false, CancellationToken cancellationToken = default)
+    {
+        var users = await GetAllAsync(u => u.Role == role, cancellationToken : cancellationToken);
+
+        return users;
+    }
+
     public override async Task<UserModel> UpdateAsync(Guid id, 
         UserModel model, CancellationToken cancellationToken = default)
     {
