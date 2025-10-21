@@ -1,6 +1,6 @@
 ﻿namespace IMS.UnitTests.UserServiceTests;
 
-public class UserServiceGetById : UserServiceTestsBase
+public class UserServiceGetByIdTests : UserServiceTestsBase
 {
     [Fact]
     public async Task GetByIdAsync_ShouldReturnMappedModel_WhenUserExists()

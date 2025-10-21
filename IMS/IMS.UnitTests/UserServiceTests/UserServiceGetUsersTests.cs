@@ -1,6 +1,6 @@
 ﻿namespace IMS.UnitTests.UserServiceTests;
 
-public class UserServiceGetUsers : UserServiceTestsBase
+public class UserServiceGetUsersTests : UserServiceTestsBase
 {
     [Fact]
     public async Task GetUsersAsync_ShouldReturnEmptyMappedPagedList_WhenRepositoryReturnsEmptyPagedList()

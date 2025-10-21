@@ -1,6 +1,6 @@
 ﻿namespace IMS.UnitTests.UserServiceTests;
 
-public class UserServiceUpdate : UserServiceTestsBase
+public class UserServiceUpdateTests : UserServiceTestsBase
 {
     [Fact]
     public async Task UpdateAsync_ShouldUpdateAndReturnMappedUser_WhenUserExists()
