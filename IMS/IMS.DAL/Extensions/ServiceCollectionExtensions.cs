@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using IMS.DAL.Repositories.Interfaces;
 using IMS.DAL.Repositories;
 using IMS.DAL.Builders;
+using IMS.DAL.Interceptors;
 
 namespace IMS.DAL.Extensions;
 
@@ -37,7 +38,8 @@ public static class ServiceCollectionExtensions
             .AddScoped<ITicketFilterBuilder, TicketFilterBuilder>()
             .AddScoped<IFeedbackFilterBuilder, FeedbackFilterBuilder>()
             .AddScoped<IInternshipFilterBuilder, InternshipFilterBuilder>()
-            .AddScoped<IUserFilterBuilder, UserFilterBuilder>();
+            .AddScoped<IUserFilterBuilder, UserFilterBuilder>()
+            .AddScoped<UpdateTimestampsInterceptor>(); ;
 
         return services;
     }

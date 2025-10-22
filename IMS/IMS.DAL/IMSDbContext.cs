@@ -1,10 +1,13 @@
 ﻿using IMS.DAL.Entities;
+using IMS.DAL.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
 namespace IMS.DAL;
 
-public class IMSDbContext(DbContextOptions options) : DbContext(options)
+public class IMSDbContext(DbContextOptions options, UpdateTimestampsInterceptor timestampsInterceptor) : DbContext(options)
 { 
+    private readonly UpdateTimestampsInterceptor _timestampsInterceptor = timestampsInterceptor;
+
     public DbSet<User> Users { get; set; }
     public DbSet<Board> Boards { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
@@ -14,5 +17,10 @@ public class IMSDbContext(DbContextOptions options) : DbContext(options)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(IMSDbContext).Assembly);
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.AddInterceptors(_timestampsInterceptor);
     }
 }
