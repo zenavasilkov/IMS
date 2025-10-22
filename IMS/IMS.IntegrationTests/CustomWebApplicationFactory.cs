@@ -1,12 +1,4 @@
-﻿using IMS.DAL;
-using IMS.Presentation;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace IMS.IntegrationTests;
+﻿namespace IMS.IntegrationTests;
 
 public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
@@ -32,5 +24,3 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         });
     }
 }
-
-

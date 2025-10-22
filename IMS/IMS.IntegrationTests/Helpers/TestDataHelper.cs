@@ -1,7 +1,4 @@
-﻿using IMS.DAL.Entities;
-using Shared.Enums;
-
-namespace IMS.IntegrationTests;
+﻿namespace IMS.IntegrationTests.Helpers;
 
 public static class TestDataHelper
 {
