@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IMS.BLL.Exceptions;
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
@@ -17,7 +18,7 @@ public class UserService(IUserRepository repository, IMapper mapper)
         UserModel model, CancellationToken cancellationToken = default)
     {
         var existingUser = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)
-            ?? throw new Exception($"User with ID {id} was not found");
+            ?? throw new NotFoundException($"User with ID {id} was not found");
 
         existingUser.Email = model.Email;
         existingUser.Firstname = model.Firstname;

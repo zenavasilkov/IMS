@@ -33,8 +33,8 @@ public class UserServiceGetByIdTests : UserServiceTestsBase
         var act = async() => await UserService.GetByIdAsync(id);
 
         //Assert
-        await act.Should().ThrowAsync<Exception>()
-            .WithMessage("No entity has been found by given ID"); //TODO: Change to custom exception after merging
+        await act.Should().ThrowAsync<NotFoundException>()
+            .WithMessage($"No record has been found by given ID {id}");
 
         UserRepositoryMock.Verify(r => r.GetByIdAsync(id, false, default), Times.Once);
     }
