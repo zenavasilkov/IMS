@@ -1,6 +1,6 @@
 ﻿namespace IMS.IntegrationTests.ControllersTests;
 
-public class BoardControllerTests(CustomWebApplicationFactory factory) : TestHelperBase(factory)
+public class BoardsControllerTests(CustomWebApplicationFactory factory) : TestHelperBase(factory)
 {
     [Fact]
     public async Task GetAll_ShouldReturnBoards_WhenBoardsExist()
@@ -42,7 +42,7 @@ public class BoardControllerTests(CustomWebApplicationFactory factory) : TestHel
         var result = Deserialize<Board>(content);
 
         result.ShouldNotBeNull();
-        result!.Id.ShouldBe(board.Id);
+        result.Id.ShouldBe(board.Id);
         result.Title.ShouldBe(board.Title);
     }
 
@@ -76,7 +76,7 @@ public class BoardControllerTests(CustomWebApplicationFactory factory) : TestHel
         var created = await response.Content.ReadFromJsonAsync<BoardDTO>();
 
         created.ShouldNotBeNull();
-        created!.Title.ShouldBe("New Board");
+        created.Title.ShouldBe("New Board");
         created.Description.ShouldBe("Test board");
     }
 
@@ -98,7 +98,7 @@ public class BoardControllerTests(CustomWebApplicationFactory factory) : TestHel
         var updated = await response.Content.ReadFromJsonAsync<BoardDTO>();
 
         updated.ShouldNotBeNull();
-        updated!.Title.ShouldBe("Updated Title");
+        updated.Title.ShouldBe("Updated Title");
         updated.Description.ShouldBe("Updated Description");
     }
 
