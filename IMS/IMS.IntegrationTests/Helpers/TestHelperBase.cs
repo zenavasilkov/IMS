@@ -11,8 +11,8 @@ public abstract class TestHelperBase(CustomWebApplicationFactory factory)
         using var scope = _factory.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<IMSDbContext>();
 
-        dbContext.Database.EnsureDeleted();
-        dbContext.Database.EnsureCreated();
+        dbContext.Database.EnsureDeletedAsync();
+        dbContext.Database.EnsureCreatedAsync();
 
         return Task.CompletedTask;
     }

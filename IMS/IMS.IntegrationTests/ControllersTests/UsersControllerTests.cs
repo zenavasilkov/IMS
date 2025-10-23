@@ -1,7 +1,4 @@
-﻿using IMS.Presentation.DTOs.UpdateDTO;
-using System.Net.Http.Json;
-
-namespace IMS.IntegrationTests.ControllersTests;
+﻿namespace IMS.IntegrationTests.ControllersTests;
 
 public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHelperBase(factory)
 {
@@ -22,8 +19,6 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
     [Fact]
     public async Task GetById_ShouldReturnNotFoundStatus_WhenUserDoesNotExist()
     {
-        //Arrange
-
         //Act
         var response = await Client.GetAsync($"{Users.Base}/{Guid.NewGuid()}");
 
@@ -55,6 +50,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         var contentString = await response.Content.ReadAsStringAsync();
 
         var result = Deserialize<PagedList<UserDTO>>(contentString);
+
         result.ShouldNotBeNull();
         result.Items.Count.ShouldBe(2);
         result.TotalCount.ShouldBe(3);
@@ -116,6 +112,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         var contentString = await response.Content.ReadAsStringAsync();
 
         var result = Deserialize<PagedList<UserDTO>>(contentString);
+
         result.ShouldNotBeNull();
         result.Items.Count.ShouldBe(4);
 
@@ -148,6 +145,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         var contentString = await response.Content.ReadAsStringAsync();
 
         var result = Deserialize<PagedList<UserDTO>>(contentString);
+
         result.ShouldNotBeNull();
         result.Items.Count.ShouldBe(4);
 
@@ -176,6 +174,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var result = await response.Content.ReadFromJsonAsync<UserDTO>();
+
         result.ShouldNotBeNull();
         result.Firstname.ShouldBe("New");
         result.Email.ShouldBe("new.user@test.com");
@@ -207,6 +206,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         responce.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var result = await responce.Content.ReadFromJsonAsync<UpdateUserDTO>();
+
         result.ShouldNotBeNull();
         result.Email.ShouldBe(user.Email);
         result.PhoneNumber.ShouldBe("+375-29-718-04-54");

@@ -19,6 +19,7 @@ global using IMS.DAL.Entities;
 global using IMS.Presentation;
 global using static IMS.Presentation.Routing.ApiRoutes;
 global using IMS.Presentation.DTOs.UpdateDTO;
+global using IMS.Presentation.DTOs.CreateDTO;
 
 //Shared
 global using Shared.Enums;
