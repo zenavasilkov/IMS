@@ -18,7 +18,7 @@ public class BoardsControllerTests(CustomWebApplicationFactory factory) : TestHe
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var content = await response.Content.ReadAsStringAsync();
-        var boards = Deserialize<List<Board>>(content);
+        var boards = Deserialize<List<BoardDTO>>(content);
 
         boards.ShouldNotBeNull();
         boards.ShouldContain(b => b.Title == "Backend Board");
@@ -39,7 +39,7 @@ public class BoardsControllerTests(CustomWebApplicationFactory factory) : TestHe
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var content = await response.Content.ReadAsStringAsync();
-        var result = Deserialize<Board>(content);
+        var result = Deserialize<BoardDTO>(content);
 
         result.ShouldNotBeNull();
         result.Id.ShouldBe(board.Id);
