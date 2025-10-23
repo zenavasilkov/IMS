@@ -7,19 +7,36 @@ using IMS.DAL.Repositories.Interfaces;
 
 namespace IMS.BLL.Services;
 
-public class FeedbackService(IFeedbackRepository repository, IMapper mapper)
+public class FeedbackService(IFeedbackRepository repository, ITicketRepository ticketRepository,
+    IUserRepository userRepository, IMapper mapper)
     : Service<FeedbackModel, Feedback>(repository, mapper), IFeedbackService
 {
     private readonly IMapper _mapper = mapper;
 
-    public async Task<List<FeedbackModel>> GetFeedbacksByTicketIdAsync(Guid feedbackId, 
+    public async Task<List<FeedbackModel>> GetFeedbacksByTicketIdAsync(Guid feedbackId,
         bool trackChanges = false, CancellationToken cancellationToken = default)
     {
-        var feedbacks = await repository.GetAllAsync(f => f.TicketId ==  feedbackId, false, cancellationToken);
+        var feedbacks = await repository.GetAllAsync(f => f.TicketId == feedbackId, false, cancellationToken);
 
         var feedbackModels = _mapper.Map<List<FeedbackModel>>(feedbacks);
 
         return feedbackModels;
+    }
+
+    public override async Task<FeedbackModel> CreateAsync(FeedbackModel feedback, CancellationToken cancellationToken = default)
+    {
+        if (await ticketRepository.GetByIdAsync(feedback.TicketId, cancellationToken: cancellationToken) is null)
+            throw new NotFoundException($"Ticket with ID {feedback.TicketId} was not found");
+
+        if (await userRepository.GetByIdAsync(feedback.SentById, cancellationToken: cancellationToken) is null)
+            throw new NotFoundException($"User with ID {feedback.SentById} was not found");
+
+        if (await userRepository.GetByIdAsync(feedback.AddressedToId, cancellationToken: cancellationToken) is null)
+            throw new NotFoundException($"User with ID {feedback.AddressedToId} was not found");
+
+        var feedbackModel = await base.CreateAsync(feedback, cancellationToken);
+
+        return feedbackModel;
     }
 
     public override async Task<FeedbackModel> UpdateAsync(Guid id, FeedbackModel model, CancellationToken cancellationToken = default)
