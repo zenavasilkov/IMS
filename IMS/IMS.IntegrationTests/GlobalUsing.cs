@@ -5,10 +5,11 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Storage;
 global using Microsoft.Extensions.DependencyInjection;
 global using System.Net.Http.Json;
-global using AutoFixture;
 global using Shouldly;
-global using System.Text.Json;
 global using System.Net;
+global using IMS.Presentation.DTOs.GetDTO;
+global using Newtonsoft.Json;
+global using Shared.Pagination;
 
 //DAL
 global using IMS.DAL;
@@ -16,12 +17,11 @@ global using IMS.DAL.Entities;
 
 //API
 global using IMS.Presentation;
-global using IMS.Presentation.Routing;
+global using static IMS.Presentation.Routing.ApiRoutes;
+global using IMS.Presentation.DTOs.UpdateDTO;
 
 //Shared
 global using Shared.Enums;
 
 //IntegrationTests
 global using IMS.IntegrationTests.Helpers;
-
-

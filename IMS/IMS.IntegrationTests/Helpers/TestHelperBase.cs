@@ -40,5 +40,5 @@ public abstract class TestHelperBase(CustomWebApplicationFactory factory)
 
     protected IServiceScope CreateScope() => _factory.Services.CreateScope();
 
-    protected static T? Deserialize<T>(string content) => JsonSerializer.Deserialize<T>(content);
+    protected static T? Deserialize<T>(string content) => JsonConvert.DeserializeObject<T>(content);
 }
