@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Build and test (Dev)
+    name: Build, Test, and Sonar Analysis (Dev)
     runs-on: ubuntu-latest
 
     steps:
@@ -24,31 +24,32 @@ jobs:
       - name: Install SonarScanner for .NET
         run: dotnet tool install --global dotnet-sonarscanner
 
-      - name: Run Analysis (Begin, Build, Test, End)
+      - name: Create TestResults folder if not exists
+        run: mkdir -p TestResults
+
+      - name: SonarCloud Analysis Begin
         shell: pwsh
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           PR_KEY: ${{ github.event.pull_request.number }}
           PR_BRANCH: ${{ github.head_ref }}
           PR_BASE: ${{ github.base_ref }}
-          
         run: |
           [string[]]$PR_ARGS = @()
           
           if ([string]::IsNullOrWhiteSpace($env:PR_KEY) -ne $true) {
               Write-Host ">>> Running Pull Request analysis for PR #$env:PR_KEY"
               $PR_ARGS += "/d:sonar.pullrequest.key=$env:PR_KEY"
-              $PR_ARGS += "/d:sonar.pullrequest.branch=$env:PR_BRANCH"
-              $PR_ARGS += "/d:sonar.pullrequest.base=$env:PR_BASE"
-          } 
-          else {
-              Write-Host ">>> Running Main Branch analysis."
+              $PR_ARGS += "/d:sonar.pullrequest.branch=$PR_BRANCH"
+              $PR_ARGS += "/d:sonar.pullrequest.base=$PR_BASE"
+          } else {
+              Write-Host ">>> Running branch analysis"
               $PR_ARGS += "/d:sonar.branch.name=${{ github.ref_name }}"
           }
 
           dotnet sonarscanner begin `
-            /k:"AndrodenBY_SubsTracker" `
-            /o:"androdenby" `
+            /k:"zenavasilkov_IMS" `
+            /o:"evgeny" `
             /d:sonar.login="$env:SONAR_TOKEN" `
             /d:sonar.host.url="https://sonarcloud.io" `
             /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" `
@@ -56,18 +57,27 @@ jobs:
             /d:sonar.exclusions="**/Migrations/**,**/Dockerfile,**/*appsettings*.json" `
             /d:sonar.scm.revision="${{ github.sha }}" `
             @PR_ARGS
-                                
-          dotnet sonarscanner end /d:sonar.login="$env:SONAR_TOKEN"
 
       - name: Restore dependencies
-        run: dotnet restore IMS/IMS.sln
+        run: dotnet restore IMS.sln
 
-      - name: Build
-        run: dotnet build IMS/IMS.sln --configuration Release --no-restore
+      - name: Build solution
+        run: dotnet build IMS.sln --configuration Release --no-restore
 
       - name: Run tests
-        run: dotnet test IMS/IMS.sln
-          --configuration Release 
-          --no-build 
-          --logger "trx" 
-          --results-directory TestResults
+        run: dotnet test IMS.sln `
+            --configuration Release `
+            --no-build `
+            --logger "trx;LogFileName=TestResults/test_results.trx" `
+            --collect:"XPlat Code Coverage" `
+            -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+
+      - name: SonarCloud Analysis End
+        run: dotnet sonarscanner end /d:sonar.login="$env:SONAR_TOKEN"
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults/
