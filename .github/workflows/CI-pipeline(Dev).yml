@@ -31,5 +31,5 @@ jobs:
         run: dotnet test IMS/IMS.sln
           --configuration Release 
           --no-build 
-          --loger "trx" 
+          --logger "trx" 
           --results-directory TestResults
