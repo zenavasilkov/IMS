@@ -28,31 +28,50 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
+
       - name: Install Coverlet for .NET
         run: dotnet tool install --global coverlet.console
 
       - name: Install SonarScanner for .NET
         run: dotnet tool install --global dotnet-sonarscanner
-
-      - name: Build and analyze with SonarQube
+      
+      - name: SonarQube Begin Analysis
+        shell: pwsh
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: pwsh
         run: |
           $projectKey = "zenavasilkov_IMS"
           $organization = "evgeny"
-          $solutionPath = "IMS/IMS.sln"
           $coverageReportPath = "coverage.opencover.xml"
           $sonarCoverageParam = "/d:sonar.cs.opencover.reportsPaths=""$coverageReportPath"""
 
-          dotnet-sonarscanner begin /k:"$projectKey" /o:"$organization" /d:sonar.login="$env:SONAR_TOKEN" $sonarCoverageParam
-          
-          dotnet build $solutionPath --no-incremental
+          dotnet-sonarscanner begin `
+              /k:"$projectKey" `
+              /o:"$organization" `
+              /d:sonar.login="$env:SONAR_TOKEN" `
+              $sonarCoverageParam
+              
+      - name: Build Solution
+        shell: pwsh
+        run: |
+          $solutionPath = "IMS/IMS.sln"
+          dotnet build $solutionPath --no-in
+
+      - name: Run Tests and Collect Coverage
+        shell: pwsh
+        run: |
+          $solutionPath = "IMS/IMS.sln"
+          $coverageReportPath = "coverage.opencover.xml"
 
           dotnet test $solutionPath `
               --no-build `
               /p:CollectCoverage=true `
               /p:CoverletOutputFormat=opencover `
               /p:CoverletOutput="$coverageReportPath"
-
+              
+      - name: SonarQube End Analysis
+        shell: pwsh
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
           dotnet-sonarscanner end /d:sonar.login="$env:SONAR_TOKEN"
