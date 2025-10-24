@@ -62,13 +62,13 @@ jobs:
             @PR_ARGS
 
       - name: Restore dependencies
-        run: dotnet restore IMS.sln
+        run: dotnet restore IMS/IMS.sln
 
       - name: Build solution
-        run: dotnet build IMS.sln --configuration Release --no-restore
+        run: dotnet build IMS/IMS.sln --configuration Release --no-restore
 
       - name: Run tests
-        run: dotnet test IMS.sln `
+        run: dotnet test IMS/IMS.sln `
             --configuration Release `
             --no-build `
             --logger "trx;LogFileName=TestResults/test_results.trx" `
