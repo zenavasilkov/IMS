@@ -36,12 +36,15 @@ jobs:
           PR_BASE: ${{ github.base_ref }}
         run: |
           [string[]]$PR_ARGS = @()
-          
-          if ([string]::IsNullOrWhiteSpace($env:PR_KEY) -ne $true) {
+
+          if (-not [string]::IsNullOrWhiteSpace($env:PR_KEY) -and `
+              -not [string]::IsNullOrWhiteSpace($env:PR_BRANCH) -and `
+              -not [string]::IsNullOrWhiteSpace($env:PR_BASE)) {
+
               Write-Host ">>> Running Pull Request analysis for PR #$env:PR_KEY"
               $PR_ARGS += "/d:sonar.pullrequest.key=$env:PR_KEY"
-              $PR_ARGS += "/d:sonar.pullrequest.branch=$PR_BRANCH"
-              $PR_ARGS += "/d:sonar.pullrequest.base=$PR_BASE"
+              $PR_ARGS += "/d:sonar.pullrequest.branch=$env:PR_BRANCH"
+              $PR_ARGS += "/d:sonar.pullrequest.base=$env:PR_BASE"
           } else {
               Write-Host ">>> Running branch analysis"
               $PR_ARGS += "/d:sonar.branch.name=${{ github.ref_name }}"
