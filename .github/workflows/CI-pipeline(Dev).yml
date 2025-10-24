@@ -55,7 +55,7 @@ jobs:
         shell: pwsh
         run: |
           $solutionPath = "IMS/IMS.sln"
-          dotnet build $solutionPath --no-in
+          dotnet build $solutionPath --no-incremental
 
       - name: Run Tests and Collect Coverage
         shell: pwsh
