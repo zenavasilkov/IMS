@@ -9,26 +9,30 @@ on:
 
 jobs:
   build:
-    name: Build, Test, and Sonar Analysis (Dev)
-    runs-on: ubuntu-latest
+    name: Build and analyze
+    runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'zulu'
 
-      - name: Setup .NET SDK
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.203'
-
+          dotnet-version: '9.0.x'
       - name: Install Coverlet for .NET
         run: dotnet tool install --global coverlet.console
 
       - name: Install SonarScanner for .NET
         run: dotnet tool install --global dotnet-sonarscanner
-
-      - name: Create TestResults folder if not exists
-        run: mkdir -p TestResults
 
       - name: Build and analyze with SonarQube
         env:
@@ -37,12 +41,12 @@ jobs:
         run: |
           $projectKey = "zenavasilkov_IMS"
           $organization = "evgeny"
-          $solutionPath = "IMS/IMS/IMS.sln"
+          $solutionPath = "IMS/IMS.sln"
           $coverageReportPath = "coverage.opencover.xml"
           $sonarCoverageParam = "/d:sonar.cs.opencover.reportsPaths=""$coverageReportPath"""
 
           dotnet-sonarscanner begin /k:"$projectKey" /o:"$organization" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" $sonarCoverageParam
-
+          
           dotnet build $solutionPath --no-incremental
 
           dotnet test $solutionPath `
