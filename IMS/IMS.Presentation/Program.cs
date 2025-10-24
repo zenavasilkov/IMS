@@ -13,8 +13,6 @@ namespace IMS.Presentation
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddOpenApi();
-
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
@@ -23,13 +21,8 @@ namespace IMS.Presentation
 
             if (app.Environment.IsDevelopment())
             {
-                app.MapOpenApi();
-
                 app.UseSwagger();
-                app.UseSwaggerUI(options =>
-                {
-                    options.RoutePrefix = string.Empty;
-                }); 
+                app.UseSwaggerUI(); 
             }
 
             app.UseHttpsRedirection();
