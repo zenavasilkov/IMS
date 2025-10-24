@@ -22,13 +22,13 @@ jobs:
           dotnet-version: '9.0.203'
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ./IMS.sln
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build ./IMS.sln --configuration Release --no-restore
 
       - name: Run tests
-        run: dotnet test 
+        run: dotnet test ./IMS.sln
           --configuration Release 
           --no-build 
           --loger "trx" 
