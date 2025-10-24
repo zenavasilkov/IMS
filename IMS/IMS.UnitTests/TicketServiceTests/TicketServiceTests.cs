@@ -2,14 +2,15 @@
 
 public class TicketServiceTests
 {
-    private readonly Fixture _fixture;
+    private readonly IFixture _fixture;
     private readonly Mock<ITicketRepository> _ticketRepositoryMock;
+    private readonly Mock<IBoardRepository> _boardRepositoryMock;
     private readonly Mock<IMapper> _mapperMock;
     private readonly TicketService _ticketService;
 
     public TicketServiceTests()
     {
-        _fixture = new Fixture();
+        _fixture = new Fixture().Customize(new AutoMoqCustomization());
 
         _fixture.Behaviors
             .OfType<ThrowingRecursionBehavior>()
@@ -17,9 +18,13 @@ public class TicketServiceTests
             .ForEach(b => _fixture.Behaviors.Remove(b));
 
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+
         _ticketRepositoryMock = _fixture.Freeze<Mock<ITicketRepository>>();
+        _boardRepositoryMock = _fixture.Freeze<Mock<IBoardRepository>>();
         _mapperMock = _fixture.Freeze<Mock<IMapper>>();
-        _ticketService = new TicketService(_ticketRepositoryMock.Object, _mapperMock.Object);
+
+        _ticketService = new TicketService(_ticketRepositoryMock.Object, 
+            _boardRepositoryMock.Object, _mapperMock.Object);
     }
 
     [Theory, CustomAutoData]
