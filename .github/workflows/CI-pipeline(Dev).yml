@@ -21,6 +21,9 @@ jobs:
         with:
           dotnet-version: '9.0.203'
 
+      - name: Install Coverlet for .NET
+        run: dotnet tool install --global coverlet.console
+
       - name: Install SonarScanner for .NET
         run: dotnet tool install --global dotnet-sonarscanner
 
