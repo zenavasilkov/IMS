@@ -7,7 +7,7 @@ using IMS.DAL.Repositories.Interfaces;
 
 namespace IMS.BLL.Services;
 
-public class TicketService(ITicketRepository repository, IMapper mapper) 
+public class TicketService(ITicketRepository repository, IBoardRepository boardRepository, IMapper mapper) 
     : Service<TicketModel, Ticket>(repository, mapper), ITicketService
 {
     private readonly IMapper _mapper = mapper;
@@ -30,9 +30,23 @@ public class TicketService(ITicketRepository repository, IMapper mapper)
         return updatedTicketModel;
     }
 
+    public override async Task<TicketModel> CreateAsync(TicketModel ticketModel, 
+        CancellationToken cancellationToken = default)
+    {
+         if(await boardRepository.GetByIdAsync(ticketModel.BoardId, cancellationToken: cancellationToken) is null )  
+            throw new NotFoundException($"Board with ID {ticketModel.BoardId} was not found");
+
+        var createdTicket = await base.CreateAsync(ticketModel, cancellationToken);
+
+        return createdTicket;
+    }
+
     public async Task<List<TicketModel>> GetTicketsByBoardIdAsync(Guid boardId, bool trackChanges = false, 
         CancellationToken cancellationToken = default)
     {
+        if (await boardRepository.GetByIdAsync(boardId, cancellationToken: cancellationToken) is null)
+            throw new NotFoundException($"Board with ID {boardId} was not found");
+
         var tickets = await repository.GetAllAsync(t => t.BoardId == boardId, false, cancellationToken);
 
         var ticketModels = _mapper.Map<List<TicketModel>>(tickets);

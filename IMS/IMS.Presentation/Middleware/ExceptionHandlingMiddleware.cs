@@ -31,6 +31,7 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         };
 
         httpContext.Response.ContentType = ApiConstants.ApiConstants.ContentType;
+        httpContext.Response.StatusCode = details.StatusCode;
 
         logger.LogError("{message} {newLine} {innerExceptionMessage}", 
             exception.Message, Environment.NewLine, exception.InnerException?.Message);
