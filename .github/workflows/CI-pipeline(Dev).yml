@@ -68,11 +68,12 @@ jobs:
         run: dotnet build IMS/IMS.sln --configuration Release --no-restore
 
       - name: Run tests
-        run: dotnet test IMS/IMS.sln `
-            --configuration Release `
-            --no-build `
-            --logger "trx;LogFileName=TestResults/test_results.trx" `
-            --collect:"XPlat Code Coverage" `
+        run: |
+            dotnet test IMS/IMS.sln \
+            --configuration Release \
+            --no-build \
+            --logger "trx;LogFileName=TestResults/test_results.trx" \
+            --collect:"XPlat Code Coverage" \
             -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
       - name: SonarCloud Analysis End
