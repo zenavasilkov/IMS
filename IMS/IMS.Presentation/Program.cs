@@ -1,5 +1,6 @@
 using IMS.Presentation.Extenssions;
 using IMS.Presentation.Middleware;
+using Microsoft.AspNetCore.Builder;
 
 namespace IMS.Presentation
 {
@@ -26,6 +27,8 @@ namespace IMS.Presentation
             }
 
             app.UseHttpsRedirection();
+
+            app.MapHealthChecks("/_health");
 
             app.UseAuthorization();
              
