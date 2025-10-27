@@ -49,6 +49,7 @@ jobs:
               /k:"$projectKey" `
               /o:"$organization" `
               /d:sonar.login="$env:SONAR_TOKEN" `
+              /d:sonar.coverage.exclusions="**/*" `
               $sonarCoverageParam
               
       - name: Build Solution

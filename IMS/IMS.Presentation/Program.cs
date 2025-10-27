@@ -1,5 +1,7 @@
+using HealthChecks.UI.Client;
 using IMS.Presentation.Extenssions;
 using IMS.Presentation.Middleware;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace IMS.Presentation
 {
@@ -26,6 +28,11 @@ namespace IMS.Presentation
             }
 
             app.UseHttpsRedirection();
+
+            app.MapHealthChecks("/_health", new HealthCheckOptions
+            {
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
 
             app.UseAuthorization();
              
