@@ -22,10 +22,13 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddAllHealthChecks(this IServiceCollection services, IConfiguration configuration)
     {
+        var connectionString = configuration.GetConnectionString("DefaultConnection")
+        ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is missing in configuration.");
+
         services
             .AddHealthChecks()
             .AddNpgSql(
-                connectionString: configuration.GetConnectionString("DefaultConnection") ?? "",
+                connectionString,
                 name: "PostgreSQL (Raw)",
                 timeout: TimeSpan.FromSeconds(5),
                 tags: ["db", "postgres"]);
