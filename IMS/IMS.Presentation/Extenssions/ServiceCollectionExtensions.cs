@@ -1,4 +1,5 @@
 ﻿using IMS.BLL.Extensions;
+using IMS.Presentation.HealthChecks;
 using IMS.Presentation.Mapping;
 
 namespace IMS.Presentation.Extenssions;
@@ -10,7 +11,7 @@ public static class ServiceCollectionExtensions
         services
             .AddBusinessLayerDedendencies(configuration)
             .AddMapping()
-            .AddAllHealthChecks(configuration);
+            .AddAllHealthChecks();
 
         return services;
     }
@@ -20,15 +21,11 @@ public static class ServiceCollectionExtensions
         return services.AddAutoMapper(cfg => cfg.AddProfile<DtoMappingProfile>());
     }
 
-    public static IServiceCollection AddAllHealthChecks(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddAllHealthChecks(this IServiceCollection services)
     {
         services
             .AddHealthChecks()
-            .AddNpgSql(
-                connectionString: configuration.GetConnectionString("DefaultConnection") ?? "",
-                name: "PostgreSQL (Raw)",
-                timeout: TimeSpan.FromSeconds(5),
-                tags: ["db", "postgres"]);
+            .AddCheck<DatabaseHealthCheck>("Database");
 
         return services;
     }
