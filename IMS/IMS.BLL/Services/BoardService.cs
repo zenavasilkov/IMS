@@ -23,7 +23,7 @@ public class BoardService(IBoardRepository repository, IMapper mapper, ILogger<B
 
         var updatedBoard = await repository.UpdateAsync(existingBoard, cancellationToken: cancellationToken);
 
-        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, nameof(Ticket), id);
+        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, nameof(Board), id);
 
         var updatedBoardModel = _mapper.Map<BoardModel>(updatedBoard);
 
