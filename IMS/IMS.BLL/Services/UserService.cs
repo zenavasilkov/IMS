@@ -1,16 +1,18 @@
 ﻿using AutoMapper;
 using IMS.BLL.Exceptions;
+using IMS.BLL.Logging;
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
+using Microsoft.Extensions.Logging;
 using Shared.Enums;
 using Shared.Pagination;
 
 namespace IMS.BLL.Services;
 
-public class UserService(IUserRepository repository, IMapper mapper) 
-    : Service<UserModel, User>(repository, mapper), IUserService
+public class UserService(IUserRepository repository, IMapper mapper, ILogger<UserService> logger) 
+    : Service<UserModel, User>(repository, mapper, logger), IUserService
 {
     private readonly IMapper _mapper = mapper;
 
@@ -28,6 +30,8 @@ public class UserService(IUserRepository repository, IMapper mapper)
         existingUser.Role = model.Role;
 
         var updatedUser = await repository.UpdateAsync(existingUser, cancellationToken: cancellationToken);
+
+        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, nameof(User), id);
 
         var updatedUserModel = _mapper.Map<UserModel>(updatedUser);
 

@@ -2,14 +2,15 @@
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
-using Shared.Pagination;
 using IMS.DAL.Repositories.Interfaces;
 using AutoMapper;
 using IMS.BLL.Exceptions;
+using Microsoft.Extensions.Logging;
+using IMS.BLL.Logging;
 
 namespace IMS.BLL.Services;
 
-public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper mapper) 
+public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper mapper, ILogger<Service<TModel, TEntity>> logger) 
     : IService<TModel, TEntity> 
     where TModel : ModelBase
     where TEntity : EntityBase
@@ -17,7 +18,11 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
     public virtual async Task<TModel> CreateAsync(TModel model, CancellationToken cancellationToken = default)
     {
         var entity = mapper.Map<TEntity>(model);
+
         var createdEntity = await repository.CreateAsync(entity, cancellationToken);
+
+        logger.LogInformation(LoggingConstants.RESOURCE_CREATED, nameof(Ticket), createdEntity.Id);
+
         var createdModel = mapper.Map<TModel>(createdEntity);
 
         return createdModel;
@@ -26,7 +31,8 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
     public virtual async Task DeleteAsync(TModel model, CancellationToken cancellationToken = default)
     {
         var entity = mapper.Map<TEntity>(model);
-        await repository.DeleteAsync(entity, cancellationToken); 
+        await repository.DeleteAsync(entity, cancellationToken);
+        logger.LogInformation(LoggingConstants.RESOURCE_DELETED, nameof(Ticket), entity.Id);
     }
 
     public virtual async Task<List<TModel>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate, 
@@ -58,6 +64,8 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
         var entity = mapper.Map<TEntity>(model);
 
         var updatedEntity = await repository.UpdateAsync(entity, cancellationToken);
+
+        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, nameof(Ticket), id);
 
         var updatedModel = mapper.Map<TModel>(updatedEntity);
 

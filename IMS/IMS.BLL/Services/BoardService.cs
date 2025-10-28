@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using IMS.BLL.Exceptions;
+using IMS.BLL.Logging;
 using IMS.BLL.Models;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace IMS.BLL.Services;
 
-public class BoardService(IBoardRepository repository, IMapper mapper) : Service<BoardModel, Board>(repository, mapper)
+public class BoardService(IBoardRepository repository, IMapper mapper, ILogger<BoardService> logger) 
+    : Service<BoardModel, Board>(repository, mapper, logger)
 {
     private readonly IMapper _mapper = mapper;
 
@@ -19,6 +22,8 @@ public class BoardService(IBoardRepository repository, IMapper mapper) : Service
         existingBoard.Description = model.Description;
 
         var updatedBoard = await repository.UpdateAsync(existingBoard, cancellationToken: cancellationToken);
+
+        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, nameof(Ticket), id);
 
         var updatedBoardModel = _mapper.Map<BoardModel>(updatedBoard);
 

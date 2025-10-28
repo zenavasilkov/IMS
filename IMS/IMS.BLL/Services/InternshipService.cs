@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
 using IMS.BLL.Exceptions;
+using IMS.BLL.Logging;
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
+using Microsoft.Extensions.Logging;
 using Shared.Enums;
 
 namespace IMS.BLL.Services;
 
-public class InternshipService(IInternshipRepository repository, IUserRepository userRepository, IMapper mapper)
-    : Service<InternshipModel, Internship>(repository, mapper), IInternshipService
+public class InternshipService(IInternshipRepository repository, IUserRepository userRepository, IMapper mapper,
+    ILogger<InternshipService> logger) : Service<InternshipModel, Internship>(repository, mapper, logger), IInternshipService
 {
     private readonly IMapper _mapper = mapper;
 
@@ -26,6 +28,8 @@ public class InternshipService(IInternshipRepository repository, IUserRepository
         existingInternship.Status = model.Status;
 
         var updatedInternship = await repository.UpdateAsync(existingInternship, cancellationToken: cancellationToken);
+
+        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, nameof(Ticket), id);
 
         var updatedInternshipModel = _mapper.Map<InternshipModel>(updatedInternship);
 
@@ -52,6 +56,8 @@ public class InternshipService(IInternshipRepository repository, IUserRepository
         var internship = _mapper.Map<Internship>(model);
 
         var createdInternship = await repository.CreateAsync(internship, cancellationToken);
+
+        logger.LogInformation(LoggingConstants.RESOURCE_CREATED, nameof(Ticket), createdInternship.Id);
 
         var createdInternshipModel = _mapper.Map<InternshipModel>(createdInternship);
 
