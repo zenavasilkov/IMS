@@ -187,12 +187,13 @@ public class InternshipsControllerTests(CustomWebApplicationFactory factory) : T
         var internship = TestDataHelper.CreateInternship(status: InternshipStatus.NotStarted);
         await AddEntityAsync(internship);
 
-        var updateDto = new
-        {
-            InternshipId = internship.Id, 
-            EndDate = DateTime.UtcNow.AddDays(10),
-            Status = InternshipStatus.Completed, 
-        };
+        var updateDto = new UpdateInternshipDTO(
+            internship.MentorId,
+            internship.HumanResourcesManagerId,
+            internship.StartDate,
+            DateTime.UtcNow,
+            InternshipStatus.Completed);
+     
 
         // Act
         var response = await Client.PutAsJsonAsync($"{Internships.Base}/{internship.Id}", updateDto);

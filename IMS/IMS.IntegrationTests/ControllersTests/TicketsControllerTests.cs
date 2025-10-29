@@ -68,7 +68,7 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
         var board = TestDataHelper.CreateBoard();
 
         var createdTicketDTO = new CreateTicketDTO(board.Id, "New ticket", 
-            "New description", TicketStatus.ToDo, DateTime.UtcNow);
+            "New description", TicketStatus.ToDo, DateTime.UtcNow.AddDays(10));
 
         await AddEntityAsync(board);
 
@@ -90,7 +90,7 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
     {
         // Arrange
         var createdTicketDTO = new CreateTicketDTO(Guid.NewGuid(), "New ticket",
-            "New description", TicketStatus.ToDo, DateTime.UtcNow);
+            "New description", TicketStatus.ToDo, DateTime.UtcNow.AddDays(10));
 
         // Act
         var response = await Client.PostAsJsonAsync(Tickets.Base, createdTicketDTO);

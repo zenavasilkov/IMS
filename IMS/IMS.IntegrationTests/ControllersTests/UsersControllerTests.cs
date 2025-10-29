@@ -163,7 +163,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
             Lastname = "User",
             Patronymic = "Testovich",
             Email = "new.user@test.com",
-            PhoneNumber = "+375-29-718-04-51",
+            PhoneNumber = "+375297180451",
             Role = Role.Intern
         };
 
@@ -189,7 +189,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
 
         var updateDto = new UpdateUserDTO(
             Email : user.Email, 
-            PhoneNumber: "+375-29-718-04-54", 
+            PhoneNumber: "+375297180454", 
             Firstname: user.Firstname, 
             Lastname: user.Lastname, 
             Patronymic: user.Patronymic, 
@@ -209,7 +209,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
 
         result.ShouldNotBeNull();
         result.Email.ShouldBe(user.Email);
-        result.PhoneNumber.ShouldBe("+375-29-718-04-54");
+        result.PhoneNumber.ShouldBe("+375297180454");
         result.Firstname.ShouldBe(user.Firstname);
         result.Lastname.ShouldBe(user.Lastname);
         result.Patronymic.ShouldBe(user.Patronymic);
