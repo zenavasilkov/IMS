@@ -21,7 +21,7 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
 
         var createdEntity = await repository.CreateAsync(entity, cancellationToken);
 
-        logger.LogInformation(LoggingConstants.RESOURCE_CREATED, nameof(TEntity), createdEntity.Id);
+        logger.LogInformation(LoggingConstants.RESOURCE_CREATED, nameof(Ticket), createdEntity.Id);
 
         var createdModel = mapper.Map<TModel>(createdEntity);
 
@@ -65,7 +65,7 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
 
         var updatedEntity = await repository.UpdateAsync(entity, cancellationToken);
 
-        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, nameof(TEntity), id);
+        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, nameof(Ticket), id);
 
         var updatedModel = mapper.Map<TModel>(updatedEntity);
 

@@ -29,7 +29,7 @@ public class InternshipService(IInternshipRepository repository, IUserRepository
 
         var updatedInternship = await repository.UpdateAsync(existingInternship, cancellationToken: cancellationToken);
 
-        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, nameof(Internship), id);
+        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, nameof(Ticket), id);
 
         var updatedInternshipModel = _mapper.Map<InternshipModel>(updatedInternship);
 
@@ -57,7 +57,7 @@ public class InternshipService(IInternshipRepository repository, IUserRepository
 
         var createdInternship = await repository.CreateAsync(internship, cancellationToken);
 
-        logger.LogInformation(LoggingConstants.RESOURCE_CREATED, nameof(Internship), createdInternship.Id);
+        logger.LogInformation(LoggingConstants.RESOURCE_CREATED, nameof(Ticket), createdInternship.Id);
 
         var createdInternshipModel = _mapper.Map<InternshipModel>(createdInternship);
 

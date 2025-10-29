@@ -38,7 +38,7 @@ public class FeedbackService(IFeedbackRepository repository, ITicketRepository t
 
         var feedbackModel = await base.CreateAsync(feedback, cancellationToken);
 
-        logger.LogInformation(LoggingConstants.RESOURCE_CREATED, nameof(Feedback), feedbackModel.Id);
+        logger.LogInformation(LoggingConstants.RESOURCE_CREATED, nameof(Ticket), feedbackModel.Id);
 
         return feedbackModel;
     }
@@ -52,7 +52,7 @@ public class FeedbackService(IFeedbackRepository repository, ITicketRepository t
 
         var updatedFeedback = await repository.UpdateAsync(existingFeedback, cancellationToken: cancellationToken);
 
-        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, nameof(Feedback), id);
+        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, nameof(Ticket), id);
 
         var updatedFeedbackModel = _mapper.Map<FeedbackModel>(updatedFeedback);
 
