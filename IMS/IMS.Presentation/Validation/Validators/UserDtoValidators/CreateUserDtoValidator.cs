@@ -7,17 +7,21 @@ public class CreateUserDtoValidator : AbstractValidator<CreateUserDTO>
 {
     public CreateUserDtoValidator()
     {
+        RuleFor(x => x.PhoneNumber)
+            .NotEmpty()
+            .WithMessage(ValidationConstants.NotEmpty)
+            .Matches(ValidationConstants.PhoneNumberFormat)
+            .WithMessage("Invalid phone number format.");
+
         RuleFor(x => x.Email)
             .NotEmpty()
             .WithMessage(ValidationConstants.NotEmpty)
             .EmailAddress()
             .WithMessage(ValidationConstants.InvalidEmail);
 
-        RuleFor(x => x.PhoneNumber)
-            .NotEmpty()
-            .WithMessage(ValidationConstants.NotEmpty)
-            .Matches(ValidationConstants.PhoneNumberFormat)
-            .WithMessage("Invalid phone number format.");
+        RuleFor(x => x.Role)
+            .IsInEnum()
+            .WithMessage(ValidationConstants.InvalidRole);
 
         RuleFor(x => x.Firstname)
             .NotEmpty()
@@ -26,9 +30,5 @@ public class CreateUserDtoValidator : AbstractValidator<CreateUserDTO>
         RuleFor(x => x.Lastname)
             .NotEmpty()
             .WithMessage(ValidationConstants.NotEmpty);
-
-        RuleFor(x => x.Role)
-            .IsInEnum()
-            .WithMessage(ValidationConstants.InvalidRole);
     }
 }
