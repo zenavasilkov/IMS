@@ -21,7 +21,7 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
 
         var createdEntity = await repository.CreateAsync(entity, cancellationToken);
 
-        logger.LogInformation(LoggingConstants.RESOURCE_CREATED, "Entity", createdEntity.Id);
+        logger.LogInformation(LoggingConstants.RESOURCE_CREATED, nameof(TEntity), createdEntity.Id);
 
         var createdModel = mapper.Map<TModel>(createdEntity);
 
@@ -32,7 +32,7 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
     {
         var entity = mapper.Map<TEntity>(model);
         await repository.DeleteAsync(entity, cancellationToken);
-        logger.LogInformation(LoggingConstants.RESOURCE_DELETED, "Entity", entity.Id);
+        logger.LogInformation(LoggingConstants.RESOURCE_DELETED, nameof(Ticket), entity.Id);
     }
 
     public virtual async Task<List<TModel>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate, 
@@ -65,7 +65,7 @@ public class Service<TModel, TEntity>(IRepository<TEntity> repository, IMapper m
 
         var updatedEntity = await repository.UpdateAsync(entity, cancellationToken);
 
-        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, "Entity", id);
+        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, nameof(TEntity), id);
 
         var updatedModel = mapper.Map<TModel>(updatedEntity);
 
