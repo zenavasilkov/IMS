@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using IMS.Presentation.DTOs.UpdateDTO;
 
-namespace IMS.Presentation.Validation.Validators;
+namespace IMS.Presentation.Validation.Validators.BoardDtoValidators;
 
-public class BoardDtoValidator : AbstractValidator<UpdateBoardDTO>
+public class UpdateBoardDtoValidator : AbstractValidator<UpdateBoardDTO>
 {
-    public BoardDtoValidator()
+    public UpdateBoardDtoValidator()
     {
         RuleFor(x => x.Title)
             .NotEmpty()

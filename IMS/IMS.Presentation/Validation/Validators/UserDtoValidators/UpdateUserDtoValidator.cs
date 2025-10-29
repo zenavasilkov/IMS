@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using IMS.Presentation.DTOs.UpdateDTO;
 
-namespace IMS.Presentation.Validation.Validators;
+namespace IMS.Presentation.Validation.Validators.UserDtoValidators;
 
-public class UserDtoValidator : AbstractValidator<UpdateUserDTO>
+public class UpdateUserDtoValidator : AbstractValidator<UpdateUserDTO>
 {
-    public UserDtoValidator()
+    public UpdateUserDtoValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty()

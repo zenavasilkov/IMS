@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using IMS.Presentation.DTOs.UpdateDTO;
 
-namespace IMS.Presentation.Validation.Validators;
+namespace IMS.Presentation.Validation.Validators.FeedbackDtoValidators;
 
-public class FeedbackDtoValidator : AbstractValidator<UpdateFeedbackDTO>
+public class UpdateFeedbackDtoValidator : AbstractValidator<UpdateFeedbackDTO>
 {
-    public FeedbackDtoValidator()
+    public UpdateFeedbackDtoValidator()
     {
         RuleFor(x => x.Comment)
             .NotEmpty()

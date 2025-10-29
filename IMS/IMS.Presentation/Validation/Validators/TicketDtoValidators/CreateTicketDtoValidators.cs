@@ -1,12 +1,16 @@
 ﻿using FluentValidation;
-using IMS.Presentation.DTOs.UpdateDTO;
+using IMS.Presentation.DTOs.CreateDTO;
 
-namespace IMS.Presentation.Validation.Validators;
+namespace IMS.Presentation.Validation.Validators.TicketDtoValidators;
 
-public class TicketDtoValidator : AbstractValidator<UpdateTicketDTO>
+public class TicketDtoValidator : AbstractValidator<CreateTicketDTO>
 {
     public TicketDtoValidator()
     {
+        RuleFor(x => x.BoardId)
+            .NotEmpty()
+            .WithMessage(ValidationConstants.NotEmpty);
+
         RuleFor(x => x.Title)
             .NotEmpty()
             .WithMessage(ValidationConstants.NotEmpty);
@@ -26,6 +30,5 @@ public class TicketDtoValidator : AbstractValidator<UpdateTicketDTO>
             .WithMessage(ValidationConstants.NotEmpty)
             .GreaterThan(DateTime.UtcNow)
             .WithMessage(ValidationConstants.DateInPast);
-
     }
 }

@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using IMS.Presentation.DTOs.UpdateDTO;
 
-namespace IMS.Presentation.Validation.Validators;
+namespace IMS.Presentation.Validation.Validators.InternshipDtoValidators;
 
-public class InternshipDtoValidator : AbstractValidator<UpdateInternshipDTO>
+public class UpdateInternshipDtoValidator : AbstractValidator<UpdateInternshipDTO>
 {
-    public InternshipDtoValidator()
+    public UpdateInternshipDtoValidator()
     {
         RuleFor(x => x.Status)
             .NotEmpty()
