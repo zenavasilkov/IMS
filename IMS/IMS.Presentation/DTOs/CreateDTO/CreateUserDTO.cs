@@ -1,4 +1,5 @@
-﻿using Shared.Enums;
+﻿using IMS.Presentation.DTOs.UpdateDTO;
+using Shared.Enums;
 
 namespace IMS.Presentation.DTOs.CreateDTO;
 
@@ -8,5 +9,5 @@ public record CreateUserDTO(
     string Firstname,
     string Lastname,
     string? Patronymic,
-    Role Role  
-);
+    Role Role
+) : UpdateUserDTO(Email, PhoneNumber, Firstname, Lastname, Patronymic, Role);

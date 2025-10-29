@@ -1,4 +1,5 @@
-﻿using Shared.Enums;
+﻿using IMS.Presentation.DTOs.UpdateDTO;
+using Shared.Enums;
 
 namespace IMS.Presentation.DTOs.CreateDTO;
 
@@ -9,4 +10,4 @@ public record CreateInternshipDTO(
     DateTime StartDate,
     DateTime EndDate,
     InternshipStatus Status 
-);
+) : UpdateInternshipDTO(MentorId, HumanResourcesManagerId, StartDate, EndDate, Status);
