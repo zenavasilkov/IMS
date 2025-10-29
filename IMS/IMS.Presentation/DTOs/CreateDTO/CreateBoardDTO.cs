@@ -5,4 +5,4 @@ public record CreateBoardDTO(
     Guid CreatedToId,
     string Title,
     string Description
-);
+); 

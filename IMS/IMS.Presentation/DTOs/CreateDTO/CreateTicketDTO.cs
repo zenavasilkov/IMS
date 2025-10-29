@@ -1,5 +1,4 @@
-﻿using IMS.Presentation.DTOs.UpdateDTO;
-using Shared.Enums;
+﻿using Shared.Enums;
 
 namespace IMS.Presentation.DTOs.CreateDTO;
 
@@ -9,4 +8,4 @@ public record CreateTicketDTO(
     string Description,
     TicketStatus Status,
     DateTime DeadLine 
-) : UpdateTicketDTO(Title, Description, Status, DeadLine);
+);
