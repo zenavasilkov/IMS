@@ -88,7 +88,7 @@ public class InternshipsControllerTests(CustomWebApplicationFactory factory) : T
         await AddEntitiesAsync([intern, mentor, hr]);
 
         var createDto = new CreateInternshipDTO(intern.Id, mentor.Id, 
-            hr.Id, DateTime.UtcNow, new DateTime(), InternshipStatus.Ongoing);
+            hr.Id, DateTime.UtcNow, DateTime.UtcNow.AddDays(10), InternshipStatus.Ongoing);
 
         // Act
         var response = await Client.PostAsJsonAsync(Internships.Base, createDto);
@@ -191,7 +191,7 @@ public class InternshipsControllerTests(CustomWebApplicationFactory factory) : T
             internship.MentorId,
             internship.HumanResourcesManagerId,
             internship.StartDate,
-            DateTime.UtcNow,
+            internship.StartDate.AddDays(10),
             InternshipStatus.Completed);
      
 
