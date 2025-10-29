@@ -8,6 +8,8 @@ public class TicketDtoValidator : AbstractValidator<CreateTicketDTO>
     public TicketDtoValidator()
     {
         RuleFor(x => x.BoardId)
+            .NotNull()
+            .WithMessage(ValidationConstants.NotNull)
             .NotEmpty()
             .WithMessage(ValidationConstants.NotEmpty);
 
@@ -20,6 +22,8 @@ public class TicketDtoValidator : AbstractValidator<CreateTicketDTO>
             .WithMessage(ValidationConstants.NotEmpty);
 
         RuleFor(x => x.DeadLine)
+            .NotNull()
+            .WithMessage(ValidationConstants.NotNull)
             .NotEmpty()
             .WithMessage(ValidationConstants.NotEmpty)
             .GreaterThan(DateTime.UtcNow)

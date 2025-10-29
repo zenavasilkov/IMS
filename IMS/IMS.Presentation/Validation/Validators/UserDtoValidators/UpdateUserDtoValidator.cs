@@ -28,6 +28,8 @@ public class UpdateUserDtoValidator : AbstractValidator<UpdateUserDTO>
             .WithMessage(ValidationConstants.NotEmpty);
 
         RuleFor(x => x.Role)
+            .NotNull()
+            .WithMessage(ValidationConstants.NotNull)
             .IsInEnum()
             .WithMessage(ValidationConstants.InvalidRole);
     }

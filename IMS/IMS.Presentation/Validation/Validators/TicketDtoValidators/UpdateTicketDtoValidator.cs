@@ -16,6 +16,8 @@ public class UpdateTicketDtoValidator : AbstractValidator<UpdateTicketDTO>
             .WithMessage(ValidationConstants.NotEmpty);
 
         RuleFor(x => x.DeadLine)
+            .NotNull()
+            .WithMessage(ValidationConstants.NotNull)
             .NotEmpty()
             .WithMessage(ValidationConstants.NotEmpty)
             .GreaterThan(DateTime.UtcNow)

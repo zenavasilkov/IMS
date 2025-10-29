@@ -20,6 +20,8 @@ public class CreateUserDtoValidator : AbstractValidator<CreateUserDTO>
             .WithMessage(ValidationConstants.InvalidEmail);
 
         RuleFor(x => x.Role)
+            .NotNull()
+            .WithMessage(ValidationConstants.NotNull)
             .IsInEnum()
             .WithMessage(ValidationConstants.InvalidRole);
 

@@ -8,10 +8,14 @@ public class CreateBoardDtoValidator : AbstractValidator<CreateBoardDTO>
     public CreateBoardDtoValidator()
     {
         RuleFor(x => x.CreatedToId)
+            .NotNull()
+            .WithMessage(ValidationConstants.NotNull)
             .NotEmpty()
             .WithMessage(ValidationConstants.NotEmpty);
 
         RuleFor(x => x.CreatedById)
+            .NotNull()
+            .WithMessage(ValidationConstants.NotNull)
             .NotEmpty()
             .WithMessage(ValidationConstants.NotEmpty);
 

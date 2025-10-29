@@ -2,7 +2,9 @@
 
 public static class ValidationConstants
 {
-    public const string NotEmpty = "{PropertyName} is required";
+    public const string NotEmpty = "This property is required";
+
+    public const string NotNull = "This property cannot be null";
 
     public const string InvalidEmail = "Invalid email format";
 
