@@ -19,12 +19,6 @@ public class TicketDtoValidator : AbstractValidator<CreateTicketDTO>
             .NotEmpty()
             .WithMessage(ValidationConstants.NotEmpty);
 
-        RuleFor(x => x.Status)
-            .NotEmpty()
-            .WithMessage(ValidationConstants.NotEmpty)
-            .IsInEnum()
-            .WithMessage(ValidationConstants.InvalidStatus);
-
         RuleFor(x => x.DeadLine)
             .NotEmpty()
             .WithMessage(ValidationConstants.NotEmpty)

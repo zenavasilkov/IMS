@@ -7,10 +7,13 @@ public class UpdateInternshipDtoValidator : AbstractValidator<UpdateInternshipDT
 {
     public UpdateInternshipDtoValidator()
     {
-        RuleFor(x => x.Status)
+        RuleFor(x => x.StartDate)
             .NotEmpty()
-            .WithMessage(ValidationConstants.NotEmpty)
-            .IsInEnum()
-            .WithMessage(ValidationConstants.InvalidStatus);
+            .WithMessage(ValidationConstants.NotEmpty);
+
+        RuleFor(x => x.EndDate)
+            .GreaterThan(x => x.StartDate)
+            .When(x => x.EndDate.HasValue)
+            .WithMessage(ValidationConstants.InvalidEndDate);
     }
 }

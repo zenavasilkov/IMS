@@ -7,6 +7,6 @@ public record CreateInternshipDTO(
     Guid MentorId,
     Guid HumanResourcesManagerId,
     DateTime StartDate,
-    DateTime EndDate,
+    DateTime? EndDate,
     InternshipStatus Status 
 );
