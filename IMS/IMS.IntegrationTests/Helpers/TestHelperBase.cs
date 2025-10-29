@@ -9,7 +9,7 @@ public abstract class TestHelperBase(CustomWebApplicationFactory factory)
     public Task InitializeAsync()
     {
         using var scope = _factory.Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<IMSDbContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ImsDbContext>();
 
         dbContext.Database.EnsureDeletedAsync();
         dbContext.Database.EnsureCreatedAsync();
@@ -22,7 +22,7 @@ public abstract class TestHelperBase(CustomWebApplicationFactory factory)
         where TEntity : EntityBase
     {
         using var scope = _factory.Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<IMSDbContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ImsDbContext>();
         dbContext.Add(entity);
         await dbContext.SaveChangesAsync();
         return entity;
@@ -32,7 +32,7 @@ public abstract class TestHelperBase(CustomWebApplicationFactory factory)
         where TEntity : EntityBase
     {
         using var scope = _factory.Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<IMSDbContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ImsDbContext>();
         dbContext.AddRange(entities);
         await dbContext.SaveChangesAsync();
         return [.. entities];
