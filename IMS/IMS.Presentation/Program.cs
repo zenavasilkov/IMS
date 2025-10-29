@@ -2,7 +2,6 @@ using HealthChecks.UI.Client;
 using IMS.Presentation.Extenssions;
 using IMS.Presentation.Middleware;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Serilog;
 
 namespace IMS.Presentation
 {
@@ -11,14 +10,7 @@ namespace IMS.Presentation
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console()
-                .MinimumLevel.Information()
-                .CreateLogger();
-
-            builder.Host.UseSerilog();
-
+             
             builder.Services.AddApiDependencies(builder.Configuration); 
 
             builder.Services.AddControllers();

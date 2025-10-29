@@ -1,17 +1,15 @@
 ﻿using AutoMapper;
 using IMS.BLL.Exceptions;
-using IMS.BLL.Logging;
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
-using Microsoft.Extensions.Logging;
 
 namespace IMS.BLL.Services;
 
 public class FeedbackService(IFeedbackRepository repository, ITicketRepository ticketRepository,
-    IUserRepository userRepository, IMapper mapper, ILogger<FeedbackService> logger)
-    : Service<FeedbackModel, Feedback>(repository, mapper, logger), IFeedbackService
+    IUserRepository userRepository, IMapper mapper)
+    : Service<FeedbackModel, Feedback>(repository, mapper), IFeedbackService
 {
     private readonly IMapper _mapper = mapper;
 
@@ -38,8 +36,6 @@ public class FeedbackService(IFeedbackRepository repository, ITicketRepository t
 
         var feedbackModel = await base.CreateAsync(feedback, cancellationToken);
 
-        logger.LogInformation(LoggingConstants.RESOURCE_CREATED, nameof(Ticket), feedbackModel.Id);
-
         return feedbackModel;
     }
 
@@ -51,8 +47,6 @@ public class FeedbackService(IFeedbackRepository repository, ITicketRepository t
         existingFeedback.Comment = model.Comment;
 
         var updatedFeedback = await repository.UpdateAsync(existingFeedback, cancellationToken: cancellationToken);
-
-        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, nameof(Ticket), id);
 
         var updatedFeedbackModel = _mapper.Map<FeedbackModel>(updatedFeedback);
 

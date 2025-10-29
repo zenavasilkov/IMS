@@ -1,16 +1,14 @@
 ﻿using AutoMapper;
 using IMS.BLL.Exceptions;
-using IMS.BLL.Logging;
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
-using Microsoft.Extensions.Logging;
 
 namespace IMS.BLL.Services;
 
-public class TicketService(ITicketRepository repository, IBoardRepository boardRepository, IMapper mapper, 
-    ILogger<TicketService> logger) : Service<TicketModel, Ticket>(repository, mapper, logger), ITicketService
+public class TicketService(ITicketRepository repository, IBoardRepository boardRepository, IMapper mapper) 
+    : Service<TicketModel, Ticket>(repository, mapper), ITicketService
 {
     private readonly IMapper _mapper = mapper;
 
@@ -27,8 +25,6 @@ public class TicketService(ITicketRepository repository, IBoardRepository boardR
 
         var updatedTicket = await repository.UpdateAsync(existingTicket, cancellationToken: cancellationToken);
 
-        logger.LogInformation(LoggingConstants.RESOURCE_UPDATED, nameof(Ticket), id);
-
         var updatedTicketModel = _mapper.Map<TicketModel>(updatedTicket);
 
         return updatedTicketModel;
@@ -41,8 +37,6 @@ public class TicketService(ITicketRepository repository, IBoardRepository boardR
             throw new NotFoundException($"Board with ID {ticketModel.BoardId} was not found");
 
         var createdTicket = await base.CreateAsync(ticketModel, cancellationToken);
-
-        logger.LogInformation(LoggingConstants.RESOURCE_CREATED, nameof(Ticket), createdTicket.Id);
 
         return createdTicket;
     }
