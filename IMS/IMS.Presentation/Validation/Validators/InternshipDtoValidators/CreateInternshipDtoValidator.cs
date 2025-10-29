@@ -3,7 +3,7 @@ using IMS.Presentation.DTOs.CreateDTO;
 
 namespace IMS.Presentation.Validation.Validators.InternshipDtoValidators;
 
-public class CreateInternshipDtoValidator : AbstractValidator<CreateInternshipDTO>
+public class CreateInternshipDtoValidator : AbstractValidator<CreateInternshipDto>
 {
     public CreateInternshipDtoValidator()
     {

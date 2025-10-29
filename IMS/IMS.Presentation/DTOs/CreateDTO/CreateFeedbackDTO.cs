@@ -1,6 +1,6 @@
 ﻿namespace IMS.Presentation.DTOs.CreateDTO;
 
-public record CreateFeedbackDTO(
+public record CreateFeedbackDto(
      Guid TicketId,
      Guid SentById,
      Guid AddressedToId,

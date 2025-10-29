@@ -19,7 +19,7 @@ public class InternshipsControllerTests(CustomWebApplicationFactory factory) : T
 
         var contentString = await response.Content.ReadAsStringAsync();
 
-        var internships = Deserialize<List<InternshipDTO>>(contentString);
+        var internships = Deserialize<List<InternshipDto>>(contentString);
 
         internships.ShouldNotBeNull();
         internships.Count.ShouldBe(2);
@@ -39,7 +39,7 @@ public class InternshipsControllerTests(CustomWebApplicationFactory factory) : T
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var result = await response.Content.ReadFromJsonAsync<InternshipDTO>();
+        var result = await response.Content.ReadFromJsonAsync<InternshipDto>();
 
         result.ShouldNotBeNull();
         result.Id.ShouldBe(internship.Id);
@@ -71,7 +71,7 @@ public class InternshipsControllerTests(CustomWebApplicationFactory factory) : T
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var result = await response.Content.ReadFromJsonAsync<List<InternshipDTO>>();
+        var result = await response.Content.ReadFromJsonAsync<List<InternshipDto>>();
 
         result.ShouldNotBeNull();
         result.Count.ShouldBe(2);
@@ -87,7 +87,7 @@ public class InternshipsControllerTests(CustomWebApplicationFactory factory) : T
 
         await AddEntitiesAsync([intern, mentor, hr]);
 
-        var createDto = new CreateInternshipDTO(intern.Id, mentor.Id, 
+        var createDto = new CreateInternshipDto(intern.Id, mentor.Id, 
             hr.Id, DateTime.UtcNow, DateTime.UtcNow.AddDays(10), InternshipStatus.Ongoing);
 
         // Act
@@ -96,7 +96,7 @@ public class InternshipsControllerTests(CustomWebApplicationFactory factory) : T
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var result = await response.Content.ReadFromJsonAsync<InternshipDTO>();
+        var result = await response.Content.ReadFromJsonAsync<InternshipDto>();
 
         result.ShouldNotBeNull();
         result.InternId.ShouldBe(intern.Id);
@@ -187,7 +187,7 @@ public class InternshipsControllerTests(CustomWebApplicationFactory factory) : T
         var internship = TestDataHelper.CreateInternship(status: InternshipStatus.NotStarted);
         await AddEntityAsync(internship);
 
-        var updateDto = new UpdateInternshipDTO(
+        var updateDto = new UpdateInternshipDto(
             internship.MentorId,
             internship.HumanResourcesManagerId,
             internship.StartDate,
@@ -201,7 +201,7 @@ public class InternshipsControllerTests(CustomWebApplicationFactory factory) : T
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var updated = await response.Content.ReadFromJsonAsync<InternshipDTO>();
+        var updated = await response.Content.ReadFromJsonAsync<InternshipDto>();
 
         updated.ShouldNotBeNull();
         updated.Status.ShouldBe(InternshipStatus.Completed);

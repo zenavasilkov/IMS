@@ -3,7 +3,7 @@ using IMS.Presentation.DTOs.UpdateDTO;
 
 namespace IMS.Presentation.Validation.Validators.InternshipDtoValidators;
 
-public class UpdateInternshipDtoValidator : AbstractValidator<UpdateInternshipDTO>
+public class UpdateInternshipDtoValidator : AbstractValidator<UpdateInternshipDto>
 {
     public UpdateInternshipDtoValidator()
     {

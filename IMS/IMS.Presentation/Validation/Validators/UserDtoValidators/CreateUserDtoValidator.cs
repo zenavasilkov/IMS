@@ -3,7 +3,7 @@ using IMS.Presentation.DTOs.CreateDTO;
 
 namespace IMS.Presentation.Validation.Validators.UserDtoValidators;
 
-public class CreateUserDtoValidator : AbstractValidator<CreateUserDTO>
+public class CreateUserDtoValidator : AbstractValidator<CreateUserDto>
 {
     public CreateUserDtoValidator()
     {

@@ -1,3 +1,3 @@
 ﻿namespace IMS.Presentation.DTOs.UpdateDTO;
 
-public record UpdateFeedbackDTO(string Comment);
+public record UpdateFeedbackDto(string Comment);

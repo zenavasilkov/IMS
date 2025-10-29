@@ -2,7 +2,7 @@
 
 namespace IMS.Presentation.DTOs.CreateDTO;
 
-public record CreateTicketDTO(
+public record CreateTicketDto(
     Guid BoardId,
     string Title,
     string Description,

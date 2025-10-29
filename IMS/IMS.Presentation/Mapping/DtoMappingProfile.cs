@@ -11,46 +11,46 @@ public class DtoMappingProfile : Profile
 {
     public DtoMappingProfile()
     {
-        CreateMap<CreateUserDTO, UserModel>()
+        CreateMap<CreateUserDto, UserModel>()
             .ForMember(d => d.Internships, ops => ops.Ignore())
             .PreserveReferences();
 
-        CreateMap<CreateFeedbackDTO, FeedbackModel>();
+        CreateMap<CreateFeedbackDto, FeedbackModel>();
 
-        CreateMap<CreateBoardDTO, BoardModel>();
+        CreateMap<CreateBoardDto, BoardModel>();
 
-        CreateMap<CreateInternshipDTO, InternshipModel>()
+        CreateMap<CreateInternshipDto, InternshipModel>()
             .ForMember(d => d.Intern, ops => ops.Ignore())
             .ForMember(d => d.Mentor, ops => ops.Ignore())
             .ForMember(d => d.HumanResourcesManager, ops => ops.Ignore());
 
-        CreateMap<CreateTicketDTO, TicketModel>();
+        CreateMap<CreateTicketDto, TicketModel>();
 
-        CreateMap<UpdateUserDTO, UserModel>()
+        CreateMap<UpdateUserDto, UserModel>()
             .ForMember(d => d.Internships, ops => ops.Ignore());
 
-        CreateMap<UpdateFeedbackDTO, FeedbackModel>();
+        CreateMap<UpdateFeedbackDto, FeedbackModel>();
 
-        CreateMap<UpdateBoardDTO, BoardModel>();
+        CreateMap<UpdateBoardDto, BoardModel>();
 
-        CreateMap<UpdateInternshipDTO, InternshipModel>()
+        CreateMap<UpdateInternshipDto, InternshipModel>()
             .ForMember(d => d.InternId, ops => ops.Ignore())
             .ForMember(d => d.Intern, ops => ops.Ignore())
             .ForMember(d => d.Mentor, ops => ops.Ignore())
             .ForMember(d => d.HumanResourcesManager, ops => ops.Ignore());
 
-        CreateMap<UpdateTicketDTO, TicketModel>();
+        CreateMap<UpdateTicketDto, TicketModel>();
 
-        CreateMap<BoardModel, BoardDTO>();
+        CreateMap<BoardModel, BoardDto>();
 
-        CreateMap<FeedbackModel, FeedbackDTO>();
+        CreateMap<FeedbackModel, FeedbackDto>();
 
-        CreateMap<InternshipModel, InternshipDTO>();
+        CreateMap<InternshipModel, InternshipDto>();
 
-        CreateMap<TicketModel, TicketDTO>();
+        CreateMap<TicketModel, TicketDto>();
 
-        CreateMap<UserModel, UserDTO>();
+        CreateMap<UserModel, UserDto>();
 
-        CreateMap<PagedList<UserModel>, PagedList<UserDTO>>();
+        CreateMap<PagedList<UserModel>, PagedList<UserDto>>();
     }
 }

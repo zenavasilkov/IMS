@@ -3,7 +3,7 @@ using IMS.Presentation.DTOs.CreateDTO;
 
 namespace IMS.Presentation.Validation.Validators.FeedbackDtoValidators;
 
-public class CreateFeedbackDtoValidator : AbstractValidator<CreateFeedbackDTO>
+public class CreateFeedbackDtoValidator : AbstractValidator<CreateFeedbackDto>
 {
     public CreateFeedbackDtoValidator()
     {
