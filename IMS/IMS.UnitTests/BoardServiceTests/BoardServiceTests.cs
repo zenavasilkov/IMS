@@ -2,15 +2,14 @@
 
 public class BoardServiceTests
 {
-    private readonly IFixture _fixture;
+    private readonly Fixture _fixture;
     private readonly Mock<IBoardRepository> _boardRepositoryMock;
     private readonly Mock<IMapper> _mapperMock;
-    private readonly Mock<ILogger<BoardService>> _loggerMock;
     private readonly BoardService _boardService;
 
     public BoardServiceTests()
     {
-        _fixture = new Fixture().Customize(new AutoMoqCustomization()); ;
+        _fixture = new Fixture();
 
         _fixture.Behaviors
             .OfType<ThrowingRecursionBehavior>()
@@ -20,8 +19,7 @@ public class BoardServiceTests
         _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
         _boardRepositoryMock = _fixture.Freeze<Mock<IBoardRepository>>();
         _mapperMock = _fixture.Freeze<Mock<IMapper>>();
-        _loggerMock = _fixture.Freeze<Mock<ILogger<BoardService>>>();
-        _boardService = new BoardService(_boardRepositoryMock.Object, _mapperMock.Object, _loggerMock.Object);
+        _boardService = new BoardService(_boardRepositoryMock.Object, _mapperMock.Object);
     }
 
     [Theory, CustomAutoData]

@@ -6,7 +6,6 @@ public class InternshipServiceTests
     private readonly Mock<IInternshipRepository> _internshipRepositoryMock;
     private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<IMapper> _mapperMock;
-    private readonly Mock<ILogger<InternshipService>> _loggerMock;
     private readonly InternshipService _internshipService;
 
     public InternshipServiceTests()
@@ -18,13 +17,11 @@ public class InternshipServiceTests
         _internshipRepositoryMock = _fixture.Freeze<Mock<IInternshipRepository>>();
         _userRepositoryMock = _fixture.Freeze<Mock<IUserRepository>>();
         _mapperMock = _fixture.Freeze<Mock<IMapper>>();
-        _loggerMock = _fixture.Freeze<Mock<ILogger<InternshipService>>>();
 
         _internshipService = new InternshipService(
             _internshipRepositoryMock.Object,
             _userRepositoryMock.Object,
-            _mapperMock.Object,
-            _loggerMock.Object
+            _mapperMock.Object
         );
     }
      
