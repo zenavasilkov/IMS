@@ -7,6 +7,7 @@ public class FeedbackServiceTests
     private readonly Mock<ITicketRepository> _ticketRepositoryMock;
     private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<IMapper> _mapperMock;
+    private readonly Mock<IMessageService> _messageServiceMock;
     private readonly FeedbackService _feedbackService;
 
     public FeedbackServiceTests()
@@ -24,11 +25,16 @@ public class FeedbackServiceTests
         _feedbackRepositoryMock = _fixture.Freeze<Mock<IFeedbackRepository>>();
         _ticketRepositoryMock = _fixture.Freeze<Mock<ITicketRepository>>();
         _userRepositoryMock = _fixture.Freeze<Mock<IUserRepository>>();
+        _messageServiceMock = _fixture.Freeze<Mock<IMessageService>>();
 
         _mapperMock = _fixture.Freeze<Mock<IMapper>>();
 
-        _feedbackService = new FeedbackService(_feedbackRepositoryMock.Object, 
-            _ticketRepositoryMock.Object, _userRepositoryMock.Object,  _mapperMock.Object);
+        _feedbackService = new FeedbackService(
+            _feedbackRepositoryMock.Object, 
+            _ticketRepositoryMock.Object, 
+            _userRepositoryMock.Object,  
+            _mapperMock.Object,
+            _messageServiceMock.Object);
     }
 
     [Theory, CustomAutoData]

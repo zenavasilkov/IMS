@@ -5,6 +5,7 @@ global using Moq;
 global using AutoFixture;
 global using AutoFixture.Xunit2;
 global using AutoFixture.AutoMoq;
+global using IMS.NotificationsCore.Services;
 
 //BLL
 global using IMS.BLL.Services;
