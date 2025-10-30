@@ -1,4 +1,4 @@
-﻿namespace IMS.Messaging.Messaging;
+﻿namespace IMS.NotificationsCore.Messages;
 
 public record TicketStatusChangedEvent(
     string Title,

@@ -1,8 +1,8 @@
-﻿using IMS.Messaging.Messaging;
+﻿using IMS.NotificationsCore.Messages;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
-namespace IMS.Messaging.Services;
+namespace IMS.NotificationsCore.Services;
 
 public class MessageService(IPublishEndpoint publishEndpoint, ILogger<MessageService> logger) : IMessageService
 {

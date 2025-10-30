@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-namespace IMS.Messaging.Messaging;
+namespace IMS.NotificationsCore.Messages;
 
 public record TicketCreatedEvent(
     string Title,

@@ -4,6 +4,10 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<PackageId>Innowise.IMS.Core</PackageId>
+	<Version>1.0.0</Version>
+	<Author>Evgeny</Author>
+	<Product>IMS.NotificationsCore</Product>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
-﻿using IMS.Messaging.Messaging;
+﻿using IMS.NotificationsCore.Messages;
 
-namespace IMS.Messaging.Services;
+namespace IMS.NotificationsCore.Services;
 
 public interface IMessageService
 {
