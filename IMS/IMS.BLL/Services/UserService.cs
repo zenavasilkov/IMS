@@ -6,13 +6,27 @@ using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
 using Shared.Enums;
 using Shared.Pagination;
+using IMS.NotificationsCore.Services;
+using IMS.BLL.Mapping;
 
 namespace IMS.BLL.Services;
 
-public class UserService(IUserRepository repository, IMapper mapper) 
+public class UserService(IUserRepository repository, IMapper mapper, IMessageService messageService) 
     : Service<UserModel, User>(repository, mapper), IUserService
 {
     private readonly IMapper _mapper = mapper;
+
+    public override async Task<UserModel> CreateAsync(
+        UserModel model, CancellationToken cancellationToken = default)
+    {
+        var createdUser = await base.CreateAsync(model, cancellationToken);
+        
+        var message = EventMapper.ConvertToUserCreatedEvent(createdUser);
+
+        await messageService.NotifyUserCreated(message, cancellationToken);
+
+        return createdUser;
+    }
 
     public override async Task<UserModel> UpdateAsync(Guid id, 
         UserModel model, CancellationToken cancellationToken = default)

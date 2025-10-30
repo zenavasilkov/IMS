@@ -12,7 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="15.0.1" /> 
+    <PackageReference Include="AutoMapper" Version="15.0.1" />
+	<PackageReference Include="Innowise.IMS.Core" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

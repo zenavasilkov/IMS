@@ -1,14 +1,20 @@
 ﻿using AutoMapper;
 using IMS.BLL.Exceptions;
+using IMS.BLL.Mapping;
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
+using IMS.NotificationsCore.Services;
 
 namespace IMS.BLL.Services;
 
-public class FeedbackService(IFeedbackRepository repository, ITicketRepository ticketRepository,
-    IUserRepository userRepository, IMapper mapper)
+public class FeedbackService(
+    IFeedbackRepository repository, 
+    ITicketRepository ticketRepository,
+    IUserRepository userRepository, 
+    IMapper mapper,
+    IMessageService messageService)
     : Service<FeedbackModel, Feedback>(repository, mapper), IFeedbackService
 {
     private readonly IMapper _mapper = mapper;
@@ -35,6 +41,10 @@ public class FeedbackService(IFeedbackRepository repository, ITicketRepository t
             throw new NotFoundException($"User with ID {feedback.AddressedToId} was not found");
 
         var feedbackModel = await base.CreateAsync(feedback, cancellationToken);
+
+        var message = EventMapper.ConvertToFeedbackCreatedEvent(feedbackModel);
+
+        await messageService.NotifyFeedbackCreated(message, cancellationToken);
 
         return feedbackModel;
     }
