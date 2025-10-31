@@ -51,13 +51,17 @@ public class TicketService(
         if (await boardRepository.GetByIdAsync(ticketModel.BoardId, cancellationToken: cancellationToken) is null)
             throw new NotFoundException($"Board with ID {ticketModel.BoardId} was not found");
 
-        var createdTicket = await base.CreateAsync(ticketModel, cancellationToken);
+        var ticket = _mapper.Map<Ticket>(ticketModel);
 
-        var message = EventMapper.ConvertToTicketCreatedEvent(ticketModel);
+        var createdTicket = await repository.CreateAsync(ticket, cancellationToken);
+
+        var createdTicketModel = _mapper.Map<TicketModel>(createdTicket);
+
+        var message = EventMapper.ConvertToTicketCreatedEvent(createdTicketModel);
 
         await messageService.NotifyTicketCreated(message, cancellationToken);
 
-        return createdTicket;
+        return createdTicketModel;
     }
 
     public async Task<List<TicketModel>> GetTicketsByBoardIdAsync(Guid boardId, bool trackChanges = false,
