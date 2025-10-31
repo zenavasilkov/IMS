@@ -6,5 +6,5 @@ public record UpdateTicketDto(
     string Title,
     string Description,
     TicketStatus Status,
-    DateTime DeadLine
+    [property: JsonRequired] DateTime DeadLine
 );
