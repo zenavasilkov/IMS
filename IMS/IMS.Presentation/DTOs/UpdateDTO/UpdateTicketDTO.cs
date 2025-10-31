@@ -1,4 +1,5 @@
 ﻿using Shared.Enums;
+using System.Text.Json.Serialization;
 
 namespace IMS.Presentation.DTOs.UpdateDTO;
 
