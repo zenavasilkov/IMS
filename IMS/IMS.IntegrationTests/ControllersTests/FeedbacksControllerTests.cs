@@ -20,7 +20,7 @@ public class FeedbacksControllerTests(CustomWebApplicationFactory factory) : Tes
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var result = await response.Content.ReadFromJsonAsync<List<FeedbackDTO>>();
+        var result = await response.Content.ReadFromJsonAsync<List<FeedbackDto>>();
 
         result.ShouldNotBeNull();
         result.Count.ShouldBe(2);
@@ -37,7 +37,7 @@ public class FeedbacksControllerTests(CustomWebApplicationFactory factory) : Tes
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var result = await response.Content.ReadFromJsonAsync<List<FeedbackDTO>>();
+        var result = await response.Content.ReadFromJsonAsync<List<FeedbackDto>>();
 
         result.ShouldNotBeNull();
         result.ShouldBeEmpty();
@@ -58,7 +58,7 @@ public class FeedbacksControllerTests(CustomWebApplicationFactory factory) : Tes
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var result = await response.Content.ReadFromJsonAsync<FeedbackDTO>();
+        var result = await response.Content.ReadFromJsonAsync<FeedbackDto>();
 
         result.ShouldNotBeNull();
         result.Id.ShouldBe(feedback.Id);
@@ -90,7 +90,7 @@ public class FeedbacksControllerTests(CustomWebApplicationFactory factory) : Tes
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var result = await response.Content.ReadFromJsonAsync<List<FeedbackDTO>>();
+        var result = await response.Content.ReadFromJsonAsync<List<FeedbackDto>>();
 
         result.ShouldNotBeNull();
         result.Count.ShouldBe(2);
@@ -110,7 +110,7 @@ public class FeedbacksControllerTests(CustomWebApplicationFactory factory) : Tes
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var result = await response.Content.ReadFromJsonAsync<List<FeedbackDTO>>();
+        var result = await response.Content.ReadFromJsonAsync<List<FeedbackDto>>();
 
         result.ShouldNotBeNull();
         result.ShouldBeEmpty();
@@ -127,7 +127,7 @@ public class FeedbacksControllerTests(CustomWebApplicationFactory factory) : Tes
         await AddEntityAsync(ticket);
         await AddEntitiesAsync([sender, recipient]);
 
-        var dto = new CreateFeedbackDTO(ticket.Id, sender.Id, recipient.Id, "Excellent work!");
+        var dto = new CreateFeedbackDto(ticket.Id, sender.Id, recipient.Id, "Excellent work!");
 
         // Act
         var response = await Client.PostAsJsonAsync(Feedbacks.Base, dto);
@@ -135,7 +135,7 @@ public class FeedbacksControllerTests(CustomWebApplicationFactory factory) : Tes
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var result = await response.Content.ReadFromJsonAsync<FeedbackDTO>();
+        var result = await response.Content.ReadFromJsonAsync<FeedbackDto>();
 
         result.ShouldNotBeNull();
         result.SentById.ShouldBe(sender.Id);
@@ -148,7 +148,7 @@ public class FeedbacksControllerTests(CustomWebApplicationFactory factory) : Tes
     public async Task Create_ShouldReturnNotFound_WhenTicketDoesNotExist()
     {
         // Arrange
-        var dto = new CreateFeedbackDTO(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "Invalid ticket");
+        var dto = new CreateFeedbackDto(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "Invalid ticket");
 
         // Act
         var response = await Client.PostAsJsonAsync(Feedbacks.Base, dto);
@@ -165,7 +165,7 @@ public class FeedbacksControllerTests(CustomWebApplicationFactory factory) : Tes
 
         await AddEntityAsync(feedback);
 
-        var updateDto = new UpdateFeedbackDTO("Updated comment");
+        var updateDto = new UpdateFeedbackDto("Updated comment");
 
         // Act
         var response = await Client.PutAsJsonAsync($"{Feedbacks.Base}/{feedback.Id}", updateDto);
@@ -173,7 +173,7 @@ public class FeedbacksControllerTests(CustomWebApplicationFactory factory) : Tes
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var result = await response.Content.ReadFromJsonAsync<FeedbackDTO>();
+        var result = await response.Content.ReadFromJsonAsync<FeedbackDto>();
 
         result.ShouldNotBeNull();
         result.Comment.ShouldBe("Updated comment");
@@ -183,7 +183,7 @@ public class FeedbacksControllerTests(CustomWebApplicationFactory factory) : Tes
     public async Task Update_ShouldReturnNotFound_WhenFeedbackDoesNotExist()
     {
         // Arrange
-        var updateDto = new UpdateFeedbackDTO("Does not exist");
+        var updateDto = new UpdateFeedbackDto("Does not exist");
 
         // Act
         var response = await Client.PutAsJsonAsync($"{Feedbacks.Base}/{Guid.NewGuid()}", updateDto);

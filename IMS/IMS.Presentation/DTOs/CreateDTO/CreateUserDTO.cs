@@ -2,7 +2,7 @@
 
 namespace IMS.Presentation.DTOs.CreateDTO;
 
-public record CreateUserDTO(
+public record CreateUserDto(
     string Email, 
     string PhoneNumber,  
     string Firstname,

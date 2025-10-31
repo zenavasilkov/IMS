@@ -6,11 +6,11 @@ namespace IMS.DAL.Repositories.Interfaces;
 
 public interface IRepository<TEntity> where TEntity : EntityBase
 {
-    Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null, bool trachChanges = false,
+    Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null, bool trackChanges = false,
         CancellationToken cancellationTokent = default);
 
     Task<PagedList<TEntity>> GetPagedAsync(Expression<Func<TEntity, bool>>? predicate,
-        PaginationParameters paginationParameters, bool trackChanges = false, CancellationToken cancellationTokent = default);
+        PaginationParameters paginationParameters, bool trackChanges = false, CancellationToken cancellationToken = default);
 
     Task<TEntity?> GetByIdAsync(Guid id, bool trackChanges = false, CancellationToken cancellationToken = default);
 

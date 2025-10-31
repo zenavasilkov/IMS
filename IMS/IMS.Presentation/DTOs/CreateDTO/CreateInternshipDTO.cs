@@ -2,11 +2,11 @@
 
 namespace IMS.Presentation.DTOs.CreateDTO;
 
-public record CreateInternshipDTO(
+public record CreateInternshipDto(
     Guid InternId,
     Guid MentorId,
     Guid HumanResourcesManagerId,
     DateTime StartDate,
-    DateTime EndDate,
+    DateTime? EndDate,
     InternshipStatus Status 
 );

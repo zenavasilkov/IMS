@@ -23,7 +23,7 @@ public static class ServiceCollectionExtensions
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-        return services.AddDbContext<IMSDbContext>(options => options.UseNpgsql(connectionString));
+        return services.AddDbContext<ImsDbContext>(options => options.UseNpgsql(connectionString));
     } 
 
     private static IServiceCollection AddRepositories(this IServiceCollection services)

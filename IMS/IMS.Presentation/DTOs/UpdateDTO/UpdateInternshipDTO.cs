@@ -2,10 +2,10 @@
 
 namespace IMS.Presentation.DTOs.UpdateDTO;
 
-public record UpdateInternshipDTO( 
+public record UpdateInternshipDto( 
     Guid MentorId,
     Guid HumanResourcesManagerId,
     DateTime StartDate,
-    DateTime EndDate,
+    DateTime? EndDate,
     InternshipStatus Status
 );

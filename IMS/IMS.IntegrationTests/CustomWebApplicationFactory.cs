@@ -9,8 +9,8 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         builder.ConfigureServices(services =>
         {
             var descriptorsToRemove = services.Where(d =>
-                d.ServiceType == typeof(DbContextOptions<IMSDbContext>) ||
-                d.ServiceType == typeof(IMSDbContext) ||
+                d.ServiceType == typeof(DbContextOptions<ImsDbContext>) ||
+                d.ServiceType == typeof(ImsDbContext) ||
                 d.ServiceType.Name.Contains("DatabaseProvider") ||
                 d.ServiceType.Name.Contains("DbContextOptions") ||
                 d.ServiceType.Name.Contains("IDbContextOptionsConfiguration")
@@ -19,7 +19,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             foreach (var descriptor in descriptorsToRemove)
                 services.Remove(descriptor);
 
-            services.AddDbContext<IMSDbContext>(options =>
+            services.AddDbContext<ImsDbContext>(options =>
                 options.UseInMemoryDatabase("TestDatabase", _inMemoryDatabaseRoot));
         });
     }

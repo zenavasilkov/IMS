@@ -1,6 +1,6 @@
 ﻿namespace IMS.Presentation.DTOs.CreateDTO;
 
-public record CreateBoardDTO(
+public record CreateBoardDto(
     Guid CreatedById,
     Guid CreatedToId,
     string Title,

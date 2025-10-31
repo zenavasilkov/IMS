@@ -2,7 +2,7 @@
 
 namespace IMS.Presentation.DTOs.GetDTO;
 
-public class InternshipDTO
+public class InternshipDto
 {
     public Guid Id { get; set; }
     public Guid InternId { get; set; }  

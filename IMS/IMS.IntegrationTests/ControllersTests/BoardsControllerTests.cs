@@ -18,7 +18,7 @@ public class BoardsControllerTests(CustomWebApplicationFactory factory) : TestHe
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var content = await response.Content.ReadAsStringAsync();
-        var boards = Deserialize<List<BoardDTO>>(content);
+        var boards = Deserialize<List<BoardDto>>(content);
 
         boards.ShouldNotBeNull();
         boards.ShouldContain(b => b.Title == "Backend Board");
@@ -39,7 +39,7 @@ public class BoardsControllerTests(CustomWebApplicationFactory factory) : TestHe
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var content = await response.Content.ReadAsStringAsync();
-        var result = Deserialize<BoardDTO>(content);
+        var result = Deserialize<BoardDto>(content);
 
         result.ShouldNotBeNull();
         result.Id.ShouldBe(board.Id);
@@ -65,7 +65,7 @@ public class BoardsControllerTests(CustomWebApplicationFactory factory) : TestHe
 
         await AddEntitiesAsync([userMentor, userIntern]);
 
-        var createBoardDTO = new CreateBoardDTO(userMentor.Id, userIntern.Id, "New Board", "Test board");
+        var createBoardDTO = new CreateBoardDto(userMentor.Id, userIntern.Id, "New Board", "Test board");
 
         // Act
         var response = await Client.PostAsJsonAsync(Boards.Base, createBoardDTO);
@@ -73,7 +73,7 @@ public class BoardsControllerTests(CustomWebApplicationFactory factory) : TestHe
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var created = await response.Content.ReadFromJsonAsync<BoardDTO>();
+        var created = await response.Content.ReadFromJsonAsync<BoardDto>();
 
         created.ShouldNotBeNull();
         created.Title.ShouldBe("New Board");
@@ -87,7 +87,7 @@ public class BoardsControllerTests(CustomWebApplicationFactory factory) : TestHe
         var board = TestDataHelper.CreateBoard(title: "Old Title");
         await AddEntityAsync(board);
 
-        var updateBoardDTO = new UpdateBoardDTO("Updated Title", "Updated Description");
+        var updateBoardDTO = new UpdateBoardDto("Updated Title", "Updated Description");
 
         // Act
         var response = await Client.PutAsJsonAsync($"{Boards.Base}/{board.Id}", updateBoardDTO);
@@ -95,7 +95,7 @@ public class BoardsControllerTests(CustomWebApplicationFactory factory) : TestHe
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var updated = await response.Content.ReadFromJsonAsync<BoardDTO>();
+        var updated = await response.Content.ReadFromJsonAsync<BoardDto>();
 
         updated.ShouldNotBeNull();
         updated.Title.ShouldBe("Updated Title");
@@ -106,7 +106,7 @@ public class BoardsControllerTests(CustomWebApplicationFactory factory) : TestHe
     public async Task Update_ShouldReturnNotFoundStatusCode()
     {
         //Arrange
-        var updateBoardDTO = new UpdateBoardDTO("Updated Title", "Updated Description");
+        var updateBoardDTO = new UpdateBoardDto("Updated Title", "Updated Description");
 
         //Act
         var response = await Client.PutAsJsonAsync($"{Boards.Base}/{Guid.NewGuid()}", updateBoardDTO);

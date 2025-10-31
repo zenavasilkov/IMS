@@ -13,7 +13,7 @@ public static class TestDataHelper
             Id = id ?? Guid.NewGuid(),
             Email = $"{(firstname ?? "user").ToLower()}.{(lastname ?? "test").ToLower()}" +
                 $"{Guid.NewGuid().ToString("N")[..6]}@test.com",
-            PhoneNumber = "123-456-7890",
+            PhoneNumber = "+375298486717",
             Firstname = firstname ?? "John",
             Lastname = lastname ?? "Doe",
             Patronymic = "Testovich",

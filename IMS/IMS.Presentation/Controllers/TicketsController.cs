@@ -14,55 +14,55 @@ namespace IMS.Presentation.Controllers;
 public class TicketsController(ITicketService service, IMapper mapper) : ControllerBase
 {
     [HttpGet]
-    public async Task<IEnumerable<TicketDTO>> GetAll(CancellationToken cancellationToken)
+    public async Task<IEnumerable<TicketDto>> GetAll(CancellationToken cancellationToken)
     {
         var tickets = await service.GetAllAsync(cancellationToken: cancellationToken);
 
-        var ticketDTOs = mapper.Map<IEnumerable<TicketDTO>>(tickets);
+        var ticketDTOs = mapper.Map<IEnumerable<TicketDto>>(tickets);
 
         return ticketDTOs;
     }
 
     [HttpGet(ApiRoutes.Id)]
-    public async Task<TicketDTO> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
+    public async Task<TicketDto> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var ticket = await service.GetByIdAsync(id, cancellationToken); 
 
-        var ticketDTO = mapper.Map<TicketDTO>(ticket);
+        var ticketDTO = mapper.Map<TicketDto>(ticket);
 
         return ticketDTO;
     }
 
     [HttpPost]
-    public async Task<TicketDTO> Create([FromBody] CreateTicketDTO createTicketDTO, CancellationToken cancellationToken)
+    public async Task<TicketDto> Create([FromBody] CreateTicketDto createTicketDTO, CancellationToken cancellationToken)
     {
         var ticketModel = mapper.Map<TicketModel>(createTicketDTO);
 
         var createdTicketModel = await service.CreateAsync(ticketModel, cancellationToken);
 
-        var ticketDTO = mapper.Map<TicketDTO>(createdTicketModel);
+        var ticketDTO = mapper.Map<TicketDto>(createdTicketModel);
 
         return ticketDTO;
     }
 
     [HttpPut(ApiRoutes.Id)]
-    public async Task<TicketDTO> Update([FromRoute] Guid id, [FromBody] UpdateTicketDTO updateTicketDTO, CancellationToken cancellationToken)
+    public async Task<TicketDto> Update([FromRoute] Guid id, [FromBody] UpdateTicketDto updateTicketDTO, CancellationToken cancellationToken)
     {
         var ticketModel = mapper.Map<TicketModel>(updateTicketDTO);
 
         var updatedTicketModel = await service.UpdateAsync(id, ticketModel, cancellationToken); 
 
-        var updatedTicketDTO = mapper.Map<TicketDTO>(updatedTicketModel);
+        var updatedTicketDTO = mapper.Map<TicketDto>(updatedTicketModel);
 
         return updatedTicketDTO;
     }
 
     [HttpGet(ApiRoutes.Tickets.TicketsByBoardId)]
-    public async Task<List<TicketDTO>> GetTicketsByBoardId([FromRoute] Guid boardId, CancellationToken cancellationToken)
+    public async Task<List<TicketDto>> GetTicketsByBoardId([FromRoute] Guid boardId, CancellationToken cancellationToken)
     {
         var tickets = await service.GetTicketsByBoardIdAsync(boardId, cancellationToken : cancellationToken);
 
-        var ticketsDTO = mapper.Map<List<TicketDTO>>(tickets);
+        var ticketsDTO = mapper.Map<List<TicketDto>>(tickets);
 
         return ticketsDTO;
     }

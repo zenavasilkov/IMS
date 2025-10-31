@@ -1,6 +1,8 @@
 ﻿using IMS.BLL.Extensions;
 using IMS.Presentation.HealthChecks;
 using IMS.Presentation.Mapping;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 
 namespace IMS.Presentation.Extenssions;
 
@@ -11,21 +13,31 @@ public static class ServiceCollectionExtensions
         services
             .AddBusinessLayerDedendencies(configuration)
             .AddMapping()
-            .AddAllHealthChecks();
+            .AddAllHealthChecks()
+            .AddValidation();
 
         return services;
     }
 
-    public static IServiceCollection AddMapping(this IServiceCollection services)
+    private static IServiceCollection AddMapping(this IServiceCollection services)
     {
         return services.AddAutoMapper(cfg => cfg.AddProfile<DtoMappingProfile>());
     }
 
-    public static IServiceCollection AddAllHealthChecks(this IServiceCollection services)
+    private static IServiceCollection AddAllHealthChecks(this IServiceCollection services)
     {
         services
             .AddHealthChecks()
             .AddCheck<DatabaseHealthCheck>("Database");
+
+        return services;
+    }
+
+    private static IServiceCollection AddValidation(this IServiceCollection services)
+    {
+        services.AddFluentValidationAutoValidation()
+        .AddFluentValidationClientsideAdapters()
+        .AddValidatorsFromAssemblyContaining<Program>();
 
         return services;
     }

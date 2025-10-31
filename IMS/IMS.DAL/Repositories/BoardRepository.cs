@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IMS.DAL.Repositories;
 
-public class BoardRepository(IMSDbContext context) : Repository<Board>(context), IBoardRepository
+public class BoardRepository(ImsDbContext context) : Repository<Board>(context), IBoardRepository
 {
     private readonly DbSet<Board> _boards = context.Set<Board>();
 

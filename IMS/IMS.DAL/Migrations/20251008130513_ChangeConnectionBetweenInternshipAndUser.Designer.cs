@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace IMS.DAL.Migrations
 {
-    [DbContext(typeof(IMSDbContext))]
+    [DbContext(typeof(ImsDbContext))]
     [Migration("20251008130513_ChangeConnectionBetweenInternshipAndUser")]
     partial class ChangeConnectionBetweenInternshipAndUser
     {

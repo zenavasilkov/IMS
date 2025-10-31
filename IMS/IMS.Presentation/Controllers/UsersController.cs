@@ -16,7 +16,7 @@ namespace IMS.Presentation.Controllers;
 public class UsersController(IUserService service, IMapper mapper) : ControllerBase
 {   
     [HttpGet]
-    public async Task<PagedList<UserDTO>> GetAll(
+    public async Task<PagedList<UserDto>> GetAll(
         [FromQuery] PaginationParameters paginationParameters,
         [FromQuery] UserFilteringParameters filter,
         [FromQuery] UserSortingParameter sorter, 
@@ -25,42 +25,42 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
         var users = await service.GetUsersAsync(paginationParameters, 
             filter, sorter, cancellationToken: cancellationToken);
 
-        var userDTOs = mapper.Map<PagedList<UserDTO>>(users);
+        var userDTOs = mapper.Map<PagedList<UserDto>>(users);
 
         return userDTOs;
     }
 
     [HttpGet(ApiRoutes.Id)]
-    public async Task<UserDTO> GetById(Guid id, CancellationToken cancellationToken)
+    public async Task<UserDto> GetById(Guid id, CancellationToken cancellationToken)
     {
         var user = await service.GetByIdAsync(id, cancellationToken);
 
-        var userDTO = mapper.Map<UserDTO>(user);
+        var userDTO = mapper.Map<UserDto>(user);
 
         return userDTO;
     }
 
     [HttpPost]
-    public async Task<UserDTO> Create([FromBody] CreateUserDTO createUserDTO, CancellationToken cancellationToken)
+    public async Task<UserDto> Create([FromBody] CreateUserDto createUserDTO, CancellationToken cancellationToken)
     {
         var userModel = mapper.Map<UserModel>(createUserDTO);
 
         var createdUserModel = await service.CreateAsync(userModel, cancellationToken);
 
-        var userDTO = mapper.Map<UserDTO>(createdUserModel);
+        var userDTO = mapper.Map<UserDto>(createdUserModel);
 
         return userDTO;
     }
 
     [HttpPut(ApiRoutes.Id)]
-    public async Task<UserDTO> Update([FromRoute] Guid id, 
-        [FromBody] UpdateUserDTO updateUserDTO, CancellationToken cancellationToken)
+    public async Task<UserDto> Update([FromRoute] Guid id, 
+        [FromBody] UpdateUserDto updateUserDTO, CancellationToken cancellationToken)
     {
         var userModel = mapper.Map<UserModel>(updateUserDTO);
 
         var updatedUserModel = await service.UpdateAsync(id, userModel, cancellationToken);
 
-        var updatedUserDTO = mapper.Map<UserDTO>(updatedUserModel);
+        var updatedUserDTO = mapper.Map<UserDto>(updatedUserModel);
 
         return updatedUserDTO;
     }

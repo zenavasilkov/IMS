@@ -20,7 +20,7 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
 
         var result = await response.Content.ReadAsStringAsync();
 
-        var tickets = Deserialize<List<TicketDTO>>(result);
+        var tickets = Deserialize<List<TicketDto>>(result);
 
         tickets.ShouldNotBeNull();
         tickets.Count.ShouldBe(2);
@@ -45,7 +45,7 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
 
         var result = await response.Content.ReadAsStringAsync();
 
-        var ticketDTO = Deserialize<TicketDTO>(result);
+        var ticketDTO = Deserialize<TicketDto>(result);
 
         ticketDTO.ShouldNotBeNull();
         ticketDTO.Status.ShouldBe(TicketStatus.Done);
@@ -67,8 +67,8 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
         // Arrange
         var board = TestDataHelper.CreateBoard();
 
-        var createdTicketDTO = new CreateTicketDTO(board.Id, "New ticket", 
-            "New description", TicketStatus.ToDo, DateTime.UtcNow);
+        var createdTicketDTO = new CreateTicketDto(board.Id, "New ticket", 
+            "New description", TicketStatus.ToDo, DateTime.UtcNow.AddDays(10));
 
         await AddEntityAsync(board);
 
@@ -78,7 +78,7 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var created = await response.Content.ReadFromJsonAsync<TicketDTO>();
+        var created = await response.Content.ReadFromJsonAsync<TicketDto>();
 
         created.ShouldNotBeNull();
         created.Title.ShouldBe("New ticket");
@@ -89,8 +89,8 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
     public async Task Create_ShouldReturnNotFoundStatus_WhenBoarDoesNotExist()
     {
         // Arrange
-        var createdTicketDTO = new CreateTicketDTO(Guid.NewGuid(), "New ticket",
-            "New description", TicketStatus.ToDo, DateTime.UtcNow);
+        var createdTicketDTO = new CreateTicketDto(Guid.NewGuid(), "New ticket",
+            "New description", TicketStatus.ToDo, DateTime.UtcNow.AddDays(10));
 
         // Act
         var response = await Client.PostAsJsonAsync(Tickets.Base, createdTicketDTO);
@@ -108,7 +108,7 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
 
         await AddEntityAsync(ticket);
 
-        var updateTicketDTO = new UpdateTicketDTO(
+        var updateTicketDTO = new UpdateTicketDto(
             "Updated title",
             "Updated description",
             TicketStatus.Done,
@@ -121,7 +121,7 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var updated = await response.Content.ReadFromJsonAsync<TicketDTO>();
+        var updated = await response.Content.ReadFromJsonAsync<TicketDto>();
 
         updated.ShouldNotBeNull();
         updated.Title.ShouldBe("Updated title");
@@ -133,7 +133,7 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
     public async Task Update_ShouldReturnNotFoundStatus_WhenTicketDoesNotExist()
     {
         // Arrange
-        var updateTicketDTO = new UpdateTicketDTO(
+        var updateTicketDTO = new UpdateTicketDto(
             "Non-existent ticket",
             "Does not exist",
             TicketStatus.Done,
@@ -164,7 +164,7 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var content = await response.Content.ReadAsStringAsync();
-        var tickets = Deserialize<List<TicketDTO>>(content);
+        var tickets = Deserialize<List<TicketDto>>(content);
 
         tickets.ShouldNotBeNull();
         tickets.Count.ShouldBe(2);
@@ -186,7 +186,7 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var content = await response.Content.ReadAsStringAsync();
-        var tickets = Deserialize<List<TicketDTO>>(content);
+        var tickets = Deserialize<List<TicketDto>>(content);
 
         tickets.ShouldNotBeNull();
         tickets.ShouldBeEmpty();

@@ -49,7 +49,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
 
         var contentString = await response.Content.ReadAsStringAsync();
 
-        var result = Deserialize<PagedList<UserDTO>>(contentString);
+        var result = Deserialize<PagedList<UserDto>>(contentString);
 
         result.ShouldNotBeNull();
         result.Items.Count.ShouldBe(2);
@@ -80,7 +80,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
 
         var contentString = await response.Content.ReadAsStringAsync();
 
-        var result = Deserialize<PagedList<UserDTO>>(contentString);
+        var result = Deserialize<PagedList<UserDto>>(contentString);
 
         result.ShouldNotBeNull();
 
@@ -111,7 +111,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
 
         var contentString = await response.Content.ReadAsStringAsync();
 
-        var result = Deserialize<PagedList<UserDTO>>(contentString);
+        var result = Deserialize<PagedList<UserDto>>(contentString);
 
         result.ShouldNotBeNull();
         result.Items.Count.ShouldBe(4);
@@ -144,7 +144,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
 
         var contentString = await response.Content.ReadAsStringAsync();
 
-        var result = Deserialize<PagedList<UserDTO>>(contentString);
+        var result = Deserialize<PagedList<UserDto>>(contentString);
 
         result.ShouldNotBeNull();
         result.Items.Count.ShouldBe(4);
@@ -157,13 +157,13 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
     public async Task Create_ShouldReturnCreatedUser()
     {
         // Arrange
-        var createDto = new UserDTO
+        var createDto = new UserDto
         {
             Firstname = "New",
             Lastname = "User",
             Patronymic = "Testovich",
             Email = "new.user@test.com",
-            PhoneNumber = "+375-29-718-04-51",
+            PhoneNumber = "+375297180451",
             Role = Role.Intern
         };
 
@@ -173,7 +173,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var result = await response.Content.ReadFromJsonAsync<UserDTO>();
+        var result = await response.Content.ReadFromJsonAsync<UserDto>();
 
         result.ShouldNotBeNull();
         result.Firstname.ShouldBe("New");
@@ -187,9 +187,9 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         //Arrange
         var user = TestDataHelper.CreateUser();
 
-        var updateDto = new UpdateUserDTO(
+        var updateDto = new UpdateUserDto(
             Email : user.Email, 
-            PhoneNumber: "+375-29-718-04-54", 
+            PhoneNumber: "+375297180454", 
             Firstname: user.Firstname, 
             Lastname: user.Lastname, 
             Patronymic: user.Patronymic, 
@@ -205,11 +205,11 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         //Assert
         responce.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var result = await responce.Content.ReadFromJsonAsync<UpdateUserDTO>();
+        var result = await responce.Content.ReadFromJsonAsync<UpdateUserDto>();
 
         result.ShouldNotBeNull();
         result.Email.ShouldBe(user.Email);
-        result.PhoneNumber.ShouldBe("+375-29-718-04-54");
+        result.PhoneNumber.ShouldBe("+375297180454");
         result.Firstname.ShouldBe(user.Firstname);
         result.Lastname.ShouldBe(user.Lastname);
         result.Patronymic.ShouldBe(user.Patronymic);

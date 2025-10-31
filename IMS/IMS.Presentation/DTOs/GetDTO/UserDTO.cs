@@ -2,7 +2,7 @@
 
 namespace IMS.Presentation.DTOs.GetDTO;
 
-public class UserDTO
+public class UserDto
 {
     public Guid Id { get; set; }
     public required string Email { get; set; } 

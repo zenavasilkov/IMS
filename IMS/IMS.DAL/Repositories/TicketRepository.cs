@@ -6,7 +6,7 @@ using Shared.Enums;
 
 namespace IMS.DAL.Repositories
 {
-    public class TicketRepository(IMSDbContext context, ITicketFilterBuilder filterBuilder) : Repository<Ticket>(context), ITicketRepository
+    public class TicketRepository(ImsDbContext context, ITicketFilterBuilder filterBuilder) : Repository<Ticket>(context), ITicketRepository
     {
         private readonly DbSet<Ticket> _tickets = context.Set<Ticket>();
 
