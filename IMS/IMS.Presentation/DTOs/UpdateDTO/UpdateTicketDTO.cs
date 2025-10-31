@@ -2,7 +2,7 @@
 
 namespace IMS.Presentation.DTOs.UpdateDTO;
 
-public record UpdateTicketDTO( 
+public record UpdateTicketDto( 
     string Title,
     string Description,
     TicketStatus Status,

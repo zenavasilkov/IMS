@@ -3,7 +3,7 @@ using IMS.Presentation.DTOs.UpdateDTO;
 
 namespace IMS.Presentation.Validation.Validators.UserDtoValidators;
 
-public class UpdateUserDtoValidator : AbstractValidator<UpdateUserDTO>
+public class UpdateUserDtoValidator : AbstractValidator<UpdateUserDto>
 {
     public UpdateUserDtoValidator()
     {

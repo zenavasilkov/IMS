@@ -6,7 +6,7 @@ using Shared.Enums;
 
 namespace IMS.DAL.Repositories;
 
-public class InternshipRepository(IMSDbContext context, IInternshipFilterBuilder filterBuilder) : Repository<Internship>(context), IInternshipRepository
+public class InternshipRepository(ImsDbContext context, IInternshipFilterBuilder filterBuilder) : Repository<Internship>(context), IInternshipRepository
 {
     private readonly DbSet<Internship> _internships = context.Set<Internship>();
 

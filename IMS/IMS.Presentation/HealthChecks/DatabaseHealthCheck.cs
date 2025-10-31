@@ -3,7 +3,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace IMS.Presentation.HealthChecks;
 
-public class DatabaseHealthCheck(IMSDbContext dbContext) : IHealthCheck
+public class DatabaseHealthCheck(ImsDbContext dbContext) : IHealthCheck
 {
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, 
         CancellationToken cancellationToken = default)

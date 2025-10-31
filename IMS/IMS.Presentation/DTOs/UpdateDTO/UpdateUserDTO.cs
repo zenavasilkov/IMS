@@ -2,7 +2,7 @@
 
 namespace IMS.Presentation.DTOs.UpdateDTO;
 
-public record UpdateUserDTO(
+public record UpdateUserDto(
     string Email,
     string PhoneNumber,
     string Firstname,

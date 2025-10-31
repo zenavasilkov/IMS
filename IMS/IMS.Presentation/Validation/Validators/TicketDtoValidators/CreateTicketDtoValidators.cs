@@ -3,7 +3,7 @@ using IMS.Presentation.DTOs.CreateDTO;
 
 namespace IMS.Presentation.Validation.Validators.TicketDtoValidators;
 
-public class TicketDtoValidator : AbstractValidator<CreateTicketDTO>
+public class TicketDtoValidator : AbstractValidator<CreateTicketDto>
 {
     public TicketDtoValidator()
     {

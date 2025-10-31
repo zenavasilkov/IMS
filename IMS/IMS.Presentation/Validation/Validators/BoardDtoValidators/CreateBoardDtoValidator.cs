@@ -3,7 +3,7 @@ using IMS.Presentation.DTOs.CreateDTO;
 
 namespace IMS.Presentation.Validation.Validators.BoardDtoValidators;
 
-public class CreateBoardDtoValidator : AbstractValidator<CreateBoardDTO>
+public class CreateBoardDtoValidator : AbstractValidator<CreateBoardDto>
 {
     public CreateBoardDtoValidator()
     {

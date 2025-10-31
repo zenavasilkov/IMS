@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IMS.DAL;
 
-public class IMSDbContext(DbContextOptions options, UpdateTimestampsInterceptor timestampsInterceptor) : DbContext(options)
+public class ImsDbContext(DbContextOptions options, UpdateTimestampsInterceptor timestampsInterceptor) : DbContext(options)
 { 
     private readonly UpdateTimestampsInterceptor _timestampsInterceptor = timestampsInterceptor;
 
@@ -16,7 +16,7 @@ public class IMSDbContext(DbContextOptions options, UpdateTimestampsInterceptor 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(IMSDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ImsDbContext).Assembly);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

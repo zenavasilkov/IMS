@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IMS.DAL.Repositories;
 
-public class FeedbackRepository(IMSDbContext context, IFeedbackFilterBuilder filterBuilder) : Repository<Feedback>(context), IFeedbackRepository
+public class FeedbackRepository(ImsDbContext context, IFeedbackFilterBuilder filterBuilder) : Repository<Feedback>(context), IFeedbackRepository
 {
     private readonly DbSet<Feedback> _feedbacks = context.Set<Feedback>();
 

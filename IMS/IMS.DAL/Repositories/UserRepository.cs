@@ -7,7 +7,7 @@ using Shared.Pagination;
 
 namespace IMS.DAL.Repositories
 {
-    public class UserRepository(IMSDbContext context, IUserFilterBuilder filterBuilder) 
+    public class UserRepository(ImsDbContext context, IUserFilterBuilder filterBuilder) 
         : Repository<User>(context), IUserRepository
     {
         private readonly DbSet<User> _users = context.Set<User>();

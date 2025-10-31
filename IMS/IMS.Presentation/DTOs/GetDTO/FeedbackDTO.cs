@@ -1,6 +1,6 @@
 ﻿namespace IMS.Presentation.DTOs.GetDTO;
 
-public class FeedbackDTO
+public class FeedbackDto
 {
     public Guid Id { get; set; }
     public Guid TicketId { get; set; }

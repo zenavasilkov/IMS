@@ -3,7 +3,7 @@ using IMS.Presentation.DTOs.UpdateDTO;
 
 namespace IMS.Presentation.Validation.Validators.TicketDtoValidators;
 
-public class UpdateTicketDtoValidator : AbstractValidator<UpdateTicketDTO>
+public class UpdateTicketDtoValidator : AbstractValidator<UpdateTicketDto>
 {
     public UpdateTicketDtoValidator()
     {

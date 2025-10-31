@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace IMS.DAL.Repositories;
 
-public class Repository<TEntity>(IMSDbContext context) : IRepository<TEntity> where TEntity : EntityBase
+public class Repository<TEntity>(ImsDbContext context) : IRepository<TEntity> where TEntity : EntityBase
 {
     private readonly DbSet<TEntity> _dbSet = context.Set<TEntity>();
 
