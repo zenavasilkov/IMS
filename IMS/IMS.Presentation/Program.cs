@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace IMS.Presentation
 {
-    public static class Program
+    public class Program
     {
         public static void Main(string[] args)
         {
