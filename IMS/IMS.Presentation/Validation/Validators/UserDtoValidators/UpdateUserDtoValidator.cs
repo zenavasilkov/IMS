@@ -8,6 +8,8 @@ public class UpdateUserDtoValidator : AbstractValidator<UpdateUserDto>
     public UpdateUserDtoValidator()
     {
         RuleFor(x => x.Email)
+            .NotNull()
+            .WithMessage(ValidationConstants.NotNull)
             .NotEmpty()
             .WithMessage(ValidationConstants.NotEmpty)
             .EmailAddress()
