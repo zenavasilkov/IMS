@@ -1,12 +1,11 @@
 ﻿using Shared.Enums;
-using System.Text.Json.Serialization;
 
 namespace IMS.Presentation.DTOs.UpdateDTO;
 
-public record UpdateInternshipDto(
-    [property: JsonRequired] Guid MentorId,
-    [property: JsonRequired] Guid HumanResourcesManagerId,
-    [property: JsonRequired] DateTime StartDate,
+public record UpdateInternshipDto( 
+    Guid MentorId,
+    Guid HumanResourcesManagerId,
+    DateTime StartDate,
     DateTime? EndDate,
-    [property: JsonRequired] InternshipStatus Status
+    InternshipStatus Status
 );

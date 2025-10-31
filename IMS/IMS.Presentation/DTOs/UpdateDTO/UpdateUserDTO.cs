@@ -1,5 +1,4 @@
 ﻿using Shared.Enums;
-using System.Text.Json.Serialization;
 
 namespace IMS.Presentation.DTOs.UpdateDTO;
 
@@ -9,5 +8,5 @@ public record UpdateUserDto(
     string Firstname,
     string Lastname,
     string? Patronymic,
-    [property: JsonRequired] Role Role
+    Role Role
 );
