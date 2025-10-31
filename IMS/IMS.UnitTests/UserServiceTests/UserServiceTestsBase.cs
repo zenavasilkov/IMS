@@ -20,7 +20,12 @@ public class UserServiceTestsBase
         Fixture.Behaviors.Add(new OmitOnRecursionBehavior());
         UserRepositoryMock = Fixture.Freeze<Mock<IUserRepository>>();
         MapperMock = Fixture.Freeze<Mock<IMapper>>();
-        MessageServiceMock = Fixture.Freeze<Mock<IMessageService>>();
+
+        MessageServiceMock = new Mock<IMessageService>();
+        MessageServiceMock.Setup(m => m.NotifyUserCreated(
+            It.IsAny<UserCreatedEvent>(), 
+            It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
 
         UserService = new UserService(
             UserRepositoryMock.Object, 
