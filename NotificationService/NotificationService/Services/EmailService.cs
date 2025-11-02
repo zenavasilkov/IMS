@@ -5,9 +5,9 @@ using NotificationService.Services.Interfaces;
 
 namespace NotificationService.Services;
 
-public class EmailService(IFluentEmail emailSender, ILogger logger) : IEmailService
+public class EmailService(IFluentEmail emailSender, ILogger<EmailService> logger) : IEmailService
 {
-    public async Task Sent<TEvent>(string email, string subject, string templatePath,
+    public async Task Send<TEvent>(string email, string subject, string templatePath,
         TEvent eventModel, CancellationToken cancellationToken) where TEvent : BaseEvent
     {
         var templateFullPath = Path.Combine(AppContext.BaseDirectory + templatePath);
