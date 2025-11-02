@@ -10,7 +10,7 @@ public class EmailService(IFluentEmail emailSender, ILogger<EmailService> logger
     public async Task Send<TEvent>(string email, string subject, string templatePath,
         TEvent eventModel, CancellationToken cancellationToken) where TEvent : BaseEvent
     {
-        var templateFullPath = Path.Combine(AppContext.BaseDirectory + templatePath);
+        var templateFullPath = Path.Combine(AppContext.BaseDirectory, templatePath);
 
         var response = await emailSender
             .To(email)
