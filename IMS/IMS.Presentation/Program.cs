@@ -1,7 +1,9 @@
 using HealthChecks.UI.Client;
-using IMS.Presentation.Extenssions;
+using IMS.DAL;
+using IMS.Presentation.Extensions;
 using IMS.Presentation.Middleware;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace IMS.Presentation
@@ -31,7 +33,8 @@ namespace IMS.Presentation
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI(); 
+                app.UseSwaggerUI();
+                app.ApplyMigrations();
             }
 
             app.UseHttpsRedirection();
