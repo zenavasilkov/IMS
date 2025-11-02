@@ -9,7 +9,7 @@ namespace IMS.DAL.Repositories
     public class TicketRepository(ImsDbContext context, ITicketFilterBuilder filterBuilder) : Repository<Ticket>(context), ITicketRepository
     {
         private readonly DbSet<Ticket> _tickets = context.Set<Ticket>();
-        private readonly IMSDbContext _context = context;
+        private readonly ImsDbContext _context = context;
 
         public async Task<List<Ticket>> GetTicketsByBoardId(Guid boardId, CancellationToken cancellationToken)
         {
