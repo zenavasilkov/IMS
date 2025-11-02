@@ -12,6 +12,12 @@ public class EmailService(IFluentEmail emailSender, ILogger<EmailService> logger
     {
         var templateFullPath = Path.Combine(AppContext.BaseDirectory, templatePath);
 
+        if (!File.Exists(templateFullPath))
+        {
+            logger.LogError("Template file not found: {Path}", templateFullPath);
+            return;
+        }
+
         var response = await emailSender
             .To(email)
             .Subject(subject)
