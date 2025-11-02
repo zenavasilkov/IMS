@@ -7,5 +7,5 @@ public static class TemplatePaths
     public const string UserCreated = Base + "UserCreated.cshtml";
     public const string FeedbackCreated = Base + "FeedbackCreated.cshtml";
     public const string TicketCreated = Base + "TicketCreated.cshtml";
-    public const string TicketStatusChangedEvent = Base + "TicketStatusChangedEvent";
+    public const string TicketStatusChanged = Base + "TicketStatusChanged.cshtml";
 }
