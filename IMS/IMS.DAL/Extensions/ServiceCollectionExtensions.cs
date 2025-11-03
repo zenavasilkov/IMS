@@ -5,6 +5,7 @@ using IMS.DAL.Repositories.Interfaces;
 using IMS.DAL.Repositories;
 using IMS.DAL.Builders;
 using IMS.DAL.Interceptors;
+using IMS.DAL.Caching;
 
 namespace IMS.DAL.Extensions;
 
@@ -14,7 +15,8 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddDbContext(configuration)
-            .AddRepositories();
+            .AddRepositories()
+            .AddRedis(configuration);
 
         return services;
     }
@@ -29,7 +31,8 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services
-            .AddScoped(typeof(IRepository<>), typeof(Repository<>))
+            .AddScoped(typeof(Repository<>))
+            .AddScoped(typeof(IRepository<>), typeof(CachedRepository<>))
             .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<ITicketRepository, TicketRepository>()
             .AddScoped<IInternshipRepository, InternshipRepository>()
@@ -40,6 +43,14 @@ public static class ServiceCollectionExtensions
             .AddScoped<IInternshipFilterBuilder, InternshipFilterBuilder>()
             .AddScoped<IUserFilterBuilder, UserFilterBuilder>()
             .AddScoped<UpdateTimestampsInterceptor>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddRedis(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddStackExchangeRedisCache(redisOptions => 
+            redisOptions.Configuration = configuration.GetConnectionString("Redis"));
 
         return services;
     }
