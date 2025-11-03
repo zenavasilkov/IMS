@@ -5,6 +5,7 @@ public class UserServiceTestsBase
     protected readonly IFixture Fixture;
     protected readonly Mock<IUserRepository> UserRepositoryMock;
     protected readonly Mock<IMapper> MapperMock;
+    protected readonly Mock<IMessageService> MessageServiceMock;
     protected readonly UserService UserService;
 
     protected UserServiceTestsBase()
@@ -19,6 +20,16 @@ public class UserServiceTestsBase
         Fixture.Behaviors.Add(new OmitOnRecursionBehavior());
         UserRepositoryMock = Fixture.Freeze<Mock<IUserRepository>>();
         MapperMock = Fixture.Freeze<Mock<IMapper>>();
-        UserService = new UserService(UserRepositoryMock.Object, MapperMock.Object);
+
+        MessageServiceMock = new Mock<IMessageService>();
+        MessageServiceMock.Setup(m => m.NotifyUserCreated(
+            It.IsAny<UserCreatedEvent>(), 
+            It.IsAny<CancellationToken>()))
+            .Returns(Task.CompletedTask);
+
+        UserService = new UserService(
+            UserRepositoryMock.Object, 
+            MapperMock.Object,
+            MessageServiceMock.Object);
     }
 }

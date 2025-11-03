@@ -10,7 +10,7 @@ public class Repository<TEntity>(ImsDbContext context) : IRepository<TEntity> wh
 {
     private readonly DbSet<TEntity> _dbSet = context.Set<TEntity>();
 
-    public async Task<TEntity> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public virtual async Task<TEntity> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         var createdEntity = await _dbSet.AddAsync(entity, cancellationToken);
         await context.SaveChangesAsync(cancellationToken); 

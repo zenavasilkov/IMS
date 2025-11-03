@@ -9,6 +9,7 @@ namespace IMS.DAL.Repositories
     public class TicketRepository(ImsDbContext context, ITicketFilterBuilder filterBuilder) : Repository<Ticket>(context), ITicketRepository
     {
         private readonly DbSet<Ticket> _tickets = context.Set<Ticket>();
+        private readonly ImsDbContext _context = context;
 
         public async Task<List<Ticket>> GetTicketsByBoardId(Guid boardId, CancellationToken cancellationToken)
         {
@@ -41,6 +42,32 @@ namespace IMS.DAL.Repositories
                  .ToListAsync(cancellationToken);
 
             return tickets;
+        }
+        
+        public override async Task<Ticket> CreateAsync(Ticket ticket, CancellationToken cancellationToken)
+        {
+            var createdTicket = await _tickets.AddAsync(ticket, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            var createdTicketWithIncludes = await _tickets
+                .Include(t => t.Board)
+                    .ThenInclude(b => b.CreatedTo)
+                .FirstAsync(t => t.Id == createdTicket.Entity.Id, cancellationToken);
+
+            return createdTicketWithIncludes;
+        }
+
+        public override async Task<Ticket> UpdateAsync(Ticket ticket, CancellationToken cancellationToken)
+        {
+            var updatedTicket = _tickets.Update(ticket);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            var updatedTicketWithIncludes = await _tickets
+                .Include(t => t.Board)
+                    .ThenInclude(b => b.CreatedBy)
+                .FirstAsync(t => t.Id == updatedTicket.Entity.Id, cancellationToken);
+
+            return updatedTicketWithIncludes;
         }
     }
 }

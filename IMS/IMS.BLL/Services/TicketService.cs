@@ -1,22 +1,30 @@
 ﻿using AutoMapper;
 using IMS.BLL.Exceptions;
+using IMS.BLL.Mapping;
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
+using IMS.NotificationsCore.Services;
 
 namespace IMS.BLL.Services;
 
-public class TicketService(ITicketRepository repository, IBoardRepository boardRepository, IMapper mapper) 
+public class TicketService(
+    ITicketRepository repository,
+    IBoardRepository boardRepository,
+    IMapper mapper,
+    IMessageService messageService)
     : Service<TicketModel, Ticket>(repository, mapper), ITicketService
 {
     private readonly IMapper _mapper = mapper;
 
-    public override async Task<TicketModel> UpdateAsync(Guid id, 
+    public override async Task<TicketModel> UpdateAsync(Guid id,
         TicketModel model, CancellationToken cancellationToken = default)
     {
         var existingTicket = await repository.GetByIdAsync(id, cancellationToken: cancellationToken)
             ?? throw new NotFoundException($"Ticket with ID {id} was not found");
+
+        var oldStatus = existingTicket.Status;
 
         existingTicket.Title = model.Title;
         existingTicket.Description = model.Description;
@@ -27,21 +35,36 @@ public class TicketService(ITicketRepository repository, IBoardRepository boardR
 
         var updatedTicketModel = _mapper.Map<TicketModel>(updatedTicket);
 
+        if (updatedTicketModel.Status != oldStatus)
+        {
+            var message = EventMapper.ConvertToTicketStatusChangedEvent(updatedTicket, oldStatus);
+
+            await messageService.NotifyTicketStatusChanged(message, cancellationToken);
+        }
+
         return updatedTicketModel;
     }
 
-    public override async Task<TicketModel> CreateAsync(TicketModel ticketModel, 
+    public override async Task<TicketModel> CreateAsync(TicketModel ticketModel,
         CancellationToken cancellationToken = default)
     {
-         if(await boardRepository.GetByIdAsync(ticketModel.BoardId, cancellationToken: cancellationToken) is null )  
+        if (await boardRepository.GetByIdAsync(ticketModel.BoardId, cancellationToken: cancellationToken) is null)
             throw new NotFoundException($"Board with ID {ticketModel.BoardId} was not found");
 
-        var createdTicket = await base.CreateAsync(ticketModel, cancellationToken);
+        var ticket = _mapper.Map<Ticket>(ticketModel);
 
-        return createdTicket;
+        var createdTicket = await repository.CreateAsync(ticket, cancellationToken);
+
+        var createdTicketModel = _mapper.Map<TicketModel>(createdTicket);
+
+        var message = EventMapper.ConvertToTicketCreatedEvent(createdTicketModel);
+
+        await messageService.NotifyTicketCreated(message, cancellationToken);
+
+        return createdTicketModel;
     }
 
-    public async Task<List<TicketModel>> GetTicketsByBoardIdAsync(Guid boardId, bool trackChanges = false, 
+    public async Task<List<TicketModel>> GetTicketsByBoardIdAsync(Guid boardId, bool trackChanges = false,
         CancellationToken cancellationToken = default)
     {
         if (await boardRepository.GetByIdAsync(boardId, cancellationToken: cancellationToken) is null)

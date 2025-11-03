@@ -3,9 +3,10 @@ using IMS.BLL.Models;
 using IMS.BLL.Services;
 using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
-using IMS.DAL.Extensions; 
+using IMS.DAL.Extensions;
+using IMS.NotificationsCore.Extensions;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection; 
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IMS.BLL.Extensions
 {
@@ -13,8 +14,9 @@ namespace IMS.BLL.Extensions
     {
         public static IServiceCollection AddBusinessLayerDedendencies(this IServiceCollection services, IConfiguration configuration)
         {
-            services.
-                AddDataLayerDependencies(configuration)
+            services
+                .AddDataLayerDependencies(configuration)
+                .AddNotifications(configuration)
                 .AddMapping()
                 .AddServices();
 
