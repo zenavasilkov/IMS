@@ -12,6 +12,18 @@ jobs:
     name: Build and analyze
     runs-on: ubuntu-latest
 
+    services:
+      rabbitmq:
+        image: rabbitmq:4-management
+        ports:
+          - 5672:5672
+          - 15672:15672
+        options: >-
+          --health-cmd="rabbitmqctl status"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -52,11 +64,11 @@ jobs:
               /d:sonar.coverage.exclusions="**/*" `
               $sonarCoverageParam
               
-      - name: Build Solution
-        shell: pwsh
-        run: |
-          $solutionPath = "IMS/IMS.sln"
-          dotnet build $solutionPath --no-incremental
+      - name: Build IMS solution
+        run: dotnet build IMS/IMS.sln --no-incremental
+
+      - name: Build NotificationService
+        run: dotnet build NotificationService/NotificationService.csproj --no-incremental
 
       - name: Run Tests and Collect Coverage
         shell: pwsh

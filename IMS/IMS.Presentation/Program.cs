@@ -28,6 +28,8 @@ public class Program
 
         app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+        app.ApplyMigrations();
+
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
