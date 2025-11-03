@@ -70,6 +70,7 @@ jobs:
               /o:"$organization" `
               /d:sonar.login="$env:SONAR_TOKEN" `
               /d:sonar.coverage.exclusions="**/*" `
+              /d:sonar.exclusions="**/Migrations/**,**/Dockerfile,**/*appsettings*.json" `
               $sonarCoverageParam
               
       - name: Build IMS solution
