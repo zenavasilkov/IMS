@@ -29,8 +29,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Content Include="Templates/**/*.cshtml">
+		<Content Include="Templates/*.cshtml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
 	</ItemGroup>
 </Project>

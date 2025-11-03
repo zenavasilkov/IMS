@@ -17,4 +17,5 @@ RUN dotnet publish "NotificationService.csproj" -c $BUILD_CONFIGURATION -o /app/
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY --from=build /src/NotificationService/NotificationService/Templates /app/Templates
 ENTRYPOINT ["dotnet", "NotificationService.dll"]
