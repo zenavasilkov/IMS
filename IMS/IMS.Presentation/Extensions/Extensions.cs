@@ -1,12 +1,14 @@
 ﻿using IMS.BLL.Extensions;
+using IMS.DAL;
 using IMS.Presentation.HealthChecks;
 using IMS.Presentation.Mapping;
 using FluentValidation.AspNetCore;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
-namespace IMS.Presentation.Extenssions;
+namespace IMS.Presentation.Extensions;
 
-public static class ServiceCollectionExtensions
+public static class Extensions
 {
     public static IServiceCollection AddApiDependencies(this IServiceCollection services, IConfiguration configuration)
     {
@@ -40,5 +42,12 @@ public static class ServiceCollectionExtensions
         .AddValidatorsFromAssemblyContaining<Program>();
 
         return services;
+    }
+
+    public static void ApplyMigrations(this IApplicationBuilder app)
+    {
+        using var scope = app.ApplicationServices.CreateScope();
+        using var dbContext = scope.ServiceProvider.GetRequiredService<ImsDbContext>();
+        dbContext.Database.Migrate();
     }
 }

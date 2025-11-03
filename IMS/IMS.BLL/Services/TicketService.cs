@@ -35,9 +35,9 @@ public class TicketService(
 
         var updatedTicketModel = _mapper.Map<TicketModel>(updatedTicket);
 
-        if (updatedTicketModel.Status != model.Status)
+        if (updatedTicketModel.Status != oldStatus)
         {
-            var message = EventMapper.ConvertToTicketStatusChangedEvent(updatedTicketModel, oldStatus);
+            var message = EventMapper.ConvertToTicketStatusChangedEvent(updatedTicket, oldStatus);
 
             await messageService.NotifyTicketStatusChanged(message, cancellationToken);
         }

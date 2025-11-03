@@ -8,7 +8,7 @@ namespace IMS.DAL.Repositories;
 public class FeedbackRepository(ImsDbContext context, IFeedbackFilterBuilder filterBuilder) : Repository<Feedback>(context), IFeedbackRepository
 {
     private readonly DbSet<Feedback> _feedbacks = context.Set<Feedback>();
-    private readonly IMSDbContext _context = context;
+    private readonly ImsDbContext _context = context;
 
     public async Task<List<Feedback>> GetFeedbacksAddressedToUserAsync(Guid sentToId, CancellationToken cancellationToken = default)
     {
