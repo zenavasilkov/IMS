@@ -68,7 +68,7 @@ jobs:
         run: dotnet build IMS/IMS.sln --no-incremental
 
       - name: Build NotificationService
-        run: dotnet build NotificationService/NotificationService.csproj --no-incremental
+        run: dotnet build NotificationService/NotificationService.sln --no-incremental
 
       - name: Run Tests and Collect Coverage
         shell: pwsh
