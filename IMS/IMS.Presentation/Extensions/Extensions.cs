@@ -48,6 +48,10 @@ public static class Extensions
     {
         using var scope = app.ApplicationServices.CreateScope();
         using var dbContext = scope.ServiceProvider.GetRequiredService<ImsDbContext>();
-        dbContext.Database.Migrate();
+
+        if (dbContext.Database.IsRelational())
+        {
+            dbContext.Database.Migrate();
+        }
     }
 }
