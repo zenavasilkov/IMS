@@ -56,5 +56,18 @@ namespace IMS.DAL.Repositories
 
             return createdTicketWithIncludes;
         }
+
+        public override async Task<Ticket> UpdateAsync(Ticket ticket, CancellationToken cancellationToken)
+        {
+            var updatedTicket = _tickets.Update(ticket);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            var updatedTicketWithIncludes = await _tickets
+                .Include(t => t.Board)
+                    .ThenInclude(b => b.CreatedBy)
+                .FirstAsync(t => t.Id == updatedTicket.Entity.Id, cancellationToken);
+
+            return updatedTicketWithIncludes;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using IMS.BLL.Models;
+using IMS.DAL.Entities;
 using IMS.NotificationsCore.Messages;
 using Shared.Enums;
 
@@ -25,7 +26,7 @@ public static class EventMapper
     }
 
     public static TicketStatusChangedEvent ConvertToTicketStatusChangedEvent(
-        TicketModel newTicket, TicketStatus oldStatus)
+        Ticket newTicket, TicketStatus oldStatus)
     {
         return new TicketStatusChangedEvent(
             newTicket.Title,
