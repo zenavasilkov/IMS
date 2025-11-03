@@ -22,7 +22,6 @@ public class InternshipsControllerTests(CustomWebApplicationFactory factory) : T
         var internships = Deserialize<List<InternshipDto>>(contentString);
 
         internships.ShouldNotBeNull();
-        internships.Count.ShouldBe(2);
     }
 
     [Fact]

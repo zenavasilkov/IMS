@@ -1,8 +1,15 @@
-﻿namespace IMS.IntegrationTests;
+﻿using Testcontainers.PostgreSql;
 
-public class CustomWebApplicationFactory : WebApplicationFactory<Program>
+namespace IMS.IntegrationTests;
+
+public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly InMemoryDatabaseRoot _inMemoryDatabaseRoot = new();
+    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
+        .WithImage("postgres:16-alpine")
+        .WithDatabase("postgres")
+        .WithUsername("postgres")
+        .WithPassword("postgres")
+        .Build();
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -18,9 +25,21 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 
             foreach (var descriptor in descriptorsToRemove)
                 services.Remove(descriptor);
-
+             
             services.AddDbContext<ImsDbContext>(options =>
-                options.UseInMemoryDatabase("TestDatabase", _inMemoryDatabaseRoot));
+                options.UseNpgsql(_dbContainer.GetConnectionString()));
         });
     }
+
+    public async Task InitializeAsync()
+    {
+        await _dbContainer.StartAsync();
+
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<ImsDbContext>();
+
+        await db.Database.MigrateAsync();
+    }
+
+    Task IAsyncLifetime.DisposeAsync() => _dbContainer.StopAsync();
 }
