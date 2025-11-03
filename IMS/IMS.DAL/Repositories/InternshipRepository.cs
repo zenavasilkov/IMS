@@ -1,8 +1,7 @@
 ﻿using IMS.DAL.Builders;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore; 
-using Shared.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace IMS.DAL.Repositories;
 
@@ -25,41 +24,6 @@ public class InternshipRepository(ImsDbContext context, IInternshipFilterBuilder
         return internship;
     }
 
-    public async Task<List<Internship>> GetInternshipsByStatusAsync(InternshipStatus status, CancellationToken cancellationToken = default)
-    {
-        var query = _internships
-            .AsNoTracking()
-            .Include(i => i.Intern)
-            .Include(i => i.Mentor)
-            .Include(i => i.HumanResourcesManager)
-            .AsQueryable();
-
-        var internships = await filterBuilder
-            .WithStatus(status)
-            .Build(query)
-            .OrderBy(f => f.Id)
-            .ToListAsync(cancellationToken);
-
-        return internships;
-    }
-
-    public async Task<List<Internship>> GetInternshipsByHumanResourcesManagerIdAsync(Guid hrManagerId, CancellationToken cancellationToken = default)
-    {
-        var query = _internships
-            .AsNoTracking()
-            .Include(i => i.Intern)
-            .Include(i => i.Mentor)
-            .Include(i => i.HumanResourcesManager)
-            .AsQueryable();
-
-        var internships = await filterBuilder
-            .WithHumanResourcesManager(hrManagerId)
-            .Build(query)
-            .ToListAsync(cancellationToken);
-
-        return internships;
-    }
-
     public async Task<Internship> GetInternshipsByInternIdAsync(Guid internId, CancellationToken cancellationToken = default)
     {
         var query = _internships
@@ -73,23 +37,6 @@ public class InternshipRepository(ImsDbContext context, IInternshipFilterBuilder
             .WithIntern(internId)
             .Build(query)
             .FirstAsync(cancellationToken);
-
-        return internships;
-    }
-
-    public async Task<List<Internship>> GetInternshipsByMentorIdAsync(Guid mentorId, CancellationToken cancellationToken = default)
-    {
-        var query = _internships
-            .AsNoTracking()
-            .Include(i => i.Intern)
-            .Include(i => i.Mentor)
-            .Include(i => i.HumanResourcesManager)
-            .AsQueryable();
-
-        var internships = await filterBuilder
-            .WithMentor(mentorId)
-            .Build(query)
-            .ToListAsync(cancellationToken);
 
         return internships;
     }

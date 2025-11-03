@@ -16,11 +16,11 @@ public class BoardRepository(ImsDbContext context) : Repository<Board>(context),
         return board;
     }
 
-    public async Task<Board> GetBoardByTicketIdAsync(Guid ticketId, CancellationToken cancellationToken = default)
+    public async Task<Board> GetBoardByTicketIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var board = await _boards
             .Include(b => b.Tickets)
-            .FirstAsync(b => b.Tickets.Any(t => t.Id == ticketId), cancellationToken);
+            .FirstAsync(b => b.Tickets.Any(t => t.Id == id), cancellationToken);
 
         return board!;
     }

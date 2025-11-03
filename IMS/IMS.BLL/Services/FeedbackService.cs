@@ -19,10 +19,10 @@ public class FeedbackService(
 {
     private readonly IMapper _mapper = mapper;
 
-    public async Task<List<FeedbackModel>> GetFeedbacksByTicketIdAsync(Guid feedbackId,
+    public async Task<List<FeedbackModel>> GetFeedbacksByTicketIdAsync(Guid id,
         bool trackChanges = false, CancellationToken cancellationToken = default)
     {
-        var feedbacks = await repository.GetAllAsync(f => f.TicketId == feedbackId, false, cancellationToken);
+        var feedbacks = await repository.GetAllAsync(f => f.TicketId == id, false, cancellationToken);
 
         var feedbackModels = _mapper.Map<List<FeedbackModel>>(feedbacks);
 

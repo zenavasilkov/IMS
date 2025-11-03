@@ -10,7 +10,7 @@ public class FeedbackRepository(ImsDbContext context, IFeedbackFilterBuilder fil
     private readonly DbSet<Feedback> _feedbacks = context.Set<Feedback>();
     private readonly ImsDbContext _context = context;
 
-    public async Task<List<Feedback>> GetFeedbacksAddressedToUserAsync(Guid sentToId, CancellationToken cancellationToken = default)
+    public async Task<List<Feedback>> GetFeedbacksAddressedToUserAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         var query = _feedbacks
             .AsNoTracking()
@@ -18,7 +18,7 @@ public class FeedbackRepository(ImsDbContext context, IFeedbackFilterBuilder fil
             .AsQueryable();
 
         var feedbacks = await filterBuilder
-            .WithSentTo(sentToId)
+            .WithSentTo(userId)
             .Build(query)
             .OrderBy(f => f.Id)
             .ToListAsync(cancellationToken);
@@ -26,7 +26,7 @@ public class FeedbackRepository(ImsDbContext context, IFeedbackFilterBuilder fil
         return feedbacks;
     }
 
-    public async Task<List<Feedback>> GetFeedbacksForTicketAsync(Guid ticketId, CancellationToken cancellationToken = default)
+    public async Task<List<Feedback>> GetFeedbacksByTicketIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var query = _feedbacks
             .AsNoTracking()
@@ -34,7 +34,7 @@ public class FeedbackRepository(ImsDbContext context, IFeedbackFilterBuilder fil
             .AsQueryable();
 
         var feedbacks = await filterBuilder
-            .WithTicket(ticketId)
+            .WithTicket(id)
             .Build(query)
             .OrderBy(f => f.Id)
             .ToListAsync(cancellationToken);
@@ -42,7 +42,7 @@ public class FeedbackRepository(ImsDbContext context, IFeedbackFilterBuilder fil
         return feedbacks;
     }
 
-    public async Task<List<Feedback>> GetFeedbacksSentByUserAsync(Guid sentById, CancellationToken cancellationToken = default)
+    public async Task<List<Feedback>> GetFeedbacksSentByUserAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         var query = _feedbacks
              .AsNoTracking()
@@ -50,7 +50,7 @@ public class FeedbackRepository(ImsDbContext context, IFeedbackFilterBuilder fil
              .AsQueryable();
 
         var feedbacks = await filterBuilder
-            .WithSentTo(sentById)
+            .WithSentTo(userId)
             .Build(query)
             .OrderBy(f => f.Id)
             .ToListAsync(cancellationToken);

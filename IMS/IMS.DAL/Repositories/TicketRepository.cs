@@ -11,7 +11,7 @@ namespace IMS.DAL.Repositories
         private readonly DbSet<Ticket> _tickets = context.Set<Ticket>();
         private readonly ImsDbContext _context = context;
 
-        public async Task<List<Ticket>> GetTicketsByBoardId(Guid boardId, CancellationToken cancellationToken)
+        public async Task<List<Ticket>> GetTicketsByBoardId(Guid id, CancellationToken cancellationToken)
         {
             var query = _tickets
                  .AsNoTracking()
@@ -19,7 +19,7 @@ namespace IMS.DAL.Repositories
                  .AsQueryable();
 
             var tickets = await filterBuilder
-                .WithBoard(boardId)
+                .WithBoard(id)
                 .Build(query)
                 .OrderBy(t => t.Id)
                 .ToListAsync(cancellationToken);
@@ -27,7 +27,7 @@ namespace IMS.DAL.Repositories
             return tickets;
         }
 
-        public async Task<List<Ticket>> GetTicketsByBoardIdAndStatus(Guid boardId, TicketStatus status, CancellationToken cancellationToken)
+        public async Task<List<Ticket>> GetTicketsByBoardIdAndStatus(Guid id, TicketStatus status, CancellationToken cancellationToken)
         {
             var query = _tickets
                  .AsNoTracking()
@@ -35,7 +35,7 @@ namespace IMS.DAL.Repositories
                  .AsQueryable();
 
              var tickets = await filterBuilder
-                 .WithBoard(boardId)
+                 .WithBoard(id)
                  .WithStatus(status)
                  .Build(query)
                  .OrderBy(t => t.Id)

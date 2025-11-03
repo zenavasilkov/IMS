@@ -64,13 +64,13 @@ public class TicketService(
         return createdTicketModel;
     }
 
-    public async Task<List<TicketModel>> GetTicketsByBoardIdAsync(Guid boardId, bool trackChanges = false,
+    public async Task<List<TicketModel>> GetTicketsByBoardIdAsync(Guid id, bool trackChanges = false,
         CancellationToken cancellationToken = default)
     {
-        if (await boardRepository.GetByIdAsync(boardId, cancellationToken: cancellationToken) is null)
-            throw new NotFoundException($"Board with ID {boardId} was not found");
+        if (await boardRepository.GetByIdAsync(id, cancellationToken: cancellationToken) is null)
+            throw new NotFoundException($"Board with ID {id} was not found");
 
-        var tickets = await repository.GetAllAsync(t => t.BoardId == boardId, false, cancellationToken);
+        var tickets = await repository.GetAllAsync(t => t.BoardId == id, false, cancellationToken);
 
         var ticketModels = _mapper.Map<List<TicketModel>>(tickets);
 

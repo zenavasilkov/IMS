@@ -58,10 +58,10 @@ public class InternshipService(IInternshipRepository repository, IUserRepository
         return createdInternshipModel;
     }
 
-    public async Task<List<InternshipModel>> GetInternshipsByMentorIdAsync(Guid mentorId, 
+    public async Task<List<InternshipModel>> GetInternshipsByMentorIdAsync(Guid id, 
         bool trackChanges = false, CancellationToken cancellationToken = default)
     {
-        var internships = await repository.GetAllAsync(i => i.MentorId == mentorId, false, cancellationToken);
+        var internships = await repository.GetAllAsync(i => i.MentorId == id, false, cancellationToken);
 
         var internshipModels = _mapper.Map<List<InternshipModel>>(internships);
 
