@@ -1,0 +1,74 @@
+﻿@using System
+@model IMS.NotificationsCore.Messages.TicketStatusChangedEvent
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Assignment Status Updated</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .content {
+            font-size: 14px;
+        }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 10px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background-color: #f9f9f9;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        .header {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            Assignment Status Updated
+        </div>
+        <div class="content">
+            <p>Hello,</p>
+
+            <p>The status of your assignment in the Intern Management System has changed:</p>
+
+            <div class="highlight">
+                <strong>Title:</strong> @Model.Title <br />
+                <strong>Description:</strong> @Model.Description <br />
+                <strong>Old Status:</strong> @Model.OldStatus <br />
+                <strong>New Status:</strong> @Model.NewStatus
+            </div>
+
+            <p>Best regards,<br />Intern Management System Team</p>
+        </div>
+        <div class="footer">
+            &copy; @(DateTime.Now.Year) Intern Management System. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>
+

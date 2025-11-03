@@ -6,6 +6,7 @@ public class TicketServiceTests
     private readonly Mock<ITicketRepository> _ticketRepositoryMock;
     private readonly Mock<IBoardRepository> _boardRepositoryMock;
     private readonly Mock<IMapper> _mapperMock;
+    private readonly Mock<IMessageService> _messageServiceMock;
     private readonly TicketService _ticketService;
 
     public TicketServiceTests()
@@ -22,9 +23,13 @@ public class TicketServiceTests
         _ticketRepositoryMock = _fixture.Freeze<Mock<ITicketRepository>>();
         _boardRepositoryMock = _fixture.Freeze<Mock<IBoardRepository>>();
         _mapperMock = _fixture.Freeze<Mock<IMapper>>();
+        _messageServiceMock = _fixture.Freeze<Mock<IMessageService>>();
 
-        _ticketService = new TicketService(_ticketRepositoryMock.Object, 
-            _boardRepositoryMock.Object, _mapperMock.Object);
+        _ticketService = new TicketService(
+            _ticketRepositoryMock.Object, 
+            _boardRepositoryMock.Object, 
+            _mapperMock.Object,
+            _messageServiceMock.Object);
     }
 
     [Theory, CustomAutoData]

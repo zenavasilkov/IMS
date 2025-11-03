@@ -15,6 +15,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMS.UnitTests", "IMS.UnitTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMS.IntegrationTests", "IMS.IntegrationTests\IMS.IntegrationTests.csproj", "{B2D8723D-4E7F-4086-AEFF-6F83468BE12C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMS.NotificationsCore", "Messaging\IMS.NotificationsCore.csproj", "{486EADFC-DAFD-4555-8641-008382566E9E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		..\docker-compose.yaml = ..\docker-compose.yaml
+		Dockerfile = Dockerfile
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +53,10 @@ Global
 		{B2D8723D-4E7F-4086-AEFF-6F83468BE12C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2D8723D-4E7F-4086-AEFF-6F83468BE12C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2D8723D-4E7F-4086-AEFF-6F83468BE12C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{486EADFC-DAFD-4555-8641-008382566E9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{486EADFC-DAFD-4555-8641-008382566E9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{486EADFC-DAFD-4555-8641-008382566E9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{486EADFC-DAFD-4555-8641-008382566E9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

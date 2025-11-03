@@ -2,15 +2,27 @@ name: CI Pipeline (Dev)
 
 on:
   push:
-    branches: [ "Dev" ]
+    branches: ["Dev"]
   pull_request:
-    branches: [ "Dev" ]
+    branches: ["Dev"]
   workflow_dispatch:
 
 jobs:
   build:
     name: Build and analyze
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+
+    services:
+      rabbitmq:
+        image: rabbitmq:4-management
+        ports:
+          - 5672:5672
+          - 15672:15672
+        options: >-
+          --health-cmd="rabbitmqctl status"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
       - name: Set up JDK 17
@@ -28,6 +40,14 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
 
       - name: Install Coverlet for .NET
         run: dotnet tool install --global coverlet.console
@@ -50,13 +70,14 @@ jobs:
               /o:"$organization" `
               /d:sonar.login="$env:SONAR_TOKEN" `
               /d:sonar.coverage.exclusions="**/*" `
+              /d:sonar.exclusions="**/Migrations/**,**/Dockerfile,**/*appsettings*.json" `
               $sonarCoverageParam
               
-      - name: Build Solution
-        shell: pwsh
-        run: |
-          $solutionPath = "IMS/IMS.sln"
-          dotnet build $solutionPath --no-incremental
+      - name: Build IMS solution
+        run: dotnet build IMS/IMS.sln --no-incremental
+
+      - name: Build NotificationService
+        run: dotnet build NotificationService/NotificationService.sln --no-incremental
 
       - name: Run Tests and Collect Coverage
         shell: pwsh

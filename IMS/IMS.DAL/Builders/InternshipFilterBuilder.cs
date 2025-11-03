@@ -46,9 +46,9 @@ public class InternshipFilterBuilder : IInternshipFilterBuilder
         return query;
     }
 
-    public IInternshipFilterBuilder WithEntingTo(DateTime? endingDate)
+    public IInternshipFilterBuilder WithEntingTo(DateTime? endDate)
     {
-        _endDate = endingDate;
+        _endDate = endDate;
         return this;
     }
 
