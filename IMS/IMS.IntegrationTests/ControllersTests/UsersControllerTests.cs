@@ -99,7 +99,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
 
         await AddEntitiesAsync(users);
 
-        var url = $"{Users.Base}?PageNumber=1&PageSize=4&Sorter={(int)UserSortingParameter.AscendingFirstName}";
+        var url = $"{Users.Base}?PageNumber=1&PageSize=100&Sorter={(int)UserSortingParameter.AscendingFirstName}";
 
         // Act
         var response = await Client.GetAsync(url);
@@ -137,7 +137,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
 
         await AddEntitiesAsync(users);
 
-        var url = $"{Users.Base}?PageNumber=1&PageSize=4&Sorter={(int)UserSortingParameter.DescendingFirstName}";
+        var url = $"{Users.Base}?PageNumber=1&PageSize=100&Sorter={(int)UserSortingParameter.DescendingFirstName}";
 
         // Act
         var response = await Client.GetAsync(url);
