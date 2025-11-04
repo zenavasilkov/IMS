@@ -98,7 +98,7 @@ jobs:
       - name: Run Tests and Collect Coverage
         shell: pwsh
         env:
-          ConnectionStrings__Redis: redis:6379
+          ConnectionStrings__Redis: localhost:5140
         run: |
           $solutionPath = "IMS/IMS.sln"
           $coverageReportPath = "coverage.opencover.xml"
