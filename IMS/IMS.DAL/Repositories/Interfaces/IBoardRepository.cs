@@ -8,5 +8,5 @@ public interface IBoardRepository : IRepository<Board>
 
     Task<Board?> GetBoardAssignedToUserAsync(Guid userId, CancellationToken cancellationToken = default); 
 
-    Task<Board> GetBoardByTicketIdAsync(Guid ticketId, CancellationToken cancellationToken = default); 
+    Task<Board> GetBoardByTicketIdAsync(Guid id, CancellationToken cancellationToken = default); 
 }
