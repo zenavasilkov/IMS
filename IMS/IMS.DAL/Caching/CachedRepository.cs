@@ -1,4 +1,5 @@
 ﻿using IMS.DAL.Entities;
+using IMS.DAL.Repositories;
 using IMS.DAL.Repositories.Interfaces;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
@@ -7,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace IMS.DAL.Caching;
 
-public class CachedRepository<TEntity>(IRepository<TEntity> decorated,
+public class CachedRepository<TEntity>(Repository<TEntity> decorated,
     IDistributedCache distributedCache, ImsDbContext context) : IRepository<TEntity> where TEntity : EntityBase
 {
     private readonly ImsDbContext _context = context;
