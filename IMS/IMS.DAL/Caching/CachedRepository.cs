@@ -25,9 +25,9 @@ public class CachedRepository<TEntity>(Repository<TEntity> decorated,
 
     public async Task<TEntity?> GetByIdAsync(Guid id, bool trackChanges = false, CancellationToken cancellationToken = default)
     {
-        var chachedEntity = await distributedCache.GetStringAsync(id.ToString(), cancellationToken);
+        var cachedEntity = await distributedCache.GetStringAsync(id.ToString(), cancellationToken);
 
-        if (string.IsNullOrEmpty(chachedEntity))
+        if (string.IsNullOrEmpty(cachedEntity))
         {
             var entity = await decorated.GetByIdAsync(id, trackChanges, cancellationToken);
 
@@ -37,7 +37,7 @@ public class CachedRepository<TEntity>(Repository<TEntity> decorated,
             return entity;
         }
 
-        var entityFromCache = (TEntity?)JsonConvert.DeserializeObject(chachedEntity);
+        var entityFromCache = (TEntity?)JsonConvert.DeserializeObject(cachedEntity);
 
         if (entityFromCache is not null) _context.Set<TEntity>().Attach(entityFromCache);
 
