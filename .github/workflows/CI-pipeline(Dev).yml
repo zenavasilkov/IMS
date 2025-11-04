@@ -81,13 +81,6 @@ jobs:
               /d:sonar.coverage.exclusions="**/*" `
               /d:sonar.exclusions="**/Migrations/**,**/Dockerfile,**/*appsettings*.json" `
               $sonarCoverageParam
-       
-      - name: Wait for Redis to be ready
-        uses: jakejarvis/wait-action@v0.1.1
-        with:
-          host: localhost
-          port: 5140
-          timeout: 30
               
       - name: Build IMS solution
         run: dotnet build IMS/IMS.sln --no-incremental
