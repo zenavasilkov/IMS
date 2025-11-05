@@ -46,17 +46,13 @@ public sealed class Candidate : Entity
         string? linkedIn = null,
         string? patronymic = null)
     {
-        if (id == Guid.Empty)
-            return Result.Failure<Candidate>(CandidateErrors.EmptyId);
+        if (id == Guid.Empty) return CandidateErrors.EmptyId;
 
-        if (string.IsNullOrWhiteSpace(firstName))
-            return Result.Failure<Candidate>(CandidateErrors.EmptyFirstName);
+        if (string.IsNullOrWhiteSpace(firstName)) return CandidateErrors.EmptyFirstName;
 
-        if (string.IsNullOrWhiteSpace(lastName))
-            return Result.Failure<Candidate>(CandidateErrors.EmptyLastName);
+        if (string.IsNullOrWhiteSpace(lastName)) return CandidateErrors.EmptyLastName;
 
-        if (!Validator.IsValidEmail(email))
-            return Result.Failure<Candidate>(CandidateErrors.InvalidEmail);
+        if (!Validator.IsValidEmail(email)) return CandidateErrors.InvalidEmail;
 
         var candidate =  new Candidate(id, firstName.Trim(), lastName.Trim(), email.Trim(),
             isApplied, phoneNumber?.Trim(), cvLink?.Trim(), linkedIn?.Trim(), patronymic?.Trim());

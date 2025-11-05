@@ -1,5 +1,5 @@
-﻿using Domain.Errors;
-using Domain.Shared;
+﻿using Domain.Shared;
+using static Domain.Errors.DomainErrors;
 
 namespace Domain.Entities;
 
@@ -19,19 +19,16 @@ public sealed class Department : Entity
 
     public static Result<Department> Create(Guid id, string name, string? description = null)
     {
-        if (id == Guid.Empty)
-            return Result.Failure<Department>(DomainErrors.DepartmentErrors.EmptyId);
+        if (id == Guid.Empty) return DepartmentErrors.EmptyId;
 
-        if (string.IsNullOrWhiteSpace(name))
-            return Result.Failure<Department>(DomainErrors.DepartmentErrors.EmptyName);
+        if (string.IsNullOrWhiteSpace(name)) return DepartmentErrors.EmptyName;
 
         name = name.Trim();
 
-        if (name.Length > _maxNameLength)
-            return Result.Failure<Department>(DomainErrors.DepartmentErrors.NameTooLong);
+        if (name.Length > _maxNameLength) return DepartmentErrors.NameTooLong;
 
         if (description is not null && description.Length > maxDescriptionLength)
-            return Result.Failure<Department>(DomainErrors.DepartmentErrors.DescriptionTooLong);
+            return DepartmentErrors.DescriptionTooLong;
 
         var department = new Department(id, name, description?.Trim());
 

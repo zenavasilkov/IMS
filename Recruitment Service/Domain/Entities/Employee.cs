@@ -23,17 +23,13 @@ public sealed class Employee : Entity
 
     public static Result<Employee> Create(Guid id, string fullName, EmploeeRole role, string email, Department department)
     {
-        if (id == Guid.Empty)
-            return Result.Failure<Employee>(EmployeeErrors.EmptyId);
+        if (id == Guid.Empty) return EmployeeErrors.EmptyId;
 
-        if (string.IsNullOrWhiteSpace(fullName))
-            return Result.Failure<Employee>(EmployeeErrors.EmptyFullName);
+        if (string.IsNullOrWhiteSpace(fullName)) return EmployeeErrors.EmptyFullName;
 
-        if (!Validator.IsValidEmail(email))
-            return Result.Failure<Employee>(EmployeeErrors.InvalidEmail);
+        if (!Validator.IsValidEmail(email)) return EmployeeErrors.InvalidEmail;
 
-        if (department is null)
-            return Result.Failure<Employee>(EmployeeErrors.NullDepartment);
+        if (department is null) return EmployeeErrors.NullDepartment;
 
         var employee = new Employee(id, fullName.Trim(), role, email.Trim(), department);
 

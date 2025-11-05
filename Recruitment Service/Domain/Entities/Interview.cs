@@ -45,23 +45,17 @@ public sealed class Interview : Entity
         string feedback,
         bool isPassed)
     {
-        if (id == Guid.Empty)
-            return Result.Failure<Interview>(InterviewErrors.EmptyId);
+        if (id == Guid.Empty) return InterviewErrors.EmptyId;
 
-        if (candidate is null)
-            return Result.Failure<Interview>(InterviewErrors.NullCandidate);
+        if (candidate is null) return InterviewErrors.NullCandidate;
 
-        if (interviewer is null)
-            return Result.Failure<Interview>(InterviewErrors.NullInterviewer);
+        if (interviewer is null) return InterviewErrors.NullInterviewer;
 
-        if (department is null)
-            return Result.Failure<Interview>(InterviewErrors.NullDepartment);
+        if (department is null) return InterviewErrors.NullDepartment;
 
-        if (scheduledAt < DateTime.UtcNow.Date)
-            return Result.Failure<Interview>(InterviewErrors.ScheduledInPast);
+        if (scheduledAt < DateTime.UtcNow.Date) return InterviewErrors.ScheduledInPast;
 
-        if(string.IsNullOrWhiteSpace(feedback))
-            return Result.Failure<Interview>(InterviewErrors.EmptyFeedback);
+        if(string.IsNullOrWhiteSpace(feedback)) return InterviewErrors.EmptyFeedback;
 
         var interview = new Interview(id, candidate, interviewer, department, scheduledAt, feedback.Trim(), isPassed);
 

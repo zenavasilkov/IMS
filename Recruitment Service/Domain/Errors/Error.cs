@@ -1,4 +1,6 @@
-﻿namespace Domain.Errors;
+﻿using Domain.Shared;
+
+namespace Domain.Errors;
 
 public class Error(string code, string message) : IEquatable<Error>
 {
@@ -9,6 +11,8 @@ public class Error(string code, string message) : IEquatable<Error>
     public string Message { get; } = message;
 
     public static implicit operator string(Error error) => error.Message;
+
+    public static implicit operator Result(Error error) => Result.Failure(error);
 
     public static bool operator ==(Error? a, Error? b)
     {
@@ -28,4 +32,5 @@ public class Error(string code, string message) : IEquatable<Error>
     public override int GetHashCode() => HashCode.Combine(Code, Message);
 
     public override string ToString() => Code;
+
 }
