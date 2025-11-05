@@ -31,5 +31,4 @@ public sealed class Error(string code, string message) : IEquatable<Error>
     public override int GetHashCode() => HashCode.Combine(Code, Message);
 
     public override string ToString() => Code;
-
 }
