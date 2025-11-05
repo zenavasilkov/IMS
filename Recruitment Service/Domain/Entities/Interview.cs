@@ -63,7 +63,7 @@ public sealed class Interview : Entity
         if(string.IsNullOrWhiteSpace(feedback))
             return Result.Failure<Interview>(InterviewErrors.EmptyFeedback);
 
-        var interview = new Interview(id, candidate, interviewer, department, scheduledAt, feedback?.Trim() ?? "", isPassed);
+        var interview = new Interview(id, candidate, interviewer, department, scheduledAt, feedback.Trim(), isPassed);
 
         return interview;
     }
