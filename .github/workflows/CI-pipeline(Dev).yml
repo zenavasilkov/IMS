@@ -86,7 +86,7 @@ jobs:
         run: dotnet build IMS/IMS.sln --no-incremental
 
       - name: Build NotificationService
-        run: dotnet build "Notification Service/NotificationService.sln" --no-incremental
+        run: dotnet build NotificationService/NotificationService.sln --no-incremental
 
       - name: Build Recruitment Service solution
         run: dotnet build "Recruitment Service/RecruitmentService.sln" --no-incremental
