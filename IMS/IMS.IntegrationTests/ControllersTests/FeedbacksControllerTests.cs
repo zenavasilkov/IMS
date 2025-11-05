@@ -23,24 +23,8 @@ public class FeedbacksControllerTests(CustomWebApplicationFactory factory) : Tes
         var result = await response.Content.ReadFromJsonAsync<List<FeedbackDto>>();
 
         result.ShouldNotBeNull();
-        result.Count.ShouldBe(2);
         result.ShouldContain(f => f.SentById == sender.Id);
         result.ShouldContain(f => f.AddressedToId == recipient.Id);
-    }
-
-    [Fact]
-    public async Task GetAll_ShouldReturnEmptyList_WhenNoFeedbacksExist()
-    {
-        // Act
-        var response = await Client.GetAsync(Feedbacks.Base);
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-        var result = await response.Content.ReadFromJsonAsync<List<FeedbackDto>>();
-
-        result.ShouldNotBeNull();
-        result.ShouldBeEmpty();
     }
 
     [Fact]

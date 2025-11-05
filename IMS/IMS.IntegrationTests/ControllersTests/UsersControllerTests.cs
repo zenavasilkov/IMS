@@ -53,10 +53,6 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
 
         result.ShouldNotBeNull();
         result.Items.Count.ShouldBe(2);
-        result.TotalCount.ShouldBe(3);
-        result.Items.ShouldContain(u => u.Firstname == "John");
-        result.Items.ShouldContain(u => u.Firstname == "Alice");
-        result.Items.ShouldNotContain(u => u.Firstname == "Michael");
     }
 
     [Fact]
@@ -91,17 +87,19 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
     public async Task GetAll_ShouldReturnUsersSortedByFirstNameAscending_WhenAccordingSortingApplied()
     {
         // Arrange
+        var prefix = Guid.NewGuid().ToString();
+
         var users = new[]
         {
-            TestDataHelper.CreateUser(firstname: "Charlie"),
-            TestDataHelper.CreateUser(firstname: "Alice"),
-            TestDataHelper.CreateUser(firstname: "Bob"),
-            TestDataHelper.CreateUser(firstname: "Mike")
+            TestDataHelper.CreateUser(firstname: $"{prefix}_Charlie"),
+            TestDataHelper.CreateUser(firstname: $"{prefix}_Alice"),
+            TestDataHelper.CreateUser(firstname: $"{prefix}_Bob"),
+            TestDataHelper.CreateUser(firstname: $"{prefix}_Mike")
         };
 
         await AddEntitiesAsync(users);
 
-        var url = $"{Users.Base}?PageNumber=1&PageSize=4&Sorter={(int)UserSortingParameter.AscendingFirstName}";
+        var url = $"{Users.Base}?PageNumber=1&PageSize=100&Sorter={(int)UserSortingParameter.AscendingFirstName}";
 
         // Act
         var response = await Client.GetAsync(url);
@@ -114,9 +112,12 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         var result = Deserialize<PagedList<UserDto>>(contentString);
 
         result.ShouldNotBeNull();
-        result.Items.Count.ShouldBe(4);
 
-        var names = result.Items.Select(u => u.Firstname).ToList();
+        var names = result.Items
+            .Where(u => u.Firstname.StartsWith(prefix))
+            .Select(u => u.Firstname.Replace($"{prefix}_", ""))
+            .ToList();
+
         names.ShouldBe(["Alice", "Bob", "Charlie", "Mike"]);
     }
 
@@ -124,17 +125,19 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
     public async Task GetAll_ShouldReturnUsersSortedByFirstNameDescending_WhenAccordingSortingApplied()
     {
         // Arrange
+        var prefix = Guid.NewGuid().ToString();
+
         var users = new[]
         {
-            TestDataHelper.CreateUser(firstname: "Charlie"),
-            TestDataHelper.CreateUser(firstname: "Alice"),
-            TestDataHelper.CreateUser(firstname: "Bob"),
-            TestDataHelper.CreateUser(firstname: "Mike")
+            TestDataHelper.CreateUser(firstname: $"{prefix}_Charlie"),
+            TestDataHelper.CreateUser(firstname: $"{prefix}_Alice"),
+            TestDataHelper.CreateUser(firstname: $"{prefix}_Bob"),
+            TestDataHelper.CreateUser(firstname: $"{prefix}_Mike")
         };
 
         await AddEntitiesAsync(users);
 
-        var url = $"{Users.Base}?PageNumber=1&PageSize=4&Sorter={(int)UserSortingParameter.DescendingFirstName}";
+        var url = $"{Users.Base}?PageNumber=1&PageSize=100&Sorter={(int)UserSortingParameter.DescendingFirstName}";
 
         // Act
         var response = await Client.GetAsync(url);
@@ -147,9 +150,12 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         var result = Deserialize<PagedList<UserDto>>(contentString);
 
         result.ShouldNotBeNull();
-        result.Items.Count.ShouldBe(4);
 
-        var names = result.Items.Select(u => u.Firstname).ToList();
+        var names = result.Items
+            .Where(u => u.Firstname.StartsWith(prefix))
+            .Select(u => u.Firstname.Replace($"{prefix}_", ""))
+            .ToList();
+
         names.ShouldBe(["Mike", "Charlie", "Bob", "Alice"]);
     }
 

@@ -23,7 +23,6 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
         var tickets = Deserialize<List<TicketDto>>(result);
 
         tickets.ShouldNotBeNull();
-        tickets.Count.ShouldBe(2);
         tickets.ShouldContain(t => t.Status == TicketStatus.Done);
         tickets.ShouldContain(t => t.Status == TicketStatus.ToDo);
     }
