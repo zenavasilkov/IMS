@@ -86,10 +86,10 @@ jobs:
         run: dotnet build IMS/IMS.sln --no-incremental
 
       - name: Build NotificationService
-        run: dotnet build NotificationService/NotificationService.sln --no-incremental
+        run: dotnet build "Notification Service/NotificationService.sln" --no-incremental
 
       - name: Build Recruitment Service solution
-        run: dotnet build IMS/RecruitmentService.sln --no-incremental
+        run: dotnet build RecruitmentService/RecruitmentService.sln --no-incremental
 
       - name: Run Tests and Collect Coverage
         shell: pwsh
