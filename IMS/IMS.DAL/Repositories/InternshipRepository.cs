@@ -2,14 +2,27 @@
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Shared.Pagination;
+using System.Linq.Expressions;
 
 namespace IMS.DAL.Repositories;
 
-public class InternshipRepository(ImsDbContext context, IInternshipFilterBuilder filterBuilder) : Repository<Internship>(context), IInternshipRepository
+public class InternshipRepository(ImsDbContext context, IInternshipFilterBuilder filterBuilder,
+    IRepository<Internship> repository) : IInternshipRepository
 {
     private readonly DbSet<Internship> _internships = context.Set<Internship>();
 
-    public async override Task<Internship?> GetByIdAsync(Guid id, bool trackChanges = false, CancellationToken cancellationToken = default)
+    public Task<Internship> CreateAsync(Internship entity, CancellationToken cancellationToken = default) =>
+        repository.CreateAsync(entity, cancellationToken);
+
+    public Task DeleteAsync(Internship entity, CancellationToken cancellationToken = default) =>
+        repository.DeleteAsync(entity, cancellationToken);
+
+    public Task<List<Internship>> GetAllAsync(Expression<Func<Internship, bool>>? predicate = null,
+        bool trackChanges = false, CancellationToken cancellationTokent = default) =>
+        repository.GetAllAsync(predicate, trackChanges, cancellationTokent);
+
+    public async Task<Internship?> GetByIdAsync(Guid id, bool trackChanges = false, CancellationToken cancellationToken = default)
     {
         var query = _internships.AsQueryable();
 
@@ -40,4 +53,11 @@ public class InternshipRepository(ImsDbContext context, IInternshipFilterBuilder
 
         return internships;
     }
+
+    public Task<PagedList<Internship>> GetPagedAsync(Expression<Func<Internship, bool>>? predicate,
+        PaginationParameters paginationParameters, bool trackChanges = false, CancellationToken cancellationToken = default) =>
+        repository.GetPagedAsync(predicate, paginationParameters, trackChanges, cancellationToken);
+
+    public Task<Internship> UpdateAsync(Internship entity, CancellationToken cancellationToken = default) =>
+        repository.UpdateAsync(entity, cancellationToken);
 }

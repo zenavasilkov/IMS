@@ -4,7 +4,7 @@ namespace IMS.DAL.Repositories.Interfaces;
 
 public interface IFeedbackRepository : IRepository<Feedback>
 {
-    Task<List<Feedback>> GetFeedbacksByTicketIdAsync(Guid ticketId, CancellationToken cancellationToken = default);
+    Task<List<Feedback>> GetFeedbacksByTicketIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     Task<List<Feedback>> GetFeedbacksSentByUserAsync(Guid userId, CancellationToken cancellationToken = default);
 
