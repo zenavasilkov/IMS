@@ -27,6 +27,8 @@ public sealed class Interview : Entity
         DepartmentId = department.Id;
     }
 
+    private Interview() : base(Guid.NewGuid()) { }
+
     public Guid CandidateId { get; private set; }
     public Guid InterviewerId { get; private set; }
     public Guid DepartmentId { get; private set; }
@@ -35,9 +37,9 @@ public sealed class Interview : Entity
     public bool IsPassed { get; private set; }
     public bool IsCancelled { get; private set; }
 
-    public Candidate Candidate { get; private set; }
-    public Employee Interviewer { get; private set; }
-    public Department Department { get; private set; }
+    public Candidate? Candidate { get; private set; }
+    public Employee? Interviewer { get; private set; }
+    public Department? Department { get; private set; }
 
     public static Result<Interview> Create(
         Guid id,

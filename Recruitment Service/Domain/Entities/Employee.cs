@@ -14,12 +14,15 @@ public sealed class Employee : Entity
         Department = department;
         DepartmentId = department.Id;
     }
-    public Guid DepartmentId { get; private set; }
-    public string FullName { get; private set; }
-    public EmploeeRole Role { get; private set; }
-    public string Email { get; private set; }
 
-    public Department Department { get; private set; }
+    private Employee() : base(Guid.Empty) { }
+
+    public Guid DepartmentId { get; private set; }
+    public string FullName { get; private set; } = string.Empty;
+    public EmploeeRole Role { get; private set; }
+    public string Email { get; private set; } = string.Empty;
+
+    public Department? Department { get; private set; }
 
     public static Result<Employee> Create(Guid id, string fullName, EmploeeRole role, string email, Department department)
     {
