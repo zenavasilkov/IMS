@@ -9,6 +9,8 @@ public sealed class Interview : Entity
 {
     private Interview(Guid id) : base(id) { }
 
+    private Interview() : base(Guid.NewGuid()) { }
+
     public Guid CandidateId { get; private set; }
     public Guid InterviewerId { get; private set; }
     public Guid DepartmentId { get; private set; }
