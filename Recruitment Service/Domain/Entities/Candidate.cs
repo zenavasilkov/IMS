@@ -59,4 +59,20 @@ public sealed class Candidate : Entity
 
         return candidate;
     }
+
+    public Result Apply()
+    {
+        if (IsApplied) return CandidateErrors.AlreadyApplied;
+
+        IsApplied = true;
+
+        return Result.Success();
+    }
+
+    public Result UpdateCvLink(string? newCvLink)
+    {
+        CvLink = newCvLink;
+
+        return Result.Success();
+    }
 }

@@ -12,7 +12,8 @@ public sealed class Interview : Entity
         Department department,
         DateTime scheduledAt,
         string feedback,
-        bool isPassed) : base(id)
+        bool isPassed,
+        bool isCancelled) : base(id)
     {
         Candidate = candidate;
         Interviewer = interviewer;
@@ -20,6 +21,7 @@ public sealed class Interview : Entity
         ScheduledAt = scheduledAt;
         Feedback = feedback;
         IsPassed = isPassed;
+        IsCancelled = isCancelled;
         CandidateId = candidate.Id;
         InterviewerId = interviewer.Id;
         DepartmentId = department.Id;
@@ -31,6 +33,7 @@ public sealed class Interview : Entity
     public DateTime ScheduledAt { get; private set; }
     public string Feedback { get; private set; }
     public bool IsPassed { get; private set; }
+    public bool IsCancelled { get; private set; }
 
     public Candidate Candidate { get; private set; }
     public Employee Interviewer { get; private set; }
@@ -57,8 +60,38 @@ public sealed class Interview : Entity
 
         if(string.IsNullOrWhiteSpace(feedback)) return InterviewErrors.EmptyFeedback;
 
-        var interview = new Interview(id, candidate, interviewer, department, scheduledAt, feedback.Trim(), isPassed);
+        var interview = new Interview(id, candidate, interviewer, department, scheduledAt, feedback.Trim(), isPassed, false);
 
         return interview;
+    }
+
+    public Result Reschedule(DateTime newDate)
+    {
+        if (newDate < DateTime.UtcNow.Date) return InterviewErrors.ScheduledInPast;
+
+        ScheduledAt = newDate;
+
+        return Result.Success();
+    }
+
+    public Result UpdateFeedback(string feedback, bool isPassed)
+    {
+        if (string.IsNullOrWhiteSpace(feedback)) return InterviewErrors.EmptyFeedback;
+
+        Feedback = feedback.Trim();
+        IsPassed = isPassed;
+
+        return Result.Success();
+    }
+
+    public Result Cancel()
+    {
+        if (ScheduledAt < DateTime.UtcNow.Date) return InterviewErrors.CancelPassedInterview;
+
+        if(IsCancelled) return InterviewErrors.AlreadyCancelled;
+
+        IsCancelled = true;
+
+        return Result.Success();
     }
 }

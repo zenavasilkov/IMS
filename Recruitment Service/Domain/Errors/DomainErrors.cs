@@ -17,6 +17,9 @@ public static class DomainErrors
 
         public static readonly Error InvalidEmail =
             new($"{nameof(CandidateErrors)}.{nameof(InvalidEmail)}", "Candidate email is invalid.");
+
+        public static readonly Error AlreadyApplied =
+            new($"{nameof(CandidateErrors)}.{nameof(AlreadyApplied)}", "Candidate is already applied.");
     }
 
     public static class DepartmentErrors
@@ -29,7 +32,7 @@ public static class DomainErrors
 
         public static readonly Error NameTooLong =
             new($"{nameof(DepartmentErrors)}.{nameof(NameTooLong)}",
-                $"DepartmentErrors name cannot exceed {Department._maxNameLength} characters.");
+                $"DepartmentErrors name cannot exceed {Department.maxNameLength} characters.");
 
         public static readonly Error DescriptionTooLong =
             new($"{nameof(DepartmentErrors)}.{nameof(DescriptionTooLong)}",
@@ -49,6 +52,12 @@ public static class DomainErrors
 
         public static readonly Error NullDepartment =
             new($"{nameof(EmployeeErrors)}.{nameof(NullDepartment)}", "Employee must belong to a department.");
+
+        public static readonly Error TheSameRole =
+            new($"{nameof(EmployeeErrors)}.{nameof(TheSameRole)}", "New employee role has to deffer from current.");
+
+        public static readonly Error UndefinedRole =
+            new($"{nameof(EmployeeErrors)}.{nameof(UndefinedRole)}", "Employee role cannot be undefined.");
     }
 
     public static class InterviewErrors
@@ -70,5 +79,11 @@ public static class DomainErrors
 
         public static readonly Error EmptyFeedback =
            new($"{nameof(InterviewErrors)}.{nameof(EmptyFeedback)}", "Interview feedback cannot be empty.");
+
+        public static readonly Error CancelPassedInterview =
+           new($"{nameof(InterviewErrors)}.{nameof(CancelPassedInterview)}", "Cannot cancel already passed interview.");
+
+        public static readonly Error AlreadyCancelled =
+           new($"{nameof(InterviewErrors)}.{nameof(AlreadyCancelled)}", "Interviewhas already been cancelled.");
     }
 }

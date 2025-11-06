@@ -6,7 +6,7 @@ namespace Domain.Entities;
 public sealed class Department : Entity
 {
     public const int maxDescriptionLength = 1000;
-    public const int _maxNameLength = 100;
+    public const int maxNameLength = 100;
 
     private Department(Guid id, string name, string? description = null) : base(id)
     {
@@ -25,7 +25,7 @@ public sealed class Department : Entity
 
         name = name.Trim();
 
-        if (name.Length > _maxNameLength) return DepartmentErrors.NameTooLong;
+        if (name.Length > maxNameLength) return DepartmentErrors.NameTooLong;
 
         if (description is not null && description.Length > maxDescriptionLength)
             return DepartmentErrors.DescriptionTooLong;
@@ -33,5 +33,28 @@ public sealed class Department : Entity
         var department = new Department(id, name, description?.Trim());
 
         return department;
+    }
+
+    public Result Rename(string newName)
+    {
+        newName = newName.Trim();
+
+        if (!string.IsNullOrWhiteSpace(newName)) return DepartmentErrors.EmptyName;
+
+        if (newName.Length > maxNameLength) return DepartmentErrors.NameTooLong;
+
+        Name = newName;
+
+        return Result.Success();
+    }
+
+    public Result UpdateDescription(string? newDescription)
+    {
+        newDescription = newDescription?.Trim();
+
+        if (newDescription is not null && newDescription.Length > maxDescriptionLength)
+            return DepartmentErrors.DescriptionTooLong;
+
+        return Result.Success();
     }
 }
