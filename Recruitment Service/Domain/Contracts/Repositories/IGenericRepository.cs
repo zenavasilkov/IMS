@@ -2,7 +2,7 @@
 
 namespace Domain.Contracts.Repositories;
 
-public interface IGeneralRepository<T> : IGenericReadOnlyRepository<T> where T : Entity
+public interface IGenericRepository<T> : IGenericReadOnlyRepository<T> where T : Entity
 {
     Task<T> CreateAsync(T entity, CancellationToken cancellationToken = default);
 
