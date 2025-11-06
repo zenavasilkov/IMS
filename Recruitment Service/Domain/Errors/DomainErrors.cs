@@ -37,18 +37,6 @@ public static class DomainErrors
         public static readonly Error DescriptionTooLong =
             new($"{nameof(DepartmentErrors)}.{nameof(DescriptionTooLong)}",
                 $"DepartmentErrors description cannot exceed {Department.maxDescriptionLength} characters.");
-
-        public static readonly Error AddEmptyEmployee =
-            new($"{nameof(DepartmentErrors)}.{nameof(AddEmptyEmployee)}",
-                "Cannot add empty employee to the department.");
-
-        public static readonly Error AlreadyHasDepartment =
-            new($"{nameof(DepartmentErrors)}.{nameof(AlreadyHasDepartment)}",
-                "Cannot add employee because it already in another department.");
-
-        public static readonly Error EmployeeNotInTheDepartment =
-            new($"{nameof(DepartmentErrors)}.{nameof(EmployeeNotInTheDepartment)}",
-                "Cannot remove employee because he is not a part of the department.");
     }
 
     public static class EmployeeErrors
