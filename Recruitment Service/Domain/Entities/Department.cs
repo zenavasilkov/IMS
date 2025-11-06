@@ -55,6 +55,8 @@ public sealed class Department : Entity
         if (newDescription is not null && newDescription.Length > maxDescriptionLength)
             return DepartmentErrors.DescriptionTooLong;
 
+        Description = newDescription;
+
         return Result.Success();
     }
 }

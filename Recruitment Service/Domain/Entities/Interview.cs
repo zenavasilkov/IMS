@@ -11,9 +11,9 @@ public sealed class Interview : Entity
         Employee interviewer,
         Department department,
         DateTime scheduledAt,
-        string feedback,
-        bool isPassed,
-        bool isCancelled) : base(id)
+        string? feedback = null,
+        bool isPassed = false,
+        bool isCancelled = false) : base(id)
     {
         Candidate = candidate;
         Interviewer = interviewer;
@@ -31,7 +31,7 @@ public sealed class Interview : Entity
     public Guid InterviewerId { get; private set; }
     public Guid DepartmentId { get; private set; }
     public DateTime ScheduledAt { get; private set; }
-    public string Feedback { get; private set; }
+    public string? Feedback { get; private set; }
     public bool IsPassed { get; private set; }
     public bool IsCancelled { get; private set; }
 
@@ -44,9 +44,7 @@ public sealed class Interview : Entity
         Candidate candidate,
         Employee interviewer,
         Department department,
-        DateTime scheduledAt,
-        string feedback,
-        bool isPassed)
+        DateTime scheduledAt)
     {
         if (id == Guid.Empty) return InterviewErrors.EmptyId;
 
@@ -58,9 +56,7 @@ public sealed class Interview : Entity
 
         if (scheduledAt < DateTime.UtcNow.Date) return InterviewErrors.ScheduledInPast;
 
-        if(string.IsNullOrWhiteSpace(feedback)) return InterviewErrors.EmptyFeedback;
-
-        var interview = new Interview(id, candidate, interviewer, department, scheduledAt, feedback.Trim(), isPassed, false);
+        var interview = new Interview(id, candidate, interviewer, department, scheduledAt);
 
         return interview;
     }
@@ -74,7 +70,7 @@ public sealed class Interview : Entity
         return Result.Success();
     }
 
-    public Result UpdateFeedback(string feedback, bool isPassed)
+    public Result AddFeedback(string feedback, bool isPassed)
     {
         if (string.IsNullOrWhiteSpace(feedback)) return InterviewErrors.EmptyFeedback;
 
