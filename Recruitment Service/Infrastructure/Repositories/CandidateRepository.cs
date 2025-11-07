@@ -17,13 +17,6 @@ public class CandidateRepository(RecruitmentDbContext context, IGenericRepositor
         PaginationParameters paginationParameters, bool trackChanges = false, CancellationToken cancellationToken = default) =>
         repository.GetByConditionAsync(expression, paginationParameters, trackChanges, cancellationToken);
 
-    public async Task<Candidate?> GetByEmailAsync(string email, CancellationToken cancellationToken)
-    {
-        var candidate = await context.Candidates.FirstOrDefaultAsync(c => c.Email == email, cancellationToken);
-
-        return candidate;
-    }
-
     public async Task<Candidate?> GetByEmailAsync(string email, bool trackChanges = true, CancellationToken cancellationToken = default)
     {
         var query = context.Candidates.AsQueryable();

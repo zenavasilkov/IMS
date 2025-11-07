@@ -23,7 +23,6 @@ public class RegisterCandidateRequestHandler(ICandidateRepository repository) : 
             Guid.NewGuid(),
             fullName.Value,
             request.Email,
-            request.IsApplied,
             request.PhoneNumber,
             request.CvLink,
             request.LinkedIn);

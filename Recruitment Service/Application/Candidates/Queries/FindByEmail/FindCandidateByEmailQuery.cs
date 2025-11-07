@@ -1,5 +1,4 @@
 ﻿using Application.Abstractions.Messaging;
-using Domain.Entities;
 
 namespace Application.Candidates.Queries.FindByEmail;
 

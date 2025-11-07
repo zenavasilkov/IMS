@@ -11,7 +11,7 @@ public sealed class Candidate : Entity
 
     public FullName FullName { get; private set; } = FullName.Default;
     public string Email { get; private set; } = string.Empty;
-    public bool IsApplied { get; private set; }
+    public bool IsAcceptedToInternship { get; private set; } = false;
     public string? PhoneNumber { get; private set; }
     public string? CvLink { get; private set; }
     public string? LinkedIn { get; private set; } 
@@ -20,7 +20,6 @@ public sealed class Candidate : Entity
         Guid id, 
         FullName fullName,
         string email,
-        bool isApplied,
         string? phoneNumber = null,
         string? cvLink = null,
         string? linkedIn = null)
@@ -33,7 +32,6 @@ public sealed class Candidate : Entity
         { 
             Email = email.Trim(),
             FullName = fullName,
-            IsApplied = isApplied,
             PhoneNumber = phoneNumber?.Trim(),
             CvLink = cvLink?.Trim(),
             LinkedIn = linkedIn?.Trim(), 
@@ -42,11 +40,11 @@ public sealed class Candidate : Entity
         return candidate;
     }
 
-    public Result Apply()
+    public Result AcceptCandidateToInternship()
     {
-        if (IsApplied) return CandidateErrors.AlreadyApplied;
+        if (IsAcceptedToInternship) return CandidateErrors.AlreadyApplied;
 
-        IsApplied = true;
+        IsAcceptedToInternship = true;
 
         return Result.Success();
     }

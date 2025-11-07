@@ -6,7 +6,6 @@ public sealed record RegisterCandidateCommand(
     string FirstName,
     string LastName,
     string Email,
-    bool IsApplied,
     string? PhoneNumber = null,
     string? CvLink = null,
     string? LinkedIn = null,

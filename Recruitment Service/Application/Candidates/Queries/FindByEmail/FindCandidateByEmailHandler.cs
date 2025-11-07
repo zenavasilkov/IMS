@@ -18,7 +18,7 @@ public class FindCandidateByEmailHandler(ICandidateRepository repository) : IQue
             candidate.FullName.FirstName,
             candidate.FullName.LastName,
             candidate.Email,
-            candidate.IsApplied,
+            candidate.IsAcceptedToInternship,
             candidate.PhoneNumber,
             candidate.CvLink,
             candidate.LinkedIn,

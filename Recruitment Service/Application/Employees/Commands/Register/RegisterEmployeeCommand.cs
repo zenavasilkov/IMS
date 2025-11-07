@@ -3,7 +3,7 @@ using Domain.Enums;
 
 namespace Application.Employees.Commands.Register;
 
-public sealed record RegistedEmployeeCommand(
+public sealed record RegisterEmployeeCommand(
     string FirstName,
     string LastName, 
     EmploeeRole Role,

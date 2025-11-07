@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(RecruitmentDbContext))]
-    [Migration("20251107152913_InitialCreate")]
+    [Migration("20251107212203_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -38,21 +38,10 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsApplied")
+                    b.Property<bool>("IsAcceptedToInternship")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("LinkedIn")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Patronymic")
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
@@ -143,6 +132,42 @@ namespace Infrastructure.Migrations
                     b.HasIndex("InterviewerId");
 
                     b.ToTable("Interviews");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Candidate", b =>
+                {
+                    b.OwnsOne("Domain.ValueObjects.FullName", "FullName", b1 =>
+                        {
+                            b1.Property<Guid>("CandidateId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("FirstName")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)")
+                                .HasColumnName("FirstName");
+
+                            b1.Property<string>("LastName")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)")
+                                .HasColumnName("LastName");
+
+                            b1.Property<string>("Patronymic")
+                                .HasMaxLength(50)
+                                .HasColumnType("character varying(50)")
+                                .HasColumnName("Patronymic");
+
+                            b1.HasKey("CandidateId");
+
+                            b1.ToTable("Candidates");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CandidateId");
+                        });
+
+                    b.Navigation("FullName")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.Employee", b =>

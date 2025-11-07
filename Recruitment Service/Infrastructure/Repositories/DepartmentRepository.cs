@@ -27,7 +27,7 @@ public class DepartmentRepository(RecruitmentDbContext context, IGenericReposito
 
         query = trackChanges ? query : query.AsNoTracking();
             
-        var department = await query.FirstOrDefaultAsync(d => d.Name == name, cancellationToken);
+        var department = await query.FirstOrDefaultAsync(d => d.Name.Equals(name, StringComparison.OrdinalIgnoreCase), cancellationToken);
 
         return department;
     }

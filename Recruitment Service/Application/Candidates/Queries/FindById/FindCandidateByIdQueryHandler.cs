@@ -19,7 +19,7 @@ public class FindCandidateByIdQueryHandler(ICandidateRepository repository)
             candidate.FullName.FirstName,
             candidate.FullName.LastName,
             candidate.Email,
-            candidate.IsApplied,
+            candidate.IsAcceptedToInternship,
             candidate.PhoneNumber,
             candidate.CvLink,
             candidate.LinkedIn,

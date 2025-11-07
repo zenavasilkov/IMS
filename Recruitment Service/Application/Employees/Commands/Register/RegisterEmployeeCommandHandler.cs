@@ -8,10 +8,10 @@ using static Application.Errors.ApplicationErrors;
 
 namespace Application.Employees.Commands.Register;
 
-public class RegisterEmployeeCommandHandler(IGenericRepository<Employee> repository,
-    IDepartmentRepository departmentRepository) : ICommandHandler<RegistedEmployeeCommand>
+public class RegisterEmployeeCommandHandler(IEmployeeRepository repository,
+    IDepartmentRepository departmentRepository) : ICommandHandler<RegisterEmployeeCommand>
 {
-    public async Task<Result> Handle(RegistedEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(RegisterEmployeeCommand request, CancellationToken cancellationToken)
     {
         var fullName = FullName.Create(request.FirstName, request.LastName, request.Patronymic);
 
@@ -23,8 +23,7 @@ public class RegisterEmployeeCommandHandler(IGenericRepository<Employee> reposit
 
         var paginationParameters = new PaginationParameters(1, 1);
 
-        var existingEmployee = await repository.GetByConditionAsync(e => 
-            e.Email == request.Email, paginationParameters, false, cancellationToken);
+        var existingEmployee = await repository.GetBy
 
         if (existingEmployee is not null) return EmployeeErrors.EmailIsNotUnique;
 
