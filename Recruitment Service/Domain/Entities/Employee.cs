@@ -20,13 +20,9 @@ public sealed class Employee : Entity
 
     public static Result<Employee> Create(Guid id, FullName fullName, EmploeeRole role, string email, Department department)
     {
-        if (id == Guid.Empty) return EmployeeErrors.EmptyId;
+        var result = ValidateImployee(id, role, email, department);
 
-        if (!Validator.IsValidEmail(email)) return EmployeeErrors.InvalidEmail;
-
-        if (department is null) return EmployeeErrors.NullDepartment;
-
-        if(role == EmploeeRole.Undefined) return EmployeeErrors.UndefinedRole;
+        if (result.IsFailure) return result.Error;
 
         var employee = new Employee(id)
         {
@@ -66,6 +62,20 @@ public sealed class Employee : Entity
         if(!Validator.IsValidEmail(newEmail)) return EmployeeErrors.InvalidEmail;
 
         Email = newEmail.Trim();
+
+        return Result.Success();
+    }
+
+    private static Result ValidateImployee(Guid id, EmploeeRole role, string email, Department department)
+    {
+
+        if (id == Guid.Empty) return EmployeeErrors.EmptyId;
+
+        if (!Validator.IsValidEmail(email)) return EmployeeErrors.InvalidEmail;
+
+        if (department is null) return EmployeeErrors.NullDepartment;
+
+        if (role == EmploeeRole.Undefined) return EmployeeErrors.UndefinedRole;
 
         return Result.Success();
     }
