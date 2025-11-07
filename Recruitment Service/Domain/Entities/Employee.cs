@@ -1,12 +1,15 @@
 ﻿using Domain.Enums;
+using Domain.Primitives;
 using Domain.Shared;
+using Domain.ValueObjects;
 using static Domain.Errors.DomainErrors;
+using static Domain.ValueObjects.FullName;
 
 namespace Domain.Entities;
 
 public sealed class Employee : Entity
 {
-    private Employee(Guid id, string fullName, EmploeeRole role, string email, Department department) : base(id)
+    private Employee(Guid id, FullName fullName, EmploeeRole role, string email, Department department) : base(id)
     {
         FullName = fullName;
         Role = role;
@@ -18,17 +21,15 @@ public sealed class Employee : Entity
     private Employee() : base(Guid.Empty) { }
 
     public Guid DepartmentId { get; private set; }
-    public string FullName { get; private set; } = string.Empty;
+    public FullName FullName { get; private set; } = Default;
     public EmploeeRole Role { get; private set; }
     public string Email { get; private set; } = string.Empty;
 
     public Department? Department { get; private set; }
 
-    public static Result<Employee> Create(Guid id, string fullName, EmploeeRole role, string email, Department department)
+    public static Result<Employee> Create(Guid id, FullName fullName, EmploeeRole role, string email, Department department)
     {
         if (id == Guid.Empty) return EmployeeErrors.EmptyId;
-
-        if (string.IsNullOrWhiteSpace(fullName)) return EmployeeErrors.EmptyFullName;
 
         if (!Validator.IsValidEmail(email)) return EmployeeErrors.InvalidEmail;
 
@@ -36,7 +37,7 @@ public sealed class Employee : Entity
 
         if(role == EmploeeRole.Undefined) return EmployeeErrors.UndefinedRole;
 
-        var employee = new Employee(id, fullName.Trim(), role, email.Trim(), department);
+        var employee = new Employee(id, fullName, role, email.Trim(), department);
 
         return employee;
     }
@@ -51,7 +52,7 @@ public sealed class Employee : Entity
         return Result.Success();
     }
 
-    public Result Promote(EmploeeRole newRole)
+    public Result ChangeRole(EmploeeRole newRole)
     {
         if (newRole == Role) return EmployeeErrors.TheSameRole;
 

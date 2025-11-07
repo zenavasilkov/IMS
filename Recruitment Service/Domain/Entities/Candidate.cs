@@ -1,4 +1,5 @@
-﻿using Domain.Shared;
+﻿using Domain.Primitives;
+using Domain.Shared;
 using static Domain.Errors.DomainErrors;
 
 namespace Domain.Entities;

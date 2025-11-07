@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Primitives;
 
 namespace Domain.Contracts.Repositories;
 
@@ -8,5 +8,5 @@ public interface IGenericRepository<T> : IGenericReadOnlyRepository<T> where T :
 
     Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 
-    Task UpdateAsync(CancellationToken cancellationToken = default);
+    Task<T> UpdateAsync(T entity, CancellationToken cancellationToken = default);
 }

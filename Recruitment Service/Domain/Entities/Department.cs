@@ -1,12 +1,13 @@
-﻿using Domain.Shared;
+﻿using Domain.Primitives;
+using Domain.Shared;
 using static Domain.Errors.DomainErrors;
 
 namespace Domain.Entities;
 
 public sealed class Department : Entity
 {
-    public const int maxDescriptionLength = 1000;
-    public const int maxNameLength = 100;
+    public const int MaxDescriptionLength = 1000;
+    public const int MaxNameLength = 100;
 
     private Department(Guid id, string name, string? description = null) : base(id)
     {
@@ -25,9 +26,9 @@ public sealed class Department : Entity
 
         name = name.Trim();
 
-        if (name.Length > maxNameLength) return DepartmentErrors.NameTooLong;
+        if (name.Length > MaxNameLength) return DepartmentErrors.NameTooLong;
 
-        if (description is not null && description.Length > maxDescriptionLength)
+        if (description is not null && description.Length > MaxDescriptionLength)
             return DepartmentErrors.DescriptionTooLong;
 
         var department = new Department(id, name, description?.Trim());
@@ -41,7 +42,7 @@ public sealed class Department : Entity
 
         if (!string.IsNullOrWhiteSpace(newName)) return DepartmentErrors.EmptyName;
 
-        if (newName.Length > maxNameLength) return DepartmentErrors.NameTooLong;
+        if (newName.Length > MaxNameLength) return DepartmentErrors.NameTooLong;
 
         Name = newName;
 
@@ -52,7 +53,7 @@ public sealed class Department : Entity
     {
         newDescription = newDescription?.Trim();
 
-        if (newDescription is not null && newDescription.Length > maxDescriptionLength)
+        if (newDescription is not null && newDescription.Length > MaxDescriptionLength)
             return DepartmentErrors.DescriptionTooLong;
 
         Description = newDescription;

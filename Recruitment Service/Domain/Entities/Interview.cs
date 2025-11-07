@@ -1,4 +1,6 @@
-﻿using Domain.Shared;
+﻿using Domain.Enums;
+using Domain.Primitives;
+using Domain.Shared;
 using static Domain.Errors.DomainErrors;
 
 namespace Domain.Entities;
@@ -10,6 +12,7 @@ public sealed class Interview : Entity
         Candidate candidate,
         Employee interviewer,
         Department department,
+        InterviewType type,
         DateTime scheduledAt,
         string? feedback = null,
         bool isPassed = false,
@@ -18,6 +21,7 @@ public sealed class Interview : Entity
         Candidate = candidate;
         Interviewer = interviewer;
         Department = department;
+        Type = type;
         ScheduledAt = scheduledAt;
         Feedback = feedback;
         IsPassed = isPassed;
@@ -32,6 +36,7 @@ public sealed class Interview : Entity
     public Guid CandidateId { get; private set; }
     public Guid InterviewerId { get; private set; }
     public Guid DepartmentId { get; private set; }
+    public InterviewType Type { get; private set; }
     public DateTime ScheduledAt { get; private set; }
     public string? Feedback { get; private set; }
     public bool IsPassed { get; private set; }
@@ -46,6 +51,7 @@ public sealed class Interview : Entity
         Candidate candidate,
         Employee interviewer,
         Department department,
+        InterviewType type,
         DateTime scheduledAt)
     {
         if (id == Guid.Empty) return InterviewErrors.EmptyId;
@@ -58,7 +64,7 @@ public sealed class Interview : Entity
 
         if (scheduledAt < DateTime.UtcNow.Date) return InterviewErrors.ScheduledInPast;
 
-        var interview = new Interview(id, candidate, interviewer, department, scheduledAt);
+        var interview = new Interview(id, candidate, interviewer, department, type, scheduledAt);
 
         return interview;
     }
