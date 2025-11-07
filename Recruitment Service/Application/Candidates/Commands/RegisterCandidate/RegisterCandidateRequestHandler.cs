@@ -2,7 +2,7 @@
 using Domain.Contracts.Repositories;
 using Domain.Entities;
 using Domain.Shared;
-using Pagination;
+using Domain.ValueObjects;
 using static Application.Errors.ApplicationErrors;
 
 namespace Application.Candidates.Commands.RegisterCandidate;
@@ -10,23 +10,23 @@ namespace Application.Candidates.Commands.RegisterCandidate;
 public class RegisterCandidateRequestHandler(ICandidateRepository repository) : ICommandHandler<RegisterCandidateCommand>
 {
     public async Task<Result> Handle(RegisterCandidateCommand request, CancellationToken cancellationToken)
-    {
-        var paginationParameters = new PaginationParameters(1, 1);
+    { 
+        var candidate = await repository.GetByEmailAsync(request.Email, false, cancellationToken);
 
-        var candidate = await repository.GetByConditionAsync(c => c.Email == request.Email, paginationParameters, false, cancellationToken);
+        if (candidate is not null) return CandidateErrors.EmailIsNotUnique;
 
-        if (candidate is not null && candidate.TotalCount > 0) return CandidateErrors.EmailIsNotUnique;
+        var fullName = FullName.Create(request.FirstName, request.LastName, request.Patronymic);
+
+        if (fullName.IsFailure) return fullName.Error;
 
         var registerCandidateResult = Candidate.Create(
             Guid.NewGuid(),
-            request.FirstName,
-            request.LastName,
+            fullName.Value,
             request.Email,
             request.IsApplied,
             request.PhoneNumber,
             request.CvLink,
-            request.LinkedIn,
-            request.Patronymic);
+            request.LinkedIn);
 
         if (registerCandidateResult.IsFailure) return registerCandidateResult.Error;
         

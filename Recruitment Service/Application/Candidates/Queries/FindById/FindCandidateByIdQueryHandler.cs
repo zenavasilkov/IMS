@@ -16,14 +16,14 @@ public class FindCandidateByIdQueryHandler(ICandidateRepository repository)
 
         var response = new FindCandidateByIdQueryResponse(
             candidate.Id,
-            candidate.FirstName,
-            candidate.LastName,
+            candidate.FullName.FirstName,
+            candidate.FullName.LastName,
             candidate.Email,
             candidate.IsApplied,
             candidate.PhoneNumber,
             candidate.CvLink,
             candidate.LinkedIn,
-            candidate.Patronymic);
+            candidate.FullName.Patronymic);
 
         return response;
     }

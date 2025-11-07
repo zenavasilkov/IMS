@@ -5,24 +5,24 @@ using Domain.Shared;
 
 namespace Application.Candidates.Queries.FindByEmail;
 
-public class FindCandidateByEmailHandler(ICandidateRepository repository) : IQueryHandler<FindCandidateByEmailQuery, FindCandidateByIdQueryResponse>
+public class FindCandidateByEmailHandler(ICandidateRepository repository) : IQueryHandler<FindCandidateByEmailQuery, FindCandidateByEmailQueryResponse>
 {
-    public async Task<Result<FindCandidateByIdQueryResponse>> Handle(FindCandidateByEmailQuery request, CancellationToken cancellationToken)
+    public async Task<Result<FindCandidateByEmailQueryResponse>> Handle(FindCandidateByEmailQuery request, CancellationToken cancellationToken)
     {
         var candidate = await repository.GetByEmailAsync(request.Email, false, cancellationToken);
 
         if (candidate is null) return CandidateErrors.NotFound;
 
-        var response = new FindCandidateByIdQueryResponse(
+        var response = new FindCandidateByEmailQueryResponse(
             candidate.Id,
-            candidate.FirstName,
-            candidate.LastName,
+            candidate.FullName.FirstName,
+            candidate.FullName.LastName,
             candidate.Email,
             candidate.IsApplied,
             candidate.PhoneNumber,
             candidate.CvLink,
             candidate.LinkedIn,
-            candidate.Patronymic);
+            candidate.FullName.Patronymic);
 
         return response;
     }

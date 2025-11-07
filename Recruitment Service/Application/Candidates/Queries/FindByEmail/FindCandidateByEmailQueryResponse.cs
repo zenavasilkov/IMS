@@ -1,6 +1,6 @@
 ﻿namespace Application.Candidates.Queries.FindByEmail;
 
-public sealed record FindCandidateByIdQueryResponse(
+public sealed record FindCandidateByEmailQueryResponse(
     Guid Id,
     string FirstName,
     string LastName,
