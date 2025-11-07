@@ -90,7 +90,7 @@ public sealed class Employee : Entity
         return Result.Success();
     }
 
-    public Result Promote(EmploeeRole newRole)
+    public Result ChangeRole(EmploeeRole newRole)
     {
         if (newRole == Role) return EmployeeErrors.TheSameRole;
 
