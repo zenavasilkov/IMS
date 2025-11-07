@@ -21,9 +21,7 @@ public class RegisterEmployeeCommandHandler(IEmployeeRepository repository,
 
         if (department is null) return DepartmentErrors.NotFound;
 
-        var paginationParameters = new PaginationParameters(1, 1);
-
-        var existingEmployee = await repository.GetBy
+        var existingEmployee = await repository.GetByEmailAsync(request.Email, false, cancellationToken);
 
         if (existingEmployee is not null) return EmployeeErrors.EmailIsNotUnique;
 
