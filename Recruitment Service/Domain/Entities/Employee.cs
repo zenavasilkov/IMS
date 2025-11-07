@@ -9,16 +9,7 @@ namespace Domain.Entities;
 
 public sealed class Employee : Entity
 {
-    private Employee(Guid id, FullName fullName, EmploeeRole role, string email, Department department) : base(id)
-    {
-        FullName = fullName;
-        Role = role;
-        Email = email;
-        Department = department;
-        DepartmentId = department.Id;
-    }
-
-    private Employee() : base(Guid.Empty) { }
+    private Employee(Guid id) : base(id) { }
 
     public Guid DepartmentId { get; private set; }
     public FullName FullName { get; private set; } = Default;
@@ -37,7 +28,14 @@ public sealed class Employee : Entity
 
         if(role == EmploeeRole.Undefined) return EmployeeErrors.UndefinedRole;
 
-        var employee = new Employee(id, fullName, role, email.Trim(), department);
+        var employee = new Employee(id)
+        {
+            FullName = fullName,
+            Role = role,
+            Email = email,
+            Department = department,
+            DepartmentId = department.Id
+        };
 
         return employee;
     }

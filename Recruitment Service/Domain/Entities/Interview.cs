@@ -7,31 +7,7 @@ namespace Domain.Entities;
 
 public sealed class Interview : Entity
 {
-    private Interview(
-        Guid id,
-        Candidate candidate,
-        Employee interviewer,
-        Department department,
-        InterviewType type,
-        DateTime scheduledAt,
-        string? feedback = null,
-        bool isPassed = false,
-        bool isCancelled = false) : base(id)
-    {
-        Candidate = candidate;
-        Interviewer = interviewer;
-        Department = department;
-        Type = type;
-        ScheduledAt = scheduledAt;
-        Feedback = feedback;
-        IsPassed = isPassed;
-        IsCancelled = isCancelled;
-        CandidateId = candidate.Id;
-        InterviewerId = interviewer.Id;
-        DepartmentId = department.Id;
-    }
-
-    private Interview() : base(Guid.NewGuid()) { }
+    private Interview(Guid id) : base(id) { }
 
     public Guid CandidateId { get; private set; }
     public Guid InterviewerId { get; private set; }
@@ -39,8 +15,8 @@ public sealed class Interview : Entity
     public InterviewType Type { get; private set; }
     public DateTime ScheduledAt { get; private set; }
     public string? Feedback { get; private set; }
-    public bool IsPassed { get; private set; }
-    public bool IsCancelled { get; private set; }
+    public bool IsPassed { get; private set; } = false;
+    public bool IsCancelled { get; private set; } = false;
 
     public Candidate? Candidate { get; private set; }
     public Employee? Interviewer { get; private set; }
@@ -64,7 +40,17 @@ public sealed class Interview : Entity
 
         if (scheduledAt < DateTime.UtcNow.Date) return InterviewErrors.ScheduledInPast;
 
-        var interview = new Interview(id, candidate, interviewer, department, type, scheduledAt);
+        var interview = new Interview(id)
+        {
+            Candidate = candidate,
+            Interviewer = interviewer,
+            Department = department,
+            Type = type,
+            ScheduledAt = scheduledAt,
+            CandidateId = candidate.Id,
+            InterviewerId = interviewer.Id,
+            DepartmentId = department.Id
+        };
 
         return interview;
     }
@@ -92,7 +78,7 @@ public sealed class Interview : Entity
     {
         if (ScheduledAt < DateTime.UtcNow.Date) return InterviewErrors.CancelPassedInterview;
 
-        if(IsCancelled) return InterviewErrors.AlreadyCancelled;
+        if (IsCancelled) return InterviewErrors.AlreadyCancelled;
 
         IsCancelled = true;
 

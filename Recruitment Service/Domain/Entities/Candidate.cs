@@ -1,62 +1,43 @@
 ﻿using Domain.Primitives;
 using Domain.Shared;
+using Domain.ValueObjects;
 using static Domain.Errors.DomainErrors;
 
 namespace Domain.Entities;
 
 public sealed class Candidate : Entity
 {
-    private Candidate(
-        Guid id,
-        string firstName,
-        string lastName,
-        string email,
-        bool isApplied,
-        string? phoneNumber = null,
-        string? cvLink = null,
-        string? linkedIn = null,
-        string? patronymic = null) : base(id)
-    {
-        FirstName = firstName;
-        LastName = lastName;
-        Email = email;
-        IsApplied = isApplied;
-        PhoneNumber = phoneNumber;
-        CvLink = cvLink;
-        LinkedIn = linkedIn;
-        Patronymic = patronymic;
-    }
+    private Candidate(Guid id) : base(id) { }
 
-    public string FirstName { get; private set; }
-    public string LastName { get; private set; }
-    public string Email { get; private set; }
+    public FullName FullName { get; private set; } = FullName.Default;
+    public string Email { get; private set; } = string.Empty;
     public bool IsApplied { get; private set; }
     public string? PhoneNumber { get; private set; }
     public string? CvLink { get; private set; }
-    public string? LinkedIn { get; private set; }
-    public string? Patronymic { get; private set; }
+    public string? LinkedIn { get; private set; } 
 
     public static Result<Candidate> Create(
-        Guid id,
-        string firstName,
-        string lastName,
+        Guid id, 
+        FullName fullName,
         string email,
         bool isApplied,
         string? phoneNumber = null,
         string? cvLink = null,
-        string? linkedIn = null,
-        string? patronymic = null)
+        string? linkedIn = null)
     {
-        if (id == Guid.Empty) return CandidateErrors.EmptyId;
-
-        if (string.IsNullOrWhiteSpace(firstName)) return CandidateErrors.EmptyFirstName;
-
-        if (string.IsNullOrWhiteSpace(lastName)) return CandidateErrors.EmptyLastName;
+        if (id == Guid.Empty) return CandidateErrors.EmptyId; 
 
         if (!Validator.IsValidEmail(email)) return CandidateErrors.InvalidEmail;
 
-        var candidate =  new Candidate(id, firstName.Trim(), lastName.Trim(), email.Trim(),
-            isApplied, phoneNumber?.Trim(), cvLink?.Trim(), linkedIn?.Trim(), patronymic?.Trim());
+        var candidate = new Candidate(id)
+        { 
+            Email = email.Trim(),
+            FullName = fullName,
+            IsApplied = isApplied,
+            PhoneNumber = phoneNumber?.Trim(),
+            CvLink = cvLink?.Trim(),
+            LinkedIn = linkedIn?.Trim(), 
+        };
 
         return candidate;
     }
