@@ -1,3 +1,4 @@
+using Infrastructure;
 using Serilog;
 
 namespace WebApi;
@@ -14,10 +15,13 @@ public class Program
 
         builder.Host.UseSerilog();
 
+        builder.Services.AddDependencies(builder.Configuration);
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
 
         var app = builder.Build();
+
+        app.ApplyMigrations();
 
         if (app.Environment.IsDevelopment())
         {
