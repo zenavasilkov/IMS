@@ -30,7 +30,7 @@ public class CandidateRepository(RecruitmentDbContext context, IGenericRepositor
 
         query = trackChanges ? query : query.AsNoTracking();
 
-        var candidate = await query.FirstOrDefaultAsync(d => d.Email == email, cancellationToken);
+        var candidate = await query.FirstOrDefaultAsync(d => d.Email.Equals(email, StringComparison.OrdinalIgnoreCase), cancellationToken);
 
         return candidate;
     }
