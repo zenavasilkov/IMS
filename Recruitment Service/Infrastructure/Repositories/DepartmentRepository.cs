@@ -23,7 +23,7 @@ public class DepartmentRepository(RecruitmentDbContext context, IGenericReposito
 
     public async Task<Department?> GetByNameAsync(string name, bool trackChanges = true, CancellationToken cancellationToken = default)
     {
-        var query = context.Set<Department>().AsQueryable();
+        var query = context.Departments.AsQueryable();
 
         query = trackChanges ? query : query.AsNoTracking();
             

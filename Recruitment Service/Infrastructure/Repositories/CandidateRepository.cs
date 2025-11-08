@@ -3,7 +3,6 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Pagination;
 using System.Linq.Expressions;
-using System.Xml.Linq;
 
 namespace Infrastructure.Repositories;
 
@@ -20,14 +19,14 @@ public class CandidateRepository(RecruitmentDbContext context, IGenericRepositor
 
     public async Task<Candidate?> GetByEmailAsync(string email, CancellationToken cancellationToken)
     {
-        var candidate = await context.Set<Candidate>().FirstOrDefaultAsync(c => c.Email == email, cancellationToken);
+        var candidate = await context.Candidates.FirstOrDefaultAsync(c => c.Email == email, cancellationToken);
 
         return candidate;
     }
 
     public async Task<Candidate?> GetByEmailAsync(string email, bool trackChanges = true, CancellationToken cancellationToken = default)
     {
-        var query = context.Set<Candidate>().AsQueryable();
+        var query = context.Candidates.AsQueryable();
 
         query = trackChanges ? query : query.AsNoTracking();
 
