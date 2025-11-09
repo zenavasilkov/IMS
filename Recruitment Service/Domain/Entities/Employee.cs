@@ -79,34 +79,4 @@ public sealed class Employee : Entity
 
         return Result.Success();
     }
-
-    public Result MoveTo(Department department)
-    {
-        if (department is null) return EmployeeErrors.NullDepartment;
-
-        Department = department;
-        DepartmentId = department.Id;
-
-        return Result.Success();
-    }
-
-    public Result ChangeRole(EmploeeRole newRole)
-    {
-        if (newRole == Role) return EmployeeErrors.TheSameRole;
-
-        if(newRole == EmploeeRole.Undefined) return EmployeeErrors.UndefinedRole;
-
-        Role = newRole;
-
-        return Result.Success();
-    }
-
-    public Result UpdateEmail(string newEmail)
-    {
-        if(!Validator.IsValidEmail(newEmail)) return EmployeeErrors.InvalidEmail;
-
-        Email = newEmail.Trim();
-
-        return Result.Success();
-    }
-}
+ }

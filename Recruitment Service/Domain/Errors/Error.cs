@@ -13,8 +13,6 @@ public sealed class Error(string code, string message) : IEquatable<Error>
     public static implicit operator string(Error error) => error.Message;
     public static implicit operator Result(Error error) => Result.Failure(error);
 
-    public static implicit operator Result(Error error) => Result.Failure(error);
-
     public static bool operator ==(Error? a, Error? b)
     {
         if (a is null && b is null) return true; 
