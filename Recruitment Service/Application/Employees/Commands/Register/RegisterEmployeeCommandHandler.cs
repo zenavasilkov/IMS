@@ -9,9 +9,9 @@ using static Application.Errors.ApplicationErrors;
 namespace Application.Employees.Commands.Register;
 
 public class RegisterEmployeeCommandHandler(IEmployeeRepository repository,
-    IDepartmentRepository departmentRepository) : ICommandHandler<RegisterEmployeeCommand>
+    IDepartmentRepository departmentRepository) : ICommandHandler<RegisterEmployeeCommand, Guid>
 {
-    public async Task<Result> Handle(RegisterEmployeeCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(RegisterEmployeeCommand request, CancellationToken cancellationToken)
     {
         var fullName = FullName.Create(request.FirstName, request.LastName, request.Patronymic);
 
@@ -31,6 +31,6 @@ public class RegisterEmployeeCommandHandler(IEmployeeRepository repository,
 
         await repository.CreateAsync(employee.Value, cancellationToken);
 
-        return Result.Success();
+        return Result.Success(employee.Value.Id);
     }
 }

@@ -8,4 +8,4 @@ public sealed record ScheduleInterviewCommand(
     Guid InterviewerId,
     Guid DepartmentId,
     InterviewType Type,
-    DateTime ScheduledAt) : ICommand;
+    DateTime ScheduledAt) : ICommand<Guid>;

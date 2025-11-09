@@ -7,9 +7,9 @@ using static Application.Errors.ApplicationErrors;
 
 namespace Application.Candidates.Commands.RegisterCandidate;
 
-public class RegisterCandidateRequestHandler(ICandidateRepository repository) : ICommandHandler<RegisterCandidateCommand>
+public class RegisterCandidateRequestHandler(ICandidateRepository repository) : ICommandHandler<RegisterCandidateCommand, Guid>
 {
-    public async Task<Result> Handle(RegisterCandidateCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(RegisterCandidateCommand request, CancellationToken cancellationToken)
     { 
         var candidate = await repository.GetByEmailAsync(request.Email, false, cancellationToken);
 
@@ -31,6 +31,6 @@ public class RegisterCandidateRequestHandler(ICandidateRepository repository) : 
         
         await repository.CreateAsync(registerCandidateResult.Value, cancellationToken);
 
-        return Result.Success();
+        return Result.Success(registerCandidateResult.Value.Id);
     }
 }

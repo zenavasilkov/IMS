@@ -9,4 +9,4 @@ public sealed record RegisterEmployeeCommand(
     EmploeeRole Role,
     string Email,
     Guid DepartmentId,
-    string? Patronymic = null) : ICommand;
+    string? Patronymic = null) : ICommand<Guid>;

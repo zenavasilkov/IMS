@@ -11,9 +11,9 @@ public class ScheduleInterviewCommandHandler(
     IDepartmentRepository departmentRepository,
     ICandidateRepository candidateRepository,
     IGenericReadOnlyRepository<Employee> employeeRepository)
-    : ICommandHandler<ScheduleInterviewCommand>
+    : ICommandHandler<ScheduleInterviewCommand, Guid>
 {
-    public async Task<Result> Handle(ScheduleInterviewCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(ScheduleInterviewCommand request, CancellationToken cancellationToken)
     {
         var candidate = await candidateRepository.GetByIdAsync(request.CandidateId, false, cancellationToken);
 
@@ -33,6 +33,6 @@ public class ScheduleInterviewCommandHandler(
 
         await repository.CreateAsync(interview.Value, cancellationToken);
 
-        return Result.Success();
+        return Result.Success(interview.Value.Id);
     }
 }

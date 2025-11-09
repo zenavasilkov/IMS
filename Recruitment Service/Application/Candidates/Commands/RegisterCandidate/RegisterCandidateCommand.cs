@@ -9,4 +9,4 @@ public sealed record RegisterCandidateCommand(
     string? PhoneNumber = null,
     string? CvLink = null,
     string? LinkedIn = null,
-    string? Patronymic = null) : ICommand;
+    string? Patronymic = null) : ICommand<Guid>;

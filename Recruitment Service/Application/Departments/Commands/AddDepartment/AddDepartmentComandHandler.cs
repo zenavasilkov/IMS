@@ -6,9 +6,9 @@ using Domain.Entities;
 
 namespace Application.Departments.Commands.AddDepartment;
 
-public class AddDepartmentComandHandler(IDepartmentRepository repository) : ICommandHandler<AddDepartmentCommand>
+public class AddDepartmentComandHandler(IDepartmentRepository repository) : ICommandHandler<AddDepartmentCommand, Guid>
 {
-    public async Task<Result> Handle(AddDepartmentCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(AddDepartmentCommand request, CancellationToken cancellationToken)
     {
         var existingDepartment = await repository.GetByNameAsync(request.Name, false, cancellationToken);
 
@@ -20,6 +20,6 @@ public class AddDepartmentComandHandler(IDepartmentRepository repository) : ICom
 
         await repository.CreateAsync(newDepartment.Value, cancellationToken);
 
-        return Result.Success();
+        return Result.Success(newDepartment.Value.Id);
     }
 }
