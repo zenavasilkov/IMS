@@ -3,7 +3,6 @@ using Domain.Contracts.Repositories;
 using Domain.Entities;
 using Domain.Shared;
 using Domain.ValueObjects;
-using Pagination;
 using static Application.Errors.ApplicationErrors;
 
 namespace Application.Employees.Commands.Register;
@@ -17,7 +16,7 @@ public class RegisterEmployeeCommandHandler(IEmployeeRepository repository,
 
         if (fullName.IsFailure) return fullName.Error;
 
-        var department = await departmentRepository.GetByIdAsync(request.DepartmentId, false, cancellationToken);
+        var department = await departmentRepository.GetByIdAsync(request.DepartmentId, true, cancellationToken);
 
         if (department is null) return DepartmentErrors.NotFound;
 

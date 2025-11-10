@@ -1,13 +1,11 @@
 ﻿using Application.Abstractions.Messaging;
 using Domain.Contracts.Repositories;
-using Domain.Entities;
 using Domain.Shared;
 using static Application.Errors.ApplicationErrors;
 
 namespace Application.Interviews.Queries.GetInterviewById;
 
-public class GetInterviewByIdQueryHandler(
-    IGenericReadOnlyRepository<Interview> repository)
+public class GetInterviewByIdQueryHandler(IInterviewRepository repository)
     : IQueryHandler<GetInterviewByIdQuery, GetInterviewByIdQueryResponse>
 {
     public async Task<Result<GetInterviewByIdQueryResponse>> Handle(GetInterviewByIdQuery request, CancellationToken cancellationToken)

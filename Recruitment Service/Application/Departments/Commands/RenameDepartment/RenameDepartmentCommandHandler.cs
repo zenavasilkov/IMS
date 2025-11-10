@@ -21,6 +21,8 @@ public class RenameDepartmentCommandHandler(IDepartmentRepository repository) : 
         
         if (result.IsFailure) return result.Error;
 
+        await repository.UpdateAsync(existingDepartment, cancellationToken);
+
         return Result.Success();
     }
 }

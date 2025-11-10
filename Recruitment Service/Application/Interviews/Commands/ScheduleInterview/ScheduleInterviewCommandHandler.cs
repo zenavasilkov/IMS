@@ -30,13 +30,13 @@ public class ScheduleInterviewCommandHandler(
     private async Task<Result<(Candidate, Employee, Department)>> ValidateDependencies(
         ScheduleInterviewCommand request, CancellationToken cancellationToken)
     {
-        var candidate = await candidateRepository.GetByIdAsync(request.CandidateId, false, cancellationToken);
+        var candidate = await candidateRepository.GetByIdAsync(request.CandidateId, true, cancellationToken);
         if (candidate is null) return CandidateErrors.NotFound;
 
-        var interviewer = await employeeRepository.GetByIdAsync(request.InterviewerId, false, cancellationToken);
+        var interviewer = await employeeRepository.GetByIdAsync(request.InterviewerId, true, cancellationToken);
         if (interviewer is null) return EmployeeErrors.NotFound;
 
-        var department = await departmentRepository.GetByIdAsync(request.DepartmentId, false, cancellationToken);
+        var department = await departmentRepository.GetByIdAsync(request.DepartmentId, true, cancellationToken);
         if (department is null) return DepartmentErrors.NotFound;
 
         return Result.Success((candidate, interviewer, department));

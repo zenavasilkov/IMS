@@ -7,7 +7,7 @@ using static Application.Errors.ApplicationErrors;
 
 namespace Application.Candidates.Commands.RegisterCandidate;
 
-public class RegisterCandidateRequestHandler(ICandidateRepository repository) : ICommandHandler<RegisterCandidateCommand, Guid>
+public class RegisterCandidateCommandHandler(ICandidateRepository repository) : ICommandHandler<RegisterCandidateCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(RegisterCandidateCommand request, CancellationToken cancellationToken)
     { 

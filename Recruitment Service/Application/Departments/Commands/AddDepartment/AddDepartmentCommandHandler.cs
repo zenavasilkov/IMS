@@ -6,7 +6,7 @@ using Domain.Entities;
 
 namespace Application.Departments.Commands.AddDepartment;
 
-public class AddDepartmentComandHandler(IDepartmentRepository repository) : ICommandHandler<AddDepartmentCommand, Guid>
+public class AddDepartmentCommandHandler(IDepartmentRepository repository) : ICommandHandler<AddDepartmentCommand, Guid>
 {
     public async Task<Result<Guid>> Handle(AddDepartmentCommand request, CancellationToken cancellationToken)
     {
