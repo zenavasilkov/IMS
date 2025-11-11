@@ -24,7 +24,9 @@ public static class DependencyInjection
             .AddScoped(typeof(IGenericReadOnlyRepository<>), typeof(GenericReadOnlyRepository<>))
             .AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>))
             .AddScoped<IDepartmentRepository, DepartmentRepository>()
-            .AddScoped<ICandidateRepository, CandidateRepository>();
+            .AddScoped<ICandidateRepository, CandidateRepository>()
+            .AddScoped<IInterviewRepository, InterviewRepository>()
+            .AddScoped<IEmployeeRepository, EmployeeRepository>();
 
         return services;
     }

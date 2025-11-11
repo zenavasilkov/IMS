@@ -79,4 +79,4 @@ public sealed class Employee : Entity
 
         return Result.Success();
     }
-}
+ }

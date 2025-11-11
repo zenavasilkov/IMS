@@ -20,7 +20,7 @@ namespace Infrastructure.Migrations
                     LastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Patronymic = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     Email = table.Column<string>(type: "text", nullable: false),
-                    IsApplied = table.Column<bool>(type: "boolean", nullable: false),
+                    IsAcceptedToInternship = table.Column<bool>(type: "boolean", nullable: false),
                     PhoneNumber = table.Column<string>(type: "text", nullable: true),
                     CvLink = table.Column<string>(type: "text", nullable: true),
                     LinkedIn = table.Column<string>(type: "text", nullable: true)

@@ -6,11 +6,11 @@ namespace WebApi;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddDependencies(this IServiceCollection services)
+    public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         services
             .AddPresentation()
-            .AddInfrastructure()
+            .AddInfrastructure(configuration)
             .AddApplication();
 
         return services;

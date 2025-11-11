@@ -35,21 +35,10 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsApplied")
+                    b.Property<bool>("IsAcceptedToInternship")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("LinkedIn")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Patronymic")
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
