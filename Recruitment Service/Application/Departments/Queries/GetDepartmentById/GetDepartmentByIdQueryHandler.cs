@@ -5,15 +5,15 @@ using static Application.Errors.ApplicationErrors;
 
 namespace Application.Departments.Queries.GetDepartmentById;
 
-public class GetDepartmentByIdQueryHandler(IDepartmentRepository repository) : IQueryHandler<GetDepartmentByIdQuery, GetDepartmentByIdResponse>
+public class GetDepartmentByIdQueryHandler(IDepartmentRepository repository) : IQueryHandler<GetDepartmentByIdQuery, GetDepartmentByIdQueryResponse>
 {
-    public async Task<Result<GetDepartmentByIdResponse>> Handle(GetDepartmentByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<GetDepartmentByIdQueryResponse>> Handle(GetDepartmentByIdQuery request, CancellationToken cancellationToken)
     {
         var department = await repository.GetByIdAsync(request.Id, false, cancellationToken);
 
         if (department is null) return DepartmentErrors.NotFound;
 
-        var response = new GetDepartmentByIdResponse(department.Id, department.Name, department.Description);
+        var response = new GetDepartmentByIdQueryResponse(department.Id, department.Name, department.Description);
 
         return response;
     }

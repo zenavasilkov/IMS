@@ -1,12 +1,11 @@
 ﻿using Application.Abstractions.Messaging;
 using Domain.Contracts.Repositories;
-using Domain.Entities;
 using Domain.Shared;
 using static Application.Errors.ApplicationErrors;
 
 namespace Application.Interviews.Commands.AddFeedback;
 
-public class AddFeedbackCommandHandler(IGenericRepository<Interview> repository) : ICommandHandler<AddFeedbackCommand>
+public class AddFeedbackCommandHandler(IInterviewRepository repository) : ICommandHandler<AddFeedbackCommand>
 {
     public async Task<Result> Handle(AddFeedbackCommand request, CancellationToken cancellationToken)
     {

@@ -1,12 +1,11 @@
 ﻿using Application.Abstractions.Messaging;
 using Domain.Contracts.Repositories;
-using Domain.Entities;
 using Domain.Shared;
 using static Application.Errors.ApplicationErrors;
 
 namespace Application.Interviews.Commands.CancelInterview;
 
-public class CancelInterviewCommandHandler(IGenericRepository<Interview> repository) : ICommandHandler<CancelInterviewCommand>
+public class CancelInterviewCommandHandler(IInterviewRepository repository) : ICommandHandler<CancelInterviewCommand>
 {
     public async Task<Result> Handle(CancelInterviewCommand request, CancellationToken cancellationToken)
     {
