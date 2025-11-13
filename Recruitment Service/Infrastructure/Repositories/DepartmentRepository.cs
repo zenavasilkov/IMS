@@ -23,11 +23,11 @@ public class DepartmentRepository(RecruitmentDbContext context, IGenericReposito
 
     public async Task<Department?> GetByNameAsync(string name, bool trackChanges = true, CancellationToken cancellationToken = default)
     {
-        var query = context.Departments.AsQueryable();
+        var query = context.Set<Department>().AsQueryable();
 
         query = trackChanges ? query : query.AsNoTracking();
             
-        var department = await query.FirstOrDefaultAsync(d => d.Name.Equals(name, StringComparison.OrdinalIgnoreCase), cancellationToken);
+        var department = await query.FirstOrDefaultAsync(d => d.Name == name, cancellationToken);
 
         return department;
     }

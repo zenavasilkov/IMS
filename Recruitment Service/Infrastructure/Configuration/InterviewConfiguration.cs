@@ -1,13 +1,18 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using static Infrastructure.Constants.TableNames;
 
 namespace Infrastructure.Configuration;
 
-public class InterviewConfiguration : IEntityTypeConfiguration<Interview>
+internal class InterviewConfiguration : IEntityTypeConfiguration<Interview>
 {
     public void Configure(EntityTypeBuilder<Interview> builder)
     {
+        builder.ToTable(Interviews);
+
+        builder.HasKey(i => i.Id);
+
         builder
             .HasOne(i => i.Candidate)
             .WithMany()

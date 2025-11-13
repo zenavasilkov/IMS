@@ -19,11 +19,11 @@ public class CandidateRepository(RecruitmentDbContext context, IGenericRepositor
 
     public async Task<Candidate?> GetByEmailAsync(string email, bool trackChanges = true, CancellationToken cancellationToken = default)
     {
-        var query = context.Candidates.AsQueryable();
+        var query = context.Set<Candidate>().AsQueryable();
 
         query = trackChanges ? query : query.AsNoTracking();
 
-        var candidate = await query.FirstOrDefaultAsync(d => d.Email.Equals(email, StringComparison.OrdinalIgnoreCase), cancellationToken);
+        var candidate = await query.FirstOrDefaultAsync(d => d.Email.ToLower() == email.ToLower(), cancellationToken);
 
         return candidate;
     }

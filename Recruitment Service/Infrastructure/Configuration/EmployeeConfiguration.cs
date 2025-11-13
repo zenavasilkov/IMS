@@ -2,13 +2,18 @@
 using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using static Infrastructure.Constants.TableNames;
 
 namespace Infrastructure.Configuration;
 
-public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
+internal class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
 {
     public void Configure(EntityTypeBuilder<Employee> builder)
     {
+        builder.ToTable(Employees);
+
+        builder.HasKey(e => e.Id);
+
         builder
             .HasOne(e => e.Department)
             .WithMany()

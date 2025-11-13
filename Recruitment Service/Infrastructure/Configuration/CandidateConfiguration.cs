@@ -2,13 +2,18 @@
 using Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using static Infrastructure.Constants.TableNames;
 
 namespace Infrastructure.Configuration;
 
-public class CandidateConfiguration : IEntityTypeConfiguration<Candidate>
+internal class CandidateConfiguration : IEntityTypeConfiguration<Candidate>
 {
     public void Configure(EntityTypeBuilder<Candidate> builder)
     {
+        builder.ToTable(Candidates);
+
+        builder.HasKey(e => e.Id);
+
         builder.OwnsOne(e => e.FullName, fullName =>
         {
             fullName.Property(f => f.FirstName)
