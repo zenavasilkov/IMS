@@ -1,6 +1,5 @@
 ﻿using FluentEmail.Core;
 using FluentEmail.Core.Models;
-using IMS.NotificationsCore.Messages;
 using NotificationService.Services.Interfaces;
 
 namespace NotificationService.Services;
@@ -8,7 +7,7 @@ namespace NotificationService.Services;
 public class EmailService(IFluentEmail emailSender, ILogger<EmailService> logger) : IEmailService
 {
     public async Task Send<TEvent>(string email, string subject, string templatePath,
-        TEvent eventModel, CancellationToken cancellationToken) where TEvent : BaseEvent
+        TEvent eventModel, CancellationToken cancellationToken)
     {
         var templateFullPath = Path.Combine(AppContext.BaseDirectory, templatePath);
 
