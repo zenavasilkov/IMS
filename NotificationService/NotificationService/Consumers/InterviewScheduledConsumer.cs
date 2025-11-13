@@ -11,7 +11,7 @@ public class InterviewScheduledConsumer(IEmailService emailService) : IConsumer<
     {
         var message = context.Message;
 
-        string subject = string.Format(SubjectConstats.InterviewRescheduled, message.ScheduledAt);
+        string subject = string.Format(SubjectConstats.InterviewScheduled, message.ScheduledAt);
 
         await emailService.Send(message.CandidateEmail, subject,
             TemplatePaths.InterviewScheduled, message, context.CancellationToken);
