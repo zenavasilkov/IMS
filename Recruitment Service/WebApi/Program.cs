@@ -1,5 +1,6 @@
 using Infrastructure;
 using Serilog;
+using WebApi.Middleware;
 
 namespace WebApi;
 
@@ -17,15 +18,18 @@ public class Program
 
         builder.Services.AddDependencies(builder.Configuration);
         builder.Services.AddControllers();
-        builder.Services.AddOpenApi();
+        builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
+
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         app.ApplyMigrations();
 
         if (app.Environment.IsDevelopment())
         {
-            app.MapOpenApi();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
          
         app.UseHttpsRedirection(); 
