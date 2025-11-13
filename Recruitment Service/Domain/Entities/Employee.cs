@@ -2,7 +2,7 @@
 using Domain.Primitives;
 using Domain.Shared;
 using Domain.ValueObjects;
-using static Domain.Errors.DomainErrors;
+using static Domain.Errors.DomainErrors.EmployeeErrors;
 using static Domain.ValueObjects.FullName;
 
 namespace Domain.Entities;
@@ -38,7 +38,9 @@ public sealed class Employee : Entity
 
     public Result MoveTo(Department department)
     {
-        if (department is null) return EmployeeErrors.NullDepartment;
+        if (department is null) return NullDepartment;
+
+        if (department == Department) return SameDepartment;
 
         Department = department;
         DepartmentId = department.Id;
@@ -48,9 +50,9 @@ public sealed class Employee : Entity
 
     public Result ChangeRole(EmploeeRole newRole)
     {
-        if (newRole == Role) return EmployeeErrors.TheSameRole;
+        if (newRole == Role) return TheSameRole;
 
-        if(newRole == EmploeeRole.Undefined) return EmployeeErrors.UndefinedRole;
+        if(newRole == EmploeeRole.Undefined) return UndefinedRole;
 
         Role = newRole;
 
@@ -59,7 +61,7 @@ public sealed class Employee : Entity
 
     public Result UpdateEmail(string newEmail)
     {
-        if(!Validator.IsValidEmail(newEmail)) return EmployeeErrors.InvalidEmail;
+        if(!Validator.IsValidEmail(newEmail)) return InvalidEmail;
 
         Email = newEmail.Trim();
 
@@ -68,14 +70,15 @@ public sealed class Employee : Entity
 
     private static Result ValidateImployee(Guid id, EmploeeRole role, string email, Department department)
     {
+        if (!Enum.IsDefined(role)) return InvalidRole; 
 
-        if (id == Guid.Empty) return EmployeeErrors.EmptyId;
+        if (id == Guid.Empty) return EmptyId;
 
-        if (!Validator.IsValidEmail(email)) return EmployeeErrors.InvalidEmail;
+        if (!Validator.IsValidEmail(email)) return InvalidEmail;
 
-        if (department is null) return EmployeeErrors.NullDepartment;
+        if (department is null) return NullDepartment;
 
-        if (role == EmploeeRole.Undefined) return EmployeeErrors.UndefinedRole;
+        if (role == EmploeeRole.Undefined) return UndefinedRole;
 
         return Result.Success();
     }

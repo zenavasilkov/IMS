@@ -1,7 +1,8 @@
 ﻿using Domain.Primitives;
 using Domain.Shared;
 using Domain.ValueObjects;
-using static Domain.Errors.DomainErrors;
+using static Domain.Errors.DomainErrors.CandidateErrors;
+using RecruitmentNotifications.Messages;
 
 namespace Domain.Entities;
 
@@ -24,9 +25,9 @@ public sealed class Candidate : Entity
         string? cvLink = null,
         string? linkedIn = null)
     {
-        if (id == Guid.Empty) return CandidateErrors.EmptyId; 
+        if (id == Guid.Empty) return EmptyId; 
 
-        if (!Validator.IsValidEmail(email)) return CandidateErrors.InvalidEmail;
+        if (!Validator.IsValidEmail(email)) return InvalidEmail;
 
         var candidate = new Candidate(id)
         { 
@@ -42,9 +43,11 @@ public sealed class Candidate : Entity
 
     public Result AcceptCandidateToInternship()
     {
-        if (IsAcceptedToInternship) return CandidateErrors.AlreadyApplied;
+        if (IsAcceptedToInternship) return AlreadyApplied;
 
         IsAcceptedToInternship = true;
+
+        Raise(new CandidatePassedToInternshipEvent(Email));
 
         return Result.Success();
     }

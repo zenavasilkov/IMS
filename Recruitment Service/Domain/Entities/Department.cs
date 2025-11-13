@@ -1,6 +1,6 @@
 ﻿using Domain.Primitives;
 using Domain.Shared;
-using static Domain.Errors.DomainErrors;
+using static Domain.Errors.DomainErrors.DepartmentErrors;
 
 namespace Domain.Entities;
 
@@ -20,16 +20,15 @@ public sealed class Department : Entity
 
     public static Result<Department> Create(Guid id, string name, string? description = null)
     {
-        if (id == Guid.Empty) return DepartmentErrors.EmptyId;
+        if (id == Guid.Empty) return EmptyId;
 
-        if (string.IsNullOrWhiteSpace(name)) return DepartmentErrors.EmptyName;
+        if (string.IsNullOrWhiteSpace(name)) return EmptyName;
 
         name = name.Trim();
 
-        if (name.Length > MaxNameLength) return DepartmentErrors.NameTooLong;
+        if (name.Length > MaxNameLength) return NameTooLong;
 
-        if (description is not null && description.Length > MaxDescriptionLength)
-            return DepartmentErrors.DescriptionTooLong;
+        if (description is not null && description.Length > MaxDescriptionLength) return DescriptionTooLong;
 
         var department = new Department(id, name, description?.Trim());
 
@@ -40,9 +39,9 @@ public sealed class Department : Entity
     {
         newName = newName.Trim();
 
-        if (!string.IsNullOrWhiteSpace(newName)) return DepartmentErrors.EmptyName;
+        if (string.IsNullOrWhiteSpace(newName)) return EmptyName;
 
-        if (newName.Length > MaxNameLength) return DepartmentErrors.NameTooLong;
+        if (newName.Length > MaxNameLength) return NameTooLong;
 
         Name = newName;
 
@@ -54,7 +53,7 @@ public sealed class Department : Entity
         newDescription = newDescription?.Trim();
 
         if (newDescription is not null && newDescription.Length > MaxDescriptionLength)
-            return DepartmentErrors.DescriptionTooLong;
+            return DescriptionTooLong;
 
         Description = newDescription;
 

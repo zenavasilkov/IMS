@@ -1,7 +1,8 @@
 ﻿using Domain.Enums;
 using Domain.Primitives;
 using Domain.Shared;
-using static Domain.Errors.DomainErrors;
+using static Domain.Errors.DomainErrors.InterviewErrors;
+using RecruitmentNotifications.Messages;
 
 namespace Domain.Entities;
 
@@ -32,15 +33,15 @@ public sealed class Interview : Entity
         InterviewType type,
         DateTime scheduledAt)
     {
-        if (id == Guid.Empty) return InterviewErrors.EmptyId;
+        if (id == Guid.Empty) return EmptyId;
 
-        if (candidate is null) return InterviewErrors.NullCandidate;
+        if (candidate is null) return NullCandidate;
 
-        if (interviewer is null) return InterviewErrors.NullInterviewer;
+        if (interviewer is null) return NullInterviewer;
 
-        if (department is null) return InterviewErrors.NullDepartment;
+        if (department is null) return NullDepartment;
 
-        if (scheduledAt < DateTime.UtcNow.Date) return InterviewErrors.ScheduledInPast;
+        if (scheduledAt < DateTime.UtcNow.Date) return ScheduledInPast;
 
         var interview = new Interview(id)
         {
@@ -54,21 +55,28 @@ public sealed class Interview : Entity
             DepartmentId = department.Id
         };
 
+        interview.Raise(new InterviewScheduledEvent(candidate.Email, interviewer.Email, scheduledAt, type.ToString()));
+
         return interview;
     }
 
     public Result Reschedule(DateTime newDate)
     {
-        if (newDate < DateTime.UtcNow.Date) return InterviewErrors.ScheduledInPast;
+        if (newDate < DateTime.UtcNow.Date) return ScheduledInPast;
 
         ScheduledAt = newDate;
+        IsCancelled = false;
+
+        Raise(new InterviewRescheduledEvent(Candidate!.Email, Interviewer!.Email, Type.ToString(), ScheduledAt, newDate));
 
         return Result.Success();
     }
 
     public Result AddFeedback(string feedback, bool isPassed)
     {
-        if (string.IsNullOrWhiteSpace(feedback)) return InterviewErrors.EmptyFeedback;
+        if (ScheduledAt > DateTime.UtcNow) return CannotAddFeedback;
+
+        if (string.IsNullOrWhiteSpace(feedback)) return EmptyFeedback;
 
         Feedback = feedback.Trim();
         IsPassed = isPassed;
@@ -78,11 +86,13 @@ public sealed class Interview : Entity
 
     public Result Cancel()
     {
-        if (ScheduledAt < DateTime.UtcNow.Date) return InterviewErrors.CancelPassedInterview;
+        if (ScheduledAt < DateTime.UtcNow.Date) return CancelPassedInterview;
 
-        if (IsCancelled) return InterviewErrors.AlreadyCancelled;
+        if (IsCancelled) return AlreadyCancelled;
 
         IsCancelled = true;
+
+        Raise(new InterviewCancelledEvent(Candidate!.Email, Interviewer!.Email, Type.ToString(), ScheduledAt));
 
         return Result.Success();
     }
