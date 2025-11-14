@@ -20,15 +20,15 @@ public static class DomainErrors
 
     public static class DepartmentErrors
     {
-        public static readonly Error EmptyId = new($"{nameof(DepartmentErrors)}.{nameof(EmptyId)}", "DepartmentErrors ID cannot be empty.");
+        public static readonly Error EmptyId = new($"{nameof(DepartmentErrors)}.{nameof(EmptyId)}", "Department ID cannot be empty.");
 
-        public static readonly Error EmptyName =  new($"{nameof(DepartmentErrors)}.{nameof(EmptyName)}", "DepartmentErrors name is required.");
+        public static readonly Error EmptyName =  new($"{nameof(DepartmentErrors)}.{nameof(EmptyName)}", "Department name is required.");
 
         public static readonly Error NameTooLong = new($"{nameof(DepartmentErrors)}.{nameof(NameTooLong)}",
-                $"DepartmentErrors name cannot exceed {Department.MaxNameLength} characters.");
+                $"Department name cannot exceed {Department.MaxNameLength} characters.");
 
         public static readonly Error DescriptionTooLong =  new($"{nameof(DepartmentErrors)}.{nameof(DescriptionTooLong)}",
-                $"DepartmentErrors description cannot exceed {Department.MaxDescriptionLength} characters.");
+                $"Department description cannot exceed {Department.MaxDescriptionLength} characters.");
     }
 
     public static class EmployeeErrors
@@ -41,11 +41,15 @@ public static class DomainErrors
 
         public static readonly Error InvalidEmail =  new($"{nameof(EmployeeErrors)}.{nameof(InvalidEmail)}", "Employee email is invalid.");
 
+        public static readonly Error InvalidRole = new($"{nameof(EmployeeErrors)}.{InvalidRole}", "Invalid role spedified");
+
         public static readonly Error NullDepartment = new($"{nameof(EmployeeErrors)}.{nameof(NullDepartment)}", "Employee must belong to a department.");
 
         public static readonly Error TheSameRole = new($"{nameof(EmployeeErrors)}.{nameof(TheSameRole)}", "New employee role has to deffer from current.");
 
         public static readonly Error UndefinedRole =  new($"{nameof(EmployeeErrors)}.{nameof(UndefinedRole)}", "Employee role cannot be undefined.");
+
+        public static readonly Error SameDepartment = new($"{nameof(EmployeeErrors)}.{nameof(SameDepartment)}", "Employee already in this department.");
 
         public static readonly Error FirstNameTooLong =
             new($"{nameof(EmployeeErrors)}.{nameof(FirstNameTooLong)}", $"Employee first name cannot exceed {FullName.MaxLength} characters.");
@@ -75,5 +79,7 @@ public static class DomainErrors
             new($"{nameof(InterviewErrors)}.{nameof(CancelPassedInterview)}", "Cannot cancel already passed interview.");
 
         public static readonly Error AlreadyCancelled =  new($"{nameof(InterviewErrors)}.{nameof(AlreadyCancelled)}", "Interviewhas already been cancelled.");
+
+        public static readonly Error CannotAddFeedback = new($"{nameof(InterviewErrors)}.{nameof(CannotAddFeedback)}", "Cannot add a feedback to an interview that didn't take place");
     }
 }

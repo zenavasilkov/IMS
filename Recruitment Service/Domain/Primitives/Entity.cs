@@ -1,8 +1,18 @@
-﻿namespace Domain.Primitives;
+﻿using RecruitmentNotifications.Messages;
+
+namespace Domain.Primitives;
 
 public abstract class Entity(Guid id) : IEquatable<Entity>
 {
     public Guid Id { get; private init; } = id;
+
+    private readonly List<BaseEvent> _domainEvents = [];
+
+    public List<BaseEvent> GetDomainEvents() => [.._domainEvents]; 
+
+    public void ClearDomainEvents() => _domainEvents.Clear();
+
+    protected void Raise(BaseEvent domainEvent) => _domainEvents.Add(domainEvent);
 
     public static bool operator ==(Entity? first, Entity? second) => 
         first is not null && second is not null && first.Equals(second);

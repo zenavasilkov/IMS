@@ -28,8 +28,7 @@ public sealed class Department : Entity
 
         if (name.Length > MaxNameLength) return DepartmentErrors.NameTooLong;
 
-        if (description is not null && description.Length > MaxDescriptionLength)
-            return DepartmentErrors.DescriptionTooLong;
+        if (description is not null && description.Length > MaxDescriptionLength) return DepartmentErrors.DescriptionTooLong;
 
         var department = new Department(id, name, description?.Trim());
 
@@ -40,7 +39,7 @@ public sealed class Department : Entity
     {
         newName = newName.Trim();
 
-        if (!string.IsNullOrWhiteSpace(newName)) return DepartmentErrors.EmptyName;
+        if (string.IsNullOrWhiteSpace(newName)) return DepartmentErrors.EmptyName;
 
         if (newName.Length > MaxNameLength) return DepartmentErrors.NameTooLong;
 

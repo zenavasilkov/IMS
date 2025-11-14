@@ -58,7 +58,7 @@ services:
       postgresdb:
         condition: service_healthy
       rabbitmq:
-        condition: service_healthy
+        condition: service_started
       redis:
         condition: service_started
     env_file:
@@ -73,6 +73,21 @@ services:
       retries: 5
       start_period: 15s
 
+  recruitmentservice:
+    build:
+      context: .
+      dockerfile: "Recruitment Service/WebApi/Dockerfile"
+    depends_on:
+      postgresdb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    env_file:
+      - ".env"
+    ports:
+      - "8110:8080"
+      - "8111:8081"
+
   notificationservice:
     build:
       context: .
@@ -83,7 +98,7 @@ services:
       postgresdb:
         condition: service_healthy
       rabbitmq:
-        condition: service_healthy
+        condition: service_started
       papercut:
         condition: service_started
     env_file:

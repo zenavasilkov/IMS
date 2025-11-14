@@ -2,6 +2,7 @@
 using Domain.Shared;
 using Domain.ValueObjects;
 using static Domain.Errors.DomainErrors;
+using RecruitmentNotifications.Messages;
 
 namespace Domain.Entities;
 
@@ -45,6 +46,8 @@ public sealed class Candidate : Entity
         if (IsAcceptedToInternship) return CandidateErrors.AlreadyApplied;
 
         IsAcceptedToInternship = true;
+
+        Raise(new CandidatePassedToInternshipEvent(Email));
 
         return Result.Success();
     }

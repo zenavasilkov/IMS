@@ -40,6 +40,8 @@ public sealed class Employee : Entity
     {
         if (department is null) return EmployeeErrors.NullDepartment;
 
+        if (department == Department) return EmployeeErrors.SameDepartment;
+
         Department = department;
         DepartmentId = department.Id;
 
@@ -68,6 +70,7 @@ public sealed class Employee : Entity
 
     private static Result ValidateImployee(Guid id, EmploeeRole role, string email, Department department)
     {
+        if (!Enum.IsDefined(role)) return EmployeeErrors.InvalidRole; 
 
         if (id == Guid.Empty) return EmployeeErrors.EmptyId;
 

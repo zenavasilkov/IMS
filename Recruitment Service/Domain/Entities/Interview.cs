@@ -2,6 +2,7 @@
 using Domain.Primitives;
 using Domain.Shared;
 using static Domain.Errors.DomainErrors;
+using RecruitmentNotifications.Messages;
 
 namespace Domain.Entities;
 
@@ -54,6 +55,8 @@ public sealed class Interview : Entity
             DepartmentId = department.Id
         };
 
+        interview.Raise(new InterviewScheduledEvent(candidate.Email, interviewer.Email, scheduledAt, type.ToString()));
+
         return interview;
     }
 
@@ -62,12 +65,17 @@ public sealed class Interview : Entity
         if (newDate < DateTime.UtcNow.Date) return InterviewErrors.ScheduledInPast;
 
         ScheduledAt = newDate;
+        IsCancelled = false;
+
+        Raise(new InterviewRescheduledEvent(Candidate!.Email, Interviewer!.Email, Type.ToString(), ScheduledAt, newDate));
 
         return Result.Success();
     }
 
     public Result AddFeedback(string feedback, bool isPassed)
     {
+        if (ScheduledAt > DateTime.UtcNow) return InterviewErrors.CannotAddFeedback;
+
         if (string.IsNullOrWhiteSpace(feedback)) return InterviewErrors.EmptyFeedback;
 
         Feedback = feedback.Trim();
@@ -83,6 +91,8 @@ public sealed class Interview : Entity
         if (IsCancelled) return InterviewErrors.AlreadyCancelled;
 
         IsCancelled = true;
+
+        Raise(new InterviewCancelledEvent(Candidate!.Email, Interviewer!.Email, Type.ToString(), ScheduledAt));
 
         return Result.Success();
     }
