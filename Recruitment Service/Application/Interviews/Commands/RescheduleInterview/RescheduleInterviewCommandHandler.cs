@@ -1,12 +1,11 @@
 ﻿using Application.Abstractions.Messaging;
 using Domain.Contracts.Repositories;
-using Domain.Entities;
 using Domain.Shared;
 using static Application.Errors.ApplicationErrors;
 
 namespace Application.Interviews.Commands.RescheduleInterview;
 
-public class RescheduleInterviewCommandHandler(IGenericRepository<Interview> repository) : ICommandHandler<RescheduleInterviewCommand>
+public class RescheduleInterviewCommandHandler(IInterviewRepository repository) : ICommandHandler<RescheduleInterviewCommand>
 {
     public async Task<Result> Handle(RescheduleInterviewCommand request, CancellationToken cancellationToken)
     {

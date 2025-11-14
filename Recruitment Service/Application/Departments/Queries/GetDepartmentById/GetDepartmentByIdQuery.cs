@@ -2,4 +2,4 @@
 
 namespace Application.Departments.Queries.GetDepartmentById;
 
-public sealed record GetDepartmentByIdQuery(Guid Id) : IQuery<GetDepartmentByIdResponse>;
+public sealed record GetDepartmentByIdQuery(Guid Id) : IQuery<GetDepartmentByIdQueryResponse>;
