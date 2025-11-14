@@ -11,13 +11,15 @@ public class InterviewRecheduledConsumer(IEmailService emailService) : IConsumer
     {
         var message = context.Message;
 
-        string subject = string.Format(SubjectConstats.InterviewRescheduled,
+        var subject = string.Format(SubjectConstats.InterviewRescheduled,
             message.ScheduledAt, message.RescheduledTo);
 
-        await emailService.Send(message.CandidateEmail, subject,
+        var sendToCandidate = emailService.Send(message.CandidateEmail, subject,
             TemplatePaths.InterviewRescheduled, message, context.CancellationToken);
 
-        await emailService.Send(message.InterviewerEmail, subject,
+        var sendToInterviewer = emailService.Send(message.InterviewerEmail, subject,
             TemplatePaths.InterviewRescheduled, message, context.CancellationToken);
+
+        await Task.WhenAll(sendToCandidate, sendToInterviewer);
     }
 }

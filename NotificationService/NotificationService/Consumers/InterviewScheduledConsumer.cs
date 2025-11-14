@@ -11,12 +11,14 @@ public class InterviewScheduledConsumer(IEmailService emailService) : IConsumer<
     {
         var message = context.Message;
 
-        string subject = string.Format(SubjectConstats.InterviewScheduled, message.ScheduledAt);
+        var subject = string.Format(SubjectConstats.InterviewScheduled, message.ScheduledAt);
 
-        await emailService.Send(message.CandidateEmail, subject,
+        var sendToCandidate = emailService.Send(message.CandidateEmail, subject,
             TemplatePaths.InterviewScheduled, message, context.CancellationToken);
 
-        await emailService.Send(message.InterviewerEmail, subject,
+        var sendToInterviewer = emailService.Send(message.InterviewerEmail, subject,
             TemplatePaths.InterviewScheduled, message, context.CancellationToken);
+
+        await Task.WhenAll(sendToCandidate, sendToInterviewer);
     }
 }

@@ -11,10 +11,12 @@ public class InterviewCancelledConsumer(IEmailService emailService) : IConsumer<
     {
         var message = context.Message;
 
-        await emailService.Send(message.CandidateEmail, SubjectConstats.InterviewCancelled,
+        var sendToCandidate = emailService.Send(message.CandidateEmail, SubjectConstats.InterviewCancelled,
             TemplatePaths.InterviewCancelled, message, context.CancellationToken);
 
-        await emailService.Send(message.InterviewerEmail, SubjectConstats.InterviewCancelled,
+        var sendToInterviewer = emailService.Send(message.InterviewerEmail, SubjectConstats.InterviewCancelled,
             TemplatePaths.InterviewCancelled, message, context.CancellationToken);
+
+        await Task.WhenAll(sendToCandidate, sendToInterviewer);
     }
 }
