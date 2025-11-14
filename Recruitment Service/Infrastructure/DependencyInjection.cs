@@ -54,8 +54,7 @@ public static class DependencyInjection
     }
 
     private static IServiceCollection AddInterceptors(this IServiceCollection services)
-    { 
-
+    {
         services.AddSingleton<ConvertDomainEventsToOutboxMessageInterceptor>();
         return services;
     }
