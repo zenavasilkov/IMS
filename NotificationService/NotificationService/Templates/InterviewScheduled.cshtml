@@ -1,0 +1,35 @@
+﻿@using System
+@using RecruitmentNotifications.Messages
+@model InterviewScheduledEvent
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interview Scheduled</title>
+    @await Html.PartialAsync("EmailStyles")
+</head>
+<body>
+    <div class="container">
+        <div class="header">Interview Scheduled</div>
+        <div class="content">
+            <p>Hello,</p>
+
+            <p>Your interview has been scheduled:</p>
+
+            <div class="highlight">
+                <strong>Interview Type:</strong> @Model.InterviewType<br />
+                <strong>Interviewer:</strong> @Model.InterviewerEmail<br />
+                <strong>Date & Time:</strong> @Model.ScheduledAt.ToString("MMMM dd, yyyy HH:mm")
+            </div>
+
+            <p>Please make sure to be available at the scheduled time.</p>
+
+            <p>Best regards,<br />Recruitment Team</p>
+        </div>
+        <div class="footer">
+            &copy; @(DateTime.Now.Year) Recruitment System. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>

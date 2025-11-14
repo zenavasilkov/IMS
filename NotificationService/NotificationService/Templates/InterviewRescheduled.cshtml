@@ -1,0 +1,35 @@
+﻿@using System
+@using RecruitmentNotifications.Messages
+@model InterviewRescheduledEvent
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interview Rescheduled</title>
+    @await Html.PartialAsync("EmailStyles")
+</head>
+<body>
+    <div class="container">
+        <div class="header">Interview Rescheduled</div>
+        <div class="content">
+            <p>Hello,</p>
+
+            <p>Your interview has been rescheduled:</p>
+
+            <div class="highlight">
+                <strong>Previous Date:</strong> @Model.ScheduledAt.ToString("MMMM dd, yyyy HH:mm")<br />
+                <strong>New Date:</strong> @Model.RescheduledTo.ToString("MMMM dd, yyyy HH:mm")<br />
+                <strong>Interview Type:</strong> @Model.InterviewType
+            </div>
+
+            <p>Please review your updated interview schedule.</p>
+
+            <p>Best regards,<br />Recruitment Team</p>
+        </div>
+        <div class="footer">
+            &copy; @(DateTime.Now.Year) Recruitment System. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>

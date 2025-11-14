@@ -1,0 +1,35 @@
+﻿@using System
+@using RecruitmentNotifications.Messages
+@model InterviewCancelledEvent
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interview Cancelled</title>
+    @await Html.PartialAsync("EmailStyles")
+</head>
+<body>
+    <div class="container">
+        <div class="header">Interview Cancelled</div>
+        <div class="content">
+            <p>Hello,</p>
+
+            <p>Your interview has been cancelled:</p>
+
+            <div class="highlight">
+                <strong>Interview Type:</strong> @Model.InterviewType<br />
+                <strong>Scheduled Date:</strong> @Model.ScheduledAt.ToString("MMMM dd, yyyy HH:mm")<br />
+                <strong>Interviewer:</strong> @Model.InterviewerEmail
+            </div>
+
+            <p>We will follow up with additional information soon.</p>
+
+            <p>Best regards,<br />Recruitment Team</p>
+        </div>
+        <div class="footer">
+            &copy; @(DateTime.Now.Year) Recruitment System. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>
