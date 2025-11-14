@@ -22,9 +22,29 @@ internal class InterviewRepository(IGenericRepository<Interview> repository, Rec
         return interviews;
     }
 
-    public Task<PagedList<Interview>> GetByConditionAsync(Expression<Func<Interview, bool>> expression,
-        PaginationParameters paginationParameters, bool trackChanges = false, CancellationToken cancellationToken = default) =>
-        repository.GetByConditionAsync(expression, paginationParameters, trackChanges, cancellationToken);
+    public async Task<PagedList<Interview>> GetByConditionAsync(Expression<Func<Interview, bool>> expression,
+        PaginationParameters paginationParameters, bool trackChanges = false, CancellationToken cancellationToken = default)
+    {
+        var query = context.Set<Interview>()
+            .Include(i => i.Candidate)
+            .Include(i => i.Interviewer)
+            .Include(i => i.Department)
+            .Where(expression)
+            .AsQueryable();
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        query = trackChanges ? query : query.AsNoTracking();
+
+        var list = await query
+            .Skip((paginationParameters.PageNumber - 1) * paginationParameters.PageSize)
+            .Take(paginationParameters.PageSize)
+            .ToListAsync(cancellationToken);
+
+        var pagedList = new PagedList<Interview>(list, paginationParameters.PageNumber, paginationParameters.PageSize, totalCount);
+
+        return pagedList;
+    }
 
     public async Task<Interview?> GetByIdAsync(Guid id, bool trackChanges = true, CancellationToken cancellationToken = default)
     {

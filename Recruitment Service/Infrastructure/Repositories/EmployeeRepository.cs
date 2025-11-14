@@ -22,7 +22,7 @@ public class EmployeeRepository(IGenericRepository<Employee> repository, Recruit
 
         query = trackChanges ? query : query.AsNoTracking();
 
-        var employee = await query.FirstOrDefaultAsync(e => e.Email.Equals(email, StringComparison.OrdinalIgnoreCase), cancellationToken);
+        var employee = await query.FirstOrDefaultAsync(e => e.Email.ToLower() == email.ToLower(), cancellationToken);
 
         return employee;
     }
