@@ -8,11 +8,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Abstractions;
 using static Presentation.ApiRoutes.ApiRoutes;
-using static Presentation.ApiRoutes.ApiRoutes.Departments;
 
 namespace Presentation.Controllers;
 
-[Route(Base)]
+[Route(Departments.Base)]
 public class DepartmentsController(ISender sender) : ApiController(sender)
 {
     [HttpPost]
@@ -45,7 +44,7 @@ public class DepartmentsController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error.ToString());
     }
 
-    [HttpGet(ByName)]
+    [HttpGet(Departments.ByName)]
     public async Task<ActionResult<GetDepartmentByNameResponse>> GetByName([FromRoute] string name, CancellationToken cancellationToken)
     {
         var query = new GetDepartmentByNameQuery(name);

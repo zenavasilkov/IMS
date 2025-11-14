@@ -8,11 +8,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Abstractions;
 using static Presentation.ApiRoutes.ApiRoutes;
-using static Presentation.ApiRoutes.ApiRoutes.Candidates;
 
 namespace Presentation.Controllers;
 
-[Route(Base)]
+[Route(Candidates.Base)]
 public sealed class CandidatesController(ISender sender) : ApiController(sender)
 {
     [HttpPost(Candidates.Register)]
@@ -36,7 +35,7 @@ public sealed class CandidatesController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? NoContent() : BadRequest(result.Error.ToString());
     }
 
-    [HttpGet(ByEmail)]
+    [HttpGet(Candidates.ByEmail)]
     public async Task<ActionResult<FindCandidateByEmailQueryResponse>> GetByEmail([FromRoute] string email, CancellationToken cancellationToken)
     {
         var query = new FindCandidateByEmailQuery(email);

@@ -7,11 +7,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Abstractions;
 using static Presentation.ApiRoutes.ApiRoutes;
-using static Presentation.ApiRoutes.ApiRoutes.Employees;
 
 namespace Presentation.Controllers;
 
-[Route(Base)]
+[Route(Employees.Base)]
 public class EmployeesController(ISender sender) : ApiController(sender)
 {
     [HttpPost]

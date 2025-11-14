@@ -10,11 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 using Pagination;
 using Presentation.Abstractions;
 using static Presentation.ApiRoutes.ApiRoutes;
-using static Presentation.ApiRoutes.ApiRoutes.Interviews;
 
 namespace Presentation.Controllers;
 
-[Route(Base)]
+[Route(Interviews.Base)]
 public class InterviewsController(ISender sender) : ApiController(sender)
 {
     [HttpPost]
@@ -54,7 +53,7 @@ public class InterviewsController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error.ToString());
     }
 
-    [HttpGet(ByCandidateId)]
+    [HttpGet(Interviews.ByCandidateId)]
     public async Task<ActionResult<GetInterviewsByCandidateIdQueryResponse>> GetByCandidateId(
         [FromQuery] Guid candidateId,
         [FromQuery] PaginationParameters paginationParameters,
