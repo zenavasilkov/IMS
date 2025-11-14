@@ -2,7 +2,7 @@
 using Domain.Primitives;
 using Domain.Shared;
 using Domain.ValueObjects;
-using static Domain.Errors.DomainErrors.EmployeeErrors;
+using static Domain.Errors.DomainErrors;
 using static Domain.ValueObjects.FullName;
 
 namespace Domain.Entities;
@@ -38,9 +38,9 @@ public sealed class Employee : Entity
 
     public Result MoveTo(Department department)
     {
-        if (department is null) return NullDepartment;
+        if (department is null) return EmployeeErrors.NullDepartment;
 
-        if (department == Department) return SameDepartment;
+        if (department == Department) return EmployeeErrors.SameDepartment;
 
         Department = department;
         DepartmentId = department.Id;
@@ -50,9 +50,9 @@ public sealed class Employee : Entity
 
     public Result ChangeRole(EmploeeRole newRole)
     {
-        if (newRole == Role) return TheSameRole;
+        if (newRole == Role) return EmployeeErrors.TheSameRole;
 
-        if(newRole == EmploeeRole.Undefined) return UndefinedRole;
+        if(newRole == EmploeeRole.Undefined) return EmployeeErrors.UndefinedRole;
 
         Role = newRole;
 
@@ -61,7 +61,7 @@ public sealed class Employee : Entity
 
     public Result UpdateEmail(string newEmail)
     {
-        if(!Validator.IsValidEmail(newEmail)) return InvalidEmail;
+        if(!Validator.IsValidEmail(newEmail)) return EmployeeErrors.InvalidEmail;
 
         Email = newEmail.Trim();
 
@@ -70,15 +70,15 @@ public sealed class Employee : Entity
 
     private static Result ValidateImployee(Guid id, EmploeeRole role, string email, Department department)
     {
-        if (!Enum.IsDefined(role)) return InvalidRole; 
+        if (!Enum.IsDefined(role)) return EmployeeErrors.InvalidRole; 
 
-        if (id == Guid.Empty) return EmptyId;
+        if (id == Guid.Empty) return EmployeeErrors.EmptyId;
 
-        if (!Validator.IsValidEmail(email)) return InvalidEmail;
+        if (!Validator.IsValidEmail(email)) return EmployeeErrors.InvalidEmail;
 
-        if (department is null) return NullDepartment;
+        if (department is null) return EmployeeErrors.NullDepartment;
 
-        if (role == EmploeeRole.Undefined) return UndefinedRole;
+        if (role == EmploeeRole.Undefined) return EmployeeErrors.UndefinedRole;
 
         return Result.Success();
     }

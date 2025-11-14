@@ -1,7 +1,7 @@
 ﻿using Domain.Enums;
 using Domain.Primitives;
 using Domain.Shared;
-using static Domain.Errors.DomainErrors.InterviewErrors;
+using static Domain.Errors.DomainErrors;
 using RecruitmentNotifications.Messages;
 
 namespace Domain.Entities;
@@ -33,15 +33,15 @@ public sealed class Interview : Entity
         InterviewType type,
         DateTime scheduledAt)
     {
-        if (id == Guid.Empty) return EmptyId;
+        if (id == Guid.Empty) return InterviewErrors.EmptyId;
 
-        if (candidate is null) return NullCandidate;
+        if (candidate is null) return InterviewErrors.NullCandidate;
 
-        if (interviewer is null) return NullInterviewer;
+        if (interviewer is null) return InterviewErrors.NullInterviewer;
 
-        if (department is null) return NullDepartment;
+        if (department is null) return InterviewErrors.NullDepartment;
 
-        if (scheduledAt < DateTime.UtcNow.Date) return ScheduledInPast;
+        if (scheduledAt < DateTime.UtcNow.Date) return InterviewErrors.ScheduledInPast;
 
         var interview = new Interview(id)
         {
@@ -62,7 +62,7 @@ public sealed class Interview : Entity
 
     public Result Reschedule(DateTime newDate)
     {
-        if (newDate < DateTime.UtcNow.Date) return ScheduledInPast;
+        if (newDate < DateTime.UtcNow.Date) return InterviewErrors.ScheduledInPast;
 
         ScheduledAt = newDate;
         IsCancelled = false;
@@ -74,9 +74,9 @@ public sealed class Interview : Entity
 
     public Result AddFeedback(string feedback, bool isPassed)
     {
-        if (ScheduledAt > DateTime.UtcNow) return CannotAddFeedback;
+        if (ScheduledAt > DateTime.UtcNow) return InterviewErrors.CannotAddFeedback;
 
-        if (string.IsNullOrWhiteSpace(feedback)) return EmptyFeedback;
+        if (string.IsNullOrWhiteSpace(feedback)) return InterviewErrors.EmptyFeedback;
 
         Feedback = feedback.Trim();
         IsPassed = isPassed;
@@ -86,9 +86,9 @@ public sealed class Interview : Entity
 
     public Result Cancel()
     {
-        if (ScheduledAt < DateTime.UtcNow.Date) return CancelPassedInterview;
+        if (ScheduledAt < DateTime.UtcNow.Date) return InterviewErrors.CancelPassedInterview;
 
-        if (IsCancelled) return AlreadyCancelled;
+        if (IsCancelled) return InterviewErrors.AlreadyCancelled;
 
         IsCancelled = true;
 
