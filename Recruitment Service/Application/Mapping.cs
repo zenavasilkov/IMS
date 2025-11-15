@@ -1,0 +1,48 @@
+﻿using Application.Candidates.Queries.FindByEmail;
+using Application.Candidates.Queries.FindById;
+using Application.Employees.Queries.GetEmployeeById;
+using Application.Interviews.Queries.GetInterviewById;
+using Domain.Entities;
+using Mapster;
+using Pagination;
+
+namespace Application;
+
+internal class Mapping : IRegister
+{
+    public void Register(TypeAdapterConfig config)
+    {
+        config.NewConfig<Interview, GetInterviewByIdQueryResponse>()
+            .Map(dest => dest.CandidateEmail, src => src.Candidate!.Email)
+            .Map(dest => dest.InterviewerEmail, src => src.Interviewer!.Email)
+            .Map(dest => dest.DeparnmentName, src => src.Department!.Name);
+        
+        config.NewConfig<Employee, GetEmployeeByIdQueryResponse>().Map(dest => dest, src => src.FullName);
+        config.NewConfig<Candidate, FindCandidateByIdQueryResponse>().Map(dest => dest, src => src.FullName);
+        config.NewConfig<Candidate, FindCandidateByEmailQueryResponse>().Map(dest => dest, src => src.FullName);
+
+        config.NewConfig<PagedList<Interview>, PagedList<GetInterviewByIdQueryResponse>>()
+            .MapWith(src => new PagedList<GetInterviewByIdQueryResponse>(
+                src.Items.Adapt<List<GetInterviewByIdQueryResponse>>(),
+                src.PageNumber,
+                src.PageSize,
+                src.TotalCount
+            ));
+
+        config.NewConfig<PagedList<Employee>, PagedList<GetEmployeeByIdQueryResponse>>()
+            .MapWith(src => new PagedList<GetEmployeeByIdQueryResponse>(
+                src.Items.Adapt<List<GetEmployeeByIdQueryResponse>>(),
+                src.PageNumber,
+                src.PageSize,
+                src.TotalCount
+            ));
+
+        config.NewConfig<PagedList<Candidate>, PagedList<FindCandidateByIdQueryResponse>>()
+            .MapWith(src => new PagedList<FindCandidateByIdQueryResponse>(
+                src.Items.Adapt<List<FindCandidateByIdQueryResponse>>(),
+                src.PageNumber,
+                src.PageSize,
+                src.TotalCount
+            ));
+    }
+}

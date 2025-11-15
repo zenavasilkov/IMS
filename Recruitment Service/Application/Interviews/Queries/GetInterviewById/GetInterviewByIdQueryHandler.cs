@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.Messaging;
 using Domain.Contracts.Repositories;
 using Domain.Shared;
+using Mapster;
 using static Application.Errors.ApplicationErrors;
 
 namespace Application.Interviews.Queries.GetInterviewById;
@@ -14,19 +15,7 @@ public class GetInterviewByIdQueryHandler(IInterviewRepository repository)
 
         if (interview is null) return InterviewErrors.NotFound;
 
-        var response = new GetInterviewByIdQueryResponse(
-            request.Id,
-            interview.CandidateId,
-            interview.InterviewerId,
-            interview.DepartmentId,
-            interview.Candidate!.Email,
-            interview.Interviewer!.Email,
-            interview.Department!.Name,
-            interview.Type,
-            interview.ScheduledAt,
-            interview.Feedback,
-            interview.IsPassed,
-            interview.IsCancelled);
+        var response = interview.Adapt<GetInterviewByIdQueryResponse>();
 
         return response;
     }

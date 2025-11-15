@@ -5,7 +5,7 @@ namespace Application.Interviews.Queries.GetInterviewById;
 public sealed record GetInterviewByIdQueryResponse(
     Guid Id,
     Guid CandidateId,
-    Guid InterviewrId,
+    Guid InterviewerId,
     Guid DepartmentId,
     string CandidateEmail,
     string InterviewerEmail,
