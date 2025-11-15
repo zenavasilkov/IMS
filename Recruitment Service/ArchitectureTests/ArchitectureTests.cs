@@ -11,7 +11,6 @@ public class ArchitectureTests
     private const string PresentationNamespace = "Presentation";
     private const string WebApiNamespace = "WebApi";
 
-
     [Fact]
     public void Domain_Should_Not_HaveDependencyOnOtherProjects()
     {
