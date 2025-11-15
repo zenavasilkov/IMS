@@ -104,6 +104,9 @@ jobs:
               /p:CollectCoverage=true `
               /p:CoverletOutputFormat=opencover `
               /p:CoverletOutput="$coverageReportPath"
+
+      - name: Run RecruitmentService Architecture Tests
+        run: dotnet test "Recruitment Service/ArchitectureTests/ArchitectureTests.csproj" --no-build
               
       - name: SonarQube End Analysis
         shell: pwsh
