@@ -79,7 +79,7 @@ jobs:
               /o:"$organization" `
               /d:sonar.login="$env:SONAR_TOKEN" `
               /d:sonar.coverage.exclusions="**/*" `
-              /d:sonar.exclusions="**/Migrations/**,**/Dockerfile,**/*appsettings*.json" `
+              /d:sonar.exclusions="**/Migrations/**,**/*Migration*.cs,**/Dockerfile,**/*appsettings*.json" `
               $sonarCoverageParam
               
       - name: Build IMS solution
@@ -104,6 +104,9 @@ jobs:
               /p:CollectCoverage=true `
               /p:CoverletOutputFormat=opencover `
               /p:CoverletOutput="$coverageReportPath"
+
+      - name: Run RecruitmentService Architecture Tests
+        run: dotnet test "Recruitment Service/ArchitectureTests/ArchitectureTests.csproj" --no-build
               
       - name: SonarQube End Analysis
         shell: pwsh
