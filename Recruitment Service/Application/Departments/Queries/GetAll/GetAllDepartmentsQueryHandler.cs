@@ -13,9 +13,7 @@ public class GetAllDepartmentsQueryHandler(IDepartmentRepository repository) : I
     {
         var departments = await repository.GetByConditionAsync(c => true, request.PaginationParameters, false, cancellationToken);
 
-        var list = departments.Items.Adapt<List<GetDepartmentByIdQueryResponse>>();
-
-        var pagedList = new PagedList<GetDepartmentByIdQueryResponse>(list, departments.PageNumber, departments.PageSize, departments.TotalCount);
+        var pagedList = departments.Adapt<PagedList<GetDepartmentByIdQueryResponse>>();
 
         var response = new GetAllDepartmentsQueryResponse(pagedList);
 

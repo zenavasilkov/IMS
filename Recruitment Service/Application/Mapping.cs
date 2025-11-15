@@ -1,5 +1,6 @@
 ﻿using Application.Candidates.Queries.FindByEmail;
 using Application.Candidates.Queries.FindById;
+using Application.Departments.Queries.GetDepartmentById;
 using Application.Employees.Queries.GetEmployeeById;
 using Application.Interviews.Queries.GetInterviewById;
 using Domain.Entities;
@@ -40,6 +41,14 @@ internal class Mapping : IRegister
         config.NewConfig<PagedList<Candidate>, PagedList<FindCandidateByIdQueryResponse>>()
             .MapWith(src => new PagedList<FindCandidateByIdQueryResponse>(
                 src.Items.Adapt<List<FindCandidateByIdQueryResponse>>(),
+                src.PageNumber,
+                src.PageSize,
+                src.TotalCount
+            ));
+
+        config.NewConfig<PagedList<Department>, PagedList<GetDepartmentByIdQueryResponse>>()
+            .MapWith(src => new PagedList<GetDepartmentByIdQueryResponse>(
+                src.Items.Adapt<List<GetDepartmentByIdQueryResponse>>(),
                 src.PageNumber,
                 src.PageSize,
                 src.TotalCount
