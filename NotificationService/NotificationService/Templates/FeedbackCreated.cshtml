@@ -6,7 +6,6 @@
 <head>
     <meta charset="UTF-8">
     <title>New Feedback Received</title>
-    @await Html.PartialAsync("EmailStyles")
 </head>
 <body>
     <div class="container">
@@ -18,9 +17,7 @@
 
             <p>You have received new feedback in the Intern Management System.</p>
 
-            <div class="highlight">
-                @Model.Comment
-            </div>
+            <div class="highlight">Comment: @Model.Comment</div>
 
             <p>Best regards,<br />Intern Management System Team</p>
         </div>
