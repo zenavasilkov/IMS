@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using IMS.NotificationsCore.Extensions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RecruitmentNotifications.Extensions;
 using static Application.AssemblyReference;
 
 namespace Application;

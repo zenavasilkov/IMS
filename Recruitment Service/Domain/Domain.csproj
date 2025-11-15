@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Innowise.IMS.Core" Version="2.1.0" />
     <PackageReference Include="Innowise.Pagination" Version="1.0.0" />
-    <PackageReference Include="RecruitmentNotifications" Version="5.0.0" />
+    <PackageReference Include="System.Text.Json" Version="9.0.1" />
   </ItemGroup>
 
 </Project>

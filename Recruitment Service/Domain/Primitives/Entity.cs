@@ -1,4 +1,4 @@
-﻿using RecruitmentNotifications.Messages;
+﻿using IMS.NotificationsCore.Messages;
 
 namespace Domain.Primitives;
 
