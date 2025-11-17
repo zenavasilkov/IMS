@@ -18,9 +18,16 @@ internal class Mapping : IRegister
             .Map(dest => dest.InterviewerEmail, src => src.Interviewer!.Email)
             .Map(dest => dest.DeparnmentName, src => src.Department!.Name);
         
-        config.NewConfig<Employee, GetEmployeeByIdQueryResponse>().Map(dest => dest, src => src.FullName);
-        config.NewConfig<Candidate, FindCandidateByIdQueryResponse>().Map(dest => dest, src => src.FullName);
-        config.NewConfig<Candidate, FindCandidateByEmailQueryResponse>().Map(dest => dest, src => src.FullName);
+        config.NewConfig<Employee, GetEmployeeByIdQueryResponse>()
+            .Map(dest => dest, src => src.FullName);
+
+        config.NewConfig<Candidate, FindCandidateByIdQueryResponse>()
+            .Map(dest => dest, src => src.FullName)
+            .Map(dest => dest.IsApplied, src => src.IsAcceptedToInternship);
+
+        config.NewConfig<Candidate, FindCandidateByEmailQueryResponse>()
+            .Map(dest => dest, src => src.FullName)
+            .Map(dest => dest.IsApplied, src => src.IsAcceptedToInternship);
 
         config.NewConfig<PagedList<Interview>, PagedList<GetInterviewByIdQueryResponse>>()
             .MapWith(src => new PagedList<GetInterviewByIdQueryResponse>(

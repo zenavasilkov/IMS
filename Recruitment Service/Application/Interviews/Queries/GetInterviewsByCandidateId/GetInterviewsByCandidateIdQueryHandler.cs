@@ -15,9 +15,9 @@ public class GetInterviewsByCandidateIdQueryHandler(IInterviewRepository reposit
     {
         var interviews = await repository.GetByConditionAsync(i => i.CandidateId == request.CandidateId, request.PaginationParameters, false, cancellationToken);
 
-        var PagedItems = interviews.Adapt<PagedList<GetInterviewByIdQueryResponse>>();  
+        var pagedList = interviews.Adapt<PagedList<GetInterviewByIdQueryResponse>>();  
 
-        var response = new GetInterviewsByCandidateIdQueryResponse(PagedItems);
+        var response = new GetInterviewsByCandidateIdQueryResponse(pagedList);
 
         return response;
     }

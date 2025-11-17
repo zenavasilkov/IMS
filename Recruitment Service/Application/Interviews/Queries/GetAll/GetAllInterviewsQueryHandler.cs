@@ -13,9 +13,9 @@ public class GetAllInterviewsQueryHandler(IInterviewRepository repository) : IQu
     {
         var interviews = await repository.GetByConditionAsync(i => true, request.PaginationParameters, false, cancellationToken);
 
-        var PagedItems = interviews.Adapt<PagedList<GetInterviewByIdQueryResponse>>();
+        var pagedList = interviews.Adapt<PagedList<GetInterviewByIdQueryResponse>>();
 
-        var response = new GetAllInterviewsQueryResponse(PagedItems);
+        var response = new GetAllInterviewsQueryResponse(pagedList);
 
         return response;
     }
