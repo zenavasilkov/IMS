@@ -20,7 +20,6 @@ public class Program
             ops.ListenAnyIP(8081, o => o.Protocols = HttpProtocols.Http2);
         });
             
-
         Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(builder.Configuration)
             .CreateLogger();
