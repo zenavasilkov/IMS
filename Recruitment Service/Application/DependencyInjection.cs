@@ -10,6 +10,8 @@ namespace Application;
 
 public static class DependencyInjection
 {
+    const string grpcAddressKey = "gRPC:Address";
+
     public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
         services
@@ -33,15 +35,10 @@ public static class DependencyInjection
 
     private static IServiceCollection AddUserGrpc(this IServiceCollection services, IConfiguration configuration)
     {
-        var grpcAddressKey = "gRPC:Address";
-
         var grpcAddress = configuration[grpcAddressKey]
             ?? throw new InvalidOperationException($"Couldn't find gRPC address in {grpcAddressKey}");
 
-        services.AddGrpcClient<UserGrpcService.UserGrpcServiceClient>(o =>
-        {
-            o.Address = new Uri(grpcAddress);
-        });
+        services.AddGrpcClient<UserGrpcService.UserGrpcServiceClient>(o => o.Address = new Uri(grpcAddress));
 
         return services;
     }

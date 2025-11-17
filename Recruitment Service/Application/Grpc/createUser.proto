@@ -9,10 +9,9 @@ service UserGrpcService {
 message CreateUserGrpcRequest {
   string email = 1;
   string phoneNumber = 2;
-  string firstname = 3;
-  string lastname = 4;
+  string firstName = 3;
+  string lastName = 4;
   string patronymic = 5;
-  int32 role = 6;
 }
 
 message CreateUserGrpcResponse {

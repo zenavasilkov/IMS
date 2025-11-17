@@ -53,7 +53,7 @@ public class Program
 
         app.UseAuthorization();
 
-        app.MapGrpcService<GrpcService>();
+        app.MapGrpcService<UserGRpcService>();
          
         app.MapControllers();
 
