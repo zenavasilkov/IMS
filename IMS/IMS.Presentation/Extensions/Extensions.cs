@@ -16,7 +16,8 @@ public static class Extensions
             .AddBusinessLayerDedendencies(configuration)
             .AddMapping()
             .AddAllHealthChecks()
-            .AddValidation();
+            .AddValidation()
+            .AddGrpc();
 
         return services;
     }

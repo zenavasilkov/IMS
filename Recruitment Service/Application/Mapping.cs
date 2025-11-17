@@ -2,6 +2,7 @@
 using Application.Candidates.Queries.FindById;
 using Application.Departments.Queries.GetDepartmentById;
 using Application.Employees.Queries.GetEmployeeById;
+using Application.Grpc;
 using Application.Interviews.Queries.GetInterviewById;
 using Domain.Entities;
 using Mapster;
@@ -28,6 +29,9 @@ internal class Mapping : IRegister
         config.NewConfig<Candidate, FindCandidateByEmailQueryResponse>()
             .Map(dest => dest, src => src.FullName)
             .Map(dest => dest.IsApplied, src => src.IsAcceptedToInternship);
+
+        config.NewConfig<Candidate, CreateUserGrpcRequest>()
+            .Map(dest => dest, src => src.FullName);
 
         config.NewConfig<PagedList<Interview>, PagedList<GetInterviewByIdQueryResponse>>()
             .MapWith(src => new PagedList<GetInterviewByIdQueryResponse>(

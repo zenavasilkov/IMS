@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Application.Grpc";
+
+service UserGrpcService {
+  rpc Create (CreateUserGrpcRequest) returns (CreateUserGrpcResponse);
+}
+
+message CreateUserGrpcRequest {
+  string email = 1;
+  string phoneNumber = 2;
+  string firstName = 3;
+  string lastName = 4;
+  string patronymic = 5;
+}
+
+message CreateUserGrpcResponse {
+  string id = 1;
+}
+
