@@ -1,10 +1,10 @@
-﻿using Infrastructure.Outbox;
+﻿using IMS.NotificationsCore.Messages;
+using Infrastructure.Outbox;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Quartz;
-using RecruitmentNotifications.Messages;
 
 namespace Infrastructure.BackgroundJobs;
 

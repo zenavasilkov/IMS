@@ -1,6 +1,8 @@
-﻿namespace IMS.NotificationsCore.Messages;
+﻿using MediatR;
 
-public record BaseEvent
+namespace IMS.NotificationsCore.Messages;
+
+public record BaseEvent : INotification
 {
     DateTime SentAt { get; init; } = DateTime.UtcNow;
 }

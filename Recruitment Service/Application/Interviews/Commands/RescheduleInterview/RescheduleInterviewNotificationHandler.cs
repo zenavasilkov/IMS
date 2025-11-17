@@ -1,10 +1,10 @@
-﻿using MediatR;
+﻿using IMS.NotificationsCore.Services;
+using MediatR;
 using RecruitmentNotifications.Messages;
-using RecruitmentNotifications.Servises;
 
 namespace Application.Interviews.Commands.RescheduleInterview;
 
-public class RescheduleInterviewNotificationHandler(IMessageSender sender) : INotificationHandler<InterviewRescheduledEvent>
+public class RescheduleInterviewNotificationHandler(IMessageService sender) : INotificationHandler<InterviewRescheduledEvent>
 {
     public Task Handle(InterviewRescheduledEvent notification, CancellationToken cancellationToken) =>
         sender.NotifyInterviewRescheduled(notification, cancellationToken);

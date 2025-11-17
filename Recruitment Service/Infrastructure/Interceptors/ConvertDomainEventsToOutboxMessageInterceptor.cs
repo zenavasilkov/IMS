@@ -1,8 +1,8 @@
 ﻿using Domain.Primitives;
+using IMS.NotificationsCore.Messages;
 using Infrastructure.Outbox;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Newtonsoft.Json;
-using RecruitmentNotifications.Messages;
 
 namespace Infrastructure.Interceptors;
 

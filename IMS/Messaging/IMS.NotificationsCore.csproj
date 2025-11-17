@@ -5,8 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<PackageId>Innowise.IMS.Core</PackageId>
-	<Description>Notification core library for IMS system</Description>
-	<Version>1.1.0</Version>
+	<Description>Notification core</Description>
+	<Version>2.1.0</Version>
 	<Author>Evgeny</Author>
 	<Product>IMS.NotificationsCore</Product>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -17,8 +17,9 @@
   <ItemGroup>
     <PackageReference Include="MassTransit" Version="8.5.5" />
     <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.5" />
+    <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.1" />
   </ItemGroup>
 
 </Project>

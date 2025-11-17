@@ -1,44 +1,32 @@
 ﻿using IMS.NotificationsCore.Messages;
 using MassTransit;
-using Microsoft.Extensions.Logging;
+using RecruitmentNotifications.Messages;
 
 namespace IMS.NotificationsCore.Services;
 
-public class MessageService(IPublishEndpoint publishEndpoint, ILogger<MessageService> logger) : IMessageService
+public class MessageService(IPublishEndpoint publishEndpoint) : IMessageService
 {
-    public Task NotifyFeedbackCreated(FeedbackCreatedEvent feedbackCreatedEvent, CancellationToken cancellationToken = default)
-    {
-        var notification = publishEndpoint.Publish(feedbackCreatedEvent, cancellationToken);
+    public Task NotifyFeedbackCreated(FeedbackCreatedEvent message,
+        CancellationToken cancellationToken = default) => publishEndpoint.Publish(message, cancellationToken);
 
-        logger.LogInformation("Notification of feebback sent to Email : {Email}", feedbackCreatedEvent.Email);
+    public Task NotifyTicketCreated(TicketCreatedEvent message, CancellationToken cancellationToken = default)
+        => publishEndpoint.Publish(message, cancellationToken);
 
-        return notification;
-    }
+    public Task NotifyTicketStatusChanged(TicketStatusChangedEvent message,
+        CancellationToken cancellationToken = default) => publishEndpoint.Publish(message, cancellationToken);
 
-    public Task NotifyTicketCreated(TicketCreatedEvent ticketCreatedEvent, CancellationToken cancellationToken = default)
-    {
-        var notification = publishEndpoint.Publish(ticketCreatedEvent, cancellationToken);
+    public Task NotifyUserCreated(UserCreatedEvent message,
+        CancellationToken cancellationToken = default) => publishEndpoint.Publish(message, cancellationToken); 
 
-        logger.LogInformation("Notification of ticket creation sent to Email : {Email}", ticketCreatedEvent.Email);
+    public Task NotifyCandidatePassedToInterview(CandidatePassedToInternshipEvent message,
+        CancellationToken cancellationToken = default) => publishEndpoint.Publish(message, cancellationToken);
 
-        return notification;
-    }
+    public Task NotifyInterviewCancelled(InterviewCancelledEvent message,
+        CancellationToken cancellationToken = default) => publishEndpoint.Publish(message, cancellationToken);
 
-    public Task NotifyTicketStatusChanged(TicketStatusChangedEvent ticketStatusChangedEvent, CancellationToken cancellationToken = default)
-    {
-        var notification = publishEndpoint.Publish(ticketStatusChangedEvent, cancellationToken);
+    public Task NotifyInterviewRescheduled(InterviewRescheduledEvent message,
+        CancellationToken cancellationToken = default) => publishEndpoint.Publish(message, cancellationToken);
 
-        logger.LogInformation("Notification of changing ticket status sent to Email : {Email}", ticketStatusChangedEvent.Email);
-
-        return notification;
-    }
-
-    public Task NotifyUserCreated(UserCreatedEvent userCreatedEvent, CancellationToken cancellationToken = default)
-    {
-        var notification = publishEndpoint.Publish(userCreatedEvent, cancellationToken);
-
-        logger.LogInformation("Notification of user creation sent to Email : {Email}", userCreatedEvent.Email);
-
-        return notification;
-    }
+    public Task NotifyInterviewScheduled(InterviewScheduledEvent message,
+        CancellationToken cancellationToken = default) => publishEndpoint.Publish(message, cancellationToken);
 }
