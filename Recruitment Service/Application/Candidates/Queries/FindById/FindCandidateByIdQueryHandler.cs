@@ -2,6 +2,7 @@
 using Application.Abstractions.Messaging;
 using Domain.Contracts.Repositories;
 using Domain.Shared;
+using Mapster;
 
 namespace Application.Candidates.Queries.FindById;
 
@@ -14,16 +15,7 @@ public class FindCandidateByIdQueryHandler(ICandidateRepository repository)
 
         if (candidate is null) return CandidateErrors.NotFound;
 
-        var response = new FindCandidateByIdQueryResponse(
-            candidate.Id,
-            candidate.FullName.FirstName,
-            candidate.FullName.LastName,
-            candidate.Email,
-            candidate.IsAcceptedToInternship,
-            candidate.PhoneNumber,
-            candidate.CvLink,
-            candidate.LinkedIn,
-            candidate.FullName.Patronymic);
+        var response = candidate.Adapt<FindCandidateByIdQueryResponse>();
 
         return response;
     }

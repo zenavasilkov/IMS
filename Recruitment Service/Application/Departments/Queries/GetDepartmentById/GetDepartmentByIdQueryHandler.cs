@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions.Messaging;
 using Domain.Contracts.Repositories;
 using Domain.Shared;
+using Mapster;
 using static Application.Errors.ApplicationErrors;
 
 namespace Application.Departments.Queries.GetDepartmentById;
@@ -13,7 +14,7 @@ public class GetDepartmentByIdQueryHandler(IDepartmentRepository repository) : I
 
         if (department is null) return DepartmentErrors.NotFound;
 
-        var response = new GetDepartmentByIdQueryResponse(department.Id, department.Name, department.Description);
+        var response = department.Adapt<GetDepartmentByIdQueryResponse>();
 
         return response;
     }

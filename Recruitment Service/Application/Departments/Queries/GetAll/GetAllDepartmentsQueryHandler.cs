@@ -2,6 +2,7 @@
 using Application.Departments.Queries.GetDepartmentById;
 using Domain.Contracts.Repositories;
 using Domain.Shared;
+using Mapster;
 using Pagination;
 
 namespace Application.Departments.Queries.GetAll;
@@ -12,9 +13,7 @@ public class GetAllDepartmentsQueryHandler(IDepartmentRepository repository) : I
     {
         var departments = await repository.GetByConditionAsync(c => true, request.PaginationParameters, false, cancellationToken);
 
-        var list = departments.Items.Select(d => new GetDepartmentByIdQueryResponse(d.Id, d.Name, d.Description)).ToList();
-
-        var pagedList = new PagedList<GetDepartmentByIdQueryResponse>(list, departments.PageNumber, departments.PageSize, departments.TotalCount);
+        var pagedList = departments.Adapt<PagedList<GetDepartmentByIdQueryResponse>>();
 
         var response = new GetAllDepartmentsQueryResponse(pagedList);
 
