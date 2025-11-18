@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.0.1" />
+    <PackageReference Include="IMS.gRPC.Contracts" Version="4.0.0" />
 	<PackageReference Include="Innowise.IMS.Core" Version="2.0.1" />
   </ItemGroup>
 
