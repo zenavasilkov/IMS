@@ -13,7 +13,7 @@ public static class Extensions
     public static IServiceCollection AddApiDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         services
-            .AddBusinessLayerDedendencies(configuration)
+            .AddBusinessLayerDependencies(configuration)
             .AddMapping()
             .AddAllHealthChecks()
             .AddValidation()
