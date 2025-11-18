@@ -5,7 +5,6 @@ using Application.Employees.Queries.GetEmployeeById;
 using Application.Grpc;
 using Application.Interviews.Queries.GetInterviewById;
 using Domain.Entities;
-using IMS.gRPC.Contracts.CreateUser;
 using Mapster;
 using Pagination;
 
@@ -20,9 +19,8 @@ internal class Mapping : IRegister
             .Map(dest => dest.InterviewerEmail, src => src.Interviewer!.Email)
             .Map(dest => dest.DeparnmentName, src => src.Department!.Name);
         
-        config.NewConfig<Employee, GetEmployeeByIdQueryResponse>().Map(dest => dest, src => src.FullName);
-        config.NewConfig<Candidate, CreateUserGrpcRequest>().Map(dest => dest, src => src.FullName);
-        config.NewConfig<Candidate, CreateUserRequest>().Map(dest => dest, src => src.FullName);
+        config.NewConfig<Employee, GetEmployeeByIdQueryResponse>()
+            .Map(dest => dest, src => src.FullName);
 
         config.NewConfig<Candidate, FindCandidateByIdQueryResponse>()
             .Map(dest => dest, src => src.FullName)
@@ -31,6 +29,9 @@ internal class Mapping : IRegister
         config.NewConfig<Candidate, FindCandidateByEmailQueryResponse>()
             .Map(dest => dest, src => src.FullName)
             .Map(dest => dest.IsApplied, src => src.IsAcceptedToInternship);
+
+        config.NewConfig<Candidate, CreateUserGrpcRequest>()
+            .Map(dest => dest, src => src.FullName);
 
         config.NewConfig<PagedList<Interview>, PagedList<GetInterviewByIdQueryResponse>>()
             .MapWith(src => new PagedList<GetInterviewByIdQueryResponse>(

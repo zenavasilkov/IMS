@@ -53,10 +53,8 @@ public class Program
 
         app.UseAuthorization();
 
-        //app.MapGrpcService<UserGRpcService>();
-
-        app.MapMagicOnionService();
-
+        app.MapGrpcService<UserGRpcService>();
+         
         app.MapControllers();
 
         app.Run();

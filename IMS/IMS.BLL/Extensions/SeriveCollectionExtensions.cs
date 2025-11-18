@@ -10,26 +10,25 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace IMS.BLL.Extensions
 {
-    public static class ServiceCollectionExtensions
+    public static class SeriveCollectionExtensions
     {
-        public static IServiceCollection AddBusinessLayerDependencies(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddBusinessLayerDedendencies(this IServiceCollection services, IConfiguration configuration)
         {
             services
                 .AddDataLayerDependencies(configuration)
                 .AddNotifications(configuration)
                 .AddMapping()
-                .AddServices()
-                .AddMagicOnion();
+                .AddServices();
 
             return services;
         }
 
-        private static IServiceCollection AddMapping(this IServiceCollection services)
+        public static IServiceCollection AddMapping(this IServiceCollection services)
         {
             return services.AddAutoMapper(cfg => cfg.AddProfile<BllMappingProfile>());
         }
 
-        private static IServiceCollection AddServices(this IServiceCollection services)
+        public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>()
                     .AddScoped<ITicketService, TicketService>() 
