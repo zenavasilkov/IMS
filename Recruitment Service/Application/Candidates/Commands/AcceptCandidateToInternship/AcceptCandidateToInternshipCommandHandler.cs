@@ -1,5 +1,4 @@
 ﻿using Application.Abstractions.Messaging;
-//using Application.Grpc;
 using Domain.Contracts.Repositories;
 using Domain.Shared;
 using IMS.gRPC.Contracts.CreateUser;
@@ -9,7 +8,6 @@ using static Application.Errors.ApplicationErrors;
 namespace Application.Candidates.Commands.AcceptCandidateToInternship;
 
 public class AcceptCandidateToInternshipCommandHandler(
-    //UserGrpcService.UserGrpcServiceClient userClient,
     IUserService service,
     ICandidateRepository repository)
     : ICommandHandler<AcceptCandidateToInternshipCommand>
@@ -25,10 +23,6 @@ public class AcceptCandidateToInternshipCommandHandler(
         if (candidateApplyResult.IsFailure) return candidateApplyResult.Error;
 
         await repository.UpdateAsync(candidate, cancellationToken);
-
-        //var createUserRequest = candidate.Adapt<CreateUserGrpcRequest>();
-
-        //await userClient.CreateAsync(createUserRequest, cancellationToken: cancellationToken);
 
         var createUserRequest = candidate.Adapt<CreateUserRequest>();
 
