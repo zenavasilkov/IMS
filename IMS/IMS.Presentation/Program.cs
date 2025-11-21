@@ -1,6 +1,5 @@
 using HealthChecks.UI.Client;
 using IMS.Presentation.Extensions;
-using IMS.Presentation.Grpc;
 using IMS.Presentation.Middleware;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -52,9 +51,9 @@ public class Program
         });
 
         app.UseAuthorization();
+        
+        app.MapMagicOnionService();
 
-        app.MapGrpcService<UserGRpcService>();
-         
         app.MapControllers();
 
         app.Run();
