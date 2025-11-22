@@ -79,7 +79,7 @@ public static class Extensions
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     NameClaimType = ClaimTypes.NameIdentifier,
-                    RoleClaimType = "https://ims-authentication.us.auth0.com/roles"
+                    RoleClaimType = $"https://{domain}/roles"
                 };
             });
 
@@ -90,25 +90,27 @@ public static class Extensions
     {
         services.AddAuthorization(options =>
         {
-            options.AddPolicy(Users.Read, p => p.RequireClaim("permissions", Users.Read));
-            options.AddPolicy(Users.Create, p => p.RequireClaim("permissions", Users.Create));
-            options.AddPolicy(Users.Update, p => p.RequireClaim("permissions", Users.Update));
+            var claimName = "permissions";
+            
+            options.AddPolicy(Users.Read, p => p.RequireClaim(claimName, Users.Read));
+            options.AddPolicy(Users.Create, p => p.RequireClaim(claimName, Users.Create));
+            options.AddPolicy(Users.Update, p => p.RequireClaim(claimName, Users.Update));
 
-            options.AddPolicy(Tickets.Read, p => p.RequireClaim("permissions", Tickets.Read));
-            options.AddPolicy(Tickets.Create, p => p.RequireClaim("permissions", Tickets.Create));
-            options.AddPolicy(Tickets.Update, p => p.RequireClaim("permissions", Tickets.Update));
+            options.AddPolicy(Tickets.Read, p => p.RequireClaim(claimName, Tickets.Read));
+            options.AddPolicy(Tickets.Create, p => p.RequireClaim(claimName, Tickets.Create));
+            options.AddPolicy(Tickets.Update, p => p.RequireClaim(claimName, Tickets.Update));
 
-            options.AddPolicy(Boards.Read, p => p.RequireClaim("permissions", Boards.Read));
-            options.AddPolicy(Boards.Create,p => p.RequireClaim("permissions", Boards.Create));
-            options.AddPolicy(Boards.Update, p => p.RequireClaim("permissions", Boards.Update));
+            options.AddPolicy(Boards.Read, p => p.RequireClaim(claimName, Boards.Read));
+            options.AddPolicy(Boards.Create,p => p.RequireClaim(claimName, Boards.Create));
+            options.AddPolicy(Boards.Update, p => p.RequireClaim(claimName, Boards.Update));
 
-            options.AddPolicy(Internships.Read, p => p.RequireClaim("permissions", Internships.Read));
-            options.AddPolicy(Internships.Create, p => p.RequireClaim("permissions", Internships.Create));
-            options.AddPolicy(Internships.Update, p => p.RequireClaim("permissions", Internships.Update));
+            options.AddPolicy(Internships.Read, p => p.RequireClaim(claimName, Internships.Read));
+            options.AddPolicy(Internships.Create, p => p.RequireClaim(claimName, Internships.Create));
+            options.AddPolicy(Internships.Update, p => p.RequireClaim(claimName, Internships.Update));
 
-            options.AddPolicy(Feedbacks.Read, p => p.RequireClaim("permissions", Feedbacks.Read));
-            options.AddPolicy(Feedbacks.Create, p => p.RequireClaim("permissions", Feedbacks.Create));
-            options.AddPolicy(Feedbacks.Update, p => p.RequireClaim("permissions", Feedbacks.Update));
+            options.AddPolicy(Feedbacks.Read, p => p.RequireClaim(claimName, Feedbacks.Read));
+            options.AddPolicy(Feedbacks.Create, p => p.RequireClaim(claimName, Feedbacks.Create));
+            options.AddPolicy(Feedbacks.Update, p => p.RequireClaim(claimName, Feedbacks.Update));
         });
 
         return services;

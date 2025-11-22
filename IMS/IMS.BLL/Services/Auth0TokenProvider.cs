@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using IMS.BLL.Exceptions;
 using IMS.BLL.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using RestSharp;
@@ -36,10 +37,10 @@ public class Auth0TokenProvider(IConfiguration config) : IAuth0TokenProvider
         var response = await client.ExecuteAsync(request);
         
         if (!response.IsSuccessful)
-            throw new Exception($"Auth0 token request failed: {response.StatusCode} {response.Content}");
+            throw new Auth0TokenRequestFailedException($"Auth0 token request failed: {response.StatusCode} {response.Content}");
         
         if (response.Content is null) 
-            throw new NullReferenceException($"Auth0 token request failed: response content is null");
+            throw new Auth0TokenRequestFailedException($"Auth0 token request failed: response content is null");
         
         using var doc = JsonDocument.Parse(response.Content);
         

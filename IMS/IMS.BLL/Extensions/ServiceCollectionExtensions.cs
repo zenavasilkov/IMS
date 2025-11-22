@@ -19,7 +19,7 @@ namespace IMS.BLL.Extensions
                 .AddNotifications(configuration)
                 .AddMapping()
                 .AddServices()
-                .AddAuth0Management(configuration)
+                .AddAuth0Management()
                 .AddMagicOnion();
 
             return services;
@@ -41,7 +41,7 @@ namespace IMS.BLL.Extensions
             return services;
         }
         
-        private static IServiceCollection AddAuth0Management(this IServiceCollection services, IConfiguration config)
+        private static IServiceCollection AddAuth0Management(this IServiceCollection services)
         {
             services.AddSingleton<IAuth0TokenProvider, Auth0TokenProvider>();
             services.AddSingleton<IAuth0ClientFactory, Auth0ClientFactory>();
