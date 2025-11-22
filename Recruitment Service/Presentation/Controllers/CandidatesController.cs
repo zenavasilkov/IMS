@@ -5,15 +5,19 @@ using Application.Candidates.Queries.FindByEmail;
 using Application.Candidates.Queries.FindById;
 using Application.Candidates.Queries.GetAll;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Abstractions;
 using static Presentation.ApiRoutes.ApiRoutes;
+using static Presentation.ApiConstants.Permissions;
 
 namespace Presentation.Controllers;
 
+[Authorize]
 [Route(Candidates.Base)]
 public sealed class CandidatesController(ISender sender) : ApiController(sender)
 {
+    [Authorize(CandidatesPermissions.Register)]
     [HttpPost(Candidates.Register)]
     public async Task<ActionResult<Guid>> Register([FromBody] RegisterCandidateCommand command, CancellationToken cancellationToken)
     {
@@ -21,6 +25,7 @@ public sealed class CandidatesController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error.ToString());
     }
 
+    [Authorize(CandidatesPermissions.AcceptToInternship)]
     [HttpPut(Candidates.AcceptToInternship)]
     public async Task<ActionResult> AcceptToInternship([FromQuery] AcceptCandidateToInternshipCommand command, CancellationToken cancellationToken)
     {
@@ -28,6 +33,7 @@ public sealed class CandidatesController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? NoContent() : BadRequest(result.Error.ToString());
     }
 
+    [Authorize(CandidatesPermissions.ManageCandidates)]
     [HttpPut(Candidates.UpdateCvLink)]
     public async Task<ActionResult> UpdateCvLink([FromBody] UpdateCvLinkCommand command, CancellationToken cancellationToken)
     {
@@ -35,6 +41,7 @@ public sealed class CandidatesController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? NoContent() : BadRequest(result.Error.ToString());
     }
 
+    [Authorize(CandidatesPermissions.Read)]
     [HttpGet(Candidates.ByEmail)]
     public async Task<ActionResult<FindCandidateByEmailQueryResponse>> GetByEmail([FromRoute] string email, CancellationToken cancellationToken)
     {
@@ -44,6 +51,7 @@ public sealed class CandidatesController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error.ToString());
     }
 
+    [Authorize(CandidatesPermissions.Read)]
     [HttpGet(Id)]
     public async Task<ActionResult<FindCandidateByIdQueryResponse>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
@@ -53,6 +61,7 @@ public sealed class CandidatesController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error.ToString());
     }
 
+    [Authorize(CandidatesPermissions.Read)]
     [HttpGet(Candidates.GetAll)]
     public async Task<ActionResult<GetAllCandidatesQueryResponce>> GetAll([FromQuery] GetAllCandidatesQuery query, CancellationToken cancellationToken)
     {
