@@ -50,10 +50,10 @@ public class BoardsControllerTests(CustomWebApplicationFactory factory) : TestHe
     public async Task GetById_ShouldReturnNotFoundStatus_WhenBoardDoesNotExist()
     {
         //Act
-        var responce = await Client.GetAsync($"{Boards.Base}/{Guid.NewGuid()}");
+        var response = await Client.GetAsync($"{Boards.Base}/{Guid.NewGuid()}");
 
         //Assert
-        responce.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 
     [Fact]
@@ -65,10 +65,10 @@ public class BoardsControllerTests(CustomWebApplicationFactory factory) : TestHe
 
         await AddEntitiesAsync([userMentor, userIntern]);
 
-        var createBoardDTO = new CreateBoardDto(userMentor.Id, userIntern.Id, "New Board", "Test board");
+        var createBoardDto = new CreateBoardDto(userMentor.Id, userIntern.Id, "New Board", "Test board");
 
         // Act
-        var response = await Client.PostAsJsonAsync(Boards.Base, createBoardDTO);
+        var response = await Client.PostAsJsonAsync(Boards.Base, createBoardDto);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -87,10 +87,10 @@ public class BoardsControllerTests(CustomWebApplicationFactory factory) : TestHe
         var board = TestDataHelper.CreateBoard(title: "Old Title");
         await AddEntityAsync(board);
 
-        var updateBoardDTO = new UpdateBoardDto("Updated Title", "Updated Description");
+        var updateBoardDto = new UpdateBoardDto("Updated Title", "Updated Description");
 
         // Act
-        var response = await Client.PutAsJsonAsync($"{Boards.Base}/{board.Id}", updateBoardDTO);
+        var response = await Client.PutAsJsonAsync($"{Boards.Base}/{board.Id}", updateBoardDto);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -106,10 +106,10 @@ public class BoardsControllerTests(CustomWebApplicationFactory factory) : TestHe
     public async Task Update_ShouldReturnNotFoundStatusCode()
     {
         //Arrange
-        var updateBoardDTO = new UpdateBoardDto("Updated Title", "Updated Description");
+        var updateBoardDto = new UpdateBoardDto("Updated Title", "Updated Description");
 
         //Act
-        var response = await Client.PutAsJsonAsync($"{Boards.Base}/{Guid.NewGuid()}", updateBoardDTO);
+        var response = await Client.PutAsJsonAsync($"{Boards.Base}/{Guid.NewGuid()}", updateBoardDto);
 
         //Assert
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);

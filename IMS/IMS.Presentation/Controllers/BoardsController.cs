@@ -6,55 +6,61 @@ using IMS.Presentation.DTOs.CreateDTO;
 using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
 using IMS.Presentation.Routing;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMS.Presentation.Controllers;
 
+[Authorize]
 [ApiController]
 [Route(ApiRoutes.Boards.Base)]
 public class BoardsController(IService<BoardModel, Board> boardService, IMapper mapper) : ControllerBase
 {
+    [Authorize("read:boards")]
     [HttpGet]
     public async Task<IEnumerable<BoardDto>> GetAll(CancellationToken cancellationToken)
     {
         var boards = await boardService.GetAllAsync(cancellationToken: cancellationToken); 
 
-        var boardDTOs = mapper.Map<IEnumerable<BoardDto>>(boards); 
+        var boardDtos = mapper.Map<IEnumerable<BoardDto>>(boards); 
 
-        return boardDTOs;
+        return boardDtos;
     }
 
+    [Authorize("read:boards")]
     [HttpGet(ApiRoutes.Id)]
     public async Task<BoardDto> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var board = await boardService.GetByIdAsync(id, cancellationToken);
 
-        var boardDTO = mapper.Map<BoardDto>(board);
+        var boardDto = mapper.Map<BoardDto>(board);
 
-        return boardDTO;
+        return boardDto;
     }
 
+    [Authorize("create:boards")]
     [HttpPost]
-    public async Task<BoardDto> Create([FromBody] CreateBoardDto createBoardDTO, CancellationToken cancellationToken)
+    public async Task<BoardDto> Create([FromBody] CreateBoardDto createBoardDto, CancellationToken cancellationToken)
     {
-        var boardModel = mapper.Map<BoardModel>(createBoardDTO);
+        var boardModel = mapper.Map<BoardModel>(createBoardDto);
 
         var createdBoardModel = await boardService.CreateAsync(boardModel, cancellationToken);
 
-        var boardDTO = mapper.Map<BoardDto>(createdBoardModel);
+        var boardDto = mapper.Map<BoardDto>(createdBoardModel);
 
-        return boardDTO;
+        return boardDto;
     }
 
+    [Authorize("update:boards")]
     [HttpPut(ApiRoutes.Id)]
-    public async Task<BoardDto> Update([FromRoute] Guid id, [FromBody] UpdateBoardDto updateBoardDTO, CancellationToken cancellationToken)
+    public async Task<BoardDto> Update([FromRoute] Guid id, [FromBody] UpdateBoardDto updateBoardDto, CancellationToken cancellationToken)
     {
-        var boardModel = mapper.Map<BoardModel>(updateBoardDTO);
+        var boardModel = mapper.Map<BoardModel>(updateBoardDto);
 
         var updatedBoardModel = await boardService.UpdateAsync(id, boardModel, cancellationToken);
 
-        var updatedBoardDTO = mapper.Map<BoardDto>(updatedBoardModel);
+        var updatedBoardDto = mapper.Map<BoardDto>(updatedBoardModel);
 
-        return updatedBoardDTO;
+        return updatedBoardDto;
     }
 }

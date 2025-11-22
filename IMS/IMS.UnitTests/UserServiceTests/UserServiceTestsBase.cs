@@ -1,11 +1,13 @@
-﻿namespace IMS.UnitTests.UserServiceTests;
+﻿using IMS.BLL.Services.Interfaces;
+using Microsoft.AspNetCore.Hosting;
+
+namespace IMS.UnitTests.UserServiceTests;
 
 public class UserServiceTestsBase
 {
     protected readonly IFixture Fixture;
     protected readonly Mock<IUserRepository> UserRepositoryMock;
     protected readonly Mock<IMapper> MapperMock;
-    protected readonly Mock<IMessageService> MessageServiceMock;
     protected readonly UserService UserService;
 
     protected UserServiceTestsBase()
@@ -21,15 +23,20 @@ public class UserServiceTestsBase
         UserRepositoryMock = Fixture.Freeze<Mock<IUserRepository>>();
         MapperMock = Fixture.Freeze<Mock<IMapper>>();
 
-        MessageServiceMock = new Mock<IMessageService>();
-        MessageServiceMock.Setup(m => m.NotifyUserCreated(
+        var messageServiceMock = new Mock<IMessageService>();
+        messageServiceMock.Setup(m => m.NotifyUserCreated(
             It.IsAny<UserCreatedEvent>(), 
             It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
-
+        
+        var environmentMock = new Mock<IWebHostEnvironment>();
+        var auth0ClientFactoryMock = new Mock<IAuth0ClientFactory>();
+        
         UserService = new UserService(
             UserRepositoryMock.Object, 
             MapperMock.Object,
-            MessageServiceMock.Object);
+            messageServiceMock.Object,
+            auth0ClientFactoryMock.Object,
+            environmentMock.Object);
     }
 }

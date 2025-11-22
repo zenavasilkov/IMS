@@ -5,67 +5,75 @@ using IMS.Presentation.DTOs.CreateDTO;
 using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
 using IMS.Presentation.Routing;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static IMS.Presentation.ApiConstants.Permissions;
 
 namespace IMS.Presentation.Controllers;
 
+[Authorize]
 [ApiController]
 [Route(ApiRoutes.Internships.Base)]
 public class InternshipsController(IInternshipService service, IMapper mapper) : ControllerBase
 {
+    [Authorize(Internships.Read)]
     [HttpGet]
     public async Task<IEnumerable<InternshipDto>> GetAll(CancellationToken cancellationToken)
     {
         var internships = await service.GetAllAsync(cancellationToken: cancellationToken);
 
-        var internshipDTOs = mapper.Map<IEnumerable<InternshipDto>>(internships); 
+        var internshipDtos = mapper.Map<IEnumerable<InternshipDto>>(internships); 
 
-        return internshipDTOs;
+        return internshipDtos;
     }
 
+    [Authorize(Internships.Read)]
     [HttpGet(ApiRoutes.Id)]
     public async Task<InternshipDto> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var internship = await service.GetByIdAsync(id, cancellationToken);
 
-        var internshipDTO = mapper.Map<InternshipDto>(internship);
+        var internshipDto = mapper.Map<InternshipDto>(internship);
 
-        return internshipDTO;
+        return internshipDto;
     }
 
+    [Authorize(Internships.Create)]
     [HttpPost]
-    public async Task<InternshipDto> Create([FromBody] CreateInternshipDto createInternshipDTO, 
+    public async Task<InternshipDto> Create([FromBody] CreateInternshipDto createInternshipDto, 
         CancellationToken cancellationToken)
     {
-        var internshipModel = mapper.Map<InternshipModel>(createInternshipDTO);
+        var internshipModel = mapper.Map<InternshipModel>(createInternshipDto);
 
         var createdInternshipModel = await service.CreateInternshipAsync(internshipModel, cancellationToken);
 
-        var internshipDTO = mapper.Map<InternshipDto>(createdInternshipModel);
+        var internshipDto = mapper.Map<InternshipDto>(createdInternshipModel);
 
-        return internshipDTO;
+        return internshipDto;
     }
 
+    [Authorize(Internships.Update)]
     [HttpPut(ApiRoutes.Id)]
     public async Task<InternshipDto> Update([FromRoute] Guid id, 
-        [FromBody] UpdateInternshipDto updateInternshipDTO, CancellationToken cancellationToken)
+        [FromBody] UpdateInternshipDto updateInternshipDto, CancellationToken cancellationToken)
     {
-        var internshipModel = mapper.Map<InternshipModel>(updateInternshipDTO);
+        var internshipModel = mapper.Map<InternshipModel>(updateInternshipDto);
 
         var updatedInternshipModel = await service.UpdateAsync(id, internshipModel, cancellationToken);
 
-        var updatedInternshipDTO = mapper.Map<InternshipDto>(updatedInternshipModel);
+        var updatedInternshipDto = mapper.Map<InternshipDto>(updatedInternshipModel);
 
-        return updatedInternshipDTO;
+        return updatedInternshipDto;
     }
 
+    [Authorize(Internships.Read)]
     [HttpGet(ApiRoutes.Internships.InternshipsByMentorId)]
     public async Task<List<InternshipDto>> GetInternshipsByMentorId([FromRoute] Guid mentorId,  CancellationToken cancellationToken)
     {
         var internships = await service.GetInternshipsByMentorIdAsync(mentorId, cancellationToken : cancellationToken);
 
-        var internshipDTOs = mapper.Map<List<InternshipDto>>(internships);
+        var internshipDtos = mapper.Map<List<InternshipDto>>(internships);
 
-        return internshipDTOs;
+        return internshipDtos;
     }
 }

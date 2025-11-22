@@ -28,14 +28,14 @@ public abstract class TestHelperBase(CustomWebApplicationFactory factory)
         return entity;
     }
 
-    protected async Task<List<TEntity>> AddEntitiesAsync<TEntity>(IEnumerable<TEntity> entities) 
+    protected async Task<List<TEntity>> AddEntitiesAsync<TEntity>(IList<TEntity> entities) 
         where TEntity : EntityBase
     {
         using var scope = _factory.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ImsDbContext>();
         dbContext.AddRange(entities);
         await dbContext.SaveChangesAsync();
-        return [.. entities];
+        return entities.ToList();
     }
 
     protected IServiceScope CreateScope() => _factory.Services.CreateScope();

@@ -29,9 +29,11 @@ public class Program
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
+        
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseMiddleware<ExceptionHandlingMiddleware>();
 
@@ -49,8 +51,6 @@ public class Program
         {
             ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
         });
-
-        app.UseAuthorization();
         
         app.MapMagicOnionService();
 

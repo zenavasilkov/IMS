@@ -206,12 +206,12 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         var url = $"{Users.Base}/{user.Id}";
 
         //Act
-        var responce = await Client.PutAsJsonAsync(url, updateDto);
+        var response = await Client.PutAsJsonAsync(url, updateDto);
 
         //Assert
-        responce.StatusCode.ShouldBe(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var result = await responce.Content.ReadFromJsonAsync<UpdateUserDto>();
+        var result = await response.Content.ReadFromJsonAsync<UpdateUserDto>();
 
         result.ShouldNotBeNull();
         result.Email.ShouldBe(user.Email);
