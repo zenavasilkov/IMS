@@ -6,7 +6,6 @@ using IMS.DAL.Repositories;
 using IMS.DAL.Builders;
 using IMS.DAL.Interceptors;
 using IMS.DAL.Caching;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace IMS.DAL.Extensions;
 
@@ -15,10 +14,9 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddDataLayerDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         services
+            .AddDbContext(configuration)
             .AddRepositories()
-            .AddRedis(configuration)
-            .AddInterceptors()
-            .AddDbContext(configuration);
+            .AddRedis(configuration);
 
         return services;
     }
@@ -27,15 +25,7 @@ public static class ServiceCollectionExtensions
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-        services.AddDbContext<ImsDbContext>((provider, options) =>
-        {
-            options.UseNpgsql(connectionString);
-
-            var interceptors = provider.GetServices<IInterceptor>();
-            options.AddInterceptors(interceptors);
-        });
-        
-        return services;
+        return services.AddDbContext<ImsDbContext>(options => options.UseNpgsql(connectionString));
     } 
 
     private static IServiceCollection AddRepositories(this IServiceCollection services)
@@ -62,17 +52,6 @@ public static class ServiceCollectionExtensions
         services.AddStackExchangeRedisCache(redisOptions => 
             redisOptions.Configuration = configuration.GetConnectionString("Redis"));
 
-        return services;
-    }
-
-    private static IServiceCollection AddInterceptors(this IServiceCollection services)
-    {
-        services.Scan(scan => scan
-            .FromAssemblyOf<CreateUserInterceptor>()
-            .AddClasses(classes => classes.AssignableTo<IInterceptor>())
-            .As<IInterceptor>()
-            .WithSingletonLifetime());
-        
         return services;
     }
 }

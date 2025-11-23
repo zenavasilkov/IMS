@@ -2,13 +2,13 @@
 
 public sealed class OutboxMessage
 {
-    public Guid Id { get; init; }
+    public Guid Id { get; set; }
 
-    public string Type { get; init; } = string.Empty;
+    public string Type { get; set; } = string.Empty;
 
-    public string Content { get; init; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
 
-    public DateTime OccurredOnUtc { get; init; }
+    public DateTime OccurredOnUtc { get; set; }
 
     public DateTime? ProcessedOnUtc { get; set; }
 

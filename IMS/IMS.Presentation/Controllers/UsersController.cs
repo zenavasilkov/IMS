@@ -16,8 +16,13 @@ namespace IMS.Presentation.Controllers;
 [Authorize]
 [ApiController]
 [Route(ApiRoutes.Users.Base)]
-public class UsersController(IUserService service, IMapper mapper) : ControllerBase
+public class UsersController(
+    IUserService service,
+    IMapper mapper,
+    IConfiguration config) : ControllerBase
 {
+    private readonly string _connection = config["Auth0:Connection"] ?? "";
+    
     [Authorize(Users.Read)]
     [HttpGet]
     public async Task<PagedList<UserDto>> GetAll(
@@ -51,7 +56,7 @@ public class UsersController(IUserService service, IMapper mapper) : ControllerB
     {
         var userModel = mapper.Map<UserModel>(createUserDto);
 
-        var createdUserModel = await service.CreateAsync(userModel, cancellationToken);
+        var createdUserModel = await service.CreateAsync(userModel, _connection, cancellationToken);
 
         var userDto = mapper.Map<UserDto>(createdUserModel);
 

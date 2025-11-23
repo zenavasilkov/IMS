@@ -15,7 +15,7 @@ public class UpdateTimestampsInterceptor : SaveChangesInterceptor
             return base.SavingChangesAsync(eventData, result, cancellationToken);
 
         var entries = context.ChangeTracker.Entries<EntityBase>()
-            .Where(e => e.State is EntityState.Added or EntityState.Modified);
+            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
 
         var utcNow = DateTime.UtcNow;
 

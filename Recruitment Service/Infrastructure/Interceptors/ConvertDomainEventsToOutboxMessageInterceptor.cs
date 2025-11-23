@@ -34,7 +34,7 @@ public sealed class ConvertDomainEventsToOutboxMessageInterceptor : SaveChangesI
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
-    private static OutboxMessage ConvertToOutboxMessage(BaseEvent domainEvent)
+    private OutboxMessage ConvertToOutboxMessage(BaseEvent domainEvent)
     {
         var content = JsonConvert.SerializeObject(domainEvent, new JsonSerializerSettings
         {

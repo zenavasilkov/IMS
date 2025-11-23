@@ -215,34 +215,6 @@ namespace IMS.DAL.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("IMS.DAL.Outbox.OutboxMessage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Error")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("OccurredOnUtc")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("ProcessedOnUtc")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OutboxMessages");
-                });
-
             modelBuilder.Entity("IMS.DAL.Entities.Board", b =>
                 {
                     b.HasOne("IMS.DAL.Entities.User", "CreatedBy")
@@ -270,7 +242,7 @@ namespace IMS.DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("IMS.DAL.Entities.User", "SentBy")
+                    b.HasOne("IMS.DAL.Entities.User", "WithSentBy")
                         .WithMany()
                         .HasForeignKey("SentById")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -284,7 +256,7 @@ namespace IMS.DAL.Migrations
 
                     b.Navigation("AddressedTo");
 
-                    b.Navigation("SentBy");
+                    b.Navigation("WithSentBy");
 
                     b.Navigation("Ticket");
                 });
