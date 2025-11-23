@@ -1,7 +1,4 @@
-﻿using IMS.BLL.Services.Interfaces;
-using Microsoft.AspNetCore.Hosting;
-
-namespace IMS.UnitTests.UserServiceTests;
+﻿namespace IMS.UnitTests.UserServiceTests;
 
 public class UserServiceTestsBase
 {
@@ -29,14 +26,9 @@ public class UserServiceTestsBase
             It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
         
-        var environmentMock = new Mock<IWebHostEnvironment>();
-        var auth0ClientFactoryMock = new Mock<IAuth0ClientFactory>();
-        
         UserService = new UserService(
             UserRepositoryMock.Object, 
             MapperMock.Object,
-            messageServiceMock.Object,
-            auth0ClientFactoryMock.Object,
-            environmentMock.Object);
+            messageServiceMock.Object);
     }
 }

@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
+using Quartz;
 using Testcontainers.PostgreSql;
 
 namespace IMS.IntegrationTests;
@@ -41,6 +44,10 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
 
             foreach (var descriptor in descriptorsToRemove)
                 services.Remove(descriptor);
+            
+            services.RemoveAll<ISchedulerFactory>();
+            services.RemoveAll<Quartz.Spi.IJobFactory>();
+            services.RemoveAll<IHostedService>();
             
             services.AddSingleton<IAuthorizationHandler, AllowAnonymousAuthorizationHandler>();
 
