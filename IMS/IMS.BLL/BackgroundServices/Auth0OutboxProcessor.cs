@@ -42,12 +42,12 @@ public class Auth0OutboxProcessor(
                 if (createAuth0User is null) return;
                 
                 var auth0UserRequest = new UserCreateRequest
-                        {
-                            Email = createAuth0User.Email,
-                            Connection = _connection,
-                            EmailVerified = false,
-                            Password = createAuth0User.Email
-                        };
+                {
+                    Email = createAuth0User.Email,
+                    Connection = _connection,
+                    EmailVerified = false,
+                    Password = createAuth0User.Email
+                };
                 
                 var auth0User = await auth0Client.Users.CreateAsync(auth0UserRequest);
                 

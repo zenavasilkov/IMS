@@ -16,7 +16,7 @@ public class UserService(IUserRepository repository, IMapper mapper, IMessageSer
 {
     private readonly IMapper _mapper = mapper;
 
-    public new async Task<UserModel> CreateAsync(
+    public override async Task<UserModel> CreateAsync(
         UserModel model,
         CancellationToken cancellationToken = default)
     {
