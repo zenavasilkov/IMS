@@ -10,6 +10,4 @@ public interface IUserService : IService<UserModel, User>
 {
     public Task<PagedList<UserModel>> GetUsersAsync(PaginationParameters paginationParameters, 
         UserFilteringParameters filter, UserSortingParameter sorter,CancellationToken cancellationToken = default);
-
-    public Task<UserModel> CreateAsync(UserModel model, string connection, CancellationToken cancellationToken = default);
 }
