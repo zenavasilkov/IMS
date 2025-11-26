@@ -14,6 +14,10 @@ public class Auth0TokenProvider(IConfiguration config) : IAuth0TokenProvider
     private string _accessToken = "";
     private DateTime _expiresAt;
 
+    private const string GrandType = "client_credentials";
+    private const string AccessTokenProperty =  "access_token";
+    private const int ExpiresInSeconds = 3600;
+
     public async Task<string> GetTokenAsync()
     {
         if (!string.IsNullOrEmpty(_accessToken) && DateTime.UtcNow < _expiresAt) return _accessToken;
@@ -26,7 +30,7 @@ public class Auth0TokenProvider(IConfiguration config) : IAuth0TokenProvider
         
         var body = new
         {
-            grant_type = "client_credentials",
+            grant_type = GrandType,
             client_id = _clientId,
             client_secret = _clientSecret,
             audience = $"https://{_domain}/api/v2/"
@@ -44,8 +48,8 @@ public class Auth0TokenProvider(IConfiguration config) : IAuth0TokenProvider
         
         using var doc = JsonDocument.Parse(response.Content);
         
-        _accessToken = doc.RootElement.GetProperty("access_token").GetString() ?? "";
-        _expiresAt = DateTime.UtcNow.AddSeconds(3600);
+        _accessToken = doc.RootElement.GetProperty(AccessTokenProperty).GetString() ?? "";
+        _expiresAt = DateTime.UtcNow.AddSeconds(ExpiresInSeconds);
         
         return _accessToken;
     }
