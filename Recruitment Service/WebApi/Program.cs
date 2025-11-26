@@ -19,7 +19,6 @@ public class Program
 
         builder.Services.AddDependencies(builder.Configuration);
         builder.Services.AddControllers();
-        builder.Services.AddSwaggerGen();
 
         var app = builder.Build();
 

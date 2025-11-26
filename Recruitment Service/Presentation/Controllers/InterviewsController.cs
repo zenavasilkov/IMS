@@ -6,16 +6,20 @@ using Application.Interviews.Queries.GetAll;
 using Application.Interviews.Queries.GetInterviewById;
 using Application.Interviews.Queries.GetInterviewsByCandidateId;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pagination;
 using Presentation.Abstractions;
 using static Presentation.ApiRoutes.ApiRoutes;
+using static Presentation.ApiConstants.Permissions;
 
 namespace Presentation.Controllers;
 
+[Authorize]
 [Route(Interviews.Base)]
 public class InterviewsController(ISender sender) : ApiController(sender)
 {
+    [Authorize(InterviewsPermissions.ManageInterviews)]
     [HttpPost]
     public async Task<ActionResult<Guid>> Schedule([FromBody] ScheduleInterviewCommand command, CancellationToken cancellationToken)
     {
@@ -23,6 +27,7 @@ public class InterviewsController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error.ToString());
     }
 
+    [Authorize(InterviewsPermissions.ManageInterviews)]
     [HttpPut(Interviews.Reschedule)]
     public async Task<ActionResult> Reschedule([FromBody] RescheduleInterviewCommand command, CancellationToken cancellationToken)
     {
@@ -30,6 +35,7 @@ public class InterviewsController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? NoContent() : BadRequest(result.Error.ToString());
     }
 
+    [Authorize(InterviewsPermissions.ManageInterviews)]
     [HttpPut(Interviews.Cancel)]
     public async Task<ActionResult> Cancel([FromQuery] CancelInterviewCommand command, CancellationToken cancellationToken)
     {
@@ -37,6 +43,7 @@ public class InterviewsController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? NoContent() : BadRequest(result.Error.ToString());
     }
 
+    [Authorize(InterviewsPermissions.AddFeedbacks)]
     [HttpPut(Interviews.AddFeedback)]
     public async Task<ActionResult> AddFeedback([FromBody] AddFeedbackCommand command, CancellationToken cancellationToken)
     {
@@ -44,6 +51,7 @@ public class InterviewsController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? NoContent() : BadRequest(result.Error.ToString());
     }
 
+    [Authorize(InterviewsPermissions.Read)]
     [HttpGet(Id)]
     public async Task<ActionResult<GetInterviewByIdQueryResponse>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
@@ -53,6 +61,7 @@ public class InterviewsController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error.ToString());
     }
 
+    [Authorize(InterviewsPermissions.Read)]
     [HttpGet(Interviews.ByCandidateId)]
     public async Task<ActionResult<GetInterviewsByCandidateIdQueryResponse>> GetByCandidateId(
         [FromQuery] Guid candidateId,
@@ -65,10 +74,11 @@ public class InterviewsController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error.ToString());
     }
 
+    [Authorize(InterviewsPermissions.Read)]
     [HttpGet(Interviews.GetAll)]
     public async Task<ActionResult<GetAllInterviewsQueryResponse>> GetAll([FromQuery] GetAllInterviewsQuery query,  CancellationToken cancellationToken)
     {
         var result = await Sender.Send(query, cancellationToken);
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result?.Error.ToString());
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error.ToString());
     }
 }

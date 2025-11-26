@@ -5,15 +5,19 @@ using Application.Departments.Queries.GetAll;
 using Application.Departments.Queries.GetDepartmentById;
 using Application.Departments.Queries.GetDepartmentByName;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Abstractions;
 using static Presentation.ApiRoutes.ApiRoutes;
+using static Presentation.ApiConstants.Permissions;
 
 namespace Presentation.Controllers;
 
+[Authorize]
 [Route(Departments.Base)]
 public class DepartmentsController(ISender sender) : ApiController(sender)
 {
+    [Authorize(DepartmentsPermissions.ManageDepartments)]
     [HttpPost]
     public async Task<ActionResult<Guid>> Create([FromBody] AddDepartmentCommand command, CancellationToken cancellationToken)
     {
@@ -21,6 +25,7 @@ public class DepartmentsController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error.ToString());
     }
 
+    [Authorize(DepartmentsPermissions.ManageDepartments)]
     [HttpPut(Departments.Rename)]
     public async Task<ActionResult> Rename([FromBody] RenameDepartmentCommand command, CancellationToken cancellationToken)
     {
@@ -28,6 +33,7 @@ public class DepartmentsController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? NoContent() : BadRequest(result.Error.ToString());
     }
 
+    [Authorize(DepartmentsPermissions.ManageDepartments)]
     [HttpPut(Departments.UpdateDescription)]
     public async Task<ActionResult> UpdateDescription([FromBody] UpdateDescriptionCommand command, CancellationToken cancellationToken)
     {
@@ -35,6 +41,7 @@ public class DepartmentsController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? NoContent() : BadRequest(result.Error.ToString());
     }
 
+    [Authorize(DepartmentsPermissions.Read)]
     [HttpGet(Id)]
     public async Task<ActionResult<GetDepartmentByIdQueryResponse>> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
@@ -44,6 +51,7 @@ public class DepartmentsController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error.ToString());
     }
 
+    [Authorize(DepartmentsPermissions.Read)]
     [HttpGet(Departments.ByName)]
     public async Task<ActionResult<GetDepartmentByNameResponse>> GetByName([FromRoute] string name, CancellationToken cancellationToken)
     {
@@ -53,6 +61,7 @@ public class DepartmentsController(ISender sender) : ApiController(sender)
         return result.IsSuccess ? Ok(result.Value) : NotFound(result.Error.ToString());
     }
 
+    [Authorize(DepartmentsPermissions.Read)]
     [HttpGet(Departments.GetAll)]
     public async Task<ActionResult<GetAllDepartmentsQueryResponse>> GetAll([FromQuery] GetAllDepartmentsQuery query, CancellationToken cancellationToken)
     {
