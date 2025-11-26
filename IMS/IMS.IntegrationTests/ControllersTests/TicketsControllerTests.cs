@@ -44,10 +44,10 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
 
         var result = await response.Content.ReadAsStringAsync();
 
-        var ticketDTO = Deserialize<TicketDto>(result);
+        var ticketDto = Deserialize<TicketDto>(result);
 
-        ticketDTO.ShouldNotBeNull();
-        ticketDTO.Status.ShouldBe(TicketStatus.Done);
+        ticketDto.ShouldNotBeNull();
+        ticketDto.Status.ShouldBe(TicketStatus.Done);
     }
 
     [Fact]
@@ -66,13 +66,13 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
         // Arrange
         var board = TestDataHelper.CreateBoard();
 
-        var createdTicketDTO = new CreateTicketDto(board.Id, "New ticket", 
+        var createdTicketDto = new CreateTicketDto(board.Id, "New ticket", 
             "New description", TicketStatus.ToDo, DateTime.UtcNow.AddDays(10));
 
         await AddEntityAsync(board);
 
         // Act
-        var response = await Client.PostAsJsonAsync(Tickets.Base, createdTicketDTO);
+        var response = await Client.PostAsJsonAsync(Tickets.Base, createdTicketDto);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -88,11 +88,11 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
     public async Task Create_ShouldReturnNotFoundStatus_WhenBoarDoesNotExist()
     {
         // Arrange
-        var createdTicketDTO = new CreateTicketDto(Guid.NewGuid(), "New ticket",
+        var createdTicketDto = new CreateTicketDto(Guid.NewGuid(), "New ticket",
             "New description", TicketStatus.ToDo, DateTime.UtcNow.AddDays(10));
 
         // Act
-        var response = await Client.PostAsJsonAsync(Tickets.Base, createdTicketDTO);
+        var response = await Client.PostAsJsonAsync(Tickets.Base, createdTicketDto);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
@@ -107,7 +107,7 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
 
         await AddEntityAsync(ticket);
 
-        var updateTicketDTO = new UpdateTicketDto(
+        var updateTicketDto = new UpdateTicketDto(
             "Updated title",
             "Updated description",
             TicketStatus.Done,
@@ -115,7 +115,7 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
         );
 
         // Act
-        var response = await Client.PutAsJsonAsync($"{Tickets.Base}/{ticket.Id}", updateTicketDTO);
+        var response = await Client.PutAsJsonAsync($"{Tickets.Base}/{ticket.Id}", updateTicketDto);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -132,7 +132,7 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
     public async Task Update_ShouldReturnNotFoundStatus_WhenTicketDoesNotExist()
     {
         // Arrange
-        var updateTicketDTO = new UpdateTicketDto(
+        var updateTicketDto = new UpdateTicketDto(
             "Non-existent ticket",
             "Does not exist",
             TicketStatus.Done,
@@ -140,7 +140,7 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
         );
 
         // Act
-        var response = await Client.PutAsJsonAsync($"{Tickets.Base}/{Guid.NewGuid()}", updateTicketDTO);
+        var response = await Client.PutAsJsonAsync($"{Tickets.Base}/{Guid.NewGuid()}", updateTicketDto);
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);

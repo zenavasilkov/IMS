@@ -5,65 +5,72 @@ using IMS.Presentation.DTOs.CreateDTO;
 using IMS.Presentation.DTOs.GetDTO;
 using IMS.Presentation.DTOs.UpdateDTO;
 using IMS.Presentation.Routing;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IMS.Presentation.Controllers;
 
+[Authorize]
 [ApiController]
 [Route(ApiRoutes.Feedbacks.Base)]
 public class FeedbacksController(IFeedbackService service, IMapper mapper) : ControllerBase
 {
+    [Authorize("read:feedbacks")]
     [HttpGet]
     public async Task<IEnumerable<FeedbackDto>> GetAll(CancellationToken cancellationToken)
     {
         var feedbacks = await service.GetAllAsync(cancellationToken: cancellationToken); 
 
-        var feedbackDTOs = mapper.Map<IEnumerable<FeedbackDto>>(feedbacks);
+        var feedbackDtos = mapper.Map<IEnumerable<FeedbackDto>>(feedbacks);
          
-        return feedbackDTOs;
+        return feedbackDtos;
     }
 
+    [Authorize("read:feedbacks")]
     [HttpGet(ApiRoutes.Id)]
     public async Task<FeedbackDto> GetById([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         var feedback = await service.GetByIdAsync(id, cancellationToken);
 
-        var feedbackDTO = mapper.Map<FeedbackDto>(feedback);
+        var feedbackDto = mapper.Map<FeedbackDto>(feedback);
 
-        return feedbackDTO;
+        return feedbackDto;
     }
 
+    [Authorize("read:feedbacks")]
     [HttpGet(ApiRoutes.Feedbacks.FeedbacksByTicketId)]
     public async Task<List<FeedbackDto>> GetFeedbacksByTicketId(Guid ticketId, CancellationToken cancellationToken)
     {
         var feedbacks = await service.GetFeedbacksByTicketIdAsync(ticketId, cancellationToken: cancellationToken);
 
-        var feedbackDTOs = mapper.Map<List<FeedbackDto>>(feedbacks);
+        var feedbackDtos = mapper.Map<List<FeedbackDto>>(feedbacks);
 
-        return feedbackDTOs;
+        return feedbackDtos;
     }
 
+    [Authorize("create:feedbacks")]
     [HttpPost]
-    public async Task<FeedbackDto> Create([FromBody] CreateFeedbackDto createFeedbackDTO, CancellationToken cancellationToken)
+    public async Task<FeedbackDto> Create([FromBody] CreateFeedbackDto createFeedbackDto, CancellationToken cancellationToken)
     {
-        var feedbackModel = mapper.Map<FeedbackModel>(createFeedbackDTO);
+        var feedbackModel = mapper.Map<FeedbackModel>(createFeedbackDto);
 
         var createdFeedbackModel = await service.CreateAsync(feedbackModel, cancellationToken);
 
-        var createdFeedbackDTO = mapper.Map<FeedbackDto>(createdFeedbackModel);
+        var createdFeedbackDto = mapper.Map<FeedbackDto>(createdFeedbackModel);
 
-        return createdFeedbackDTO;
+        return createdFeedbackDto;
     }
 
+    [Authorize("update:feedbacks")]
     [HttpPut(ApiRoutes.Id)]
-    public async Task<FeedbackDto> Update([FromRoute] Guid id, [FromBody] UpdateFeedbackDto updateFeedbackDTO, CancellationToken cancellationToken)
+    public async Task<FeedbackDto> Update([FromRoute] Guid id, [FromBody] UpdateFeedbackDto updateFeedbackDto, CancellationToken cancellationToken)
     {
-        var feedbackModel = mapper.Map<FeedbackModel>(updateFeedbackDTO); 
+        var feedbackModel = mapper.Map<FeedbackModel>(updateFeedbackDto); 
 
         var updatedFeedbackModel = await service.UpdateAsync(id, feedbackModel, cancellationToken);
 
-        var updatedFeedbackDTO = mapper.Map<FeedbackDto>(updatedFeedbackModel);
+        var updatedFeedbackDto = mapper.Map<FeedbackDto>(updatedFeedbackModel);
 
-        return updatedFeedbackDTO;
+        return updatedFeedbackDto;
     }
 }

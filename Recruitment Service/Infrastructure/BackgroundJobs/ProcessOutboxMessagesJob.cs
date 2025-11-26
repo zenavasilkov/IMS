@@ -25,11 +25,9 @@ internal class ProcessOutboxMessagesJob(RecruitmentDbContext dbContext,
         {
             try
             {
-                Type? eventType = null;
-
                 var assembly = typeof(BaseEvent).Assembly;
 
-                eventType = assembly.GetType(message.Type);
+                var eventType = assembly.GetType(message.Type);
 
                 if (eventType == null)
                 {

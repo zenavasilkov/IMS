@@ -176,7 +176,7 @@ public class InternshipsControllerTests(CustomWebApplicationFactory factory) : T
         var response = await Client.PostAsJsonAsync(Internships.Base, createDto);
 
         // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.Conflict);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
     }
 
     [Fact]

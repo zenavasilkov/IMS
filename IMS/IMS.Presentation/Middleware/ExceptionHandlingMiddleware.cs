@@ -25,7 +25,9 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
         {
             NotFoundException => new ExceptionDetails(message, (int)HttpStatusCode.NotFound, DateTime.UtcNow),
 
-            IncorrectAssignmentException => new ExceptionDetails(message, (int)HttpStatusCode.Conflict, DateTime.UtcNow),
+            IncorrectAssignmentException => new ExceptionDetails(message, (int)HttpStatusCode.BadRequest, DateTime.UtcNow),
+            
+            EmailIsNotUniqueException => new ExceptionDetails(message, (int)HttpStatusCode.BadRequest, DateTime.UtcNow),
 
             _ => new ExceptionDetails(message, (int)HttpStatusCode.InternalServerError, DateTime.UtcNow)
         };

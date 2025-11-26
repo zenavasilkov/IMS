@@ -2,12 +2,12 @@
 using IMS.BLL.Exceptions;
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
-using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
 using Shared.Enums;
 using Shared.Pagination;
 using IMS.NotificationsCore.Services;
 using IMS.BLL.Mapping;
+using User = IMS.DAL.Entities.User;
 
 namespace IMS.BLL.Services;
 
@@ -17,14 +17,24 @@ public class UserService(IUserRepository repository, IMapper mapper, IMessageSer
     private readonly IMapper _mapper = mapper;
 
     public override async Task<UserModel> CreateAsync(
-        UserModel model, CancellationToken cancellationToken = default)
+        UserModel model,
+        CancellationToken cancellationToken = default)
     {
+        var existingUsers = await repository.GetPagedAsync(u =>
+            u.Email == model.Email,
+            new PaginationParameters(1, 1),
+            false,
+            cancellationToken);
+        
+        if (existingUsers is not null && existingUsers.TotalCount > 0) 
+            throw new EmailIsNotUniqueException("User with this given email already exists");
+        
         var createdUser = await base.CreateAsync(model, cancellationToken);
         
         var message = EventMapper.ConvertToUserCreatedEvent(createdUser);
-
+        
         await messageService.NotifyUserCreated(message, cancellationToken);
-
+        
         return createdUser;
     }
 
