@@ -1,7 +1,7 @@
 using Infrastructure;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
 using WebApi.Middleware;
+using static Presentation.ApiConstants.ApiConstants;
 
 namespace WebApi;
 
@@ -21,6 +21,8 @@ public class Program
         builder.Services.AddControllers();
 
         var app = builder.Build();
+
+        app.UseCors(AllowFrontend);
 
         app.UseMiddleware<ExceptionHandlingMiddleware>();
 

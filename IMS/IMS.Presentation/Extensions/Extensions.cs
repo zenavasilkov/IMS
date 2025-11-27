@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using Microsoft.OpenApi.Models;
 using static IMS.Presentation.ApiConstants.Permissions;
+using static IMS.Presentation.ApiConstants.ApiConstants;
 
 namespace IMS.Presentation.Extensions;
 
@@ -25,6 +26,7 @@ public static class Extensions
             .AddValidation()
             .AddAuth0Authentication(configuration)
             .AddPolicies()
+            .SetCors(configuration)
             .AddGrpc();
 
         return services;
@@ -47,8 +49,26 @@ public static class Extensions
     private static IServiceCollection AddValidation(this IServiceCollection services)
     {
         services.AddFluentValidationAutoValidation()
-        .AddFluentValidationClientsideAdapters()
-        .AddValidatorsFromAssemblyContaining<Program>();
+            .AddFluentValidationClientsideAdapters()
+            .AddValidatorsFromAssemblyContaining<Program>();
+
+        return services;
+    }
+
+    private static IServiceCollection SetCors(this IServiceCollection services, IConfiguration configuration)
+    {
+        var frontendUrl = configuration["FrontendUrl"] ?? "http://localhost:5173";
+        
+        services.AddCors(options =>
+        {
+            options.AddPolicy(AllowFrontend, policy =>
+            {
+                policy
+                    .WithOrigins(frontendUrl)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            });
+        });
 
         return services;
     }
