@@ -5,8 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using static Presentation.ApiConstants.Permissions;
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using static Presentation.ApiConstants.ApiConstants;
 
 namespace Presentation;
@@ -18,7 +16,8 @@ public static class DependencyInjection
         services
             .AddAuth0Authentication(configuration)
             .AddPolicies()
-            .AddSwaggerGen();
+            .AddSwaggerGen()
+            .SetCors(configuration);
         
         return services;
     }
@@ -108,7 +107,9 @@ public static class DependencyInjection
                     },
                     Array.Empty<string>()
                 }
-        return services.SetCors(configuration);
+            });
+        });
+        return services;
     }
     
     private static IServiceCollection SetCors(this IServiceCollection services, IConfiguration configuration)
