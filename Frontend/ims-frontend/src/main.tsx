@@ -10,13 +10,13 @@ createRoot(document.getElementById('root')!).render(
       domain={import.meta.env.VITE_AUTH0_DOMAIN}
       clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
       authorizationParams={{
-        redirect_uri: window.location.origin,
+        redirect_uri: globalThis.location.origin,
       }}
       onRedirectCallback={appState => {
-        window.history.replaceState(
+        globalThis.history.replaceState(
           {},
           document.title,
-          appState && appState.returnTo ? appState.returnTo : window.location.pathname
+          appState && appState.returnTo ? appState.returnTo : globalThis.location.pathname
         );
       }}
     >

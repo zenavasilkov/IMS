@@ -19,7 +19,7 @@ const useAuth0Interceptors = ({ axiosInstances }: UseAuth0InterceptorsProps) => 
             return config;
           } catch (error) {
             console.error("Error getting access token", error);
-            return Promise.reject(error);
+            throw error;
           }
         });
       });
