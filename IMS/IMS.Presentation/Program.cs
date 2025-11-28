@@ -4,6 +4,7 @@ using IMS.Presentation.Middleware;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Serilog;
+using static IMS.Presentation.ApiConstants.ApiConstants;
 
 namespace IMS.Presentation;
 
@@ -46,6 +47,8 @@ public class Program
         }
 
         app.UseHttpsRedirection();
+
+        app.UseCors(AllowFrontend);
 
         app.MapHealthChecks("/_health", new HealthCheckOptions
         {

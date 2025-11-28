@@ -19,7 +19,8 @@ public class Auth0OutboxProcessor(
     ILogger<Auth0OutboxProcessor> logger) : IJob
 {
     private const int BatchSize = 20;
-    private readonly string _connection = configuration["Auth0:Connection"] ?? "";
+    private readonly string _connection = configuration["Auth0:Connection"] ??
+        throw new MissingConfigurationException("Missing 'Auth0:Connection' property in configurations");
     
     public async Task Execute(IJobExecutionContext context)
     {

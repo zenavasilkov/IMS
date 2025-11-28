@@ -8,9 +8,15 @@ namespace IMS.BLL.Services;
 
 public class Auth0TokenProvider(IConfiguration config) : IAuth0TokenProvider
 {
-    private readonly string _domain = config["Auth0:Domain"] ?? "";
-    private readonly string _clientId = config["Auth0:ManagementClientId"] ?? "";
-    private readonly string _clientSecret = config["Auth0:ManagementClientSecret"] ?? "";
+    private readonly string _domain = config["Auth0:Domain"] ?? 
+        throw new  MissingConfigurationException("Missing 'Auth0:Domain' property in configurations");
+    
+    private readonly string _clientId = config["Auth0:ManagementClientId"] ??
+        throw new  MissingConfigurationException("Missing 'Auth0:ManagementClientId' property in configurations");
+    
+    private readonly string _clientSecret = config["Auth0:ManagementClientSecret"] ??
+        throw new MissingConfigurationException("Missing 'Auth0:ManagementClientSecret' property in configurations");
+    
     private string _accessToken = "";
     private DateTime _expiresAt;
 
