@@ -16,7 +16,7 @@ createRoot(document.getElementById('root')!).render(
         globalThis.history.replaceState(
           {},
           document.title,
-          appState && appState.returnTo ? appState.returnTo : globalThis.location.pathname
+          appState?.returnTo ? appState.returnTo : globalThis.location.pathname
         );
       }}
     >
