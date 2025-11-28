@@ -8,7 +8,7 @@ namespace IMS.BLL.Services;
 public class Auth0ClientFactory(IAuth0TokenProvider tokenProvider, IConfiguration config) : IAuth0ClientFactory
 { 
     private readonly string _domain = config["Auth0:Domain"] ??
-        throw new MissingConfigurationException("Missing 'Auth0:Domain' property in configurations'");
+        throw new MissingConfigurationException("Missing 'Auth0:Domain' property in configurations");
 
     public async Task<ManagementApiClient> CreateClientAsync()
     {

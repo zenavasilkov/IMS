@@ -10,7 +10,7 @@ export const ImsApi = axios.create({
     }
 });
 
-export const RecruinmentApi = axios.create({
+export const RecruitmentApi = axios.create({
     baseURL: RECRUITMENT_BASE,
     headers: {
         'Content-Type': 'application/json',
