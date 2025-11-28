@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL ?? 'http://localhost:8090/api/';
-const RECRUITMENT_BASE = (import.meta as any).env?.VITE_RECRUITMENT_API_BASE_URL ?? 'http://localhost:8110/api/';
+const API_BASE = import.meta.env?.VITE_API_BASE_URL ?? 'http://localhost:8090/api/';
+const RECRUITMENT_BASE = import.meta.env?.VITE_RECRUITMENT_API_BASE_URL ?? 'http://localhost:8110/api/';
 
 export const ImsApi = axios.create({
     baseURL: API_BASE,
