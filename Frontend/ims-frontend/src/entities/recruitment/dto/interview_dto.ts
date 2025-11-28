@@ -41,12 +41,12 @@ export interface ScheduleInterviewCommand {
 }
 
 export interface RescheduleInterviewCommand {
-  id: string;
-  newDate: string;
+    id: string;
+    newDate: string;
 }
 
 export interface AddFeedbackCommand {
-  id: string;
-  feedback?: string | null;
-  isPassed: boolean;
+    id: string;
+    feedback?: string | null;
+    isPassed: boolean;
 }
