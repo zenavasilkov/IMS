@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using IMS.BLL.Exceptions;
 using Microsoft.OpenApi.Models;
 using static IMS.Presentation.ApiConstants.Permissions;
 using static IMS.Presentation.ApiConstants.ApiConstants;
@@ -57,7 +58,8 @@ public static class Extensions
 
     private static IServiceCollection SetCors(this IServiceCollection services, IConfiguration configuration)
     {
-        var frontendUrl = configuration["FrontendUrl"] ?? "http://localhost:5173";
+        var frontendUrl = configuration["FrontendUrl"]
+            ?? throw new MissingConfigurationException("Missing 'FrontendUrl' in configurations");
         
         services.AddCors(options =>
         {
