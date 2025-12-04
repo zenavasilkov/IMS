@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './PageLoader.module.css';
 
-const PageLoader: React.FC = () => {
+const PageLoader: React.FC<{ loadingText: string }> = ({ loadingText }) => {
   return (
     <div className={styles.loaderContainer}>
       <div className={styles.contentWrapper}>
@@ -24,7 +24,7 @@ const PageLoader: React.FC = () => {
           </div>
         </div>
         <h2 className={styles.loadingTitle}>IMS Portal</h2>
-        <p className={styles.loadingText}>Loading environment...</p>
+        <p className={styles.loadingText}>{loadingText}</p>
       </div>
     </div>
   );

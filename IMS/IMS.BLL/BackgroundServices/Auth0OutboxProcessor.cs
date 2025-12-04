@@ -1,5 +1,6 @@
 ﻿using Auth0.ManagementApi.Models;
 using IMS.BLL.Exceptions;
+using IMS.BLL.Services;
 using IMS.BLL.Services.Interfaces;
 using IMS.DAL;
 using IMS.DAL.Outbox;
@@ -47,7 +48,7 @@ public class Auth0OutboxProcessor(
                     Email = createAuth0User.Email,
                     Connection = _connection,
                     EmailVerified = false,
-                    Password = createAuth0User.Email
+                    Password = PasswordGenerator.GenerateRandomPassword()
                 };
                 
                 var auth0User = await auth0Client.Users.CreateAsync(auth0UserRequest);

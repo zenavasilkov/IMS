@@ -3,7 +3,7 @@ import type { UserDto, CreateUserDto, UpdateUserDto, UserDtoPagedList } from '..
 
 export const userService = {
     getAllUsers: async (pageNumber = 1, pageSize = 10): Promise<UserDtoPagedList> => {
-        const response = await ImsApi.get<UserDtoPagedList>('/users', {
+        const response = await ImsApi.get<UserDtoPagedList>('users', {
             params: { pageNumber, pageSize }
         });
         return response.data;
