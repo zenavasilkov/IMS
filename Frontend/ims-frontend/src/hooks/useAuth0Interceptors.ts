@@ -7,6 +7,7 @@ interface UseAuth0InterceptorsProps {
 }
 
 const apiAudience = import.meta.env.VITE_AUTH0_AUDIENCE;
+let isMounted : boolean;
 
 
 const useAuth0Interceptors = ({ axiosInstances }: UseAuth0InterceptorsProps) => {
@@ -25,8 +26,33 @@ const useAuth0Interceptors = ({ axiosInstances }: UseAuth0InterceptorsProps) => 
     });
   });
 
+  const setupInterceptors = async () => {
+    try {
+      await getAccessTokenSilently({
+        authorizationParams: {
+          audience: apiAudience,
+        },
+      });
+      if (isMounted) {
+        setIsTokenLoading(false);
+      }
+    } catch (error) {
+      console.error("Error pre-fetching access token", error);
+      if (isMounted) {
+        setIsTokenLoading(false);
+      }
+    }
+    
+    return () => {
+      isMounted = false;
+      axiosInstances.forEach((axiosInstance, index) => {
+        axiosInstance.interceptors.request.eject(interceptorIds[index]);
+      });
+    };
+  };
+
   useEffect(() => {
-    let isMounted = true;
+    isMounted = true;
 
     if (!isAuthenticated) {
       setIsTokenLoading(false);
@@ -34,31 +60,6 @@ const useAuth0Interceptors = ({ axiosInstances }: UseAuth0InterceptorsProps) => 
     }
 
     setIsTokenLoading(true);
-
-    const setupInterceptors = async () => {
-      try {
-        await getAccessTokenSilently({
-          authorizationParams: {
-            audience: apiAudience,
-          },
-        });
-        if (isMounted) {
-          setIsTokenLoading(false);
-        }
-      } catch (error) {
-        console.error("Error pre-fetching access token", error);
-        if (isMounted) {
-          setIsTokenLoading(false);
-        }
-      }
-      
-      return () => {
-        isMounted = false;
-        axiosInstances.forEach((axiosInstance, index) => {
-          axiosInstance.interceptors.request.eject(interceptorIds[index]);
-        });
-      };
-    };
 
     setupInterceptors();
 
