@@ -22,20 +22,23 @@ public class Program
 
         var app = builder.Build();
 
+        app.ApplyMigrations();
+        
+        app.UseHttpsRedirection();
+
         app.UseCors(AllowFrontend);
 
+        app.UseAuthentication();
+        app.UseAuthorization(); 
+        
         app.UseMiddleware<ExceptionHandlingMiddleware>();
-
-        app.ApplyMigrations();
 
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-         
-        app.UseHttpsRedirection(); 
-        app.UseAuthorization(); 
+        
         app.MapControllers();
 
         app.Run();

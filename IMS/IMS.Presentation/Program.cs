@@ -32,6 +32,8 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
 
         var app = builder.Build();
+
+        app.UseCors(AllowFrontend);
         
         app.UseAuthentication();
         app.UseAuthorization();
@@ -47,8 +49,6 @@ public class Program
         }
 
         app.UseHttpsRedirection();
-
-        app.UseCors(AllowFrontend);
 
         app.MapHealthChecks("/_health", new HealthCheckOptions
         {
