@@ -14,7 +14,7 @@ const LogoutIcon = (props: any) => <svg {...props} viewBox="0 0 24 24" fill="non
 const Auth0Login: React.FC = () => {
   const { logout, user, isAuthenticated, isLoading } = useAuth0();
   const [isMenuOpen, setIsMenuOpen] = useState(false); 
-  const [isDarkMode, setIsDarkMode] = useState(true); // State for the theme toggle
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   if (isLoading) {
     return null; 
@@ -24,7 +24,7 @@ const Auth0Login: React.FC = () => {
     return null; 
   }
 
-  const userTitle = ".NET Developer"; // Static Placeholder
+  const userTitle = ".NET Developer";
 
   const handleProfileClick = () => {
     setIsMenuOpen(prev => !prev);
@@ -41,7 +41,7 @@ const Auth0Login: React.FC = () => {
   }
 
   return (
-    <div className={styles.profileContainer} onClick={handleProfileClick}>
+    <div className={styles.profileContainer} onClick={handleProfileClick} role="button">
         
         {user?.picture && (
             <img 
@@ -71,7 +71,7 @@ const Auth0Login: React.FC = () => {
         </svg>
 
         {isMenuOpen && (
-            <div className={styles.dropdownMenu} onClick={(e) => e.stopPropagation()} role="button">
+            <div className={styles.dropdownMenu} onClick={(e) => e.stopPropagation()}>
                 
                 <div className={styles.menuItem}>
                     <PersonIcon /> Profile
@@ -93,7 +93,8 @@ const Auth0Login: React.FC = () => {
                     <div 
                         className={`${styles.toggleSwitch} ${isDarkMode ? styles.active : ''}`}
                         onClick={handleToggleTheme}
-                        role="button"
+                        role="switch"
+                        tabIndex={0}
                     >
                         <div className={styles.toggleHandle}></div>
                     </div>
@@ -119,6 +120,7 @@ const Auth0Login: React.FC = () => {
                     className={`${styles.menuItem} ${styles.logoutButton}`} 
                     onClick={handleLogout}
                     role="button"
+                    tabIndex={0}
                 >
                     <LogoutIcon /> Log Out
                 </div>
