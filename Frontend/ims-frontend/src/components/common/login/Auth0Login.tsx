@@ -41,7 +41,7 @@ const Auth0Login: React.FC = () => {
   }
 
   return (
-    <div className={styles.profileContainer} onClick={handleProfileClick} role="button">
+    <div className={styles.profileContainer} onClick={handleProfileClick}>
         
         {user?.picture && (
             <img 
@@ -93,8 +93,6 @@ const Auth0Login: React.FC = () => {
                     <div 
                         className={`${styles.toggleSwitch} ${isDarkMode ? styles.active : ''}`}
                         onClick={handleToggleTheme}
-                        role="switch"
-                        tabIndex={0}
                     >
                         <div className={styles.toggleHandle}></div>
                     </div>
@@ -116,11 +114,9 @@ const Auth0Login: React.FC = () => {
 
                 <div className={styles.separator} />
                 
-                <div 
+                <div
                     className={`${styles.menuItem} ${styles.logoutButton}`} 
                     onClick={handleLogout}
-                    role="button"
-                    tabIndex={0}
                 >
                     <LogoutIcon /> Log Out
                 </div>
