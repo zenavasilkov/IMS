@@ -196,7 +196,6 @@
 .heading {
 }
 
-/* --- NEW: Filter Bar Styles (Matching Auth0 Layout) --- */
 .filterBar {
     display: flex;
     gap: 15px;
