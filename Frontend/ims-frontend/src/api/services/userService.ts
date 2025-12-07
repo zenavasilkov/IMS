@@ -1,10 +1,11 @@
 import { ImsApi } from '../axios';
 import type { UserDto, CreateUserDto, UpdateUserDto, UserDtoPagedList } from '../../entities/ims/dto/user_dto';
+import type { FetchUsersParams } from '../../features/userManagement/userManagementSlice';
 
 export const userService = {
-    getAllUsers: async (pageNumber = 1, pageSize = 10): Promise<UserDtoPagedList> => {
+    getAllUsers: async (params: FetchUsersParams): Promise<UserDtoPagedList> => {
         const response = await ImsApi.get<UserDtoPagedList>('users', {
-            params: { pageNumber, pageSize }
+            params: params 
         });
         return response.data;
     },

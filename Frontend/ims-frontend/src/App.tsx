@@ -1,5 +1,5 @@
 import './App.css';
-import Auth0Login from './components/Auth0Login';
+import Auth0Login from './components/common/login/Auth0Login';
 import useAuth0Interceptors from './hooks/useAuth0Interceptors';
 import { ImsApi, RecruitmentApi } from './api/axios';
 import LoginPage from './pages/LoginPage/LoginPage';
@@ -8,16 +8,18 @@ import PageLoader from './components/common/pageLoader/PageLoader';
 
 import useHasPermission from './hooks/useHasPermissions';
 import UserManagementPage from './pages/UserManagementPage/UserManagementPage';
+import useMinLoadingTime from "./hooks/useMinLoadingTime.ts";
 
 
 function App() {
   const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
   const { isTokenLoading } = useAuth0Interceptors({ axiosInstances: [ImsApi, RecruitmentApi] });
-
   const { hasPermission: canManageUsers, isLoadingPermissions } = useHasPermission('create:users');
+  const isAppLoading = isLoading || isLoadingPermissions || isTokenLoading;
+  const showPageLoader = useMinLoadingTime(isAppLoading, 300);
 
-  if (isLoading || isLoadingPermissions || isTokenLoading) {
-    return <PageLoader loadingText="Loading authentication..." />;
+  if (showPageLoader) {
+      return <PageLoader loadingText="Loading authentication..." />;
   }
 
   if (!isAuthenticated) {
@@ -30,8 +32,12 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <nav className="Fixed-Header-Bar">
+        <div className="App-Title"></div>
         <Auth0Login /> 
+      </nav>
+
+      <main className="App-Main-Content">
         {canManageUsers ? (
           <UserManagementPage />
         ) : (
@@ -40,8 +46,7 @@ function App() {
               <p>You are logged in, but you do not have permission to access the User Management section.</p> 
           </div>
         )}
-        
-      </header>
+      </main>
     </div>
   );
 }

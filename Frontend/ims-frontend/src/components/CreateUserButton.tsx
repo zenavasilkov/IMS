@@ -9,7 +9,7 @@ const CreateUserButton: React.FC<CreateUserButtonProps> = ({ onClick }) => {
   return (
     <button 
       onClick={onClick} 
-      className={styles.button}
+      className={styles.createButton}
     >
       Create New User
     </button>
