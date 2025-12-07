@@ -39,7 +39,7 @@ const UserFilterControls : React.FC = () => {
         type RoleKeys = keyof typeof Role;
         
         Object.keys(Role).forEach(key  => {
-            if (isNaN(Number(key))) {
+            if (Number.isNaN(Number(key))) {
                 options.push({
                     value: String(Role[key as RoleKeys]),
                     label: key.trim()

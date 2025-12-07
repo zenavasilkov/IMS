@@ -71,7 +71,7 @@ const Auth0Login: React.FC = () => {
         </svg>
 
         {isMenuOpen && (
-            <div className={styles.dropdownMenu} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.dropdownMenu} onClick={(e) => e.stopPropagation()} role="button">
                 
                 <div className={styles.menuItem}>
                     <PersonIcon /> Profile
@@ -93,6 +93,7 @@ const Auth0Login: React.FC = () => {
                     <div 
                         className={`${styles.toggleSwitch} ${isDarkMode ? styles.active : ''}`}
                         onClick={handleToggleTheme}
+                        role="button"
                     >
                         <div className={styles.toggleHandle}></div>
                     </div>
@@ -117,6 +118,7 @@ const Auth0Login: React.FC = () => {
                 <div 
                     className={`${styles.menuItem} ${styles.logoutButton}`} 
                     onClick={handleLogout}
+                    role="button"
                 >
                     <LogoutIcon /> Log Out
                 </div>
