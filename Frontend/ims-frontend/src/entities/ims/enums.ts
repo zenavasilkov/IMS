@@ -1,5 +1,5 @@
 export enum Role {
-    HRManager = 2,
+    HumanResourcesManager = 2,
     Mentor = 3,
     Intern = 4
 }

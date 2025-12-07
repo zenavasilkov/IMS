@@ -10,7 +10,7 @@ interface UserListItemProps {
 
 const getRoleDisplayName = (role: Role): string => {
   switch (role) {
-    case Role.HRManager: return "HR Manager";
+    case Role.HumanResourcesManager: return "HR Manager";
     case Role.Intern: return "Intern";
     case Role.Mentor: return "Mentor";
     default: return `Unknown Role (${role})`;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import type { UserDto } from '../../entities/ims/dto/user_dto';
 import styles from './UserManagementPage.module.css';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -12,6 +12,7 @@ import { useAppDispatch } from '../../components/useAppDispatch';
 import PageLoader from '../../components/common/pageLoader/PageLoader';
 import UserFilterControls from "../../components/UserFilterControl.tsx";
 import useMinLoadingTime from "../../hooks/useMinLoadingTime.ts";
+import UserFormModal from "../../components/common/userFormModal/UserFormModal.tsx";
 
 const ManagementIcon = (props: any) => (
     <svg {...props} viewBox="0 0 24 24" fill="none">
@@ -22,6 +23,9 @@ const ManagementIcon = (props: any) => (
 const UserManagementPage: React.FC = () => {
     const { isAuthenticated, isLoading: isAuth0Loading } = useAuth0();
     const dispatch = useAppDispatch();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [userToEdit, setUserToEdit] = useState<UserDto | undefined>(undefined);
+    
     const { 
         users,
         loading,
@@ -35,14 +39,28 @@ const UserManagementPage: React.FC = () => {
         sortParameter
     } = useSelector((state: RootState) => state.userManagement);
 
+    const handleSuccess = () => {
+        setIsModalOpen(false);
+        setUserToEdit(undefined);
+        
+        dispatch(fetchUsers({
+            pageNumber: page,
+            pageSize: pageSize,
+            firstName: filterFirstName,
+            lastName: filterLastName,
+            role: filterRole || undefined,
+            sorter: sortParameter
+        }));
+    };
+
     const handleCreateUser = () => {
-        console.log("Create New User clicked.");
-        alert("Feature Coming Soon: User Creation Form!");
+        setUserToEdit(undefined);
+        setIsModalOpen(true);
     };
 
     const handleEditUser = (user: UserDto) => {
-        console.log("Edit User clicked for:", user.id, user.email);
-        alert(`Feature Coming Soon: Editing user: ${user.firstname} ${user.lastname}`);
+        setUserToEdit(user);
+        setIsModalOpen(true);
     };
 
     useEffect(() => {
@@ -90,6 +108,13 @@ const UserManagementPage: React.FC = () => {
             </div>
             
             <UserList users={users} onEditUser={handleEditUser} />
+
+            <UserFormModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onSuccess={handleSuccess}
+                initialUser={userToEdit}
+            />
             
             <PaginationControls
               currentPage={page}
