@@ -9,7 +9,6 @@ interface UseAuth0InterceptorsProps {
 const apiAudience = import.meta.env.VITE_AUTH0_AUDIENCE;
 let isMounted : boolean;
 
-
 const useAuth0Interceptors = ({ axiosInstances }: UseAuth0InterceptorsProps) => {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
   const [isTokenLoading, setIsTokenLoading] = useState(false);

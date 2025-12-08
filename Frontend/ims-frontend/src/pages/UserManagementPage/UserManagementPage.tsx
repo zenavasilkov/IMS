@@ -14,12 +14,6 @@ import UserFilterControls from "../../components/UserFilterControl.tsx";
 import useMinLoadingTime from "../../hooks/useMinLoadingTime.ts";
 import UserFormModal from "../../components/common/userFormModal/UserFormModal.tsx";
 
-const ManagementIcon = (props: any) => (
-    <svg {...props} viewBox="0 0 24 24" fill="none">
-        <path fill="currentColor" d="M19.4 12.99l.06-1.99a7.97 7.97 0 00-1.84-5.38l1.43-1.43a.99.99 0 000-1.4l-1.4-1.4a.99.99 0 00-1.4 0l-1.43 1.43a7.97 7.97 0 00-5.38-1.84L11 4.54a.99.99 0 00-1.99 0l-.06 1.99a7.97 7.97 0 00-5.38 1.84l-1.43-1.43a.99.99 0 00-1.4 0l-1.4 1.4a.99.99 0 000 1.4l1.43 1.43a7.97 7.97 0 00-1.84 5.38l-1.99.06a.99.99 0 000 1.99l1.99.06a7.97 7.97 0 001.84 5.38l-1.43 1.43a.99.99 0 000 1.4l1.4 1.4a.99.99 0 001.4 0l1.43-1.43a7.97 7.97 0 005.38 1.84l.06 1.99a.99.99 0 001.99 0l.06-1.99a7.97 7.97 0 005.38-1.84l1.43 1.43a.99.99 0 001.4 0l1.4-1.4a.99.99 0 000-1.4l-1.43-1.43a7.97 7.97 0 001.84-5.38l1.99-.06a.99.99 0 000-1.99l-1.99-.06zM12 16a4 4 0 110-8 4 4 0 010 8z"/>
-    </svg>
-);
-
 const UserManagementPage: React.FC = () => {
     const { isAuthenticated, isLoading: isAuth0Loading } = useAuth0();
     const dispatch = useAppDispatch();
@@ -96,14 +90,8 @@ const UserManagementPage: React.FC = () => {
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.heading}>
-                <ManagementIcon className={styles.headingIcon} />
-                User Management Portal
-            </h1>
-
-            <UserFilterControls />
-
-            <div className={styles.centeredButtonWrapper}> 
+            <div className={styles.centeredButtonWrapper}>
+                <UserFilterControls />
                 <CreateUserButton onClick={handleCreateUser} />
             </div>
             

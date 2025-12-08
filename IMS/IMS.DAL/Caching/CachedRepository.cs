@@ -37,7 +37,7 @@ public class CachedRepository<TEntity>(Repository<TEntity> decorated,
             return entity;
         }
 
-        var entityFromCache = (TEntity?)JsonConvert.DeserializeObject(cachedEntity);
+        var entityFromCache = JsonConvert.DeserializeObject<TEntity?>(cachedEntity);
 
         if (entityFromCache is not null) _context.Set<TEntity>().Attach(entityFromCache);
 

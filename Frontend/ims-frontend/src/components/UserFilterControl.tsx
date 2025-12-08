@@ -8,7 +8,6 @@ import { setFilterFirstName, setFilterLastName, setFilterRole, setSortParameter,
 
 const UserFilterControls : React.FC = () => {
     const dispatch = useAppDispatch();
-
     const { filterFirstName, filterLastName, filterRole, sortParameter } = useSelector((state: RootState) => state.userManagement);
     const [localFirstName, setLocalFirstName] = useState(filterFirstName);
     const [localLastName, setLocalLastName] = useState(filterLastName);
@@ -67,7 +66,7 @@ const UserFilterControls : React.FC = () => {
             <input
                 type="text"
                 className={styles.searchInput}
-                placeholder="Search by First Name or Email/ID"
+                placeholder="Search by First Name"
                 value={localFirstName}
                 onChange={(e) => setLocalFirstName(e.target.value)}
             />
