@@ -97,8 +97,8 @@ const UserManagementPage: React.FC = () => {
     return (
         <div className={styles.container}>
             <h1 className={styles.heading}>
-                    <ManagementIcon className={styles.headingIcon} />
-                    User Management Portal
+                <ManagementIcon className={styles.headingIcon} />
+                User Management Portal
             </h1>
 
             <UserFilterControls />

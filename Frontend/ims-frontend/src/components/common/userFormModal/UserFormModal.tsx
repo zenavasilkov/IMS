@@ -122,7 +122,7 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
                     {error && <div className={styles.error}>{error}</div>}
 
                     <label>
-                        First Name
+                        <>First Name</>
                         <input name="firstname" value={formData.firstname || ''} onChange={handleChange} required />
                     </label>
                     

@@ -42,7 +42,7 @@ const UserFilterControls : React.FC = () => {
             if (Number.isNaN(Number(key))) {
                 options.push({
                     value: String(Role[key as RoleKeys]),
-                    label: key.replace(/([A-Z])/g, ' $1').trim()
+                    label: key.replaceAll(/([A-Z])/g, ' $1').trim()
                 });
             }
         });
