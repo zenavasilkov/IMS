@@ -48,6 +48,7 @@
     position: absolute;
     top: 15px;
     right: 15px;
+    padding: 5px;
     background: none;
     border: none;
     font-size: 28px;
@@ -62,6 +63,7 @@
 }
 
 .userForm label {
+    text-align: left;
     display: block;
     margin-top: 15px;
     margin-bottom: 5px;

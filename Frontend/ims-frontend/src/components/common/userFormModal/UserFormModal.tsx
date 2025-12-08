@@ -20,7 +20,7 @@ const EMPTY_FORM_DATA: CreateUserDto = {
     role: Role.Intern,
 };
 
-const PHONE_NUMBER_REGEX = '^\\+?[1-9]\\d{1,14}$';
+const PHONE_NUMBER_REGEX = String.raw`^\+?[1-9]\d{1,14}$`;
 
 const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSuccess, initialUser }) => {
 
@@ -60,12 +60,12 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
         let newValue = value;
 
         if (name === 'phoneNumber') {
-            newValue = value.replace(/[^0-9+]/g, '');
+            newValue = value.replaceAll(/[^0-9+]/g, '');
         }
         
         setFormData(prev => ({
             ...prev,
-            [name]: name === 'role' ? Number(newValue) : newValue // Use newValue here
+            [name]: name === 'role' ? Number(newValue) : newValue
         }));
     };
 
@@ -99,12 +99,20 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
 
     const roleOptions = Object.keys(Role).filter(key => Number.isNaN(Number(key))).map(key => ({
         value: String(Role[key as keyof typeof Role]),
-        label: key.replace(/([A-Z])/g, ' $1').trim()
-    }));
+        label: key.replaceAll(/([A-Z])/g, ' $1').trim()
+    }))
+
+    let buttonText = 'Create Account';
+    if (isEditMode) {
+        buttonText = 'Save Changes';
+    }
+    if (isSubmitting) {
+        buttonText = 'Saving...';
+    }
 
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
-            <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+        <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
                 <h2 className={styles.modalTitle}>
                     {isEditMode ? 'Edit User' : 'Create New User'}
                 </h2>
@@ -113,40 +121,50 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
                 <form onSubmit={handleSubmit} className={styles.userForm}>
                     {error && <div className={styles.error}>{error}</div>}
 
-                    <label>First Name</label>
-                    <input name="firstname" value={formData.firstname || ''} onChange={handleChange} required />
+                    <label>
+                        First Name
+                        <input name="firstname" value={formData.firstname || ''} onChange={handleChange} required />
+                    </label>
+                    
+                    <label>
+                        Last Name
+                        <input name="lastname" value={formData.lastname || ''} onChange={handleChange} required />
+                    </label>
 
-                    <label>Last Name</label>
-                    <input name="lastname" value={formData.lastname || ''} onChange={handleChange} required />
+                    <label>
+                        Email
+                        <input
+                            name="email"
+                            type="email"
+                            value={formData.email || ''}
+                            onChange={handleChange}
+                            required
+                            disabled={isEditMode}
+                        />
+                    </label>                    
 
-                    <label>Email</label>
-                    <input
-                        name="email"
-                        type="email"
-                        value={formData.email || ''}
-                        onChange={handleChange}
-                        required
-                        disabled={isEditMode} 
-                    />
+                    <label>
+                        Phone Number
+                        <input
+                            name="phoneNumber"
+                            type="tel"
+                            value={formData.phoneNumber || ''}
+                            onChange={handleChange}
+                            pattern={PHONE_NUMBER_REGEX}
+                            title="Phone number must start with an optional '+' and be 2-15 digits (E.164 format)."/>
+                    </label>                    
 
-                    <label>Phone Number</label>
-                    <input
-                        name="phoneNumber"
-                        type="tel"
-                        value={formData.phoneNumber || ''}
-                        onChange={handleChange}
-                        pattern={PHONE_NUMBER_REGEX}
-                        title="Phone number must start with an optional '+' and be 2-15 digits (E.164 format)."/>
-
-                    <label>Role</label>
-                    <select name="role" value={String(formData.role)} onChange={handleChange} required>
-                        {roleOptions.map(option => (
-                            <option key={option.value} value={option.value}>{option.label}</option>
-                        ))}
-                    </select>
+                    <label>
+                        Role
+                        <select name="role" value={String(formData.role)} onChange={handleChange} required>
+                            {roleOptions.map(option => (
+                                <option key={option.value} value={option.value}>{option.label}</option>
+                            ))}
+                        </select>
+                    </label>
 
                     <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                        {isSubmitting ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Create Account')}
+                        {buttonText}
                     </button>
                 </form>
             </div>
