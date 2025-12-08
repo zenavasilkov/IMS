@@ -122,17 +122,20 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
                     {error && <div className={styles.error}>{error}</div>}
 
                     <label>
-                        <>First Name</>
+                        First Name
+                        
                         <input name="firstname" value={formData.firstname || ''} onChange={handleChange} required />
                     </label>
                     
                     <label>
                         Last Name
+                        
                         <input name="lastname" value={formData.lastname || ''} onChange={handleChange} required />
                     </label>
 
                     <label>
                         Email
+                        
                         <input
                             name="email"
                             type="email"
@@ -145,6 +148,7 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
 
                     <label>
                         Phone Number
+                        
                         <input
                             name="phoneNumber"
                             type="tel"
@@ -156,6 +160,7 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
 
                     <label>
                         Role
+                        
                         <select name="role" value={String(formData.role)} onChange={handleChange} required>
                             {roleOptions.map(option => (
                                 <option key={option.value} value={option.value}>{option.label}</option>
