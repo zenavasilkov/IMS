@@ -122,21 +122,15 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
                     {error && <div className={styles.error}>{error}</div>}
 
                     <label>
-                        First Name
-                        
-                        <input name="firstname" value={formData.firstname || ''} onChange={handleChange} required />
+                        First Name<input name="firstname" value={formData.firstname || ''} onChange={handleChange} required />
                     </label>
                     
                     <label>
-                        Last Name
-                        
-                        <input name="lastname" value={formData.lastname || ''} onChange={handleChange} required />
+                        Last Name<input name="lastname" value={formData.lastname || ''} onChange={handleChange} required />
                     </label>
 
                     <label>
-                        Email
-                        
-                        <input
+                        Email<input
                             name="email"
                             type="email"
                             value={formData.email || ''}
@@ -147,9 +141,7 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
                     </label>                    
 
                     <label>
-                        Phone Number
-                        
-                        <input
+                        Phone Number<input
                             name="phoneNumber"
                             type="tel"
                             value={formData.phoneNumber || ''}
@@ -159,9 +151,7 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
                     </label>                    
 
                     <label>
-                        Role
-                        
-                        <select name="role" value={String(formData.role)} onChange={handleChange} required>
+                        Role<select name="role" value={String(formData.role)} onChange={handleChange} required>
                             {roleOptions.map(option => (
                                 <option key={option.value} value={option.value}>{option.label}</option>
                             ))}
