@@ -1,8 +1,8 @@
-﻿import React, { useState, useEffect } from 'react';
-import styles from './UserFormModal.module.css';
-import type {CreateUserDto, UpdateUserDto, UserDto} from "../../../entities/ims/dto/user_dto.ts";
-import {userService} from "../../../api/services";
-import {Role} from "../../../entities/ims/enums.ts";
+import React, { useState, useEffect } from 'react';
+import styles from '../common/commonStyles/commonModalStyles.module.css'
+import type {CreateUserDto, UpdateUserDto, UserDto} from "../../entities/ims/dto/user_dto.ts";
+import {userService} from "../../api/services";
+import {Role} from "../../entities/ims/enums.ts";
 
 interface UserFormModalProps {
     isOpen: boolean;
@@ -53,7 +53,6 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
 
         setError(null);
     }, [initialUser, isEditMode, isOpen]);
-
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -118,7 +117,7 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
                 </h2>
                 <button className={styles.closeButton} onClick={onClose}>&times;</button>
 
-                <form onSubmit={handleSubmit} className={styles.userForm}>
+                <form onSubmit={handleSubmit} className={styles.form}>
                     {error && <div className={styles.error}>{error}</div>}
 
                     <label>

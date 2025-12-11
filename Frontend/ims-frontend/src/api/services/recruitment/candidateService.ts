@@ -14,7 +14,7 @@ export const candidateService = {
     },
 
     acceptToInternship: async (candidateId: string): Promise<void> => {
-        await RecruitmentApi.put(`/candidates/accept-to-internship`, { candidateId });
+        await RecruitmentApi.put(`/candidates/accept-to-internship`, {}, { params: { Id: candidateId } });
     },
 
     updateCvLink: async (data: UpdateCvLinkCommand): Promise<FindCandidateByIdQueryResponse> => {
@@ -34,7 +34,10 @@ export const candidateService = {
 
     getAllCandidates: async (pageNumber = 1, pageSize = 10): Promise<GetAllCandidatesQueryResponse> => {
         const response = await RecruitmentApi.get<GetAllCandidatesQueryResponse>('/candidates/get-all', {
-            params: { pageNumber, pageSize }
+            params: {
+                'PaginationParameters.PageNumber': pageNumber,
+                'PaginationParameters.PageSize': pageSize
+            }
         });
         return response.data;
     }

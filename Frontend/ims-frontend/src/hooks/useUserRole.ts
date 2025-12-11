@@ -1,6 +1,6 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import {decodeJwt} from "../features/JwtDecoder.ts";
+import {decodeJwt} from "../features/helpers/JwtDecoder.ts";
 import useAuth0Interceptors from "./useAuth0Interceptors.ts";
 
 const ROLE_CLAIM_KEY = import.meta.env.VITE_ROLE_CLAIM_KEY;

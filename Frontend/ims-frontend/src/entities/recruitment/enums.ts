@@ -1,5 +1,4 @@
 export enum EmployeeRole {
-    Undefined = 0,
     HrManager = 1,
     Developer = 2,
 }

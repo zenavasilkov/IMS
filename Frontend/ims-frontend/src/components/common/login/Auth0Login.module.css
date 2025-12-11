@@ -38,6 +38,7 @@
 }
 
 .userRole {
+    padding-top: 2px;
     font-size: 0.9em;
     color: #bbb;
     white-space: nowrap; 

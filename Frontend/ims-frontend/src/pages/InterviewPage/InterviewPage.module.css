@@ -1,0 +1,40 @@
+﻿.interviewList {
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #313131;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    min-height: 200px;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.interviewDetailText {
+    font-size: 0.9em;
+    color: #bbb;
+    white-space: nowrap;
+}
+
+.statusPending {
+    color: #ffc107;
+    font-weight: 600;
+}
+
+.statusPassed {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.statusCancelled {
+    color: #dc3545;
+    font-weight: 600;
+    text-decoration: line-through;
+}
+
+.headingIcon {
+    width: 36px;
+    height: 36px;
+    margin-right: 15px;
+    color: #ff4745;
+    filter: drop-shadow(0 0 5px rgba(40, 167, 69, 0.5));
+}

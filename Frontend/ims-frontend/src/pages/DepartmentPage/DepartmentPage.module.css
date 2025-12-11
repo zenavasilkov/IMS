@@ -1,0 +1,42 @@
+﻿.headingIcon {
+    width: 32px;
+    height: 32px;
+    margin-right: 15px;
+    color: #ffc107;
+    filter: drop-shadow(0 0 5px rgba(255, 193, 7, 0.5));
+}
+
+.departmentList {
+    flex-grow: 1;
+    border-radius: 8px;
+    background-color: #313131;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    min-height: 200px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 56.7vh;
+    margin-bottom: 20px;
+}
+
+.departmentItem {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #3a3a3a;
+    background-color: #2e2e2e;
+    transition: background-color 0.15s;
+}
+
+.departmentItem:hover {
+    background-color: #4a4a4a;
+}
+
+.departmentItem span {
+    flex: 1;
+    text-align: left;
+}
+
+.departmentItem span:nth-child(1) { flex: 1.5; font-weight: 600; }
+.departmentItem span:nth-child(2) { flex: 3; font-size: 0.9em; color: #bbb; }
+.departmentItem div:nth-child(3) { flex: 1; justify-content: flex-end; }

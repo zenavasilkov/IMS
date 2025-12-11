@@ -107,7 +107,7 @@
     margin-bottom: 20px;
     border-radius: 20px;
 
-    max-height: 63.6vh;
+    max-height: 63vh;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -130,28 +130,9 @@
     padding-right: 15px;
 }
 
-.createButton {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    font-size: 1em;
-    font-weight: 600;
-    cursor: pointer;
-    flex-shrink: 0;
-    height: 42px;
-    margin-left: auto;
-    margin-right: 20px;
-    transition: background-color 0.2s;
-}
-
-.createButton:hover {
-    background-color: #006bff;
-}
-
 .centeredButtonWrapper {
     display: flex;
+    padding-right: 20px;
     gap: 15px;
     justify-content: center;
     align-items: center;
@@ -178,38 +159,6 @@
     align-items: center;
     margin-bottom: 20px;
     padding-top: 10px;
-}
-
-.filterBar {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    align-items: center;
-    background-color: #383838;
-    padding: 8px;
-    border-radius: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-}
-
-.searchInput {
-    flex-grow: 1;
-    min-width: 30px;
-    padding: 10px 15px;
-    border: 1px solid #555;
-    border-radius: 4px;
-    background-color: #444;
-    color: #f0f0f0;
-    font-size: 1em;
-    outline: none;
-    transition: border-color 0.2s;
-}
-
-.searchInput:focus {
-    border-color: #007bff;
-}
-
-.searchInput::placeholder {
-    color: #aaa;
 }
 
 .selectInput, .resetButton {
@@ -245,7 +194,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding: 5px 10px 5px 15px;
     border-bottom: 1px solid #3a3a3a;
     background-color: #313131;
 }

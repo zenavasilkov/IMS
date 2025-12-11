@@ -1,4 +1,4 @@
-﻿export const decodeJwt = (token: string) => {
+export const decodeJwt = (token: string) => {
     try {
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replaceAll(/-/g, '+').replaceAll(/_/g, '/');

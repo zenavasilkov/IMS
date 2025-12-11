@@ -9,8 +9,8 @@ import type {
 } from '../../../entities/recruitment/dto/interview_dto';
 
 export const interviewService = {
-    scheduleInterview: async (data: ScheduleInterviewCommand): Promise<GetInterviewByIdQueryResponse> => {
-        const response = await RecruitmentApi.post<GetInterviewByIdQueryResponse>('/interviews', data);
+    scheduleInterview: async (data: ScheduleInterviewCommand): Promise<string> => {
+        const response = await RecruitmentApi.post<string>('/interviews', data);
         return response.data;
     },
 
@@ -19,9 +19,7 @@ export const interviewService = {
         return response.data;
     },
 
-    cancelInterview: async (interviewId: string): Promise<void> => {
-        await RecruitmentApi.put(`/interviews/cancel`, { interviewId });
-    },
+    cancelInterview: async (interviewId: string): Promise<void> => await RecruitmentApi.put(`/interviews/cancel`, {}, { params: { Id: interviewId }}),
 
     addFeedback: async (data: AddFeedbackCommand): Promise<GetInterviewByIdQueryResponse> => {
         const response = await RecruitmentApi.put<GetInterviewByIdQueryResponse>('/interviews/add-feedback', data);
@@ -42,7 +40,10 @@ export const interviewService = {
 
     getAllInterviews: async (pageNumber = 1, pageSize = 10): Promise<GetAllInterviewsQueryResponse> => {
         const response = await RecruitmentApi.get<GetAllInterviewsQueryResponse>('/interviews/get-all', {
-            params: { pageNumber, pageSize }
+            params: {
+                'PaginationParameters.PageNumber': pageNumber,
+                'PaginationParameters.PageSize': pageSize
+            }
         });
         return response.data;
     }

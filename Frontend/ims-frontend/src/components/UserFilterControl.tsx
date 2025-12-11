@@ -1,10 +1,11 @@
-﻿import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "./useAppDispatch.ts";
 import type {RootState} from "../store.ts";
 import {Role, UserSortingParameter} from "../entities/ims/enums.ts";
 import styles from '../pages/UserManagementPage/UserManagementPage.module.css';
-import { setFilterFirstName, setFilterLastName, setFilterRole, setSortParameter, resetFilters } from '../features/userManagement/userManagementSlice';
+import commonStyles from './common/commonStyles/commonPageStyles.module.css'
+import { setFilterFirstName, setFilterLastName, setFilterRole, setSortParameter, resetFilters } from '../features/slices/userManagementSlice.ts';
 
 const UserFilterControls : React.FC = () => {
     const dispatch = useAppDispatch();
@@ -62,10 +63,10 @@ const UserFilterControls : React.FC = () => {
     })), []);
 
     return (
-        <div className={styles.filterBar}>
+        <div className={commonStyles.filterBar}>
             <input
                 type="text"
-                className={styles.searchInput}
+                className={commonStyles.searchInput}
                 placeholder="Search by First Name"
                 value={localFirstName}
                 onChange={(e) => setLocalFirstName(e.target.value)}
@@ -73,7 +74,7 @@ const UserFilterControls : React.FC = () => {
 
             <input
                 type="text"
-                className={styles.searchInput}
+                className={commonStyles.searchInput}
                 placeholder="Search by Last Name"
                 value={localLastName}
                 onChange={(e) => setLocalLastName(e.target.value)}

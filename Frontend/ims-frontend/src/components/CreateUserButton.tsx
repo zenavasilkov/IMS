@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../pages/UserManagementPage/UserManagementPage.module.css';
+import styles from './common/commonStyles/commonPageStyles.module.css'
 
 interface CreateUserButtonProps {
   onClick: () => void;

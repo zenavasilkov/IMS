@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import type { AxiosInstance } from 'axios';
 
@@ -7,63 +7,58 @@ interface UseAuth0InterceptorsProps {
 }
 
 const apiAudience = import.meta.env.VITE_AUTH0_AUDIENCE;
-let isMounted : boolean;
 
 const useAuth0Interceptors = ({ axiosInstances }: UseAuth0InterceptorsProps) => {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
-  const [isTokenLoading, setIsTokenLoading] = useState(false);
+  const [isTokenLoading, setIsTokenLoading] = useState(isAuthenticated);
+  const isMountedRef = useRef(true);
 
-  const interceptorIds = axiosInstances.map(axiosInstance => {
-    return axiosInstance.interceptors.request.use(async (config) => {
-      const accessToken = await getAccessTokenSilently({
-        authorizationParams: {
-          audience: apiAudience,
-        }
-      });
-      config.headers.Authorization = `Bearer ${accessToken}`;
-      return config;
-    });
-  });
-
-  const setupInterceptors = async () => {
+  const preFetchTokenAndResolve = async () => {
     try {
       await getAccessTokenSilently({
-        authorizationParams: {
-          audience: apiAudience,
-        },
+        authorizationParams: { audience: apiAudience },
       });
-      if (isMounted) {
+      if (isMountedRef.current) {
         setIsTokenLoading(false);
       }
     } catch (error) {
       console.error("Error pre-fetching access token", error);
-      if (isMounted) {
+      if (isMountedRef.current) {
         setIsTokenLoading(false);
       }
     }
-    
-    return () => {
-      isMounted = false;
-      axiosInstances.forEach((axiosInstance, index) => {
-        axiosInstance.interceptors.request.eject(interceptorIds[index]);
-      });
-    };
   };
 
+
   useEffect(() => {
-    isMounted = true;
+    isMountedRef.current = true;
 
     if (!isAuthenticated) {
       setIsTokenLoading(false);
       return;
     }
 
-    setIsTokenLoading(true);
+    if (isTokenLoading) {
+      setIsTokenLoading(true);
+    }
 
-    setupInterceptors();
+    const interceptorIds = axiosInstances.map(axiosInstance => {
+      return axiosInstance.interceptors.request.use(async (config) => {
+        const accessToken = await getAccessTokenSilently({
+          authorizationParams: { audience: apiAudience },
+        });
+        config.headers.Authorization = `Bearer ${accessToken}`;
+        return config;
+      });
+    });
+
+    preFetchTokenAndResolve();
 
     return () => {
-      isMounted = false;
+      isMountedRef.current = false;
+      axiosInstances.forEach((axiosInstance, index) => {
+        axiosInstance.interceptors.request.eject(interceptorIds[index]);
+      });
     };
   }, [isAuthenticated, getAccessTokenSilently, axiosInstances, apiAudience]);
 

@@ -2,21 +2,23 @@ import React, { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import styles from './Auth0Login.module.css';
 import {FAQIcon, FeedbackIcon, HelpIcon, LogoutIcon, PersonIcon, SettingsIcon} from "../Icons.tsx";
+import {useUserRole} from "../../../hooks/useUserRole.ts";
 
 const Auth0Login: React.FC = () => {
   const { logout, user, isAuthenticated, isLoading } = useAuth0();
   const [isMenuOpen, setIsMenuOpen] = useState(false); 
   const [isDarkMode, setIsDarkMode] = useState(true);
+  const {role, isLoadingRole} = useUserRole();
 
-  if (isLoading) {
+  if (isLoading || isLoadingRole) {
     return null; 
   }
 
   if (!isAuthenticated) {
-    return null; 
+      return null;
   }
 
-  const userTitle = ".NET Developer";
+  const userTitle = role === "HRManager" ? "HR Manager" : role;
 
   const handleProfileClick = () => {
     setIsMenuOpen(prev => !prev);

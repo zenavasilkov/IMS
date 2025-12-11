@@ -6,13 +6,13 @@ import CreateUserButton from '../../components/CreateUserButton';
 import UserList from '../../components/UserList';
 import PaginationControls from '../../components/PaginationControls';
 import { useSelector } from 'react-redux';
-import { fetchUsers, setPage } from '../../features/userManagement/userManagementSlice';
+import { fetchUsers, setPage } from '../../features/slices/userManagementSlice.ts';
 import type { RootState } from '../../store';
 import { useAppDispatch } from '../../components/useAppDispatch';
 import PageLoader from '../../components/common/pageLoader/PageLoader';
 import UserFilterControls from "../../components/UserFilterControl.tsx";
 import useMinLoadingTime from "../../hooks/useMinLoadingTime.ts";
-import UserFormModal from "../../components/common/userFormModal/UserFormModal.tsx";
+import UserFormModal from "../../components/modals/UserFormModal.tsx";
 
 const UserManagementPage: React.FC = () => {
     const { isAuthenticated, isLoading: isAuth0Loading } = useAuth0();

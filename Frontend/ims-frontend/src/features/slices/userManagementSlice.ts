@@ -1,8 +1,8 @@
 import {createSlice, createAsyncThunk, type PayloadAction} from '@reduxjs/toolkit';
 import { userService } from '../../api/services';
-import type { UserDto } from '../../entities/ims/dto/user_dto';
-import type { Role } from '../../entities/ims/enums';
-import { UserSortingParameter } from '../../entities/ims/enums';
+import type { UserDto } from '../../entities/ims/dto/user_dto.ts';
+import type { Role } from '../../entities/ims/enums.ts';
+import { UserSortingParameter } from '../../entities/ims/enums.ts';
 
 interface UserManagementState {
   users: UserDto[];
