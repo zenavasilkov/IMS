@@ -40,7 +40,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("ImsDefaultConnection");
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
 
         services.AddDbContext<RecruitmentDbContext>((sp, options) => {
 

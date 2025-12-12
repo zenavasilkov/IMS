@@ -25,7 +25,7 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var connectionString = configuration.GetConnectionString("ImsDefaultConnection");
 
         services.AddDbContext<ImsDbContext>((provider, options) =>
         {

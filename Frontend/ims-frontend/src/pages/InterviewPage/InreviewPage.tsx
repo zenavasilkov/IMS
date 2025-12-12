@@ -5,8 +5,7 @@ import type { RootState } from '../../store';
 import { useAppDispatch } from '../../components/useAppDispatch';
 import PageLoader from '../../components/common/pageLoader/PageLoader';
 import {
-    fetchInterviews, setInterviewPage, setFilterCandidateEmail, resetInterviewFilters, fetchCandidateIdByEmail,
-    setFilterCandidateId
+    fetchInterviews, setInterviewPage, setFilterCandidateEmail, resetInterviewFilters, setFilterCandidateId, passInterview
 } from '../../features/slices/interviewSlice';
 import styles from './InterviewPage.module.css';
 import commonStyles from '../../components/common/commonStyles/commonPageStyles.module.css';
@@ -17,6 +16,7 @@ import {InterviewIcon} from "../../components/common/Icons.tsx";
 import type { FindCandidateByIdQueryResponse } from "../../entities/recruitment/dto/candidate_dto";
 import type { GetEmployeeByIdQueryResponse } from "../../entities/recruitment/dto/employee_dto";
 import { candidateService, employeeService } from "../../api/services/recruitment";
+import {fetchCandidateByEmail} from "../../features/slices/recruitmentSlice.ts";
 
 const getStatusClass = (interview: any) => {
     if (interview.isCancelled) return styles.statusCancelled;
@@ -27,9 +27,7 @@ const getStatusClass = (interview: any) => {
 const InterviewPage: React.FC = () => {
     const { isAuthenticated, isLoading: isAuth0Loading } = useAuth0();
     const dispatch = useAppDispatch();
-
     const { interviews, loading, error, page, totalPages, pageSize, filterCandidateEmail, filterCandidateId } = useSelector((state: RootState) => state.interview);
-
     const [isRescheduleModalOpen, setIsRescheduleModalOpen] = useState(false);
     const [interviewToReschedule, setInterviewToReschedule] = useState<any | undefined>(undefined);
     const [candidatesMap, setCandidatesMap] = useState<Map<string, FindCandidateByIdQueryResponse>>(new Map());
@@ -40,6 +38,12 @@ const InterviewPage: React.FC = () => {
             await dispatch(fetchInterviews({ pageNumber: page, pageSize }));
         }
     }, [page, isAuthenticated, isAuth0Loading, dispatch, pageSize, filterCandidateId]);
+
+    const handlePassInterview = (interviewId: string) => {
+        if (window.confirm("Mark this interview as PASSED?")) {
+            dispatch(passInterview(interviewId));
+        }
+    };
 
     useEffect(() => {
         fetchInterviewsData();
@@ -81,7 +85,7 @@ const InterviewPage: React.FC = () => {
 
     const handleEmailSearch = () => {
         if (filterCandidateEmail) {
-            dispatch(fetchCandidateIdByEmail(filterCandidateEmail));
+            dispatch(fetchCandidateByEmail(filterCandidateEmail));
         } else {
             dispatch(setFilterCandidateId(undefined));
         }
@@ -149,11 +153,11 @@ const InterviewPage: React.FC = () => {
 
             <div className={styles.interviewList}>
                 <div className={commonStyles.listHeader}>
-                    <span style={{ flex: 2 }}>Candidate</span>
-                    <span style={{ flex: 1.5 }}>Interviewer</span>
-                    <span style={{ flex: 1.5 }}>Type/Date</span>
-                    <span style={{ flex: 0.8 }}>Status</span>
-                    <span style={{ flex: 1.2 }}>Actions</span>
+                    <span style={{ flex: 3 }}>Candidate</span>
+                    <span style={{ flex: 3.2 }}>Interviewer</span>
+                    <span style={{ flex: 2 }}>Type/Date</span>
+                    <span style={{ flex: 1 }}>Status</span>
+                    <span style={{ flex: 3 }}>Actions</span>
                 </div>
                 {interviews.map(interview => {
                     const candidate = candidatesMap.get(interview.candidateId || '');
@@ -161,28 +165,29 @@ const InterviewPage: React.FC = () => {
 
                     return (
                         <div key={interview.id} className={commonStyles.userItem}>
-                            <div className={styles.candidateInfo} style={{ flex: 2 }}>
+                            <div className={styles.candidateInfo} style={{ flex: 3 }}>
                                 <span className={styles.name}>{candidate?.firstName} {candidate?.lastName || interview.candidateEmail?.split('@')[0]}</span>	&ensp;
-                                <span className={styles.contact}>{candidate?.email || interview.candidateEmail} | {candidate?.phoneNumber || 'N/A'}</span>
+                                <span className={styles.contact}>{candidate?.email || interview.candidateEmail} {candidate?.phoneNumber || 'N/A'}</span>
                             </div>
 
-                            <div className={styles.interviewerInfo} style={{ flex: 1.5 }}>
+                            <div className={styles.interviewerInfo} style={{ flex: 3.2 }}>
                                 <span className={styles.name}>{employee?.firstName} {employee?.lastName || interview.interviewerEmail?.split('@')[0]}</span>	&ensp;
                                 <span className={styles.contact}>{employee?.email || interview.interviewerEmail} <span className={styles.userRoleText}>({employee?.role ? getRoleDisplayName(employee.role) : 'N/A'})</span></span>	&ensp;
                                 <span className={styles.departmentName}>{interview.deparnmentName || 'N/A'}</span>
                             </div>
 
-                            <span style={{ flex: 1.5 }} className={styles.interviewDetailText}>
+                            <span style={{ flex: 2 }} className={styles.interviewDetailText}>
                                 {getInterviewTypeDisplay(interview.interviewType)} - {new Date(interview.scheduledAt).toLocaleDateString()}
                             </span>
 
-                            <span style={{ flex: 0.8 }} className={getStatusClass(interview)}>
+                            <span style={{ flex: 1 }} className={getStatusClass(interview)}>
                                 {interview.isCancelled ? 'Cancelled' : (interview.isPassed ? 'Passed' : 'Pending')}
                             </span>
 
-                            <div className={commonStyles.actions} style={{ flex: 1.2 }}>
-                                <button className={commonStyles.actionButton} disabled={interview.isCancelled} onClick={() => handleReschedule(interview)}>Reschedule</button>
-                                <button className={commonStyles.actionButton} disabled={interview.isCancelled} onClick={() => handleCancel(interview.id)}>Cancel</button>
+                            <div className={commonStyles.actions} style={{ flex: 3 }}>
+                                <button className={commonStyles.actionButton} disabled={interview.isCancelled || interview.isPassed} onClick={() => handlePassInterview(interview.id)}>Pass</button>
+                                <button className={commonStyles.actionButton} disabled={interview.isCancelled || interview.isPassed} onClick={() => handleReschedule(interview)}>Reschedule</button>
+                                <button className={commonStyles.actionButton} disabled={interview.isCancelled || interview.isPassed} onClick={() => handleCancel(interview.id)}>Cancel</button>
                             </div>
                         </div>
                     );

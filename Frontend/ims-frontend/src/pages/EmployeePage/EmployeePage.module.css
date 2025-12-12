@@ -28,6 +28,13 @@
     transition: background-color 0.15s;
 }
 
+.employeeInfoColumn {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    flex-shrink: 0;
+}
+
 .employeeItem:hover {
     background-color: #4a4a4a;
 }
@@ -35,6 +42,26 @@
 .employeeItem span {
     flex: 2;
     text-align: left;
+}
+
+.name {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #f0f0f0;
+    white-space: nowrap;
+}
+
+.subText {
+    font-size: 0.9em;
+    color: #bbb;
+    white-space: nowrap;
+}
+
+.userRoleText {
+    font-weight: normal;
+    font-size: 0.9em;
+    color: #bbb;
+    margin-left: 8px;
 }
 
 .employeeItem span:nth-child(1) { flex: 3; }

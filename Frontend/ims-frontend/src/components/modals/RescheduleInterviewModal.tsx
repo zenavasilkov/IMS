@@ -26,7 +26,6 @@ const convertLocalToUTC = (localDateTime: string): string => {
     return new Date(localDateTime).toISOString();
 };
 
-
 const RescheduleInterviewModal: React.FC<RescheduleInterviewModalProps> = ({ isOpen, onClose, onSuccess, interview }) => {
     const [newDate, setNewDate] = useState(formatISOToLocal(interview?.scheduledAt || ''));
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -71,7 +70,7 @@ const RescheduleInterviewModal: React.FC<RescheduleInterviewModalProps> = ({ isO
                 <h2 className={styles.modalTitle}>Reschedule Interview for {interview.candidateEmail}</h2>
                 <button className={styles.closeButton} onClick={onClose}>&times;</button>
 
-                <form onSubmit={handleSubmit} className={styles.interviewForm}>
+                <form onSubmit={handleSubmit} className={styles.form}>
                     {error && <div className={styles.error}>{error}</div>}
 
                     <label>Current Date/Time</label>

@@ -1,12 +1,14 @@
 ﻿.interviewList {
-    margin-top: 20px;
+    flex-grow: 1;
     border-radius: 8px;
-    overflow: hidden;
     background-color: #313131;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     min-height: 200px;
-    margin-bottom: 20px;
-    flex-grow: 1;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 50vh;
+    margin: 20px 0;
 }
 
 .interviewDetailText {

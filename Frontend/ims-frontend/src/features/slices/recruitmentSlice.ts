@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
+﻿import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
 import { candidateService } from '../../api/services/recruitment';
 import type {
     FindCandidateByIdQueryResponse,
@@ -18,6 +18,7 @@ interface RecruitmentState {
     totalPages: number;
     pageSize: number;
     acceptingCandidates: string[];
+    filterEmail: string;
 }
 
 const initialState: RecruitmentState = {
@@ -27,8 +28,23 @@ const initialState: RecruitmentState = {
     page: 1,
     totalPages: 1,
     pageSize: 10,
-    acceptingCandidates: []
+    acceptingCandidates: [],
+    filterEmail: ''
 };
+
+export const fetchCandidateByEmail = createAsyncThunk(
+    'interview/fetchCandidateIdByEmail',
+    async (email: string, { rejectWithValue }) => {
+        try {
+            let result: FindCandidateByIdQueryResponse;
+            result = await candidateService.getCandidateByEmail(email) as FindCandidateByIdQueryResponse;
+            return result;
+        } catch (err: any) {
+            if (err.response?.status === 404) return undefined;
+            return rejectWithValue('Failed to search candidate by email.');
+        }
+    }
+);
 
 export const fetchCandidates = createAsyncThunk(
     'recruitment/fetchCandidates',
@@ -78,9 +94,33 @@ const recruitmentSlice = createSlice({
         setCandidatePage: (state, action: PayloadAction<number>) => {
             state.page = action.payload;
         },
+        setFilterEmail: (state, action: PayloadAction<string>) => {
+            state.filterEmail = action.payload;
+        },
+        resetRecruitmentFilters: (state) => {
+            state.filterEmail = initialState.filterEmail;
+            state.page = 1;
+        },
     },
     extraReducers: (builder) => {
         builder
+            .addCase(fetchCandidateByEmail.fulfilled, (state, action) => {
+                const candidate = action.payload;
+
+                state.candidates = candidate ? [candidate] : [];
+
+                state.totalPages = candidate ? 1 : 1;
+                state.page = 1;
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(fetchCandidateByEmail.rejected, (state, action) => {
+                state.candidates = [];
+                state.totalPages = 1;
+                state.page = 1;
+                state.loading = false;
+                state.error = action.payload as string;
+            })
             .addCase(fetchCandidates.pending, (state) => {
                 state.loading = true;
                 state.error = null;
@@ -114,5 +154,5 @@ const recruitmentSlice = createSlice({
     },
 });
 
-export const { setCandidatePage } = recruitmentSlice.actions;
+export const { setCandidatePage, setFilterEmail, resetRecruitmentFilters } = recruitmentSlice.actions;
 export default recruitmentSlice.reducer;

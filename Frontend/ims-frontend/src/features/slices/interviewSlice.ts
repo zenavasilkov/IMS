@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
-import {candidateService, interviewService} from "../../api/services/recruitment";
-import type {GetInterviewByIdQueryResponse} from "../../entities/recruitment/dto/interview_dto.ts";
+import type {AddFeedbackCommand, GetInterviewByIdQueryResponse} from "../../entities/recruitment/dto/interview_dto.ts";
+import {fetchCandidateByEmail} from "./recruitmentSlice.ts";
+import {interviewService} from "../../api/services/recruitment";
 
 export interface FetchInterviewsParams {
     pageNumber: number;
@@ -32,19 +33,42 @@ const initialState: InterviewState = {
     filterCandidateId: undefined,
 };
 
-export const fetchCandidateIdByEmail = createAsyncThunk(
-    'interview/fetchCandidateIdByEmail',
-    async (email: string, { rejectWithValue }) => {
+export const passInterview = createAsyncThunk<string, string, { state: { interview: InterviewState } }>(
+    'interview/passInterview',
+    async (interviewId, { dispatch, getState, rejectWithValue }) => {
         try {
-            const result = await candidateService.getCandidateByEmail(email);
-            return result.id;
+            const command: AddFeedbackCommand = {
+                id: interviewId,
+                isPassed: true,
+                feedback: 'Interview passed successfully.',
+            };
+
+            await interviewService.addFeedback(command);
+
+            const state = getState() as { interview: InterviewState };
+            const params = { pageNumber: state.interview.page, pageSize: state.interview.pageSize };
+            dispatch(fetchInterviews(params));
+
+            return interviewId;
         } catch (err: any) {
-            if (err.response?.status === 404) return undefined;
-            return rejectWithValue('Failed to search candidate by email.');
+            let errorMessage = 'Failed to mark interview as passed.';
+
+            if (err.response) {
+                if (typeof err.response.data === 'string' && err.response.data.includes('Cannot add a feedback')) {
+                    errorMessage = err.response.data;
+                }
+                else if (err.response.data?.message) {
+                    errorMessage = err.response.data.message;
+                }
+                else if (err.response.data) {
+                    errorMessage = err.response.data;
+                }
+            }
+
+            return rejectWithValue(errorMessage);
         }
     }
 );
-
 
 export const fetchInterviews = createAsyncThunk(
     'interview/fetchInterviews',
@@ -67,7 +91,6 @@ export const fetchInterviews = createAsyncThunk(
     }
 );
 
-
 const interviewSlice = createSlice({
     name: 'interview',
     initialState,
@@ -89,8 +112,8 @@ const interviewSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(fetchCandidateIdByEmail.fulfilled, (state, action) => {
-            state.filterCandidateId = action.payload;
+        builder.addCase(fetchCandidateByEmail.fulfilled, (state, action) => {
+            state.filterCandidateId = action.payload?.id ?? '';
         });
 
         builder
@@ -100,7 +123,8 @@ const interviewSlice = createSlice({
                 state.interviews = action.payload.items || [];
                 state.totalPages = Math.ceil(action.payload.totalCount / state.pageSize);
             })
-            .addCase(fetchInterviews.rejected, (state, action) => { state.loading = false; state.error = action.payload as string; state.interviews = []; });
+            .addCase(fetchInterviews.rejected, (state, action) =>
+                { state.loading = false; state.error = action.payload as string; state.interviews = []; });
     },
 });
 

@@ -82,7 +82,13 @@ const EmployeePage: React.FC = () => {
                 </div>
                 {employees.map(employee => (
                     <div key={employee.id} className={styles.employeeItem}>
-                        <span className={styles.name}>{employee.firstName} {employee.lastName} <span className={styles.userRoleText}>({getRoleDisplayName(employee.role)})</span></span>
+                        <div className={styles.employeeInfoColumn} style={{ flex: 3 }}>
+                            <span className={styles.name}>
+                                {employee.firstName} {employee.lastName}
+                                <span className={styles.userRoleText}>({getRoleDisplayName(employee.role)})</span>
+                            </span>
+                            <span className={styles.subText}>{employee.email}</span>
+                        </div>
                         <span className={styles.departmentId}>{getDepartmentName(employee.departmentId)}</span>
                         <div className={styles.actions}>
                             <button className={commonStyles.actionButton} onClick={() => handleEditEmployee(employee)}>Edit</button>

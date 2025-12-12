@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import useAuth0Interceptors from './useAuth0Interceptors';
+import useAuth0Interceptors from './useAuth0Interceptors.ts';
 import {decodeJwt} from "../features/helpers/JwtDecoder.ts";
 
 const audience = import.meta.env.VITE_AUTH0_AUDIENCE;

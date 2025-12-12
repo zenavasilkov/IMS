@@ -6,7 +6,12 @@ import { useAppDispatch } from '../../components/useAppDispatch';
 import PageLoader from '../../components/common/pageLoader/PageLoader';
 import styles from './RecruitmentPage.module.css';
 import { RecruitmentIcon } from "../../components/common/Icons.tsx";
-import { acceptCandidate, fetchCandidates, setCandidatePage} from "../../features/slices/recruitmentSlice.ts";
+import {
+    acceptCandidate,
+    fetchCandidateByEmail,
+    fetchCandidates, resetRecruitmentFilters,
+    setCandidatePage, setFilterEmail
+} from "../../features/slices/recruitmentSlice.ts";
 import type {FindCandidateByIdQueryResponse} from "../../entities/recruitment/dto/candidate_dto.ts";
 import ScheduleInterviewModal from "../../components/modals/ScheduleInterviewModal.tsx";
 import RegisterCandidateModal from "../../components/modals/RegisterCandidateModal.tsx";
@@ -16,7 +21,7 @@ import UpdateCvModal from "../../components/modals/UpdateCvModal.tsx";
 const RecruitmentPage: React.FC = () => {
     const { isAuthenticated, isLoading: isAuth0Loading } = useAuth0();
     const dispatch = useAppDispatch();
-    const { candidates, loading, error, page, totalPages, pageSize, acceptingCandidates } = useSelector((state: RootState) => state.recruitment);
+    const { candidates, loading, error, page, totalPages, pageSize, acceptingCandidates, filterEmail } = useSelector((state: RootState) => state.recruitment);
     const [isInterviewModalOpen, setIsInterviewModalOpen] = useState(false);
     const [candidateToSchedule, setCandidateToSchedule] = useState<FindCandidateByIdQueryResponse | undefined>(undefined);
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
@@ -57,6 +62,20 @@ const RecruitmentPage: React.FC = () => {
         }
     };
 
+    const handleSearchClick = () => {
+        if (filterEmail) {
+            dispatch(fetchCandidateByEmail(filterEmail));
+        } else {
+            dispatch(resetRecruitmentFilters());
+            fetchCandidatesData();
+        }
+    };
+
+    const handleResetClick = () => {
+        dispatch(resetRecruitmentFilters());
+        fetchCandidatesData();
+    };
+
     const handleRegistrationSuccess = () => {
         setIsRegisterModalOpen(false);
         fetchCandidatesData();
@@ -88,9 +107,14 @@ const RecruitmentPage: React.FC = () => {
                 </button>
             </div>
 
-            { /*TODO: Implement this functionality */}
             <div className={styles.filterBar}>
-                <input type="text" placeholder="Search Candidates by Email..." className={styles.searchInput} />
+                <input
+                    type="text"
+                    placeholder="Search Candidates by Email..."
+                    className={styles.searchInput} value={filterEmail}
+                    onChange={(e) => dispatch(setFilterEmail(e.target.value))} />
+                <button className={commonStyles.actionButton} onClick={handleSearchClick}>Search</button>
+                <button className={commonStyles.actionButton} onClick={handleResetClick}>Reset</button>
             </div>
 
             <div className={styles.candidateList}>
@@ -111,7 +135,7 @@ const RecruitmentPage: React.FC = () => {
                             </div>
                             <span className={styles.status}>{candidate.isApplied ? 'Accepted' : 'Invited'}</span>
                             <div className={styles.actions}>
-                                <button className={commonStyles.actionButton} onClick={() => handleScheduleInterview(candidate.id)}>Interview</button>
+                                <button className={commonStyles.actionButton} disabled={isDisabled} onClick={() => handleScheduleInterview(candidate.id)}>Interview</button>
                                 <button className={commonStyles.actionButton} disabled={isDisabled} onClick={() => handleAccept(candidate.id)}>Accept</button>
                                 <button className={commonStyles.actionButton} onClick={() => handleUpdateCv(candidate)}>Update CV</button>
                             </div>
