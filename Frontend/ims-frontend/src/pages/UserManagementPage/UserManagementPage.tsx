@@ -20,18 +20,8 @@ const UserManagementPage: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [userToEdit, setUserToEdit] = useState<UserDto | undefined>(undefined);
     
-    const { 
-        users,
-        loading,
-        error,
-        page,
-        totalPages,
-        pageSize,
-        filterFirstName,
-        filterLastName,
-        filterRole,
-        sortParameter
-    } = useSelector((state: RootState) => state.userManagement);
+    const { users, loading, error, page, totalPages, pageSize, filterFirstName, filterLastName, filterRole, sortParameter }
+        = useSelector((state: RootState) => state.userManagement);
 
     const handleSuccess = () => {
         setIsModalOpen(false);
@@ -70,17 +60,7 @@ const UserManagementPage: React.FC = () => {
 
             dispatch(fetchUsers(params));
         }
-    }, [
-        page,
-        isAuthenticated,
-        isAuth0Loading,
-        dispatch,
-        pageSize,
-        filterFirstName,
-        filterLastName,
-        filterRole,
-        sortParameter
-    ]);
+    }, [page, isAuthenticated, isAuth0Loading, dispatch, pageSize, filterFirstName, filterLastName, filterRole, sortParameter]);
 
     const showDataLoading = useMinLoadingTime(loading, 300);
     
@@ -94,7 +74,7 @@ const UserManagementPage: React.FC = () => {
                 <UserFilterControls />
                 <CreateUserButton onClick={handleCreateUser} />
             </div>
-            
+
             <UserList users={users} onEditUser={handleEditUser} />
 
             <UserFormModal
@@ -103,13 +83,13 @@ const UserManagementPage: React.FC = () => {
                 onSuccess={handleSuccess}
                 initialUser={userToEdit}
             />
-            
+
             <PaginationControls
               currentPage={page}
               totalPages={totalPages}
               onPreviousPage={() => dispatch(setPage(page - 1))}
               onNextPage={() => dispatch(setPage(page + 1))}
-              hasUsers={users.length > 0}
+              hasContent={users.length > 0}
             />
         </div>
     );

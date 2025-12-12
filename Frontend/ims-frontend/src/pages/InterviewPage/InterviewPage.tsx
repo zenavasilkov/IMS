@@ -17,12 +17,23 @@ import type { FindCandidateByIdQueryResponse } from "../../entities/recruitment/
 import type { GetEmployeeByIdQueryResponse } from "../../entities/recruitment/dto/employee_dto";
 import { candidateService, employeeService } from "../../api/services/recruitment";
 import {fetchCandidateByEmail} from "../../features/slices/recruitmentSlice.ts";
+import PaginationControls from "../../components/PaginationControls.tsx";
+import PageLayout from "../../components/PageLayout.tsx";
+import SimpleListHeader from "../../components/SimpleListHeader.tsx";
 
 const getStatusClass = (interview: any) => {
     if (interview.isCancelled) return styles.statusCancelled;
     if (interview.isPassed) return styles.statusPassed;
     return styles.statusPending;
 };
+
+const INTERVIEW_HEADER_CONFIG = [
+    { label: 'Candidate', flex: 3, textAlign: 'center' as const },
+    { label: 'Interviewer', flex: 3.2, textAlign: 'center' as const },
+    { label: 'Type/Date', flex: 2, textAlign: 'center' as const },
+    { label: 'Status', flex: 1, textAlign: 'center' as const },
+    { label: 'Actions', flex: 3, textAlign: 'center' as const },
+];
 
 const InterviewPage: React.FC = () => {
     const { isAuthenticated, isLoading: isAuth0Loading } = useAuth0();
@@ -50,32 +61,32 @@ const InterviewPage: React.FC = () => {
     }, [fetchInterviewsData]);
 
     const fetchRelatedEntities = useCallback(async () => {
-        if (interviews.length > 0 && isAuthenticated) {
-            const newCandidatesMap = new Map<string, FindCandidateByIdQueryResponse>(candidatesMap);
-            const newEmployeesMap = new Map<string, GetEmployeeByIdQueryResponse>(employeesMap);
+        if (interviews.length <= 0 || !isAuthenticated) return;
 
-            for (const interview of interviews) {
-                if (interview.candidateId && !newCandidatesMap.has(interview.candidateId)) {
-                    try {
-                        const candidate = await candidateService.getCandidateById(interview.candidateId);
-                        newCandidatesMap.set(interview.candidateId, candidate);
-                    } catch (e) {
-                        console.error(`Failed to fetch candidate ${interview.candidateId}:`, e);
-                    }
-                }
+        const newCandidatesMap = new Map<string, FindCandidateByIdQueryResponse>(candidatesMap);
+        const newEmployeesMap = new Map<string, GetEmployeeByIdQueryResponse>(employeesMap);
 
-                if (interview.interviewerId && !newEmployeesMap.has(interview.interviewerId)) {
-                    try {
-                        const employee = await employeeService.getEmployeeById(interview.interviewerId);
-                        newEmployeesMap.set(interview.interviewerId, employee);
-                    } catch (e) {
-                        console.error(`Failed to fetch employee ${interview.interviewerId}:`, e);
-                    }
+        for (const interview of interviews) {
+            if (interview.candidateId && !newCandidatesMap.has(interview.candidateId)) {
+                try {
+                    const candidate = await candidateService.getCandidateById(interview.candidateId);
+                    newCandidatesMap.set(interview.candidateId, candidate);
+                } catch (e) {
+                    console.error(`Failed to fetch candidate ${interview.candidateId}:`, e);
                 }
             }
-            setCandidatesMap(newCandidatesMap);
-            setEmployeesMap(newEmployeesMap);
+
+            if (interview.interviewerId && !newEmployeesMap.has(interview.interviewerId)) {
+                try {
+                    const employee = await employeeService.getEmployeeById(interview.interviewerId);
+                    newEmployeesMap.set(interview.interviewerId, employee);
+                } catch (e) {
+                    console.error(`Failed to fetch employee ${interview.interviewerId}:`, e);
+                }
+            }
         }
+        setCandidatesMap(newCandidatesMap);
+        setEmployeesMap(newEmployeesMap);
     }, [interviews, isAuthenticated]);
 
     useEffect(() => {
@@ -91,9 +102,7 @@ const InterviewPage: React.FC = () => {
         }
     };
 
-    const handleReset = () => {
-        dispatch(resetInterviewFilters());
-    };
+    const handleReset = () => dispatch(resetInterviewFilters());
 
     const handleReschedule = (interview: any) => {
         setInterviewToReschedule(interview);
@@ -123,22 +132,20 @@ const InterviewPage: React.FC = () => {
 
     const getRoleDisplayName = useCallback((role: number) => {
         const roleKeyName = EmployeeRole[role];
-        return roleKeyName ? roleKeyName.replace(/([A-Z])/g, ' $1').trim() : 'N/A';
+        return roleKeyName ? roleKeyName.replaceAll(/([A-Z])/g, ' $1').trim() : 'N/A';
     }, []);
 
 
     if (loading) return <PageLoader loadingText="Loading interviews..." />;
     if (error) return <div className={commonStyles.errorMessage}>{error}</div>;
 
-    return (
-        <div className={commonStyles.container}>
-            <div className={commonStyles.titleArea}>
-                <h1 className={commonStyles.heading}>
-                    <InterviewIcon className={styles.headingIcon} />
-                    Interview Management
-                </h1>
-            </div>
-
+    return(
+        <PageLayout
+            title="Interview Management"
+            Icon={InterviewIcon}
+            iconColor="#ff3131"
+            createButton={null}
+        >
             <div className={commonStyles.filterBar}>
                 <input
                     type="text"
@@ -152,13 +159,7 @@ const InterviewPage: React.FC = () => {
             </div>
 
             <div className={styles.interviewList}>
-                <div className={commonStyles.listHeader}>
-                    <span style={{ flex: 3 }}>Candidate</span>
-                    <span style={{ flex: 3.2 }}>Interviewer</span>
-                    <span style={{ flex: 2 }}>Type/Date</span>
-                    <span style={{ flex: 1 }}>Status</span>
-                    <span style={{ flex: 3 }}>Actions</span>
-                </div>
+                <SimpleListHeader columns={INTERVIEW_HEADER_CONFIG} />
                 {interviews.map(interview => {
                     const candidate = candidatesMap.get(interview.candidateId || '');
                     const employee = employeesMap.get(interview.interviewerId || '');
@@ -166,8 +167,8 @@ const InterviewPage: React.FC = () => {
                     return (
                         <div key={interview.id} className={commonStyles.userItem}>
                             <div className={styles.candidateInfo} style={{ flex: 3 }}>
-                                <span className={styles.name}>{candidate?.firstName} {candidate?.lastName || interview.candidateEmail?.split('@')[0]}</span>	&ensp;
-                                <span className={styles.contact}>{candidate?.email || interview.candidateEmail} {candidate?.phoneNumber || 'N/A'}</span>
+                                <span className={styles.name}>{candidate?.firstName} {candidate?.lastName || interview.candidateEmail?.split('@')[0]}</span><br/>
+                                <span className={styles.contact}>{candidate?.email || interview.candidateEmail} <br/> {candidate?.phoneNumber || 'N/A'}</span>
                             </div>
 
                             <div className={styles.interviewerInfo} style={{ flex: 3.2 }}>
@@ -194,11 +195,13 @@ const InterviewPage: React.FC = () => {
                 })}
             </div>
 
-            <div className={commonStyles.pagination}>
-                <button disabled={page === 1} onClick={() => dispatch(setInterviewPage(page - 1))}>Previous</button>
-                <span>Page {page} of {totalPages}</span>
-                <button disabled={page >= totalPages} onClick={() => dispatch(setInterviewPage(page + 1))}>Next</button>
-            </div>
+            <PaginationControls
+                currentPage={page}
+                totalPages={totalPages}
+                onPreviousPage={() => dispatch(setInterviewPage(page - 1))}
+                onNextPage={() => dispatch(setInterviewPage(page + 1))}
+                hasContent={interviews.length > 0}
+            />
 
             <RescheduleInterviewModal
                 isOpen={isRescheduleModalOpen}
@@ -206,7 +209,7 @@ const InterviewPage: React.FC = () => {
                 onSuccess={handleSuccess}
                 interview={interviewToReschedule}
             />
-        </div>
+        </PageLayout>
     );
 };
 

@@ -10,11 +10,11 @@ import useMinLoadingTime from "./hooks/useMinLoadingTime.ts";
 import {ManagementIcon} from "./components/common/Icons.tsx";
 import {useUserRole} from "./hooks/useUserRole.ts";
 import {useState, useMemo} from "react";
-import RecruitmentPage from "./pages/RecruitmentManagementPage/RecruitmentManagementPage.tsx";
+import RecruitmentPage from "./pages/RecruitmentManagementPage/RecruitmentPage.tsx";
 import PortalSwitcher, { PORTALS } from './components/portalSwitcher/PortalSwitcher';
 import DepartmentPage from "./pages/DepartmentPage/DepartmentPage.tsx";
 import EmployeePage from "./pages/EmployeePage/EmployeePage.tsx";
-import InterviewPage from "./pages/InterviewPage/InreviewPage.tsx";
+import InterviewPage from "./pages/InterviewPage/InterviewPage.tsx";
 
 function App() {
   const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
@@ -33,13 +33,13 @@ function App() {
   if (role === 'HRManager'){
     if (activePortal === PORTALS.RECRUITMENT) {
       contentToRender = <RecruitmentPage />;
-      headerTitle = HrManagerHeader("Recruitment Portal");
+      headerTitle = HrManagerHeader("Recruitment Management");
     } else if (activePortal === PORTALS.INTERVIEWS) {
       contentToRender = <InterviewPage />;
       headerTitle = HrManagerHeader("Interview Management");
     } else if (activePortal === PORTALS.USER_MANAGEMENT) {
       contentToRender = <UserManagementPage />;
-      headerTitle = HrManagerHeader("User Management Portal");
+      headerTitle = HrManagerHeader("User Management");
     } else if (activePortal === PORTALS.DEPARTMENTS) {
       contentToRender = <DepartmentPage />;
       headerTitle = HrManagerHeader("Department Management");

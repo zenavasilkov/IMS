@@ -70,33 +70,6 @@
     background-color: #0056b3;
 }
 
-.paginationControls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-}
-
-.paginationButton {
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.paginationButton:disabled {
-    background-color: #4a4a4a;
-    cursor: not-allowed;
-    opacity: 0.6;
-}
-
-.paginationButton:not(:disabled):hover {
-    background-color: #5a6268;
-}
-
 .pageInfo {
     font-size: 1.1em;
     color: #bbb;
@@ -115,16 +88,6 @@
     max-width: 95%;
     overflow-y: auto;
     overflow-x: hidden;
-}
-
-.pagination {
-    margin-top: auto;    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    padding-top: 10px;
-    padding-bottom: 10px;
 }
 
 .controlsBar {

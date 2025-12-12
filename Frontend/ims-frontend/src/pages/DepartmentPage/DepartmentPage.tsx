@@ -7,9 +7,18 @@ import PageLoader from '../../components/common/pageLoader/PageLoader';
 import styles from './DepartmentPage.module.css';
 import commonStyles from '../../components/common/commonStyles/commonPageStyles.module.css'
 import {fetchDepartments, setDepartmentPage} from "../../features/slices/departmentSlice.ts";
-import { DepartmentIcon } from "../../components/common/Icons.tsx";
+import {DepartmentIcon} from "../../components/common/Icons.tsx";
 import type {GetDepartmentByIdQueryResponse} from "../../entities/recruitment/dto/department_dto.ts";
 import DepartmentFormModal from "../../components/modals/DepartmentModalForm.tsx";
+import PaginationControls from "../../components/PaginationControls.tsx";
+import PageLayout from "../../components/PageLayout.tsx";
+import SimpleListHeader from "../../components/SimpleListHeader.tsx";
+
+const DEPARTMENT_HEADER_CONFIG = [
+    { label: 'Name', flex: 3 },
+    { label: 'Description', flex: 6, textAlign: 'left' as const },
+    { label: 'Actions', flex: 2, textAlign: 'center' as const },
+];
 
 const DepartmentPage: React.FC = () => {
     const { isAuthenticated, isLoading: isAuth0Loading } = useAuth0();
@@ -48,22 +57,15 @@ const DepartmentPage: React.FC = () => {
     if (loading) return <PageLoader loadingText="Loading departments..." />;
     if (error) return <div className={commonStyles.errorMessage}>{error}</div>;
 
-    return (
-        <div className={commonStyles.container}>
-            <div className={commonStyles.titleArea}>
-                <h1 className={commonStyles.heading}>
-                    <DepartmentIcon className={styles.headingIcon} />
-                    Department Management
-                </h1>
-                <button className={commonStyles.createButton} onClick={handleAddDepartment}>Add New Department</button>
-            </div>
-
+    return(
+        <PageLayout
+            title="Department Management"
+            Icon={DepartmentIcon}
+            iconColor="#ffc107"
+            createButton={<button className={commonStyles.createButton} onClick={handleAddDepartment}>Add New Department</button>}
+        >
             <div className={styles.departmentList}>
-                <div className={commonStyles.listHeader}>
-                    <span style={{ flex: 1 }}>Name</span>
-                    <span style={{ flex: 8 }}>Description</span>
-                    <span style={{ flex: 2, textAlign: 'center' }}>Actions</span>
-                </div>
+                <SimpleListHeader columns={DEPARTMENT_HEADER_CONFIG} />
                 {departments.map(dept => (
                     <div key={dept.id} className={styles.departmentItem}>
                         <span className={styles.name}>{dept.name}</span>
@@ -75,11 +77,13 @@ const DepartmentPage: React.FC = () => {
                 ))}
             </div>
 
-            <div className={commonStyles.pagination}>
-                <button disabled={page === 1} onClick={() => dispatch(setDepartmentPage(page - 1))}>Previous</button>
-                <span>Page {page} of {totalPages}</span>
-                <button disabled={page >= totalPages} onClick={() => dispatch(setDepartmentPage(page + 1))}>Next</button>
-            </div>
+            <PaginationControls
+                currentPage={page}
+                totalPages={totalPages}
+                onPreviousPage={() => dispatch(setDepartmentPage(page - 1))}
+                onNextPage={() => dispatch(setDepartmentPage(page + 1))}
+                hasContent={departments.length > 0}
+            />
 
             <DepartmentFormModal
                 isOpen={isModalOpen}
@@ -87,7 +91,7 @@ const DepartmentPage: React.FC = () => {
                 onSuccess={handleSuccess}
                 initialDepartment={deptToEdit}
             />
-        </div>
+        </PageLayout>
     );
 };
 

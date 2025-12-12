@@ -12,6 +12,15 @@ import type {GetEmployeeByIdQueryResponse} from "../../entities/recruitment/dto/
 import EmployeeFormModal from "../../components/modals/EmployeeModalForm.tsx";
 import {EmployeeRole} from "../../entities/recruitment/enums.ts";
 import {departmentService} from "../../api/services/recruitment";
+import PaginationControls from "../../components/PaginationControls.tsx";
+import PageLayout from "../../components/PageLayout.tsx";
+import SimpleListHeader from "../../components/SimpleListHeader.tsx";
+
+const EMPLOYEE_HEADER_CONFIG = [
+    { label: 'Name / Contact', flex: 3, textAlign: 'left' as const },
+    { label: 'Department', flex: 7, textAlign: 'center' as const },
+    { label: 'Actions', flex: 2, textAlign: 'center' as const },
+];
 
 const EmployeePage: React.FC = () => {
     const { isAuthenticated, isLoading: isAuth0Loading } = useAuth0();
@@ -21,9 +30,7 @@ const EmployeePage: React.FC = () => {
     const { employees, loading, error, page, totalPages, pageSize } = useSelector((state: RootState) => state.employee);
     const [departments, setDepartments] = useState<any[]>([]);
 
-    const getDepartmentName = (id: string) => {
-        return departments.find(d => d.id === id)?.name || 'N/A';
-    };
+    const getDepartmentName = (id: string) => departments.find(d => d.id === id)?.name || 'N/A';
 
     const getRoleDisplayName = (role: number) => {
         const roleKeyName = EmployeeRole[role];
@@ -56,30 +63,22 @@ const EmployeePage: React.FC = () => {
     };
 
     const handleEditEmployee = (employee: GetEmployeeByIdQueryResponse) => {
-        setEmployeeToEdit(employee); // Set data for EDIT mode
+        setEmployeeToEdit(employee);
         setIsModalOpen(true);
     };
 
     if (loading) return <PageLoader loadingText="Loading employees..." />;
     if (error) return <div className={commonStyles.errorMessage}>{error}</div>;
 
-    return (
-        <div className={commonStyles.container}>
-            <div className={commonStyles.titleArea}>
-                <h1 className={commonStyles.heading}>
-                    <EmployeeIcon className={styles.headingIcon} />
-                    Employee Management
-                </h1>
-
-                <button className={commonStyles.createButton} onClick={handleAddEmployee}>Add New Employee</button>
-            </div>
-
+    return(
+        <PageLayout
+            title="Employee Management"
+            Icon={EmployeeIcon}
+            iconColor="#28a745"
+            createButton={<button className={commonStyles.createButton} onClick={handleAddEmployee}>Add New Employee</button>}
+        >
             <div className={styles.employeeList}>
-                <div className={commonStyles.listHeader}>
-                    <span style={{ flex: 3, textAlign: 'left' }}>Name / Role</span>
-                    <span style={{ flex: 7 }}>Department</span>
-                    <span style={{ flex: 2 }}>Actions</span>
-                </div>
+                <SimpleListHeader columns={EMPLOYEE_HEADER_CONFIG} />
                 {employees.map(employee => (
                     <div key={employee.id} className={styles.employeeItem}>
                         <div className={styles.employeeInfoColumn} style={{ flex: 3 }}>
@@ -97,11 +96,13 @@ const EmployeePage: React.FC = () => {
                 ))}
             </div>
 
-            <div className={commonStyles.pagination}>
-                <button disabled={page === 1} onClick={() => dispatch(setEmployeePage(page - 1))}>Previous</button>
-                <span>Page {page} of {totalPages}</span>
-                <button disabled={page >= totalPages} onClick={() => dispatch(setEmployeePage(page + 1))}>Next</button>
-            </div>
+            <PaginationControls
+                currentPage={page}
+                totalPages={totalPages}
+                onPreviousPage={() => dispatch(setEmployeePage(page - 1))}
+                onNextPage={() => dispatch(setEmployeePage(page + 1))}
+                hasContent={departments.length > 0}
+            />
 
             <EmployeeFormModal
                 isOpen={isModalOpen}
@@ -109,7 +110,7 @@ const EmployeePage: React.FC = () => {
                 onSuccess={handleSuccess}
                 initialEmployee={employeeToEdit}
             />
-        </div>
+        </PageLayout>
     );
 };
 

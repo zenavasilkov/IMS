@@ -7,7 +7,7 @@
 
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: 50vh;
+    height: 50vh;
     margin: 20px 0;
 }
 
@@ -33,10 +33,13 @@
     text-decoration: line-through;
 }
 
-.headingIcon {
-    width: 36px;
-    height: 36px;
-    margin-right: 15px;
-    color: #ff4745;
-    filter: drop-shadow(0 0 5px rgba(40, 167, 69, 0.5));
+.name {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #f0f0f0;
+}
+
+.contact {
+    font-size: 0.9em;
+    color: #999;
 }

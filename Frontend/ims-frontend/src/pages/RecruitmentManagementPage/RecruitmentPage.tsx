@@ -5,18 +5,26 @@ import type { RootState } from '../../store';
 import { useAppDispatch } from '../../components/useAppDispatch';
 import PageLoader from '../../components/common/pageLoader/PageLoader';
 import styles from './RecruitmentPage.module.css';
-import { RecruitmentIcon } from "../../components/common/Icons.tsx";
+import {RecruitmentIcon} from "../../components/common/Icons.tsx";
 import {
     acceptCandidate,
     fetchCandidateByEmail,
-    fetchCandidates, resetRecruitmentFilters,
-    setCandidatePage, setFilterEmail
+    fetchCandidates, resetRecruitmentFilters, setCandidatePage, setFilterEmail
 } from "../../features/slices/recruitmentSlice.ts";
 import type {FindCandidateByIdQueryResponse} from "../../entities/recruitment/dto/candidate_dto.ts";
 import ScheduleInterviewModal from "../../components/modals/ScheduleInterviewModal.tsx";
 import RegisterCandidateModal from "../../components/modals/RegisterCandidateModal.tsx";
 import commonStyles from '../../components/common/commonStyles/commonPageStyles.module.css'
 import UpdateCvModal from "../../components/modals/UpdateCvModal.tsx";
+import PaginationControls from "../../components/PaginationControls.tsx";
+import PageLayout from "../../components/PageLayout.tsx";
+import SimpleListHeader from "../../components/SimpleListHeader.tsx";
+
+const RECRUITMENT_HEADER_CONFIG = [
+    { label: 'Name/Contact', flex: 2, textAlign: 'left' as const },
+    { label: 'Status', flex: 1, textAlign: 'center' as const },
+    { label: 'Actions', flex: 1.5, textAlign: 'center' as const },
+];
 
 const RecruitmentPage: React.FC = () => {
     const { isAuthenticated, isLoading: isAuth0Loading } = useAuth0();
@@ -91,22 +99,13 @@ const RecruitmentPage: React.FC = () => {
     if (loading) return <PageLoader loadingText="Loading candidates..." />;
     if (error) return <div className={commonStyles.errorMessage}>{error}</div>;
 
-    return (
-        <div className={commonStyles.container}>
-            <div className={styles.titleArea}>
-                <h1 className={commonStyles.heading}>
-                    <RecruitmentIcon className={styles.headingIcon} />
-                    Recruitment Portal
-                </h1>
-
-                <button
-                    onClick={handleRegisterCandidate}
-                    className={commonStyles.createButton}
-                >
-                    Register Candidate
-                </button>
-            </div>
-
+    return(
+        <PageLayout
+            title="Recruitment Management"
+            Icon={RecruitmentIcon}
+            iconColor="#007bff"
+            createButton={<button onClick={handleRegisterCandidate} className={commonStyles.createButton}>Register Candidate </button>}
+        >
             <div className={styles.filterBar}>
                 <input
                     type="text"
@@ -118,11 +117,7 @@ const RecruitmentPage: React.FC = () => {
             </div>
 
             <div className={styles.candidateList}>
-                <div className={commonStyles.listHeader}>
-                    <span style={{ flex: 2, textAlign: 'left' }}>Name / Contact</span>
-                    <span style={{ flex: 1 }}>Status</span>
-                    <span style={{ flex: 1.5 }}>Actions</span>
-                </div>
+                <SimpleListHeader columns={RECRUITMENT_HEADER_CONFIG} />
                 {candidates.map(candidate => {
                     const isBeingAccepted = acceptingCandidates.includes(candidate.id);
                     const isDisabled = candidate.isApplied || isBeingAccepted;
@@ -144,11 +139,13 @@ const RecruitmentPage: React.FC = () => {
                 })}
             </div>
 
-            <div className={commonStyles.pagination}>
-                <button disabled={page === 1} onClick={() => dispatch(setCandidatePage(page - 1))}>Previous</button>
-                <span>Page {page} of {totalPages}</span>
-                <button disabled={page >= totalPages} onClick={() => dispatch(setCandidatePage(page + 1))}>Next</button>
-            </div>
+            <PaginationControls
+                currentPage={page}
+                totalPages={totalPages}
+                onPreviousPage={() => dispatch(setCandidatePage(page - 1))}
+                onNextPage={() => dispatch(setCandidatePage(page + 1))}
+                hasContent={candidates.length > 0}
+            />
 
             <ScheduleInterviewModal
                 isOpen={isInterviewModalOpen}
@@ -170,7 +167,7 @@ const RecruitmentPage: React.FC = () => {
                 candidateId={candidateToUpdateCv?.id || ''}
                 currentCvLink={candidateToUpdateCv?.cvLink}
             />
-        </div>
+        </PageLayout>
     );
 };
 
