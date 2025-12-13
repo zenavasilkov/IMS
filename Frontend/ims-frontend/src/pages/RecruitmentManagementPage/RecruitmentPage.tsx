@@ -19,6 +19,7 @@ import UpdateCvModal from "../../components/modals/UpdateCvModal.tsx";
 import PaginationControls from "../../components/PaginationControls.tsx";
 import PageLayout from "../../components/PageLayout.tsx";
 import SimpleListHeader from "../../components/SimpleListHeader.tsx";
+import useMinLoadingTime from "../../hooks/useMinLoadingTime.ts";
 
 const RECRUITMENT_HEADER_CONFIG = [
     { label: 'Name/Contact', flex: 2, textAlign: 'left' as const },
@@ -35,6 +36,7 @@ const RecruitmentPage: React.FC = () => {
     const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
     const [isCvModalOpen, setIsCvModalOpen] = useState(false);
     const [candidateToUpdateCv, setCandidateToUpdateCv] = useState<FindCandidateByIdQueryResponse | undefined>(undefined);
+    const showPageLoader = useMinLoadingTime(loading);
 
     const fetchCandidatesData = useCallback(() => {
         if (!isAuth0Loading && isAuthenticated) {
@@ -96,7 +98,7 @@ const RecruitmentPage: React.FC = () => {
 
     const handleCvUpdateSuccess = handleRegistrationSuccess;
 
-    if (loading) return <PageLoader loadingText="Loading candidates..." />;
+    if (showPageLoader) return <PageLoader loadingText="Loading candidates..." />;
     if (error) return <div className={commonStyles.errorMessage}>{error}</div>;
 
     return(

@@ -62,7 +62,7 @@ const UserManagementPage: React.FC = () => {
         }
     }, [page, isAuthenticated, isAuth0Loading, dispatch, pageSize, filterFirstName, filterLastName, filterRole, sortParameter]);
 
-    const showDataLoading = useMinLoadingTime(loading, 300);
+    const showDataLoading = useMinLoadingTime(loading, 500);
     
     if (isAuth0Loading) return <PageLoader loadingText="Loading authentication..." />;
     if (showDataLoading) return <PageLoader loadingText="Loading user data..." />;

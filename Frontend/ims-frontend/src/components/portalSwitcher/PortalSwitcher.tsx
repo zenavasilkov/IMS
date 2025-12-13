@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './PortalSwitcher.module.css';
+import PortalButton from "./PortalButton.tsx";
 
 export const PORTALS = {
     RECRUITMENT: 'Recruitment',
@@ -12,59 +13,27 @@ export const PORTALS = {
 interface PortalSwitcherProps {
     activePortal: string;
     onSwitch: (portal: string) => void;
-    userRole: string | null;
+    isVisible: boolean;
 }
 
-const PortalSwitcher: React.FC<PortalSwitcherProps> = ({ activePortal, onSwitch, userRole }) => {
+const PortalSwitcher: React.FC<PortalSwitcherProps> = ({ activePortal, onSwitch, isVisible }) => {
 
-    const canAccessManagement = userRole === 'HRManager';
-
-    if (!canAccessManagement) {
+    if (!isVisible) {
         return null;
     }
 
     return (
         <div className={styles.portalSwitcherContainer}>
 
-            <button
-                onClick={() => onSwitch(PORTALS.INTERVIEWS)}
-                className={`${styles.portalButton} ${activePortal === PORTALS.INTERVIEWS ? styles.active : ''}`}
-                type="button"
-            >
-                Interviews
-            </button>
+            <PortalButton portalName={PORTALS.INTERVIEWS} label="Interviews" activePortal={activePortal} onSwitch={onSwitch} />
 
-            <button
-                onClick={() => onSwitch(PORTALS.DEPARTMENTS)}
-                className={`${styles.portalButton} ${activePortal === PORTALS.DEPARTMENTS ? styles.active : ''}`}
-                type="button"
-            >
-                Departments
-            </button>
+            <PortalButton portalName={PORTALS.DEPARTMENTS} label="Departments" activePortal={activePortal} onSwitch={onSwitch} />
 
-            <button
-                onClick={() => onSwitch(PORTALS.EMPLOYEES)}
-                className={`${styles.portalButton} ${activePortal === PORTALS.EMPLOYEES ? styles.active : ''}`}
-                type="button"
-            >
-                Employees
-            </button>
+            <PortalButton portalName={PORTALS.EMPLOYEES} label="Employees" activePortal={activePortal} onSwitch={onSwitch} />
 
-            <button
-                onClick={() => onSwitch(PORTALS.RECRUITMENT)}
-                className={`${styles.portalButton} ${activePortal === PORTALS.RECRUITMENT ? styles.active : ''}`}
-                type="button"
-            >
-                Recruitment
-            </button>
+            <PortalButton portalName={PORTALS.RECRUITMENT} label="Recruitment" activePortal={activePortal} onSwitch={onSwitch} />
 
-            <button
-                onClick={() => onSwitch(PORTALS.USER_MANAGEMENT)}
-                className={`${styles.portalButton} ${activePortal === PORTALS.USER_MANAGEMENT ? styles.active : ''}`}
-                type="button"
-            >
-                User Management
-            </button>
+            <PortalButton portalName={PORTALS.USER_MANAGEMENT} label="User Management" activePortal={activePortal} onSwitch={onSwitch} />
 
         </div>
     );

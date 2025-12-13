@@ -15,6 +15,7 @@ import {departmentService} from "../../api/services/recruitment";
 import PaginationControls from "../../components/PaginationControls.tsx";
 import PageLayout from "../../components/PageLayout.tsx";
 import SimpleListHeader from "../../components/SimpleListHeader.tsx";
+import useMinLoadingTime from "../../hooks/useMinLoadingTime.ts";
 
 const EMPLOYEE_HEADER_CONFIG = [
     { label: 'Name / Contact', flex: 3, textAlign: 'left' as const },
@@ -29,6 +30,7 @@ const EmployeePage: React.FC = () => {
     const [employeeToEdit, setEmployeeToEdit] = useState<GetEmployeeByIdQueryResponse | undefined>(undefined);
     const { employees, loading, error, page, totalPages, pageSize } = useSelector((state: RootState) => state.employee);
     const [departments, setDepartments] = useState<any[]>([]);
+    const showPageLoader = useMinLoadingTime(loading || isAuth0Loading);
 
     const getDepartmentName = (id: string) => departments.find(d => d.id === id)?.name || 'N/A';
 
@@ -67,7 +69,7 @@ const EmployeePage: React.FC = () => {
         setIsModalOpen(true);
     };
 
-    if (loading) return <PageLoader loadingText="Loading employees..." />;
+    if (showPageLoader) return <PageLoader loadingText="Loading employees..." />;
     if (error) return <div className={commonStyles.errorMessage}>{error}</div>;
 
     return(

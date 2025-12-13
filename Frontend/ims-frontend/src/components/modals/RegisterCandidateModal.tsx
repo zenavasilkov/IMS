@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react';
 import type { RegisterCandidateCommand } from '../../entities/recruitment/dto/candidate_dto.ts';
 import styles from '../common/commonStyles/commonModalStyles.module.css'
 import {candidateService} from "../../api/services/recruitment";
-import ModalWrapper from "../ModalWrapper.tsx";
-import ModalField from "../ModalField.tsx";
+import ModalWrapper from "./modalComponents/ModalWrapper.tsx";
+import ModalField from "./modalComponents/ModalField.tsx";
 
 interface RegisterCandidateModalProps {
     isOpen: boolean;

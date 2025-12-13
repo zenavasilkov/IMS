@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import styles from './common/commonStyles/commonModalStyles.module.css';
+import styles from '../../common/commonStyles/commonModalStyles.module.css';
 
 interface ModalWrapperProps {
     title: string;

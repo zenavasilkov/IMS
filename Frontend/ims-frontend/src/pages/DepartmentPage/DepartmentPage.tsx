@@ -13,6 +13,7 @@ import DepartmentFormModal from "../../components/modals/DepartmentModalForm.tsx
 import PaginationControls from "../../components/PaginationControls.tsx";
 import PageLayout from "../../components/PageLayout.tsx";
 import SimpleListHeader from "../../components/SimpleListHeader.tsx";
+import useMinLoadingTime from "../../hooks/useMinLoadingTime.ts";
 
 const DEPARTMENT_HEADER_CONFIG = [
     { label: 'Name', flex: 3 },
@@ -25,8 +26,8 @@ const DepartmentPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deptToEdit, setDeptToEdit] = useState<GetDepartmentByIdQueryResponse | undefined>(undefined);
-
     const { departments, loading, error, page, totalPages, pageSize } = useSelector((state: RootState) => state.department);
+    const showPageLoader = useMinLoadingTime(loading);
 
     const fetchDepartmentsData = useCallback(() => {
         if (!isAuth0Loading && isAuthenticated) {
@@ -54,7 +55,7 @@ const DepartmentPage: React.FC = () => {
         setIsModalOpen(true);
     };
 
-    if (loading) return <PageLoader loadingText="Loading departments..." />;
+    if (showPageLoader) return <PageLoader loadingText="Loading departments..." />;
     if (error) return <div className={commonStyles.errorMessage}>{error}</div>;
 
     return(

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import type { GetDepartmentByIdQueryResponse, AddDepartmentCommand } from '../../entities/recruitment/dto/department_dto';
 import styles from '../common/commonStyles/commonModalStyles.module.css'
 import {departmentService} from "../../api/services/recruitment";
-import ModalWrapper from "../ModalWrapper.tsx";
-import ModalField from "../ModalField.tsx";
+import ModalWrapper from "./modalComponents/ModalWrapper.tsx";
+import ModalField from "./modalComponents/ModalField.tsx";
 
 interface DepartmentFormModalProps {
     isOpen: boolean;

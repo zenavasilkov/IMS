@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import type { GetInterviewByIdQueryResponse, RescheduleInterviewCommand } from '../../entities/recruitment/dto/interview_dto';
 import styles from '../common/commonStyles/commonModalStyles.module.css'
 import {interviewService} from "../../api/services/recruitment";
-import ModalWrapper from "../ModalWrapper.tsx";
-import ModalField from "../ModalField.tsx";
+import ModalWrapper from "./modalComponents/ModalWrapper.tsx";
+import ModalField from "./modalComponents/ModalField.tsx";
 
 interface RescheduleInterviewModalProps {
     isOpen: boolean;

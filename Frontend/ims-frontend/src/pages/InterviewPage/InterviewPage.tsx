@@ -19,6 +19,7 @@ import {fetchCandidateByEmail} from "../../features/slices/recruitmentSlice.ts";
 import PaginationControls from "../../components/PaginationControls.tsx";
 import PageLayout from "../../components/PageLayout.tsx";
 import SimpleListHeader from "../../components/SimpleListHeader.tsx";
+import useMinLoadingTime from "../../hooks/useMinLoadingTime.ts";
 
 const getStatusClass = (interview: any) => {
     if (interview.isCancelled) return styles.statusCancelled;
@@ -42,6 +43,7 @@ const InterviewPage: React.FC = () => {
     const [interviewToReschedule, setInterviewToReschedule] = useState<any>(undefined);
     const [candidatesMap, setCandidatesMap] = useState<Map<string, FindCandidateByIdQueryResponse>>(new Map());
     const [employeesMap, setEmployeesMap] = useState<Map<string, GetEmployeeByIdQueryResponse>>(new Map());
+    const showPageLoader = useMinLoadingTime(loading || isAuth0Loading);
 
     const fetchInterviewsData = useCallback(async () => {
         if (!isAuth0Loading && isAuthenticated) {
@@ -135,7 +137,7 @@ const InterviewPage: React.FC = () => {
     }, []);
 
 
-    if (loading) return <PageLoader loadingText="Loading interviews..." />;
+    if (showPageLoader) return <PageLoader loadingText="Loading interviews..." />;
     if (error) return <div className={commonStyles.errorMessage}>{error}</div>;
 
     return(

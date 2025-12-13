@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const useMinLoadingTime = (isLoading: boolean, minDelayMs: number = 500): boolean => {
+const useMinLoadingTime = (isLoading: boolean, minDelayMs: number = 1000): boolean => {
     const [isDelayMet, setIsDelayMet] = useState(false);
 
     useEffect(() => {

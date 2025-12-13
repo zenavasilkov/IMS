@@ -4,9 +4,9 @@ import type { GetDepartmentByIdQueryResponse } from '../../entities/recruitment/
 import { EmployeeRole } from '../../entities/recruitment/enums';
 import styles from '../common/commonStyles/commonModalStyles.module.css'
 import {departmentService, employeeService} from "../../api/services/recruitment";
-import ModalField from "../ModalField.tsx";
-import ModalSelect from "../ModalSelect.tsx";
-import ModalWrapper from "../ModalWrapper.tsx";
+import ModalField from "./modalComponents/ModalField.tsx";
+import ModalSelect from "./modalComponents/ModalSelect.tsx";
+import ModalWrapper from "./modalComponents/ModalWrapper.tsx";
 
 interface EmployeeFormModalProps {
     isOpen: boolean;

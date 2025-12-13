@@ -24,13 +24,14 @@ function App() {
   const { isTokenLoading } = useAuth0Interceptors({ axiosInstances: memoizedAxiosInstances });
   const { role, isLoadingRole } = useUserRole();
   const isAppLoading = isLoading || isTokenLoading || isLoadingRole;
-  const showPageLoader = useMinLoadingTime(isAppLoading, 300);
+  const showPageLoader = useMinLoadingTime(isAppLoading, 1000);
   const [activePortal, setActivePortal] = useState(PORTALS.USER_MANAGEMENT);
+  const HrManagerRole = 'HRManager';
 
   let contentToRender;
   let headerTitle;
 
-  if (role === 'HRManager'){
+  if (role === HrManagerRole) {
     if (activePortal === PORTALS.RECRUITMENT) {
       contentToRender = <RecruitmentPage />;
       headerTitle = HrManagerHeader("Recruitment Management");
@@ -57,11 +58,7 @@ function App() {
   }
 
   if (!isAuthenticated) {
-    return (
-      <div className="App">
-        <LoginPage onLogin={loginWithRedirect} />
-      </div>
-    );
+    return <div className="App"> <LoginPage onLogin={loginWithRedirect} /></div>
   }
 
   return (
@@ -70,7 +67,7 @@ function App() {
           <PortalSwitcher
               activePortal={activePortal}
               onSwitch={setActivePortal}
-              userRole={role}
+              isVisible={role === HrManagerRole}
           />
 
           <div className="App-Title">{headerTitle}</div>

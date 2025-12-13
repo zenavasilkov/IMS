@@ -7,9 +7,9 @@ import {EmployeeRole, InterviewType} from '../../entities/recruitment/enums.ts';
 import styles from '../common/commonStyles/commonModalStyles.module.css'
 import {departmentService, employeeService, interviewService} from "../../api/services/recruitment";
 import {convertLocalToUTC} from "../../features/helpers/TimeConverter.ts";
-import ModalWrapper from "../ModalWrapper.tsx";
-import ModalSelect from "../ModalSelect.tsx";
-import ModalField from "../ModalField.tsx";
+import ModalWrapper from "./modalComponents/ModalWrapper.tsx";
+import ModalSelect from "./modalComponents/ModalSelect.tsx";
+import ModalField from "./modalComponents/ModalField.tsx";
 
 interface ScheduleInterviewModalProps {
     isOpen: boolean;

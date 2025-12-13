@@ -3,8 +3,8 @@ import type { UpdateCvLinkCommand } from '../../entities/recruitment/dto/candida
 import styles from '../common/commonStyles/commonModalStyles.module.css'
 import {useAppDispatch} from "../useAppDispatch.ts";
 import {updateCandidateCv} from "../../features/slices/recruitmentSlice.ts";
-import ModalWrapper from "../ModalWrapper.tsx";
-import ModalField from "../ModalField.tsx"; // Create simple CSS
+import ModalWrapper from "./modalComponents/ModalWrapper.tsx";
+import ModalField from "./modalComponents/ModalField.tsx"; // Create simple CSS
 
 interface UpdateCvModalProps {
     isOpen: boolean;

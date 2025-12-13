@@ -3,9 +3,9 @@ import styles from '../common/commonStyles/commonModalStyles.module.css'
 import type {CreateUserDto, UpdateUserDto, UserDto} from "../../entities/ims/dto/user_dto.ts";
 import {userService} from "../../api/services";
 import {Role} from "../../entities/ims/enums.ts";
-import ModalWrapper from "../ModalWrapper.tsx";
-import ModalField from "../ModalField.tsx";
-import ModalSelect from "../ModalSelect.tsx";
+import ModalWrapper from "./modalComponents/ModalWrapper.tsx";
+import ModalField from "./modalComponents/ModalField.tsx";
+import ModalSelect from "./modalComponents/ModalSelect.tsx";
 
 interface UserFormModalProps {
     isOpen: boolean;
