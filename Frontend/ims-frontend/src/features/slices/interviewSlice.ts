@@ -86,7 +86,9 @@ export const fetchInterviews = createAsyncThunk(
                 totalCount: response.interviews.totalCount
             };
         } catch (err: any) {
-            return rejectWithValue('Failed to load interviews.');
+            console.error('API Error during interview fetch:', err);
+            const errorMessage = (err.response?.data?.message || err.message) || 'Failed to load interview data.';
+            return rejectWithValue(errorMessage);
         }
     }
 );

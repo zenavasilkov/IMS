@@ -30,7 +30,9 @@ export const fetchDepartments = createAsyncThunk(
                 totalCount: response.departments.totalCount || 1
             };
         } catch (err: any) {
-            return rejectWithValue('Failed to load department data.');
+            console.error('API Error during department fetch:', err);
+            const errorMessage = (err.response?.data?.message || err.message) || 'Failed to load department data.';
+            return rejectWithValue(errorMessage);
         }
     }
 );

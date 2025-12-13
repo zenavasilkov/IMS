@@ -30,7 +30,9 @@ export const fetchEmployees = createAsyncThunk(
                 totalCount: response.employees.totalCount || 1
             };
         } catch (err: any) {
-            return rejectWithValue('Failed to load employee data.');
+            console.error('API Error during employee fetch:', err);
+            const errorMessage = (err.response?.data?.message || err.message) || 'Failed to load employee data.';
+            return rejectWithValue(errorMessage);
         }
     }
 );

@@ -41,7 +41,7 @@ const RescheduleInterviewModal: React.FC<RescheduleInterviewModalProps> = ({ isO
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!interview || !interview.id) return;
+        if (!interview?.id) return;
 
         setIsSubmitting(true);
         setError(null);
@@ -73,16 +73,16 @@ const RescheduleInterviewModal: React.FC<RescheduleInterviewModalProps> = ({ isO
                 <form onSubmit={handleSubmit} className={styles.form}>
                     {error && <div className={styles.error}>{error}</div>}
 
-                    <label>Current Date/Time</label>
-                    <input type="text" value={formatISOToLocal(interview.scheduledAt).replace('T', ' ')} disabled />
+                    <label>Current Date/Time<input type="text" value={formatISOToLocal(interview.scheduledAt).replaceAll('T', ' ')} disabled /></label>
 
-                    <label>New Scheduled Date/Time</label>
-                    <input
+
+                    <label>New Scheduled Date/Time<input
                         type="datetime-local"
                         value={newDate}
                         onChange={(e) => setNewDate(e.target.value)}
                         required
-                    />
+                    /></label>
+
 
                     <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
                         {isSubmitting ? 'Rescheduling...' : 'Confirm Reschedule'}

@@ -64,7 +64,7 @@ const ScheduleInterviewModal: React.FC<ScheduleInterviewModalProps> = ({ isOpen,
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
 
-        const updatedValue = name === 'type' ? parseInt(value) as InterviewType : value;
+        const updatedValue = name === 'type' ? Number.parseInt(value) as InterviewType : value;
 
         setFormData(prev => ({
             ...prev,
@@ -74,7 +74,7 @@ const ScheduleInterviewModal: React.FC<ScheduleInterviewModalProps> = ({ isOpen,
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!candidate || !candidate.id) return;
+        if (!candidate?.id) return;
 
         setIsSubmitting(true);
         setError(null);
@@ -101,13 +101,13 @@ const ScheduleInterviewModal: React.FC<ScheduleInterviewModalProps> = ({ isOpen,
     if (!isOpen || !candidate) return null;
     if (isOptionsLoading) return <div className={styles.modalOverlay}><div className={styles.loadingMessage}>Loading options...</div></div>;
 
-    const interviewTypeOptions = Object.keys(InterviewType).filter(key => isNaN(Number(key))).map(key => ({
+    const interviewTypeOptions = Object.keys(InterviewType).filter(key => Number.isNaN(Number(key))).map(key => ({
         value: String(InterviewType[key as keyof typeof InterviewType]),
-        label: key.replace(/([A-Z])/g, ' $1').trim()
+        label: key.replaceAll(/([A-Z])/g, ' $1').trim()
     }));
 
     const getEmployeeRoleDisplay = (role: EmployeeRole) => {
-        return EmployeeRole[role].replace(/([A-Z])/g, ' $1').trim();
+        return EmployeeRole[role].replaceAll(/([A-Z])/g, ' $1').trim();
     };
 
     return (

@@ -11,11 +11,10 @@ import styles from './InterviewPage.module.css';
 import commonStyles from '../../components/common/commonStyles/commonPageStyles.module.css';
 import { InterviewType, EmployeeRole } from '../../entities/recruitment/enums';
 import RescheduleInterviewModal from "../../components/modals/RescheduleInterviewModal.tsx";
-import {interviewService} from "../../api/services/recruitment";
+import {interviewService, candidateService, employeeService} from "../../api/services/recruitment";
 import {InterviewIcon} from "../../components/common/Icons.tsx";
 import type { FindCandidateByIdQueryResponse } from "../../entities/recruitment/dto/candidate_dto";
 import type { GetEmployeeByIdQueryResponse } from "../../entities/recruitment/dto/employee_dto";
-import { candidateService, employeeService } from "../../api/services/recruitment";
 import {fetchCandidateByEmail} from "../../features/slices/recruitmentSlice.ts";
 import PaginationControls from "../../components/PaginationControls.tsx";
 import PageLayout from "../../components/PageLayout.tsx";
@@ -40,7 +39,7 @@ const InterviewPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const { interviews, loading, error, page, totalPages, pageSize, filterCandidateEmail, filterCandidateId } = useSelector((state: RootState) => state.interview);
     const [isRescheduleModalOpen, setIsRescheduleModalOpen] = useState(false);
-    const [interviewToReschedule, setInterviewToReschedule] = useState<any | undefined>(undefined);
+    const [interviewToReschedule, setInterviewToReschedule] = useState<any>(undefined);
     const [candidatesMap, setCandidatesMap] = useState<Map<string, FindCandidateByIdQueryResponse>>(new Map());
     const [employeesMap, setEmployeesMap] = useState<Map<string, GetEmployeeByIdQueryResponse>>(new Map());
 
@@ -51,7 +50,7 @@ const InterviewPage: React.FC = () => {
     }, [page, isAuthenticated, isAuth0Loading, dispatch, pageSize, filterCandidateId]);
 
     const handlePassInterview = (interviewId: string) => {
-        if (window.confirm("Mark this interview as PASSED?")) {
+        if (globalThis.confirm("Mark this interview as PASSED?")) {
             dispatch(passInterview(interviewId));
         }
     };
@@ -110,7 +109,7 @@ const InterviewPage: React.FC = () => {
     };
 
     const handleCancel = async (interviewId: string) => {
-        if (window.confirm("Are you sure you want to cancel this interview?")) {
+        if (globalThis.confirm("Are you sure you want to cancel this interview?")) {
             try {
                 await interviewService.cancelInterview(interviewId);
                 fetchInterviewsData();

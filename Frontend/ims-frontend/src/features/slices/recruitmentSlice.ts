@@ -82,7 +82,9 @@ export const updateCandidateCv = createAsyncThunk<string,UpdateCvLinkCommand, { 
             await candidateService.updateCvLink(command);
             return command.id;
         } catch (err: any) {
-            return rejectWithValue('Failed to update CV link.');
+            console.error('API Error during CV link update:', err);
+            const errorMessage = (err.response?.data?.message || err.message) || 'Failed to update CV link.';
+            return rejectWithValue(errorMessage);
         }
     }
 );
@@ -109,7 +111,7 @@ const recruitmentSlice = createSlice({
 
                 state.candidates = candidate ? [candidate] : [];
 
-                state.totalPages = candidate ? 1 : 1;
+                state.totalPages = 1;
                 state.page = 1;
                 state.loading = false;
                 state.error = null;

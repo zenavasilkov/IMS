@@ -40,7 +40,7 @@ const RegisterCandidateModal: React.FC<RegisterCandidateModalProps> = ({ isOpen,
         let newValue = value;
 
         if (name === 'phoneNumber') {
-            newValue = value.replace(PHONE_SANITIZE_REGEX, '');
+            newValue = value.replaceAll(PHONE_SANITIZE_REGEX, '');
         }
 
         setFormData(prev => ({ ...prev, [name]: newValue }));
@@ -84,8 +84,8 @@ const RegisterCandidateModal: React.FC<RegisterCandidateModalProps> = ({ isOpen,
                         pattern={PHONE_NUMBER_REGEX}
                         title="Must be a valid phone number format."
                     /></label>
-                    <label>CV Link</label><input name="cvLink" type="url" value={formData.cvLink || ''} onChange={handleChange} />
-                    <label>LinkedIn Profile</label><input name="linkedIn" type="url" value={formData.linkedIn || ''} onChange={handleChange} />
+                    <label>CV Link<input name="cvLink" type="url" value={formData.cvLink || ''} onChange={handleChange} /></label>
+                    <label>LinkedIn Profile<input name="linkedIn" type="url" value={formData.linkedIn || ''} onChange={handleChange} /></label>
 
                     <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
                         {isSubmitting ? 'Registering...' : 'Register Candidate'}
