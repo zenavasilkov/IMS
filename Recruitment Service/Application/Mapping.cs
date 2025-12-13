@@ -18,7 +18,8 @@ internal class Mapping : IRegister
         config.NewConfig<Interview, GetInterviewByIdQueryResponse>()
             .Map(dest => dest.CandidateEmail, src => src.Candidate!.Email)
             .Map(dest => dest.InterviewerEmail, src => src.Interviewer!.Email)
-            .Map(dest => dest.DeparnmentName, src => src.Department!.Name);
+            .Map(dest => dest.DeparnmentName, src => src.Department!.Name)
+            .Map(dest => dest.InterviewType, src => src.Type);
         
         config.NewConfig<Employee, GetEmployeeByIdQueryResponse>().Map(dest => dest, src => src.FullName);
         config.NewConfig<Candidate, CreateUserGrpcRequest>().Map(dest => dest, src => src.FullName);

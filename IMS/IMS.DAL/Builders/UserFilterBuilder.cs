@@ -7,8 +7,8 @@ public interface IUserFilterBuilder
 {
     IUserFilterBuilder WithEmail(string? email);
     IUserFilterBuilder WithPhoneNumber(string? phoneNumber);
-    IUserFilterBuilder WithFirstname(string? firstname);
-    IUserFilterBuilder WithLastname(string? lastname);
+    IUserFilterBuilder WithFirstName(string? firstname);
+    IUserFilterBuilder WithLastName(string? lastname);
     IUserFilterBuilder WithPatronymic(string? patronymic);
     IUserFilterBuilder WithRole(Role? role);
     IQueryable<User> Build(IQueryable<User> query);
@@ -35,13 +35,13 @@ public class UserFilterBuilder : IUserFilterBuilder
         return this;
     }
 
-    public IUserFilterBuilder WithFirstname(string? firstname)
+    public IUserFilterBuilder WithFirstName(string? firstname)
     {
         _firstname = firstname;
         return this;
     }
 
-    public IUserFilterBuilder WithLastname(string? lastname)
+    public IUserFilterBuilder WithLastName(string? lastname)
     {
         _lastname = lastname;
         return this;

@@ -45,3 +45,41 @@
 .App {
   display: block;
 }
+
+.Fixed-Header-Bar {
+  position: fixed;
+  top: 0;
+  left: 10px;
+  width: 100%;
+  height: 70px;
+  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+  background-color: #202020;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  padding: 0 20px;
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+.App-Title {
+  color: white;
+  font-size: 1.8em;
+  font-weight: 700;
+}
+
+.App-Main-Content {
+  padding-top: 70px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.App-Header-Icon {
+  width: 28px;
+  height: 28px;
+  margin-right: 10px;
+  color: #007bff;
+}

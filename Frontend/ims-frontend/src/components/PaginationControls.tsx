@@ -1,12 +1,12 @@
 import React from 'react';
-import styles from '../pages/UserManagementPage/UserManagementPage.module.css';
+import styles from './common/commonStyles/commonPageStyles.module.css';
 
 interface PaginationControlsProps {
   currentPage: number;
   totalPages: number;
   onPreviousPage: () => void;
   onNextPage: () => void;
-  hasUsers: boolean;
+  hasContent: boolean;
 }
 
 const PaginationControls: React.FC<PaginationControlsProps> = ({
@@ -14,7 +14,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   totalPages,
   onPreviousPage,
   onNextPage,
-  hasUsers,
+  hasContent,
 }) => {
   return (
     <div className={styles.pagination}>
@@ -28,7 +28,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
       <span className={styles.pageInfo}>Page {currentPage} of {totalPages}</span>
       <button 
         onClick={onNextPage} 
-        disabled={currentPage === totalPages || !hasUsers}
+        disabled={currentPage === totalPages || !hasContent}
         className={styles.button}
       >
         Next

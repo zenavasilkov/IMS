@@ -1,0 +1,68 @@
+﻿.headingIcon {
+    width: 32px;
+    height: 32px;
+    margin-right: 15px;
+    color: #28a745;
+    filter: drop-shadow(0 0 5px rgba(40, 167, 69, 0.5));
+}
+
+.employeeList {
+    flex-grow: 1;
+    border-radius: 8px;
+    background-color: #313131;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    min-height: 200px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 60vh;
+    margin-bottom: 20px;
+}
+
+.employeeItem {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #3a3a3a;
+    background-color: #2e2e2e;
+    transition: background-color 0.15s;
+}
+
+.employeeInfoColumn {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    flex-shrink: 0;
+}
+
+.employeeItem:hover {
+    background-color: #4a4a4a;
+}
+
+.employeeItem span {
+    flex: 2;
+    text-align: left;
+}
+
+.name {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #f0f0f0;
+    white-space: nowrap;
+}
+
+.subText {
+    font-size: 0.9em;
+    color: #bbb;
+    white-space: nowrap;
+}
+
+.userRoleText {
+    font-weight: normal;
+    font-size: 0.9em;
+    color: #bbb;
+    margin-left: 8px;
+}
+
+.employeeItem span:nth-child(1) { flex: 3; }
+.employeeItem div:nth-child(3) { flex: 1; justify-content: left; }

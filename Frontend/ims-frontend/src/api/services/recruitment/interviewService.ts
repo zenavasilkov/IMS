@@ -9,8 +9,8 @@ import type {
 } from '../../../entities/recruitment/dto/interview_dto';
 
 export const interviewService = {
-    scheduleInterview: async (data: ScheduleInterviewCommand): Promise<GetInterviewByIdQueryResponse> => {
-        const response = await RecruitmentApi.post<GetInterviewByIdQueryResponse>('/interviews', data);
+    scheduleInterview: async (data: ScheduleInterviewCommand): Promise<string> => {
+        const response = await RecruitmentApi.post<string>('/interviews', data);
         return response.data;
     },
 
@@ -19,14 +19,9 @@ export const interviewService = {
         return response.data;
     },
 
-    cancelInterview: async (interviewId: string): Promise<void> => {
-        await RecruitmentApi.put(`/interviews/cancel`, { interviewId });
-    },
+    cancelInterview: async (interviewId: string): Promise<void> => await RecruitmentApi.put(`/interviews/cancel`, {}, { params: { Id: interviewId }}),
 
-    addFeedback: async (data: AddFeedbackCommand): Promise<GetInterviewByIdQueryResponse> => {
-        const response = await RecruitmentApi.put<GetInterviewByIdQueryResponse>('/interviews/add-feedback', data);
-        return response.data;
-    },
+    addFeedback: async (data: AddFeedbackCommand): Promise<void> => await RecruitmentApi.put('/interviews/add-feedback', data),
 
     getInterviewById: async (id: string): Promise<GetInterviewByIdQueryResponse> => {
         const response = await RecruitmentApi.get<GetInterviewByIdQueryResponse>(`/interviews/${id}`);
@@ -35,14 +30,20 @@ export const interviewService = {
 
     getInterviewsByCandidate: async (candidateId: string, pageNumber = 1, pageSize = 10): Promise<GetInterviewsByCandidateIdQueryResponse> => {
         const response = await RecruitmentApi.get<GetInterviewsByCandidateIdQueryResponse>('/interviews/by-candidate', {
-            params: { candidateId, pageNumber, pageSize }
+            params: {
+                candidateId : candidateId,
+                PageNumber : pageNumber,
+                PageSize: pageSize }
         });
         return response.data;
     },
 
     getAllInterviews: async (pageNumber = 1, pageSize = 10): Promise<GetAllInterviewsQueryResponse> => {
         const response = await RecruitmentApi.get<GetAllInterviewsQueryResponse>('/interviews/get-all', {
-            params: { pageNumber, pageSize }
+            params: {
+                'PaginationParameters.PageNumber': pageNumber,
+                'PaginationParameters.PageSize': pageSize
+            }
         });
         return response.data;
     }

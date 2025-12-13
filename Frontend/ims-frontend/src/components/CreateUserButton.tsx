@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../pages/UserManagementPage/UserManagementPage.module.css';
+import styles from './common/commonStyles/commonPageStyles.module.css'
 
 interface CreateUserButtonProps {
   onClick: () => void;
@@ -9,7 +9,7 @@ const CreateUserButton: React.FC<CreateUserButtonProps> = ({ onClick }) => {
   return (
     <button 
       onClick={onClick} 
-      className={styles.button}
+      className={styles.createButton}
     >
       Create New User
     </button>

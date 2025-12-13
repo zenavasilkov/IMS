@@ -36,7 +36,10 @@ export const departmentService = {
 
     getAllDepartments: async (pageNumber = 1, pageSize = 10): Promise<GetAllDepartmentsQueryResponse> => {
         const response = await RecruitmentApi.get<GetAllDepartmentsQueryResponse>('/departments/get-all', {
-            params: { pageNumber, pageSize }
+            params: {
+                'PaginationParameters.PageNumber': pageNumber,
+                'PaginationParameters.PageSize': pageSize
+            }
         });
         return response.data;
     }

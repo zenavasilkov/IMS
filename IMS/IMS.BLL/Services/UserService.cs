@@ -59,7 +59,7 @@ public class UserService(IUserRepository repository, IMapper mapper, IMessageSer
     }
 
     public async Task<PagedList<UserModel>> GetUsersAsync(
-        PaginationParameters paginationParameters, 
+        PaginationParameters paginationParameters,
         UserFilteringParameters filter, 
         UserSortingParameter sorter, 
         CancellationToken cancellationToken = default)

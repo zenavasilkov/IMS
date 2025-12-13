@@ -1,0 +1,85 @@
+﻿.filterBar {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    background-color: #383838;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.searchInput {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #444;
+    color: #f0f0f0;
+    font-size: 1em;
+    outline: none;
+}
+
+.candidateList {
+    flex-grow: 1;
+    border-radius: 8px;
+    background-color: #313131;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 50vh;
+    min-height: 200px;
+}
+
+.candidateItem {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #3a3a3a;
+    background-color: #2e2e2e;
+    transition: background-color 0.15s;
+}
+
+.candidateItem:hover {
+    background-color: #4a4a4a;
+}
+
+.candidateItem:last-child {
+    border-bottom: none;
+}
+
+.candidateInfo {
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+    text-align: left;
+}
+
+.name {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: #f0f0f0;
+}
+
+.contact {
+    font-size: 0.9em;
+    color: #999;
+}
+
+.status {
+    flex: 1;
+    color: #007bff;
+    font-weight: 500;
+}
+
+.actions {
+    flex: 1.5;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.actionButton:hover {
+    background-color: #6a6a6a;
+}

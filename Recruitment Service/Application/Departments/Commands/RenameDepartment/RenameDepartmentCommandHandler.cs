@@ -11,7 +11,7 @@ public class RenameDepartmentCommandHandler(IDepartmentRepository repository) : 
     {
         var existingDepartment = await repository.GetByNameAsync(request.NewName, false, cancellationToken);
 
-        if (existingDepartment is not null) return DepartmentErrors.NameIsNotUnique;
+        if (existingDepartment is not null && existingDepartment.Id != request.Id) return DepartmentErrors.NameIsNotUnique;
 
         existingDepartment = await repository.GetByIdAsync(request.Id, true, cancellationToken);
 

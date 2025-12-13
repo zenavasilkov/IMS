@@ -10,7 +10,7 @@ public static class ApiRoutes
     {
         public const string Base = $"{Api}/candidates";
 
-        public const string ByEmail = "by-email/{{email}}";
+        public const string ByEmail = "by-email/{email}";
         public const string AcceptToInternship = "accept-to-internship";
         public const string UpdateCvLink = "update-cv-link";
         public const string Register = "register";

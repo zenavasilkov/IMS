@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Shared.Enums;
 using Shared.Pagination;
 using System.Linq.Expressions;
+using IMS.DAL.Builders;
 
 namespace IMS.DAL.Repositories;
 
@@ -39,9 +40,11 @@ public class UserRepository(ImsDbContext context, IRepository<User> repository) 
 
     private static IQueryable<User> ApplyFilters(IQueryable<User> query, UserFilteringParameters filter)
     {
-        if (filter.Role != null) query = query.Where(u => u.Role == filter.Role);
-        if (filter.FirstName != null) query = query.Where(u => u.Firstname == filter.FirstName);
-        if (filter.LastName != null) query = query.Where(u => u.Lastname == filter.LastName);
+        query = new UserFilterBuilder()
+            .WithRole(filter.Role)
+            .WithFirstName(filter.FirstName)
+            .WithLastName(filter.LastName)
+            .Build(query);
 
         return query;
     }
