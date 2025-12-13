@@ -7,6 +7,9 @@ import {EmployeeRole, InterviewType} from '../../entities/recruitment/enums.ts';
 import styles from '../common/commonStyles/commonModalStyles.module.css'
 import {departmentService, employeeService, interviewService} from "../../api/services/recruitment";
 import {convertLocalToUTC} from "../../features/helpers/TimeConverter.ts";
+import ModalWrapper from "../ModalWrapper.tsx";
+import ModalSelect from "../ModalSelect.tsx";
+import ModalField from "../ModalField.tsx";
 
 interface ScheduleInterviewModalProps {
     isOpen: boolean;
@@ -23,6 +26,15 @@ const ScheduleInterviewModal: React.FC<ScheduleInterviewModalProps> = ({ isOpen,
     const [isOptionsLoading, setIsOptionsLoading] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    const departmentOptions = departments.map(d =>
+        ({ value: d.id, label: d.name || 'N/A' }));
+
+    const getEmployeeRoleDisplay = (role: EmployeeRole) =>
+        EmployeeRole[role].replaceAll(/([A-Z])/g, ' $1').trim();
+
+    const interviewerOptions = interviewers.map(e =>
+        ({ value: e.id, label: `${e.firstName} ${e.lastName} (${getEmployeeRoleDisplay(e.role)})` }));
 
     const [formData, setFormData] = useState<Omit<ScheduleInterviewCommand, 'candidateId'>>({
         interviewerId: '',
@@ -106,57 +118,17 @@ const ScheduleInterviewModal: React.FC<ScheduleInterviewModalProps> = ({ isOpen,
         label: key.replaceAll(/([A-Z])/g, ' $1').trim()
     }));
 
-    const getEmployeeRoleDisplay = (role: EmployeeRole) => {
-        return EmployeeRole[role].replaceAll(/([A-Z])/g, ' $1').trim();
-    };
-
     return (
-        <div className={styles.modalOverlay}>
-            <div className={styles.modalContent}>
-                <h2 className={styles.modalTitle}>Schedule Interview for {candidate.firstName} {candidate.lastName}</h2>
-                <button className={styles.closeButton} onClick={onClose}>&times;</button>
+        <ModalWrapper isOpen={isOpen} onClose={onClose} title={`Schedule Interview for ${candidate?.firstName} ${candidate?.lastName}`} error={error} >
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <ModalSelect label="Department" name="departmentId" value={formData.departmentId} onChange={handleChange} required options={departmentOptions} />
+                <ModalSelect label="Interviewer" name="interviewerId" value={formData.interviewerId} onChange={handleChange} required options={interviewerOptions} />
+                <ModalSelect label="Interview Type" name="type" value={String(formData.type)} onChange={handleChange} required options={interviewTypeOptions} />
+                <ModalField label="Scheduled At" name="scheduledAt" type="datetime-local" value={formData.scheduledAt} onChange={handleChange} required />
 
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    {error && <div className={styles.error}>{error}</div>}
-
-                    <label>
-                        Department<select name="departmentId" value={formData.departmentId} onChange={handleChange} required>
-                        {departments.map(d => (
-                            <option key={d.id} value={d.id}>{d.name}</option>
-                        ))}
-                    </select></label>
-
-                    <label>
-                        Interviewer<select name="interviewerId" value={formData.interviewerId} onChange={handleChange} required>
-                        {interviewers.map(e => (
-                            <option key={e.id} value={e.id}>
-                                {e.firstName} {e.lastName} ({getEmployeeRoleDisplay(e.role)})
-                            </option>
-                        ))}
-                    </select></label>
-
-                    <label>
-                        Interview Type<select name="type" value={String(formData.type)} onChange={handleChange} required>
-                        {interviewTypeOptions.map(opt => (
-                            <option key={opt.value} value={opt.value}>{opt.label}</option>
-                        ))}
-                    </select></label>
-
-                    <label>
-                        Scheduled At<input
-                        name="scheduledAt"
-                        type="datetime-local"
-                        value={formData.scheduledAt}
-                        onChange={handleChange}
-                        required
-                    /></label>
-
-                    <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                        {isSubmitting ? 'Scheduling...' : 'Schedule Interview'}
-                    </button>
-                </form>
-            </div>
-        </div>
+                <button type="submit" disabled={isSubmitting} className={styles.submitButton}> {isSubmitting ? 'Scheduling...' : 'Schedule Interview'} </button>
+            </form>
+        </ModalWrapper>
     );
 };
 

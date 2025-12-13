@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import type { GetInterviewByIdQueryResponse, RescheduleInterviewCommand } from '../../entities/recruitment/dto/interview_dto';
 import styles from '../common/commonStyles/commonModalStyles.module.css'
 import {interviewService} from "../../api/services/recruitment";
+import ModalWrapper from "../ModalWrapper.tsx";
+import ModalField from "../ModalField.tsx";
 
 interface RescheduleInterviewModalProps {
     isOpen: boolean;
@@ -38,7 +40,6 @@ const RescheduleInterviewModal: React.FC<RescheduleInterviewModalProps> = ({ isO
         }
     }, [isOpen, interview]);
 
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!interview?.id) return;
@@ -64,32 +65,17 @@ const RescheduleInterviewModal: React.FC<RescheduleInterviewModalProps> = ({ isO
 
     if (!isOpen || !interview) return null;
 
+    const modalTitle = `Reschedule Interview for ${interview.candidateEmail}`;
+    const currentDateTimeDisplay = formatISOToLocal(interview.scheduledAt).replaceAll('T', ' ');
+
     return (
-        <div className={styles.modalOverlay}>
-            <div className={styles.modalContent}>
-                <h2 className={styles.modalTitle}>Reschedule Interview for {interview.candidateEmail}</h2>
-                <button className={styles.closeButton} onClick={onClose}>&times;</button>
-
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    {error && <div className={styles.error}>{error}</div>}
-
-                    <label>Current Date/Time<input type="text" value={formatISOToLocal(interview.scheduledAt).replaceAll('T', ' ')} disabled /></label>
-
-
-                    <label>New Scheduled Date/Time<input
-                        type="datetime-local"
-                        value={newDate}
-                        onChange={(e) => setNewDate(e.target.value)}
-                        required
-                    /></label>
-
-
-                    <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                        {isSubmitting ? 'Rescheduling...' : 'Confirm Reschedule'}
-                    </button>
-                </form>
-            </div>
-        </div>
+        <ModalWrapper isOpen={isOpen} onClose={onClose} title={modalTitle} error={error}>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <ModalField label="Current Date/Time" type="text" value={currentDateTimeDisplay} disabled />
+                <ModalField label="New Scheduled Date/Time" type="datetime-local" value={newDate} onChange={(e) => setNewDate(e.target.value)} required/>
+                <button type="submit" disabled={isSubmitting} className={styles.submitButton}> {isSubmitting ? 'Rescheduling...' : 'Confirm Reschedule'} </button>
+            </form>
+        </ModalWrapper>
     );
 };
 

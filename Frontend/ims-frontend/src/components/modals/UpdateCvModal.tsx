@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import type { UpdateCvLinkCommand } from '../../entities/recruitment/dto/candidate_dto';
 import styles from '../common/commonStyles/commonModalStyles.module.css'
 import {useAppDispatch} from "../useAppDispatch.ts";
-import {updateCandidateCv} from "../../features/slices/recruitmentSlice.ts"; // Create simple CSS
+import {updateCandidateCv} from "../../features/slices/recruitmentSlice.ts";
+import ModalWrapper from "../ModalWrapper.tsx";
+import ModalField from "../ModalField.tsx"; // Create simple CSS
 
 interface UpdateCvModalProps {
     isOpen: boolean;
@@ -49,28 +51,21 @@ const UpdateCvModal: React.FC<UpdateCvModalProps> = ({ isOpen, onClose, onSucces
     if (!isOpen) return null;
 
     return (
-        <div className={styles.modalOverlay}>
-            <div className={styles.modalContent}>
-                <h2 className={styles.modalTitle}>Update CV Link</h2>
-                <button className={styles.closeButton} onClick={onClose}>&times;</button>
+        <ModalWrapper isOpen={isOpen} onClose={onClose} title="Update CV Link" error={error}>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <ModalField
+                    label="New CV Link (URL)"
+                    type="url"
+                    value={newCvLink}
+                    onChange={(e) => setNewCvLink(e.target.value)}
+                    required
+                />
 
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    {error && <div className={styles.error}>{error}</div>}
-
-                    <label>New CV Link (URL)</label>
-                    <input
-                        type="url"
-                        value={newCvLink}
-                        onChange={(e) => setNewCvLink(e.target.value)}
-                        required
-                    />
-
-                    <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                        {isSubmitting ? 'Updating...' : 'Save Link'}
-                    </button>
-                </form>
-            </div>
-        </div>
+                <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
+                    {isSubmitting ? 'Updating...' : 'Save Link'}
+                </button>
+            </form>
+        </ModalWrapper>
     );
 };
 

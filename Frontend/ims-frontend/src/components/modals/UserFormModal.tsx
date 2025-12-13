@@ -3,6 +3,9 @@ import styles from '../common/commonStyles/commonModalStyles.module.css'
 import type {CreateUserDto, UpdateUserDto, UserDto} from "../../entities/ims/dto/user_dto.ts";
 import {userService} from "../../api/services";
 import {Role} from "../../entities/ims/enums.ts";
+import ModalWrapper from "../ModalWrapper.tsx";
+import ModalField from "../ModalField.tsx";
+import ModalSelect from "../ModalSelect.tsx";
 
 interface UserFormModalProps {
     isOpen: boolean;
@@ -110,55 +113,17 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
     }
 
     return (
-        <div className={styles.modalOverlay}>
-            <div className={styles.modalContent}>
-                <h2 className={styles.modalTitle}>
-                    {isEditMode ? 'Edit User' : 'Create New User'}
-                </h2>
-                <button className={styles.closeButton} onClick={onClose}>&times;</button>
+        <ModalWrapper isOpen={isOpen} onClose={onClose} title={isEditMode ? 'Edit User' : 'Create New User'} error={error}>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <ModalField label="First Name" name="firstname" value={formData.firstname || ''} onChange={handleChange} required />
+                <ModalField label="Last Name" name="lastname" value={formData.lastname || ''} onChange={handleChange} required />
+                <ModalField label="Email" name="email" type="email" value={formData.email || ''} onChange={handleChange} required disabled={isEditMode} />
+                <ModalField label="Phone Number" name="phoneNumber" type="tel" value={formData.phoneNumber || ''} onChange={handleChange} pattern={PHONE_NUMBER_REGEX} title="Phone number must start with an optional '+' and be 2-15 digits (E.164 format)." />
+                <ModalSelect label="Role" name="role" value={String(formData.role)} onChange={handleChange} required options={roleOptions} />
 
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    {error && <div className={styles.error}>{error}</div>}
-
-                    <label>First Name<input name="firstname" value={formData.firstname || ''} onChange={handleChange} required /></label>
-                    
-                    <label>Last Name<input name="lastname" value={formData.lastname || ''} onChange={handleChange} required /></label>
-
-                    <label>
-                        Email<input
-                            name="email"
-                            type="email"
-                            value={formData.email || ''}
-                            onChange={handleChange}
-                            required
-                            disabled={isEditMode}
-                        />
-                    </label>                    
-
-                    <label>
-                        Phone Number<input
-                            name="phoneNumber"
-                            type="tel"
-                            value={formData.phoneNumber || ''}
-                            onChange={handleChange}
-                            pattern={PHONE_NUMBER_REGEX}
-                            title="Phone number must start with an optional '+' and be 2-15 digits (E.164 format)."/>
-                    </label>                    
-
-                    <label>
-                        Role<select name="role" value={String(formData.role)} onChange={handleChange} required>
-                            {roleOptions.map(option => (
-                                <option key={option.value} value={option.value}>{option.label}</option>
-                            ))}
-                        </select>
-                    </label>
-
-                    <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                        {buttonText}
-                    </button>
-                </form>
-            </div>
-        </div>
+                <button type="submit" disabled={isSubmitting} className={styles.submitButton}> {buttonText} </button>
+            </form>
+        </ModalWrapper>
     );
 };
 

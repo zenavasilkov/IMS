@@ -4,6 +4,9 @@ import type { GetDepartmentByIdQueryResponse } from '../../entities/recruitment/
 import { EmployeeRole } from '../../entities/recruitment/enums';
 import styles from '../common/commonStyles/commonModalStyles.module.css'
 import {departmentService, employeeService} from "../../api/services/recruitment";
+import ModalField from "../ModalField.tsx";
+import ModalSelect from "../ModalSelect.tsx";
+import ModalWrapper from "../ModalWrapper.tsx";
 
 interface EmployeeFormModalProps {
     isOpen: boolean;
@@ -27,6 +30,7 @@ const EmployeeFormModal: React.FC<EmployeeFormModalProps> = ({ isOpen, onClose, 
     const [departments, setDepartments] = useState<GetDepartmentByIdQueryResponse[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const modalTitle = isEditMode ? 'Edit Employee' : 'Register New Employee';
 
     useEffect(() => {
         if (!isOpen) return;
@@ -108,35 +112,20 @@ const EmployeeFormModal: React.FC<EmployeeFormModalProps> = ({ isOpen, onClose, 
     }));
 
     return (
-        <div className={styles.modalOverlay}>
-            <div className={styles.modalContent}>
-                <h2 className={styles.modalTitle}>{isEditMode ? 'Edit Employee' : 'Register New Employee'}</h2>
-                <button className={styles.closeButton} onClick={onClose}>&times;</button>
-
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    {error && <div className={styles.error}>{error}</div>}
-
-                    <label>First Name<input name="firstName" value={formData.firstName || ''} onChange={handleChange} required disabled={isEditMode}/></label>
-                    <label>Last Name<input name="lastName" value={formData.lastName || ''} onChange={handleChange} required disabled={isEditMode}/></label>
-                    <label>Email<input name="email" type="email" value={formData.email || ''} onChange={handleChange} required disabled={isEditMode}/></label>
-
-                    <label>Role<select name="role" value={String(formData.role)} onChange={handleChange} required>
-                        {roleOptions.map(option => (
-                            <option key={option.value} value={option.value}>{option.label}</option>
-                        ))}
-                    </select></label>
-
-
-                    <label>Department<select name="departmentId" value={formData.departmentId} onChange={handleChange} required>
-                            {departments.map(d => (<option key={d.id} value={d.id}>{d.name}</option>))}
-                        </select></label>
-
-                    <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                        {isSubmitting ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Register Employee')}
-                    </button>
-                </form>
-            </div>
-        </div>
+        <ModalWrapper isOpen={isOpen} onClose={onClose} title={modalTitle}  error={error} >
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <ModalField label="First Name" name="firstName" value={formData.firstName || ''} onChange={handleChange} required disabled={isEditMode} />
+                <ModalField label="Last Name" name="lastName" value={formData.lastName || ''} onChange={handleChange} required disabled={isEditMode} />
+                <ModalField label="Email" name="email" type="email" value={formData.email || ''} onChange={handleChange} required disabled={isEditMode} />
+                <ModalSelect label="Role" name="role" value={String(formData.role)} onChange={handleChange} required options={roleOptions} />
+                <ModalSelect label="Department" name="departmentId" value={formData.departmentId} onChange={handleChange} required
+                             options={departments.map(d => ({ value: d.id, label: d.name || 'N/A' }))}
+                />
+                <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
+                    {isSubmitting ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Register Employee')}
+                </button>
+            </form>
+        </ModalWrapper>
     );
 };
 

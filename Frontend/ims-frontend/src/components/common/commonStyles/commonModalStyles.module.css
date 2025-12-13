@@ -175,3 +175,21 @@
     text-align: center;
     font-size: 1.2em;
 }
+
+.formInput,
+.formSelect,
+.form textarea {
+    padding: 12px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    background-color: #333;
+    color: #f0f0f0;
+    box-sizing: border-box;
+    font-size: 1em;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    max-width: 100%;
+    min-width: 100%;
+}

@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import type { RegisterCandidateCommand } from '../../entities/recruitment/dto/candidate_dto.ts';
 import styles from '../common/commonStyles/commonModalStyles.module.css'
 import {candidateService} from "../../api/services/recruitment";
+import ModalWrapper from "../ModalWrapper.tsx";
+import ModalField from "../ModalField.tsx";
 
 interface RegisterCandidateModalProps {
     isOpen: boolean;
@@ -66,33 +68,20 @@ const RegisterCandidateModal: React.FC<RegisterCandidateModalProps> = ({ isOpen,
     if (!isOpen) return null;
 
     return (
-        <div className={styles.modalOverlay}>
-            <div className={styles.modalContent}>
-                <h2 className={styles.modalTitle}>Register New Candidate</h2>
-                <button className={styles.closeButton} onClick={onClose}>&times;</button>
+        <ModalWrapper isOpen={isOpen} onClose={onClose} title="Register New Candidate" error={error}>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <ModalField label="First Name" name="firstName" value={formData.firstName || ''} onChange={handleChange} required />
+                <ModalField label="Last Name" name="lastName" value={formData.lastName || ''} onChange={handleChange} required />
+                <ModalField label="Email" name="email" type="email" value={formData.email || ''} onChange={handleChange} required />
+                <ModalField label="Phone Number" name="phoneNumber" type="tel" value={formData.phoneNumber || ''} onChange={handleChange} pattern={PHONE_NUMBER_REGEX} title="Must be a valid phone number format." />
+                <ModalField label="CV Link" name="cvLink" type="url" value={formData.cvLink || ''} onChange={handleChange} />
+                <ModalField label="LinkedIn Profile" name="linkedIn" type="url" value={formData.linkedIn || ''} onChange={handleChange} />
 
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    {error && <div className={styles.error}>{error}</div>}
-
-                    <label>First Name<input name="firstName" value={formData.firstName || ''} onChange={handleChange} required /></label>
-                    <label>Last Name<input name="lastName" value={formData.lastName || ''} onChange={handleChange} required /></label>
-                    <label>Email<input name="email" type="email" value={formData.email || ''} onChange={handleChange} required /></label>
-                    <label>Phone Number<input
-                        name="phoneNumber"
-                        type="tel" value={formData.phoneNumber || ''}
-                        onChange={handleChange}
-                        pattern={PHONE_NUMBER_REGEX}
-                        title="Must be a valid phone number format."
-                    /></label>
-                    <label>CV Link<input name="cvLink" type="url" value={formData.cvLink || ''} onChange={handleChange} /></label>
-                    <label>LinkedIn Profile<input name="linkedIn" type="url" value={formData.linkedIn || ''} onChange={handleChange} /></label>
-
-                    <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                        {isSubmitting ? 'Registering...' : 'Register Candidate'}
-                    </button>
-                </form>
-            </div>
-        </div>
+                <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
+                    {isSubmitting ? 'Registering...' : 'Register Candidate'}
+                </button>
+            </form>
+        </ModalWrapper>
     );
 };
 
