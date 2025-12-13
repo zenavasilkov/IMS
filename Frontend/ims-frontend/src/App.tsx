@@ -16,6 +16,8 @@ import DepartmentPage from "./pages/DepartmentPage/DepartmentPage.tsx";
 import EmployeePage from "./pages/EmployeePage/EmployeePage.tsx";
 import InterviewPage from "./pages/InterviewPage/InterviewPage.tsx";
 
+const HrManagerHeader = (text : string) => <div><ManagementIcon className="App-Header-Icon" />{text}</div>;
+
 function App() {
   const { isAuthenticated, loginWithRedirect, isLoading } = useAuth0();
   const memoizedAxiosInstances = useMemo(() => [ImsApi, RecruitmentApi], []);
@@ -24,8 +26,6 @@ function App() {
   const isAppLoading = isLoading || isTokenLoading || isLoadingRole;
   const showPageLoader = useMinLoadingTime(isAppLoading, 300);
   const [activePortal, setActivePortal] = useState(PORTALS.USER_MANAGEMENT);
-
-  const HrManagerHeader = (text : string) => <div><ManagementIcon className="App-Header-Icon" />{text}</div>;
 
   let contentToRender;
   let headerTitle;
@@ -77,9 +77,7 @@ function App() {
         <Auth0Login /> 
       </nav>
 
-      <main className="App-Main-Content">
-          {contentToRender}
-      </main>
+      <main className="App-Main-Content">{contentToRender}</main>
     </div>
   );
 }

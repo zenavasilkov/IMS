@@ -65,8 +65,8 @@ const RescheduleInterviewModal: React.FC<RescheduleInterviewModalProps> = ({ isO
     if (!isOpen || !interview) return null;
 
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
-            <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+        <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
                 <h2 className={styles.modalTitle}>Reschedule Interview for {interview.candidateEmail}</h2>
                 <button className={styles.closeButton} onClick={onClose}>&times;</button>
 

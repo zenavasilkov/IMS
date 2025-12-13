@@ -111,8 +111,8 @@ const ScheduleInterviewModal: React.FC<ScheduleInterviewModalProps> = ({ isOpen,
     };
 
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
-            <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+        <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
                 <h2 className={styles.modalTitle}>Schedule Interview for {candidate.firstName} {candidate.lastName}</h2>
                 <button className={styles.closeButton} onClick={onClose}>&times;</button>
 

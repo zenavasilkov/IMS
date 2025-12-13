@@ -5,13 +5,13 @@ interface SimpleListHeaderProps {
     columns: { label: string; flex: number; textAlign?: 'left' | 'center' | 'right' }[];
 }
 
+const getStableKey = (label: string): string =>  label.toLowerCase().replaceAll(/[^a-z0-9]/g, '-');
+
 const SimpleListHeader: React.FC<SimpleListHeaderProps> = ({ columns }) => {
     return (
         <div className={commonStyles.listHeader}>
-            {columns.map((col, index) => (
-                <span key={index} style={{ flex: col.flex, textAlign: col.textAlign || 'left' }}>
-                    {col.label}
-                </span>
+            {columns.map((col) => (
+                <span key={getStableKey(col.label)} style={{ flex: col.flex, textAlign: col.textAlign || 'left' }}>{col.label}</span>
             ))}
         </div>
     );

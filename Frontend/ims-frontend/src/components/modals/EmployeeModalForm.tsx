@@ -102,37 +102,34 @@ const EmployeeFormModal: React.FC<EmployeeFormModalProps> = ({ isOpen, onClose, 
 
     if (!isOpen) return null;
 
-    const roleOptions = Object.keys(EmployeeRole).filter(key => isNaN(Number(key))).map(key => ({
+    const roleOptions = Object.keys(EmployeeRole).filter(key => Number.isNaN(Number(key))).map(key => ({
         value: String(EmployeeRole[key as keyof typeof EmployeeRole]),
-        label: key.replace(/([A-Z])/g, ' $1').trim()
+        label: key.replaceAll(/([A-Z])/g, ' $1').trim()
     }));
 
     return (
-        <div className={styles.modalOverlay} onClick={onClose}>
-            <div className={styles.modalContent} onClick={e => e.stopPropagation()}>
+        <div className={styles.modalOverlay}>
+            <div className={styles.modalContent}>
                 <h2 className={styles.modalTitle}>{isEditMode ? 'Edit Employee' : 'Register New Employee'}</h2>
                 <button className={styles.closeButton} onClick={onClose}>&times;</button>
 
                 <form onSubmit={handleSubmit} className={styles.form}>
                     {error && <div className={styles.error}>{error}</div>}
 
-                    <label>First Name</label><input name="firstName" value={formData.firstName || ''} onChange={handleChange} required disabled={isEditMode}/>
-                    <label>Last Name</label><input name="lastName" value={formData.lastName || ''} onChange={handleChange} required disabled={isEditMode}/>
-                    <label>Email</label><input name="email" type="email" value={formData.email || ''} onChange={handleChange} required disabled={isEditMode}/>
+                    <label>First Name<input name="firstName" value={formData.firstName || ''} onChange={handleChange} required disabled={isEditMode}/></label>
+                    <label>Last Name<input name="lastName" value={formData.lastName || ''} onChange={handleChange} required disabled={isEditMode}/></label>
+                    <label>Email<input name="email" type="email" value={formData.email || ''} onChange={handleChange} required disabled={isEditMode}/></label>
 
-                    <label>Role</label>
-                    <select name="role" value={String(formData.role)} onChange={handleChange} required>
+                    <label>Role<select name="role" value={String(formData.role)} onChange={handleChange} required>
                         {roleOptions.map(option => (
                             <option key={option.value} value={option.value}>{option.label}</option>
                         ))}
-                    </select>
+                    </select></label>
 
-                    <label>Department</label>
-                    <select name="departmentId" value={formData.departmentId} onChange={handleChange} required>
-                        {departments.map(d => (
-                            <option key={d.id} value={d.id}>{d.name}</option>
-                        ))}
-                    </select>
+
+                    <label>Department<select name="departmentId" value={formData.departmentId} onChange={handleChange} required>
+                            {departments.map(d => (<option key={d.id} value={d.id}>{d.name}</option>))}
+                        </select></label>
 
                     <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
                         {isSubmitting ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Register Employee')}
