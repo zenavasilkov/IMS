@@ -7,6 +7,8 @@ using IMS.Presentation.DTOs.UpdateDTO;
 using IMS.Presentation.Routing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Filters;
+using Shared.Pagination;
 using static IMS.Presentation.ApiConstants.Permissions;
 
 namespace IMS.Presentation.Controllers;
@@ -18,11 +20,18 @@ public class InternshipsController(IInternshipService service, IMapper mapper) :
 {
     [Authorize(Internships.Read)]
     [HttpGet]
-    public async Task<IEnumerable<InternshipDto>> GetAll(CancellationToken cancellationToken)
+    public async Task<PagedList<InternshipDto>> GetAll(
+        [FromQuery] PaginationParameters paginationParameters,
+        [FromQuery] InternshipFilteringParameters filteringParameters,
+        CancellationToken cancellationToken)
     {
-        var internships = await service.GetAllAsync(cancellationToken: cancellationToken);
+        var internships = await service.GetAllInternshipsAsync(
+            paginationParameters,
+            filteringParameters,
+            false,
+            cancellationToken);
 
-        var internshipDtos = mapper.Map<IEnumerable<InternshipDto>>(internships); 
+        var internshipDtos = mapper.Map<PagedList<InternshipDto>>(internships); 
 
         return internshipDtos;
     }
@@ -64,16 +73,5 @@ public class InternshipsController(IInternshipService service, IMapper mapper) :
         var updatedInternshipDto = mapper.Map<InternshipDto>(updatedInternshipModel);
 
         return updatedInternshipDto;
-    }
-
-    [Authorize(Internships.Read)]
-    [HttpGet(ApiRoutes.Internships.InternshipsByMentorId)]
-    public async Task<List<InternshipDto>> GetInternshipsByMentorId([FromRoute] Guid mentorId,  CancellationToken cancellationToken)
-    {
-        var internships = await service.GetInternshipsByMentorIdAsync(mentorId, cancellationToken : cancellationToken);
-
-        var internshipDtos = mapper.Map<List<InternshipDto>>(internships);
-
-        return internshipDtos;
     }
 }

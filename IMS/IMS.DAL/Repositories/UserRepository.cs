@@ -5,6 +5,7 @@ using Shared.Enums;
 using Shared.Pagination;
 using System.Linq.Expressions;
 using IMS.DAL.Builders;
+using Shared.Filters;
 
 namespace IMS.DAL.Repositories;
 

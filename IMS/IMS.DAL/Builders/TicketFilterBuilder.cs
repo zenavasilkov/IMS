@@ -5,8 +5,8 @@ namespace IMS.DAL.Builders;
 
 public interface ITicketFilterBuilder
 {
-    ITicketFilterBuilder WithTitle(string? Title);
-    ITicketFilterBuilder WithDescription(string? Description);
+    ITicketFilterBuilder WithTitle(string? title);
+    ITicketFilterBuilder WithDescription(string? description);
     ITicketFilterBuilder WithStatus(TicketStatus? status);
     ITicketFilterBuilder WithBoard(Guid? boardId);
     ITicketFilterBuilder WithDeadline(DateTime? deadline);
@@ -53,15 +53,15 @@ public class TicketFilterBuilder : ITicketFilterBuilder
         return this;
     }
 
-    public ITicketFilterBuilder WithTitle(string? Title)
+    public ITicketFilterBuilder WithTitle(string? title)
     {
-        _title = Title;
+        _title = title;
         return this;
     }
 
-    public ITicketFilterBuilder WithDescription(string? Description)
+    public ITicketFilterBuilder WithDescription(string? description)
     {
-        _description = Description;
+        _description = description;
         return this;
     }
 

@@ -1,12 +1,14 @@
-﻿using IMS.DAL.Entities; 
+﻿using IMS.DAL.Entities;
+using Shared.Filters;
+using Shared.Pagination;
 
 namespace IMS.DAL.Repositories.Interfaces;
 
 public interface IFeedbackRepository : IRepository<Feedback>
 {
-    Task<List<Feedback>> GetFeedbacksByTicketIdAsync(Guid id, CancellationToken cancellationToken = default);
-
-    Task<List<Feedback>> GetFeedbacksSentByUserAsync(Guid userId, CancellationToken cancellationToken = default);
-
-    Task<List<Feedback>> GetFeedbacksAddressedToUserAsync(Guid userId, CancellationToken cancellationToken = default);
+    Task<PagedList<Feedback>> GetAllAsync(
+        PaginationParameters paginationParameters,
+        FeedbackFilteringParameters filter,
+        bool trackChanges,
+        CancellationToken cancellationToken);
 }

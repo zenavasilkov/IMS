@@ -4,66 +4,18 @@ using IMS.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Shared.Pagination;
 using System.Linq.Expressions;
+using Shared.Filters;
 
 namespace IMS.DAL.Repositories;
 
-public class FeedbackRepository(ImsDbContext context, IFeedbackFilterBuilder filterBuilder, IRepository<Feedback> repository) : IFeedbackRepository
+public class FeedbackRepository(ImsDbContext context, IRepository<Feedback> repository) : IFeedbackRepository
 {
     private readonly DbSet<Feedback> _feedbacks = context.Set<Feedback>();
-    private readonly ImsDbContext _context = context;
 
-    public async Task<List<Feedback>> GetFeedbacksAddressedToUserAsync(Guid userId, CancellationToken cancellationToken = default)
-    {
-        var query = _feedbacks
-            .AsNoTracking()
-            .Include(f => f.Ticket)
-            .AsQueryable();
-
-        var feedbacks = await filterBuilder
-            .WithSentTo(userId)
-            .Build(query)
-            .OrderBy(f => f.Id)
-            .ToListAsync(cancellationToken);
-            
-        return feedbacks;
-    }
-
-    public async Task<List<Feedback>> GetFeedbacksByTicketIdAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        var query = _feedbacks
-            .AsNoTracking()
-            .Include(f => f.Ticket)
-            .AsQueryable();
-
-        var feedbacks = await filterBuilder
-            .WithTicket(id)
-            .Build(query)
-            .OrderBy(f => f.Id)
-            .ToListAsync(cancellationToken);
-
-        return feedbacks;
-    }
-
-    public async Task<List<Feedback>> GetFeedbacksSentByUserAsync(Guid userId, CancellationToken cancellationToken = default)
-    {
-        var query = _feedbacks
-             .AsNoTracking()
-             .Include(f => f.Ticket)
-             .AsQueryable();
-
-        var feedbacks = await filterBuilder
-            .WithSentTo(userId)
-            .Build(query)
-            .OrderBy(f => f.Id)
-            .ToListAsync(cancellationToken);
-            
-        return feedbacks;
-    }
-
-    public async Task<Feedback> CreateAsync(Feedback feedback, CancellationToken cancellationToken = default)
+   public async Task<Feedback> CreateAsync(Feedback feedback, CancellationToken cancellationToken = default)
     {
         var createdFeedback = await _feedbacks.AddAsync(feedback, cancellationToken); 
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
 
         var createdFeedbackWithIncludes = await _feedbacks
             .Include(f => f.SentBy)
@@ -73,10 +25,6 @@ public class FeedbackRepository(ImsDbContext context, IFeedbackFilterBuilder fil
 
         return createdFeedbackWithIncludes;
     }
-
-    public Task<List<Feedback>> GetAllAsync(Expression<Func<Feedback, bool>>? predicate = null,
-        bool trackChanges = false, CancellationToken cancellationTokent = default) =>
-        repository.GetAllAsync(predicate, trackChanges, cancellationTokent);
 
     public Task<PagedList<Feedback>> GetPagedAsync(Expression<Func<Feedback, bool>>? predicate,
         PaginationParameters paginationParameters, bool trackChanges = false, CancellationToken cancellationToken = default) =>
@@ -90,4 +38,44 @@ public class FeedbackRepository(ImsDbContext context, IFeedbackFilterBuilder fil
 
     public Task DeleteAsync(Feedback entity, CancellationToken cancellationToken = default) =>
         repository.DeleteAsync(entity, cancellationToken);
+    
+    public Task<List<Feedback>> GetAllAsync(Expression<Func<Feedback, bool>>? predicate = null,
+        bool trackChanges = false, CancellationToken cancellationTokent = default) =>
+        repository.GetAllAsync(predicate, trackChanges, cancellationTokent);
+    
+    public async Task<PagedList<Feedback>> GetAllAsync(
+        PaginationParameters paginationParameters,
+        FeedbackFilteringParameters filter,
+        bool trackChanges,
+        CancellationToken cancellationToken)
+    {
+        var query = _feedbacks.AsQueryable();
+
+        query = trackChanges ? query : query.AsNoTracking();
+        query = ApplyFilters(query, filter);
+
+        var feedbacks = await query
+            .Skip((paginationParameters.PageNumber - 1) * paginationParameters.PageSize)
+            .Take(paginationParameters.PageSize)
+            .ToListAsync(cancellationToken);
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var feedbackModels = new PagedList<Feedback>(feedbacks, paginationParameters.PageNumber, 
+            paginationParameters.PageSize, totalCount);
+
+        return feedbackModels;
+    }
+
+    private static IQueryable<Feedback> ApplyFilters(IQueryable<Feedback> query, FeedbackFilteringParameters filter)
+    {
+        query = new FeedbackFilterBuilder()
+            .WithComment(filter.Comment)
+            .SentBy(filter.SentById)
+            .SentTo(filter.SentToId)
+            .WithTicket(filter.TicketId)
+            .Build(query);
+
+        return query;
+    }
 }

@@ -13,18 +13,18 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
         await AddEntitiesAsync([ticket1, ticket2]);
 
         //Act
-        var response = await Client.GetAsync(Tickets.Base);
+        var response = await Client.GetAsync($"{Tickets.Base}?PageNumber=1&PageSize=2");
 
         //Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var result = await response.Content.ReadAsStringAsync();
 
-        var tickets = Deserialize<List<TicketDto>>(result);
+        var tickets = Deserialize<PagedList<TicketDto>>(result);
 
         tickets.ShouldNotBeNull();
-        tickets.ShouldContain(t => t.Status == TicketStatus.Done);
-        tickets.ShouldContain(t => t.Status == TicketStatus.ToDo);
+        tickets.Items.ShouldContain(t => t.Status == TicketStatus.Done);
+        tickets.Items.ShouldContain(t => t.Status == TicketStatus.ToDo);
     }
 
     [Fact]
@@ -144,51 +144,6 @@ public class TicketsControllerTests(CustomWebApplicationFactory factory) : TestH
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
-    }
-
-    [Fact]
-    public async Task GetTicketsByBoardId_ShouldReturnTickets_WhenBoardHasTickets()
-    {
-        // Arrange
-        var board = TestDataHelper.CreateBoard();
-        var ticket1 = TestDataHelper.CreateTicket(board: board, status: TicketStatus.ToDo);
-        var ticket2 = TestDataHelper.CreateTicket(board: board, status: TicketStatus.Done);
-
-        await AddEntitiesAsync([ticket1, ticket2]);
-
-        // Act
-        var response = await Client.GetAsync($"{Tickets.Base}/by-board/{board.Id}");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-        var content = await response.Content.ReadAsStringAsync();
-        var tickets = Deserialize<List<TicketDto>>(content);
-
-        tickets.ShouldNotBeNull();
-        tickets.Count.ShouldBe(2);
-        tickets.ShouldContain(t => t.Status == TicketStatus.ToDo);
-        tickets.ShouldContain(t => t.Status == TicketStatus.Done);
-    }
-
-    [Fact]
-    public async Task GetTicketsByBoardId_ShouldReturnEmptyList_WhenBoardHasNoTickets()
-    {
-        // Arrange
-        var board = TestDataHelper.CreateBoard();
-        await AddEntityAsync(board);
-
-        // Act
-        var response = await Client.GetAsync($"{Tickets.Base}/by-board/{board.Id}");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-        var content = await response.Content.ReadAsStringAsync();
-        var tickets = Deserialize<List<TicketDto>>(content);
-
-        tickets.ShouldNotBeNull();
-        tickets.ShouldBeEmpty();
     }
 
     [Fact]

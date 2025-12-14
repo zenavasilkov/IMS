@@ -12,14 +12,14 @@ public class InternshipsControllerTests(CustomWebApplicationFactory factory) : T
         await AddEntitiesAsync([internship1, internship2]);
 
         // Act
-        var response = await Client.GetAsync(Internships.Base);
+        var response = await Client.GetAsync($"{Internships.Base}?PageNumber=1&PageSize=2");
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var contentString = await response.Content.ReadAsStringAsync();
 
-        var internships = Deserialize<List<InternshipDto>>(contentString);
+        var internships = Deserialize<PagedList<InternshipDto>>(contentString);
 
         internships.ShouldNotBeNull();
     }
@@ -52,28 +52,6 @@ public class InternshipsControllerTests(CustomWebApplicationFactory factory) : T
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
-    }
-
-    [Fact]
-    public async Task GetInternshipsByMentorId_ShouldReturnInternshipsForMentor()
-    {
-        // Arrange
-        var mentor = TestDataHelper.CreateUser(role: Role.Mentor);
-        var internship1 = TestDataHelper.CreateInternship(mentor: mentor);
-        var internship2 = TestDataHelper.CreateInternship(mentor: mentor);
-
-        await AddEntitiesAsync([internship1, internship2]);
-
-        // Act
-        var response = await Client.GetAsync($"{Internships.Base}/by-mentor/{mentor.Id}");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-        var result = await response.Content.ReadFromJsonAsync<List<InternshipDto>>();
-
-        result.ShouldNotBeNull();
-        result.Count.ShouldBe(2);
     }
 
     [Fact]

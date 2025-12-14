@@ -2,7 +2,6 @@
 using IMS.BLL.Models;
 using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
-using Shared.Pagination;
 using IMS.DAL.Repositories.Interfaces;
 using AutoMapper;
 using IMS.BLL.Exceptions;

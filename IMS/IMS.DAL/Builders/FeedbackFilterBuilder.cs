@@ -5,8 +5,8 @@ namespace IMS.DAL.Builders;
 public interface IFeedbackFilterBuilder
 {
     IFeedbackFilterBuilder WithTicket(Guid? ticketId);
-    IFeedbackFilterBuilder WithSentBy(Guid? sentById);
-    IFeedbackFilterBuilder WithSentTo(Guid? sentToId);
+    IFeedbackFilterBuilder SentBy(Guid? sentById);
+    IFeedbackFilterBuilder SentTo(Guid? sentToId);
     IFeedbackFilterBuilder WithComment(string? comment);
     IQueryable<Feedback> Build(IQueryable<Feedback> query);
 }
@@ -41,13 +41,13 @@ public class FeedbackFilterBuilder : IFeedbackFilterBuilder
         return this;
     }
 
-    public IFeedbackFilterBuilder WithSentBy(Guid? sentById)
+    public IFeedbackFilterBuilder SentBy(Guid? sentById)
     {
         _sentById = sentById;
         return this;
     }
 
-    public IFeedbackFilterBuilder WithSentTo(Guid? sentToId)
+    public IFeedbackFilterBuilder SentTo(Guid? sentToId)
     {
         _sentToId = sentToId;
         return this;

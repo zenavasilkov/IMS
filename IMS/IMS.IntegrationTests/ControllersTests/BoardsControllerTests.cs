@@ -7,22 +7,23 @@ public class BoardsControllerTests(CustomWebApplicationFactory factory) : TestHe
     {
         // Arrange
         var board1 = TestDataHelper.CreateBoard(title: "Backend Board");
-        var board2 = TestDataHelper.CreateBoard(title: "Frontend Board");
+        var board2 = TestDataHelper.CreateBoard(title: "QA Board");
 
         await AddEntitiesAsync([board1, board2]);
 
         // Act
-        var response = await Client.GetAsync(Boards.Base);
+        var response = await Client.GetAsync($"{Boards.Base}?PageNumber=1&PageSize=100");
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var content = await response.Content.ReadAsStringAsync();
-        var boards = Deserialize<List<BoardDto>>(content);
+        var boards = Deserialize<PagedList<BoardDto>>(content);
 
         boards.ShouldNotBeNull();
-        boards.ShouldContain(b => b.Title == "Backend Board");
-        boards.ShouldContain(b => b.Title == "Frontend Board");
+        
+        boards.Items.ShouldContain(b => b.Id == board1.Id);
+        boards.Items.ShouldContain(b => b.Id == board2.Id);
     }
 
     [Fact]

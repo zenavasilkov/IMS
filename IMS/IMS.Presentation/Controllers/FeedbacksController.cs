@@ -7,6 +7,8 @@ using IMS.Presentation.DTOs.UpdateDTO;
 using IMS.Presentation.Routing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Filters;
+using Shared.Pagination;
 
 namespace IMS.Presentation.Controllers;
 
@@ -17,7 +19,10 @@ public class FeedbacksController(IFeedbackService service, IMapper mapper) : Con
 {
     [Authorize("read:feedbacks")]
     [HttpGet]
-    public async Task<IEnumerable<FeedbackDto>> GetAll(CancellationToken cancellationToken)
+    public async Task<IEnumerable<FeedbackDto>> GetAll(
+        [FromQuery] PaginationParameters paginationParameters,
+        [FromQuery] FeedbackFilteringParameters filter,
+        CancellationToken cancellationToken)
     {
         var feedbacks = await service.GetAllAsync(cancellationToken: cancellationToken); 
 
@@ -35,17 +40,6 @@ public class FeedbacksController(IFeedbackService service, IMapper mapper) : Con
         var feedbackDto = mapper.Map<FeedbackDto>(feedback);
 
         return feedbackDto;
-    }
-
-    [Authorize("read:feedbacks")]
-    [HttpGet(ApiRoutes.Feedbacks.FeedbacksByTicketId)]
-    public async Task<List<FeedbackDto>> GetFeedbacksByTicketId(Guid ticketId, CancellationToken cancellationToken)
-    {
-        var feedbacks = await service.GetFeedbacksByTicketIdAsync(ticketId, cancellationToken: cancellationToken);
-
-        var feedbackDtos = mapper.Map<List<FeedbackDto>>(feedbacks);
-
-        return feedbackDtos;
     }
 
     [Authorize("create:feedbacks")]

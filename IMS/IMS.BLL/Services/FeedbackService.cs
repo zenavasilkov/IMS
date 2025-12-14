@@ -6,6 +6,8 @@ using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
 using IMS.NotificationsCore.Services;
+using Shared.Filters;
+using Shared.Pagination;
 
 namespace IMS.BLL.Services;
 
@@ -61,5 +63,18 @@ public class FeedbackService(
         var updatedFeedbackModel = _mapper.Map<FeedbackModel>(updatedFeedback);
 
         return updatedFeedbackModel;
+    }
+
+    public async Task<PagedList<FeedbackModel>> GetAllAsync(
+        PaginationParameters paginationParameters,
+        FeedbackFilteringParameters filter,
+        bool trackChanges,
+        CancellationToken cancellationToken)
+    {
+        var feedbacks = await repository.GetAllAsync(paginationParameters, filter, trackChanges, cancellationToken);
+        
+        var feedbackModels = _mapper.Map<PagedList<FeedbackModel>>(feedbacks);
+        
+        return feedbackModels;
     }
 }

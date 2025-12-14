@@ -7,6 +7,8 @@ using IMS.Presentation.DTOs.UpdateDTO;
 using IMS.Presentation.Routing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Filters;
+using Shared.Pagination;
 using static IMS.Presentation.ApiConstants.Permissions;
 
 namespace IMS.Presentation.Controllers;
@@ -18,11 +20,14 @@ public class TicketsController(ITicketService service, IMapper mapper) : Control
 {
     [Authorize(Tickets.Read)]
     [HttpGet]
-    public async Task<IEnumerable<TicketDto>> GetAll(CancellationToken cancellationToken)
+    public async Task<PagedList<TicketDto>> GetAll(
+        [FromQuery] PaginationParameters paginationParameters,
+        [FromQuery] TicketFilteringParameters filter,
+        CancellationToken cancellationToken)
     {
-        var tickets = await service.GetAllAsync(cancellationToken: cancellationToken);
+        var tickets = await service.GetAllAsync(paginationParameters, filter, false, cancellationToken);
 
-        var ticketDtos = mapper.Map<IEnumerable<TicketDto>>(tickets);
+        var ticketDtos = mapper.Map<PagedList<TicketDto>>(tickets);
 
         return ticketDtos;
     }
@@ -62,16 +67,5 @@ public class TicketsController(ITicketService service, IMapper mapper) : Control
         var updatedTicketDto = mapper.Map<TicketDto>(updatedTicketModel);
 
         return updatedTicketDto;
-    }
-
-    [Authorize(Tickets.Read)]
-    [HttpGet(ApiRoutes.Tickets.TicketsByBoardId)]
-    public async Task<List<TicketDto>> GetTicketsByBoardId([FromRoute] Guid boardId, CancellationToken cancellationToken)
-    {
-        var tickets = await service.GetTicketsByBoardIdAsync(boardId, cancellationToken : cancellationToken);
-
-        var ticketsDto = mapper.Map<List<TicketDto>>(tickets);
-
-        return ticketsDto;
     }
 }

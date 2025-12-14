@@ -15,7 +15,7 @@ public class FeedbacksControllerTests(CustomWebApplicationFactory factory) : Tes
         await AddEntitiesAsync([feedback1, feedback2]);
 
         // Act
-        var response = await Client.GetAsync(Feedbacks.Base);
+        var response = await Client.GetAsync($"{Feedbacks.Base}?PageNumber=1&PageSize=100");
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
@@ -56,48 +56,6 @@ public class FeedbacksControllerTests(CustomWebApplicationFactory factory) : Tes
 
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
-    }
-
-    [Fact]
-    public async Task GetFeedbacksByTicketId_ShouldReturnList_WhenFeedbacksExist()
-    {
-        // Arrange
-        var ticket = TestDataHelper.CreateTicket();
-        var feedback1 = TestDataHelper.CreateFeedback(ticket : ticket);
-        var feedback2 = TestDataHelper.CreateFeedback(ticket : ticket);
-
-        await AddEntitiesAsync([feedback1, feedback2]);
-
-        // Act
-        var response = await Client.GetAsync($"{Feedbacks.Base}/by-ticket/{ticket.Id}");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-        var result = await response.Content.ReadFromJsonAsync<List<FeedbackDto>>();
-
-        result.ShouldNotBeNull();
-        result.Count.ShouldBe(2);
-        result.All(f => f.TicketId == ticket.Id).ShouldBeTrue();
-    }
-
-    [Fact]
-    public async Task GetFeedbacksByTicketId_ShouldReturnEmptyList_WhenNoFeedbacksExist()
-    {
-        // Arrange
-        var ticket = TestDataHelper.CreateTicket();
-        await AddEntityAsync(ticket);
-
-        // Act
-        var response = await Client.GetAsync($"{Feedbacks.Base}/by-ticket/{ticket.Id}");
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-
-        var result = await response.Content.ReadFromJsonAsync<List<FeedbackDto>>();
-
-        result.ShouldNotBeNull();
-        result.ShouldBeEmpty();
     }
 
     [Fact]

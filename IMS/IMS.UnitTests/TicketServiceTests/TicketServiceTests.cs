@@ -2,34 +2,31 @@
 
 public class TicketServiceTests
 {
-    private readonly IFixture _fixture;
     private readonly Mock<ITicketRepository> _ticketRepositoryMock;
-    private readonly Mock<IBoardRepository> _boardRepositoryMock;
     private readonly Mock<IMapper> _mapperMock;
-    private readonly Mock<IMessageService> _messageServiceMock;
     private readonly TicketService _ticketService;
 
     public TicketServiceTests()
     {
-        _fixture = new Fixture().Customize(new AutoMoqCustomization());
+        var fixture = new Fixture().Customize(new AutoMoqCustomization());
 
-        _fixture.Behaviors
+        fixture.Behaviors
             .OfType<ThrowingRecursionBehavior>()
             .ToList()
-            .ForEach(b => _fixture.Behaviors.Remove(b));
+            .ForEach(b => fixture.Behaviors.Remove(b));
 
-        _fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+        fixture.Behaviors.Add(new OmitOnRecursionBehavior());
 
-        _ticketRepositoryMock = _fixture.Freeze<Mock<ITicketRepository>>();
-        _boardRepositoryMock = _fixture.Freeze<Mock<IBoardRepository>>();
-        _mapperMock = _fixture.Freeze<Mock<IMapper>>();
-        _messageServiceMock = _fixture.Freeze<Mock<IMessageService>>();
+        _ticketRepositoryMock = fixture.Freeze<Mock<ITicketRepository>>();
+        var boardRepositoryMock = fixture.Freeze<Mock<IBoardRepository>>();
+        _mapperMock = fixture.Freeze<Mock<IMapper>>();
+        var messageServiceMock = fixture.Freeze<Mock<IMessageService>>();
 
         _ticketService = new TicketService(
             _ticketRepositoryMock.Object, 
-            _boardRepositoryMock.Object, 
+            boardRepositoryMock.Object, 
             _mapperMock.Object,
-            _messageServiceMock.Object);
+            messageServiceMock.Object);
     }
 
     [Theory, CustomAutoData]
@@ -66,23 +63,5 @@ public class TicketServiceTests
         await act.Should().ThrowAsync<NotFoundException>().WithMessage($"Ticket with ID {id} was not found");
 
         _ticketRepositoryMock.Verify(r => r.GetByIdAsync(id, false, cancellationToken), Times.Once());
-    }
-
-    [Theory, CustomAutoData]
-    public async Task GetTicketsByBoardIdAsync_ShouldReturnListOfTicketModels_WhenBoardExists(Guid boardId,
-        List<Ticket> tickets, List<TicketModel> ticketModels, CancellationToken cancellationToken)
-    {
-        //Arrange
-        _ticketRepositoryMock.Setup(r => r.GetAllAsync(t => t.BoardId == boardId, false, cancellationToken)).ReturnsAsync(tickets);
-        _mapperMock.Setup(m => m.Map<List<TicketModel>>(tickets)).Returns(ticketModels);
-
-        //Act
-        var result = await _ticketService.GetTicketsByBoardIdAsync(boardId, false, cancellationToken);
-
-        //Assert
-        result.Should().BeEquivalentTo(ticketModels);
-
-        _ticketRepositoryMock.Verify(r => r.GetAllAsync(t => t.BoardId == boardId, false, cancellationToken), Times.Once());
-        _mapperMock.Verify(m => m.Map<List<TicketModel>>(tickets), Times.Once());
     }
 }

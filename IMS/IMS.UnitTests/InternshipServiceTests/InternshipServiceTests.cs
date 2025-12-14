@@ -135,24 +135,4 @@ public class InternshipServiceTests
         // Assert
         await act.Should().ThrowAsync<IncorrectAssignmentException>().WithMessage("User assigned to role mentor is not a mentor");
     }
-
-    [Theory, CustomAutoData]
-    public async Task GetInternshipsByMentorIdAsync_ShouldReturnListOfInternshipModels_WhenMentorExists(Guid mentorId,
-       List<Internship> internships, List<InternshipModel> internshipModels,CancellationToken cancellationToken)
-    {
-        // Arrange
-        _internshipRepositoryMock .Setup(r => r.GetAllAsync(i => i.MentorId == mentorId, false, cancellationToken))
-            .ReturnsAsync(internships);
-
-        _mapperMock.Setup(m => m.Map<List<InternshipModel>>(internships)) .Returns(internshipModels);
-
-        // Act
-        var result = await _internshipService.GetInternshipsByMentorIdAsync(mentorId, false, cancellationToken);
-
-        // Assert
-        result.Should().BeEquivalentTo(internshipModels);
-
-        _internshipRepositoryMock.Verify(r => r.GetAllAsync(i => i.MentorId == mentorId, false, cancellationToken), Times.Once);
-        _mapperMock.Verify(m => m.Map<List<InternshipModel>>(internships), Times.Once);
-    }
 }

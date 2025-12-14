@@ -2,9 +2,9 @@
 
 public class BoardDto
 {
-    public Guid Id { get; set; }
-    public required string Title { get; set; } 
-    public required string Description { get; set; } 
-    public Guid CreatedById { get; set; }  
-    public Guid CreatedToId { get; set; }
+    public Guid Id { get; init; }
+    public required string Title { get; init; } 
+    public required string Description { get; init; } 
+    public Guid CreatedById { get; init; }  
+    public Guid CreatedToId { get; init; }
 }

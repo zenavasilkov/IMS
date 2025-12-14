@@ -8,6 +8,7 @@ using IMS.Presentation.Routing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Enums;
+using Shared.Filters;
 using Shared.Pagination;
 using static IMS.Presentation.ApiConstants.Permissions;
 

@@ -4,11 +4,11 @@ using IMS.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Shared.Pagination;
 using System.Linq.Expressions;
+using Shared.Filters;
 
 namespace IMS.DAL.Repositories;
 
-public class InternshipRepository(ImsDbContext context, IInternshipFilterBuilder filterBuilder,
-    IRepository<Internship> repository) : IInternshipRepository
+public class InternshipRepository(ImsDbContext context, IRepository<Internship> repository) : IInternshipRepository
 {
     private readonly DbSet<Internship> _internships = context.Set<Internship>();
 
@@ -17,6 +17,44 @@ public class InternshipRepository(ImsDbContext context, IInternshipFilterBuilder
 
     public Task DeleteAsync(Internship entity, CancellationToken cancellationToken = default) =>
         repository.DeleteAsync(entity, cancellationToken);
+
+    public async Task<PagedList<Internship>> GetAllAsync(
+        PaginationParameters paginationParameters,
+        InternshipFilteringParameters filter,
+        bool trackChanges = false,
+        CancellationToken cancellationToken = default)
+    {
+        var query = _internships.AsQueryable();
+
+        query = trackChanges ? query : query.AsNoTracking();
+        query = ApplyFilters(query, filter);
+
+        var internships = await query
+            .Skip((paginationParameters.PageNumber - 1) * paginationParameters.PageSize)
+            .Take(paginationParameters.PageSize)
+            .ToListAsync(cancellationToken);
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var pagedList = new PagedList<Internship>(internships, paginationParameters.PageNumber, 
+            paginationParameters.PageSize, totalCount);
+
+        return pagedList;
+    }
+    
+    private static IQueryable<Internship> ApplyFilters(IQueryable<Internship> query, InternshipFilteringParameters filter)
+    {
+        query = new InternshipFilterBuilder()
+            .WithIntern(filter.InternId)
+            .WithMentor(filter.MentorId)
+            .WithHumanResourcesManager(filter.HrManagerId)
+            .StarterAfter(filter.StartedAfter)
+            .StartedBefore(filter.StartedBefore)
+            .WithStatus(filter.Status)
+            .Build(query);
+
+        return query;
+    }
 
     public Task<List<Internship>> GetAllAsync(Expression<Func<Internship, bool>>? predicate = null,
         bool trackChanges = false, CancellationToken cancellationTokent = default) =>
@@ -35,23 +73,6 @@ public class InternshipRepository(ImsDbContext context, IInternshipFilterBuilder
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
         return internship;
-    }
-
-    public async Task<Internship> GetInternshipsByInternIdAsync(Guid internId, CancellationToken cancellationToken = default)
-    {
-        var query = _internships
-            .AsNoTracking()
-            .Include(i => i.Intern)
-            .Include(i => i.Mentor)
-            .Include(i => i.HumanResourcesManager)
-            .AsQueryable();
-
-        var internships = await filterBuilder
-            .WithIntern(internId)
-            .Build(query)
-            .FirstAsync(cancellationToken);
-
-        return internships;
     }
 
     public Task<PagedList<Internship>> GetPagedAsync(Expression<Func<Internship, bool>>? predicate,

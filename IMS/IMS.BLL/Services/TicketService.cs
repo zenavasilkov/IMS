@@ -6,6 +6,8 @@ using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
 using IMS.NotificationsCore.Services;
+using Shared.Filters;
+using Shared.Pagination;
 
 namespace IMS.BLL.Services;
 
@@ -45,6 +47,19 @@ public class TicketService(
         return updatedTicketModel;
     }
 
+    public async Task<PagedList<TicketModel>> GetAllAsync(
+        PaginationParameters paginationParameters,
+        TicketFilteringParameters filter,
+        bool trackChanges,
+        CancellationToken cancellationToken = default)
+    {
+        var tickets = await repository.GetAllAsync(paginationParameters, filter, trackChanges, cancellationToken);
+        
+        var ticketModels = _mapper.Map<PagedList<TicketModel>>(tickets);
+        
+        return ticketModels;
+    }
+
     public override async Task<TicketModel> CreateAsync(TicketModel ticketModel,
         CancellationToken cancellationToken = default)
     {
@@ -62,18 +77,5 @@ public class TicketService(
         await messageService.NotifyTicketCreated(message, cancellationToken);
 
         return createdTicketModel;
-    }
-
-    public async Task<List<TicketModel>> GetTicketsByBoardIdAsync(Guid id, bool trackChanges = false,
-        CancellationToken cancellationToken = default)
-    {
-        if (await boardRepository.GetByIdAsync(id, cancellationToken: cancellationToken) is null)
-            throw new NotFoundException($"Board with ID {id} was not found");
-
-        var tickets = await repository.GetAllAsync(t => t.BoardId == id, false, cancellationToken);
-
-        var ticketModels = _mapper.Map<List<TicketModel>>(tickets);
-
-        return ticketModels;
     }
 }

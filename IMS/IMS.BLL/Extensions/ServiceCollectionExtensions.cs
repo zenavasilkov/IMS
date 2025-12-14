@@ -41,7 +41,8 @@ namespace IMS.BLL.Extensions
                     .AddScoped<ITicketService, TicketService>() 
                     .AddScoped<IService<BoardModel, Board>, BoardService>()
                     .AddScoped<IInternshipService, InternshipService>()
-                    .AddScoped<IFeedbackService, FeedbackService>();
+                    .AddScoped<IFeedbackService, FeedbackService>()
+                    .AddScoped<IBoardService, BoardService>();
 
             return services;
         }

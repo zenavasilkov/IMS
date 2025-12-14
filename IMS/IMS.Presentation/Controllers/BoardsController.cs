@@ -8,21 +8,26 @@ using IMS.Presentation.DTOs.UpdateDTO;
 using IMS.Presentation.Routing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Filters;
+using Shared.Pagination;
 
 namespace IMS.Presentation.Controllers;
 
 [Authorize]
 [ApiController]
 [Route(ApiRoutes.Boards.Base)]
-public class BoardsController(IService<BoardModel, Board> boardService, IMapper mapper) : ControllerBase
+public class BoardsController(IBoardService boardService, IMapper mapper) : ControllerBase
 {
     [Authorize("read:boards")]
     [HttpGet]
-    public async Task<IEnumerable<BoardDto>> GetAll(CancellationToken cancellationToken)
+    public async Task<PagedList<BoardDto>> GetAll(
+        [FromQuery] PaginationParameters paginationParameters,
+        [FromQuery] BoardFilteringParameters filter,
+        CancellationToken cancellationToken)
     {
-        var boards = await boardService.GetAllAsync(cancellationToken: cancellationToken); 
+        var boards = await boardService.GetAllAsync(paginationParameters, filter, false, cancellationToken); 
 
-        var boardDtos = mapper.Map<IEnumerable<BoardDto>>(boards); 
+        var boardDtos = mapper.Map<PagedList<BoardDto>>(boards); 
 
         return boardDtos;
     }
