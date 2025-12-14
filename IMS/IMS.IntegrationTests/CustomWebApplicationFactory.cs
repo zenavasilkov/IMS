@@ -18,8 +18,6 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment("Tests");
-        
         builder.ConfigureServices(services =>
         {
             services.AddAuthentication("Test")

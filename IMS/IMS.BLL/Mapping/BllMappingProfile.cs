@@ -39,6 +39,8 @@ public class BllMappingProfile : Profile
             .ReverseMap();
 
         CreateMap<PagedList<User>, PagedList<UserModel>>();
+        
+        CreateMap<PagedList<Internship>, PagedList<InternshipModel>>();
 
         this.Internal().ForAllMaps((typeMap, mapExpr) =>
         {

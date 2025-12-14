@@ -1,4 +1,6 @@
-﻿namespace IMS.UnitTests.UserServiceTests;
+﻿using Shared.Filters;
+
+namespace IMS.UnitTests.UserServiceTests;
 
 public class UserServiceGetUsersTests : UserServiceTestsBase
 {

@@ -7,6 +7,7 @@ using Shared.Enums;
 using Shared.Pagination;
 using IMS.NotificationsCore.Services;
 using IMS.BLL.Mapping;
+using Shared.Filters;
 using User = IMS.DAL.Entities.User;
 
 namespace IMS.BLL.Services;

@@ -5,6 +5,8 @@ using IMS.BLL.Services.Interfaces;
 using IMS.DAL.Entities;
 using IMS.DAL.Repositories.Interfaces;
 using Shared.Enums;
+using Shared.Filters;
+using Shared.Pagination;
 
 namespace IMS.BLL.Services;
 
@@ -58,13 +60,16 @@ public class InternshipService(IInternshipRepository repository, IUserRepository
         return createdInternshipModel;
     }
 
-    public async Task<List<InternshipModel>> GetInternshipsByMentorIdAsync(Guid id, 
-        bool trackChanges = false, CancellationToken cancellationToken = default)
+    public async Task<PagedList<InternshipModel>> GetAllInternshipsAsync(
+        PaginationParameters paginationParameters,
+        InternshipFilteringParameters filter,
+        bool trackChanges = false,
+        CancellationToken cancellationToken = default)
     {
-        var internships = await repository.GetAllAsync(i => i.MentorId == id, false, cancellationToken);
-
-        var internshipModels = _mapper.Map<List<InternshipModel>>(internships);
-
+        var internships = await repository.GetAllAsync(paginationParameters, filter, trackChanges, cancellationToken);
+        
+        var internshipModels = _mapper.Map<PagedList<InternshipModel>>(internships);
+        
         return internshipModels;
     }
 }

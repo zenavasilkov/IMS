@@ -52,5 +52,7 @@ public class DtoMappingProfile : Profile
         CreateMap<UserModel, UserDto>();
 
         CreateMap<PagedList<UserModel>, PagedList<UserDto>>();
+        
+        CreateMap<PagedList<InternshipModel>, PagedList<InternshipDto>>();
     }
 }

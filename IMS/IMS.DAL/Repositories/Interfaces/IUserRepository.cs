@@ -1,5 +1,6 @@
 ﻿using IMS.DAL.Entities;
 using Shared.Enums;
+using Shared.Filters;
 using Shared.Pagination;
 
 namespace IMS.DAL.Repositories.Interfaces
