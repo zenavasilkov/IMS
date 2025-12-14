@@ -1,11 +1,14 @@
 ﻿using IMS.DAL.Entities;
-using Shared.Enums;
+using Shared.Filters;
+using Shared.Pagination;
 
 namespace IMS.DAL.Repositories.Interfaces;
 
 public interface ITicketRepository : IRepository<Ticket>
 {
-    Task<List<Ticket>> GetTicketsByBoardId(Guid Id, CancellationToken cancellationToken); 
-
-    Task<List<Ticket>> GetTicketsByBoardIdAndStatus(Guid Id, TicketStatus status, CancellationToken cancellationToken);
+    Task<PagedList<Ticket>> GetAllAsync(
+        PaginationParameters paginationParameters,
+        TicketFilteringParameters filter,
+        bool trackChanges,
+        CancellationToken cancellationToken = default);
 }

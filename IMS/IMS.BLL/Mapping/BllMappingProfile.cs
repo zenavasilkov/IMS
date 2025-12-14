@@ -41,6 +41,12 @@ public class BllMappingProfile : Profile
         CreateMap<PagedList<User>, PagedList<UserModel>>();
         
         CreateMap<PagedList<Internship>, PagedList<InternshipModel>>();
+        
+        CreateMap<PagedList<Board>, PagedList<BoardModel>>();
+        
+        CreateMap<PagedList<Ticket>, PagedList<TicketModel>>();
+        
+        CreateMap<PagedList<Feedback>, PagedList<FeedbackModel>>();
 
         this.Internal().ForAllMaps((typeMap, mapExpr) =>
         {

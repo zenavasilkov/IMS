@@ -54,5 +54,11 @@ public class DtoMappingProfile : Profile
         CreateMap<PagedList<UserModel>, PagedList<UserDto>>();
         
         CreateMap<PagedList<InternshipModel>, PagedList<InternshipDto>>();
+        
+        CreateMap<PagedList<TicketModel>, PagedList<TicketDto>>();
+        
+        CreateMap<PagedList<BoardModel>, PagedList<BoardDto>>();
+
+        CreateMap<PagedList<FeedbackModel>, PagedList<FeedbackDto>>();
     }
 }

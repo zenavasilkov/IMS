@@ -8,8 +8,7 @@ using Shared.Filters;
 
 namespace IMS.DAL.Repositories;
 
-public class InternshipRepository(ImsDbContext context, IInternshipFilterBuilder filterBuilder,
-    IRepository<Internship> repository) : IInternshipRepository
+public class InternshipRepository(ImsDbContext context, IRepository<Internship> repository) : IInternshipRepository
 {
     private readonly DbSet<Internship> _internships = context.Set<Internship>();
 

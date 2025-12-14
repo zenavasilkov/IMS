@@ -1,12 +1,16 @@
 ﻿using IMS.DAL.Entities;
+using Shared.Filters;
+using Shared.Pagination;
 
 namespace IMS.DAL.Repositories.Interfaces;
 
 public interface IBoardRepository : IRepository<Board>
 {
-    Task<List<Board>> GetBoardsCreatedByUserAsync(Guid userId, CancellationToken cancellationToken = default);
+    Task<PagedList<Board>> GetAllAsync(
+        PaginationParameters paginationParameters,
+        BoardFilteringParameters filter,
+        bool trackChanges,
+        CancellationToken cancellationToken = default);
 
-    Task<Board?> GetBoardAssignedToUserAsync(Guid userId, CancellationToken cancellationToken = default); 
-
-    Task<Board> GetBoardByTicketIdAsync(Guid id, CancellationToken cancellationToken = default); 
+    Task<Board?> GetBoardByTicketIdAsync(Guid id, CancellationToken cancellationToken = default); 
 }
