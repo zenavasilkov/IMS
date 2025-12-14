@@ -9,8 +9,8 @@ public interface IBoardService : IService<BoardModel, Board>
 {
     Task<PagedList<BoardModel>> GetAllAsync(
         PaginationParameters paginationParameters,
-        BoardFilteringParameters filteringParameters,
-        bool trackChanges,
+        BoardFilteringParameters filter,
+        bool trackChanges = false,
         CancellationToken cancellationToken = default
     );
 }

@@ -26,10 +26,6 @@ public class FeedbackRepository(ImsDbContext context, IRepository<Feedback> repo
         return createdFeedbackWithIncludes;
     }
 
-    public Task<List<Feedback>> GetAllAsync(Expression<Func<Feedback, bool>>? predicate = null,
-        bool trackChanges = false, CancellationToken cancellationTokent = default) =>
-        repository.GetAllAsync(predicate, trackChanges, cancellationTokent);
-
     public Task<PagedList<Feedback>> GetPagedAsync(Expression<Func<Feedback, bool>>? predicate,
         PaginationParameters paginationParameters, bool trackChanges = false, CancellationToken cancellationToken = default) =>
         repository.GetPagedAsync(predicate, paginationParameters, trackChanges, cancellationToken);
@@ -42,7 +38,11 @@ public class FeedbackRepository(ImsDbContext context, IRepository<Feedback> repo
 
     public Task DeleteAsync(Feedback entity, CancellationToken cancellationToken = default) =>
         repository.DeleteAsync(entity, cancellationToken);
-
+    
+    public Task<List<Feedback>> GetAllAsync(Expression<Func<Feedback, bool>>? predicate = null,
+        bool trackChanges = false, CancellationToken cancellationTokent = default) =>
+        repository.GetAllAsync(predicate, trackChanges, cancellationTokent);
+    
     public async Task<PagedList<Feedback>> GetAllAsync(
         PaginationParameters paginationParameters,
         FeedbackFilteringParameters filter,

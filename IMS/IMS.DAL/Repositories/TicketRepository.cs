@@ -39,10 +39,6 @@ public class TicketRepository(ImsDbContext context, IRepository<Ticket> reposito
         return updatedTicketWithIncludes;
     }
 
-    public Task<List<Ticket>> GetAllAsync(Expression<Func<Ticket, bool>>? predicate = null, 
-        bool trackChanges = false, CancellationToken cancellationTokent = default) =>
-        repository.GetAllAsync(predicate, trackChanges, cancellationTokent);
-
     public Task<PagedList<Ticket>> GetPagedAsync(Expression<Func<Ticket, bool>>? predicate, 
         PaginationParameters paginationParameters, bool trackChanges = false, CancellationToken cancellationToken = default) =>
         repository.GetPagedAsync(predicate, paginationParameters, trackChanges, cancellationToken);
@@ -52,7 +48,11 @@ public class TicketRepository(ImsDbContext context, IRepository<Ticket> reposito
 
     public Task DeleteAsync(Ticket entity, CancellationToken cancellationToken = default) =>
         repository.DeleteAsync(entity, cancellationToken);
-
+    
+    public Task<List<Ticket>> GetAllAsync(Expression<Func<Ticket, bool>>? predicate = null, 
+        bool trackChanges = false, CancellationToken cancellationTokent = default) =>
+        repository.GetAllAsync(predicate, trackChanges, cancellationTokent);
+    
     public async Task<PagedList<Ticket>> GetAllAsync(
         PaginationParameters paginationParameters,
         TicketFilteringParameters filter,
