@@ -9,7 +9,7 @@ public interface IBoardRepository : IRepository<Board>
     Task<PagedList<Board>> GetAllAsync(
         PaginationParameters paginationParameters,
         BoardFilteringParameters filter,
-        bool trackChanges,
+        bool trackChanges = false,
         CancellationToken cancellationToken = default);
 
     Task<Board?> GetBoardByTicketIdAsync(Guid id, CancellationToken cancellationToken = default); 

@@ -31,7 +31,7 @@ public class BoardService(IBoardRepository repository, IMapper mapper) : Service
     public async Task<PagedList<BoardModel>> GetAllAsync(
         PaginationParameters paginationParameters,
         BoardFilteringParameters filter,
-        bool trackChanges,
+        bool trackChanges = false,
         CancellationToken cancellationToken = default)
     {
         var boards = await repository.GetAllAsync(paginationParameters, filter, trackChanges, cancellationToken);
