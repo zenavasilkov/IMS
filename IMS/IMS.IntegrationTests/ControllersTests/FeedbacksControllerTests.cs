@@ -20,11 +20,11 @@ public class FeedbacksControllerTests(CustomWebApplicationFactory factory) : Tes
         // Assert
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
-        var result = await response.Content.ReadFromJsonAsync<List<FeedbackDto>>();
+        var result = await response.Content.ReadFromJsonAsync<PagedList<FeedbackDto>>();
 
         result.ShouldNotBeNull();
-        result.ShouldContain(f => f.SentById == sender.Id);
-        result.ShouldContain(f => f.AddressedToId == recipient.Id);
+        result.Items.ShouldContain(f => f.SentById == sender.Id);
+        result.Items.ShouldContain(f => f.AddressedToId == recipient.Id);
     }
 
     [Fact]

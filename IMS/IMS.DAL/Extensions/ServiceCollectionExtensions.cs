@@ -52,6 +52,8 @@ public static class ServiceCollectionExtensions
             .AddScoped<IFeedbackFilterBuilder, FeedbackFilterBuilder>()
             .AddScoped<IInternshipFilterBuilder, InternshipFilterBuilder>()
             .AddScoped<IUserFilterBuilder, UserFilterBuilder>()
+            .AddScoped<UpdateTimestampsInterceptor>()
+            .AddScoped<CreateUserInterceptor>()
             .AddScoped<UpdateTimestampsInterceptor>();
 
         return services;

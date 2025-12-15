@@ -24,7 +24,7 @@ public class FeedbacksController(IFeedbackService service, IMapper mapper) : Con
         [FromQuery] FeedbackFilteringParameters filter,
         CancellationToken cancellationToken)
     {
-        var feedbacks = await service.GetAllAsync(cancellationToken: cancellationToken); 
+        var feedbacks = await service.GetAllAsync(paginationParameters, filter, false, cancellationToken); 
 
         var feedbackDtos = mapper.Map<PagedList<FeedbackDto>>(feedbacks);
          
