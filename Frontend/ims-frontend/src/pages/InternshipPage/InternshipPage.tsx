@@ -45,7 +45,6 @@ const getStatusData = (status: InternshipStatus) => {
             className = 'statusCancelled';
             break;
         default:
-            className = '';
     }
     return { text, className };
 };
@@ -56,7 +55,7 @@ const InternshipPage: React.FC = () => {
     const [allUsersMap, setAllUsersMap] = useState<Map<string, UserDto>>(new Map());
     const [hrManagerUser, setHrManagerUser] = useState<UserDto | undefined>(undefined);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [internshipToEdit, setInternshipToEdit] = useState<any | undefined>(undefined);
+    const [internshipToEdit, setInternshipToEdit] = useState<any>(undefined);
     const { internships, loading, error, page, totalPages, pageSize } = useSelector((state: RootState) => state.internship);
     const [isUserDataLoading, setIsUserDataLoading] = useState(true);
     const hrManagerId = hrManagerUser?.id;
@@ -94,7 +93,7 @@ const InternshipPage: React.FC = () => {
 
             const fetchCurrentUser = async () => {
                 try {
-                    const userDto = await fetchCurrentUserByEmail(auth0User.email!);
+                    const userDto = await fetchCurrentUserByEmail(auth0User.email as string);
                     setHrManagerUser(userDto);
 
                     await fetchAndMapAllUsers();

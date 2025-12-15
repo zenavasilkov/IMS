@@ -11,13 +11,14 @@ namespace IMS.DAL.Caching;
 public class CachedRepository<TEntity>(Repository<TEntity> decorated,
     IDistributedCache distributedCache, ImsDbContext context) : IRepository<TEntity> where TEntity : EntityBase
 {
-    private readonly ImsDbContext _context = context;
-
     public Task<TEntity> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
         => decorated.CreateAsync(entity, cancellationToken);
 
-    public Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
-        => decorated.DeleteAsync(entity, cancellationToken);
+    public async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+    {
+        await decorated.DeleteAsync(entity, cancellationToken);
+        await distributedCache.RemoveAsync(entity.Id.ToString(), cancellationToken);
+    }
 
     public Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null,
         bool trackChanges = false, CancellationToken cancellationTokent = default) =>
@@ -39,7 +40,7 @@ public class CachedRepository<TEntity>(Repository<TEntity> decorated,
 
         var entityFromCache = JsonConvert.DeserializeObject<TEntity?>(cachedEntity);
 
-        if (entityFromCache is not null) _context.Set<TEntity>().Attach(entityFromCache);
+        if (entityFromCache is not null) context.Set<TEntity>().Attach(entityFromCache);
 
         return entityFromCache;
     }
@@ -48,6 +49,11 @@ public class CachedRepository<TEntity>(Repository<TEntity> decorated,
         PaginationParameters paginationParameters, bool trackChanges = false, CancellationToken cancellationToken = default) =>
         decorated.GetPagedAsync(predicate, paginationParameters, trackChanges, cancellationToken);
 
-    public Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default) =>
-        decorated.UpdateAsync(entity, cancellationToken);
+    public async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+    { 
+        var updatedEntity =  await decorated.UpdateAsync(entity, cancellationToken);
+        await distributedCache.RemoveAsync(entity.Id.ToString(), cancellationToken);
+        return updatedEntity;
+    }
+        
 }

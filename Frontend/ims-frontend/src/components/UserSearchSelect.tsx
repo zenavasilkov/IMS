@@ -7,7 +7,6 @@ import type {Role} from "../entities/ims/enums.ts";
 interface UserSearchSelectProps {
     label: string;
     onSelect: (id: string) => void;
-    name: string;
     required: boolean;
     currentUserId: string;
     filterRole?: Role;
@@ -31,6 +30,7 @@ const UserSearchSelect: React.FC<UserSearchSelectProps> = ({ label, onSelect, re
                         setSearchResults(result.items || []);
                     } catch (e) {
                         setSearchResults([]);
+                        console.error(e, "Error during user selecting.")
                     } finally {
                         setIsSearching(false);
                     }

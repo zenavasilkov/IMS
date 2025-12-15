@@ -37,6 +37,7 @@ const InternshipFormModal: React.FC<InternshipFormModalProps> = ({ isOpen, onClo
     const [formData, setFormData] = useState<CreateInternshipDto | UpdateInternshipDto>(getInitialFormData(initialInternship));
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const submitButtonContent = isEditMode ? 'Save Changes' : 'Create Internship'
 
     useEffect(() => {
         setFormData(getInitialFormData(initialInternship));
@@ -127,7 +128,6 @@ const InternshipFormModal: React.FC<InternshipFormModalProps> = ({ isOpen, onClo
 
                 <UserSearchSelect
                     label="Intern"
-                    name="internId"
                     currentUserId={(formData as CreateInternshipDto).internId || ''}
                     onSelect={handleUserSelect('internId')}
                     required
@@ -137,7 +137,6 @@ const InternshipFormModal: React.FC<InternshipFormModalProps> = ({ isOpen, onClo
 
                 <UserSearchSelect
                     label="Mentor"
-                    name="mentorId"
                     currentUserId={(formData as CreateInternshipDto).mentorId || ''}
                     onSelect={handleUserSelect('mentorId')}
                     required
@@ -151,7 +150,7 @@ const InternshipFormModal: React.FC<InternshipFormModalProps> = ({ isOpen, onClo
                 <ModalSelect label="Status" name="status" value={String(formData.status)} onChange={handleChange} required options={statusOptions} />
 
                 <button type="submit" disabled={isSubmitting} className={styles.submitButton}>
-                    {isSubmitting ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Create Internship')}
+                    {isSubmitting ? 'Saving...' : submitButtonContent}
                 </button>
             </form>
         </ModalWrapper>
