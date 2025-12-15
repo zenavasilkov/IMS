@@ -3,6 +3,7 @@ import { userService } from '../../api/services';
 import type { UserDto } from '../../entities/ims/dto/user_dto.ts';
 import type { Role } from '../../entities/ims/enums.ts';
 import { UserSortingParameter } from '../../entities/ims/enums.ts';
+import type {FetchUsersParams} from "../../entities/ims/FetchParameters.ts";
 
 interface UserManagementState {
   users: UserDto[];
@@ -31,15 +32,6 @@ const initialState: UserManagementState = {
   filterRole: '',
   sortParameter: UserSortingParameter.None,
 };
-
-export interface FetchUsersParams {
-  pageNumber: number;
-  pageSize: number;
-  firstName?: string;
-  lastName?: string;
-  role?: Role;
-  sorter?: UserSortingParameter;
-}
 
 export const fetchUsers = createAsyncThunk(
   'userManagement/fetchUsers',

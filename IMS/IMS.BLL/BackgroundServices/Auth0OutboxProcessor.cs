@@ -1,4 +1,5 @@
-﻿using Auth0.ManagementApi.Models;
+﻿using Auth0.Core.Exceptions;
+using Auth0.ManagementApi.Models;
 using IMS.BLL.Exceptions;
 using IMS.BLL.Services;
 using IMS.BLL.Services.Interfaces;
@@ -37,6 +38,8 @@ public class Auth0OutboxProcessor(
 
         foreach (var message in messages)
         {
+            var email = "";
+            
             try
             {
                 var createAuth0User = JsonConvert.DeserializeObject<CreateAuth0User>(message.Content);
@@ -50,6 +53,8 @@ public class Auth0OutboxProcessor(
                     EmailVerified = false,
                     Password = PasswordGenerator.GenerateRandomPassword()
                 };
+
+                email = auth0UserRequest.Email;
                 
                 var auth0User = await auth0Client.Users.CreateAsync(auth0UserRequest);
                 
@@ -67,6 +72,12 @@ public class Auth0OutboxProcessor(
                 message.ProcessedOnUtc = DateTime.UtcNow;
                 
                 logger.LogInformation("User with Email: {Email} was successfully registered in Auth0", createAuth0User.Email);
+            }
+            catch (ErrorApiException auth0Exception) when (auth0Exception.Message.Contains("The user already exists"))
+            {
+                message.ProcessedOnUtc = DateTime.UtcNow;
+                logger.LogWarning("Outbox message {MessageId}: User with Email {Email} already existed. Marked as processed to prevent infinite loop.", 
+                    message.Id, email);
             }
             catch (Exception exception)
             {

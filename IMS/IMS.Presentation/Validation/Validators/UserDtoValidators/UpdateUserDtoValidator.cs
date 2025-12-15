@@ -21,11 +21,11 @@ public class UpdateUserDtoValidator : AbstractValidator<UpdateUserDto>
             .Matches(ValidationConstants.PhoneNumberFormat)
             .WithMessage("Invalid phone number format.");
 
-        RuleFor(x => x.Firstname)
+        RuleFor(x => x.FirstName)
             .NotEmpty()
             .WithMessage(ValidationConstants.NotEmpty);
 
-        RuleFor(x => x.Lastname)
+        RuleFor(x => x.LastName)
             .NotEmpty()
             .WithMessage(ValidationConstants.NotEmpty);
 

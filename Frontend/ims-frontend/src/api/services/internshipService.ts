@@ -1,9 +1,11 @@
 import { ImsApi } from '../axios';
 import type { InternshipDto, CreateInternshipDto, UpdateInternshipDto } from '../../entities/ims/dto/internship_dto';
+import type {FetchInternshipsParams} from "../../entities/ims/FetchParameters.ts";
+import type {InternshipDtoPagedList} from "../../entities/ims/Pagination.ts";
 
 export const internshipService = {
-    getAllInternships: async (): Promise<InternshipDto[]> => {
-        const response = await ImsApi.get<InternshipDto[]>('/internships');
+    getAllInternships: async (params: FetchInternshipsParams): Promise<InternshipDtoPagedList> => {
+        const response = await ImsApi.get<InternshipDtoPagedList>('/internships', { params: params });
         return response.data;
     },
 
@@ -21,9 +23,4 @@ export const internshipService = {
         const response = await ImsApi.put<InternshipDto>(`/internships/${id}`, data);
         return response.data;
     },
-
-    getInternshipsByMentor: async (mentorId: string): Promise<InternshipDto[]> => {
-        const response = await ImsApi.get<InternshipDto[]>(`/internships/by-mentor/${mentorId}`);
-        return response.data;
-    }
 };

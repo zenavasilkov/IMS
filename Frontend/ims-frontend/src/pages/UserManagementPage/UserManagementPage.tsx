@@ -28,12 +28,12 @@ const UserManagementPage: React.FC = () => {
         setUserToEdit(undefined);
         
         dispatch(fetchUsers({
-            pageNumber: page,
-            pageSize: pageSize,
-            firstName: filterFirstName,
-            lastName: filterLastName,
-            role: filterRole || undefined,
-            sorter: sortParameter
+            PageNumber: page,
+            PageSize: pageSize,
+            FirstName: filterFirstName,
+            LastName: filterLastName,
+            Role: filterRole || undefined,
+            Sorter: sortParameter
         }));
     };
 
@@ -50,12 +50,12 @@ const UserManagementPage: React.FC = () => {
     useEffect(() => {
         if (!isAuth0Loading && isAuthenticated) {
             const params = {
-                pageNumber: page,
-                pageSize: pageSize,
-                firstName: filterFirstName || undefined,
-                lastName: filterLastName || undefined,
-                role: filterRole || undefined,
-                sorter: sortParameter
+                PageNumber: page,
+                PageSize: pageSize,
+                FirstName: filterFirstName || undefined,
+                LastName: filterLastName || undefined,
+                Role: filterRole || undefined,
+                Sorter: sortParameter
             };
 
             dispatch(fetchUsers(params));

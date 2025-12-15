@@ -1,6 +1,6 @@
 import { ImsApi } from '../axios';
 import type { UserDto, CreateUserDto, UpdateUserDto, UserDtoPagedList } from '../../entities/ims/dto/user_dto';
-import type { FetchUsersParams } from '../../features/slices/userManagementSlice.ts';
+import type {FetchUsersParams} from "../../entities/ims/FetchParameters.ts";
 
 export const userService = {
     getAllUsers: async (params: FetchUsersParams): Promise<UserDtoPagedList> => {

@@ -1,9 +1,11 @@
 import { ImsApi } from '../axios';
 import type { FeedbackDto, CreateFeedbackDto, UpdateFeedbackDto } from '../../entities/ims/dto/feedback_dto';
+import type {FetchFeedbacksParams} from "../../entities/ims/FetchParameters.ts";
+import type {FeedbackDtoPagedList} from "../../entities/ims/Pagination.ts";
 
 export const feedbackService = {
-    getAllFeedbacks: async (): Promise<FeedbackDto[]> => {
-        const response = await ImsApi.get<FeedbackDto[]>('/feedbacks');
+    getAllFeedbacks: async (params: FetchFeedbacksParams): Promise<FeedbackDtoPagedList> => {
+        const response = await ImsApi.get<FeedbackDtoPagedList>('/feedbacks', { params: params });
         return response.data;
     },
 
@@ -21,9 +23,4 @@ export const feedbackService = {
         const response = await ImsApi.put<FeedbackDto>(`/feedbacks/${id}`, data);
         return response.data;
     },
-
-    getFeedbacksByTicket: async (ticketId: string): Promise<FeedbackDto[]> => {
-        const response = await ImsApi.get<FeedbackDto[]>(`/feedbacks/by-ticket/${ticketId}`);
-        return response.data;
-    }
 };

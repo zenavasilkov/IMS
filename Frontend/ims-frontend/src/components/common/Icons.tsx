@@ -10,3 +10,5 @@ export const LogoutIcon = (props: any) => <svg {...props} viewBox="0 0 24 24" fi
 export const EmployeeIcon = (props: any) => <svg {...props} viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>;
 export const DepartmentIcon = (props: any) => <svg {...props} viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M22 9V7h-2V2H4v5H2v2h2v7c0 1.1.9 2 2 2h4v3h4v-3h4c1.1 0 2-.9 2-2V9h2zm-4 7H6V9h12v7zm-5-3h-2v2h2v-2z"/></svg>;
 export const InterviewIcon = (props: any) => <svg {...props} viewBox="0 0 24 24" fill="none"><path fill="currentColor" d="M16 12H8V9h8v3zm0 4H8v-2h8v2zm5-11H3v18h18V5zm-2 16H5V7h14v14z"/></svg>;
+
+export const InternshipIcon = (props: any) => <svg {...props} viewBox="0 0 24 24" fill="none"> <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.86-7-7.93 0-4.42 3.58-8 8-8s8 3.58 8 8c0 4.07-3.05 7.44-7 7.93V17l-1-.75-1 1zM10 9v6h4V9h-4z"/></svg>

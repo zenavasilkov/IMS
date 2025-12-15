@@ -17,8 +17,8 @@ interface UserFormModalProps {
 const EMPTY_FORM_DATA: CreateUserDto = {
     email: '',
     phoneNumber: '',
-    firstname: '',
-    lastname: '',
+    firstName: '',
+    lastName: '',
     patronymic: '',
     role: Role.Intern,
 };
@@ -32,8 +32,8 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
     const [formData, setFormData] = useState<CreateUserDto | UpdateUserDto>({
         email: initialUser?.email || '',
         phoneNumber: initialUser?.phoneNumber || '',
-        firstname: initialUser?.firstname || '',
-        lastname: initialUser?.lastname || '',
+        firstName: initialUser?.firstName || '',
+        lastName: initialUser?.lastName || '',
         patronymic: initialUser?.patronymic || '',
         role: initialUser?.role || Role.Intern,
     });
@@ -45,8 +45,8 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
             setFormData({
                 email: initialUser.email || '',
                 phoneNumber: initialUser.phoneNumber || '',
-                firstname: initialUser.firstname || '',
-                lastname: initialUser.lastname || '',
+                firstName: initialUser.firstName || '',
+                lastName: initialUser.lastName || '',
                 patronymic: initialUser.patronymic || '',
                 role: initialUser.role,
             });
@@ -115,8 +115,8 @@ const UserFormModal: React.FC<UserFormModalProps> = ({ isOpen, onClose, onSucces
     return (
         <ModalWrapper isOpen={isOpen} onClose={onClose} title={isEditMode ? 'Edit User' : 'Create New User'} error={error}>
             <form onSubmit={handleSubmit} className={styles.form}>
-                <ModalField label="First Name" name="firstname" value={formData.firstname || ''} onChange={handleChange} required />
-                <ModalField label="Last Name" name="lastname" value={formData.lastname || ''} onChange={handleChange} required />
+                <ModalField label="First Name" name="firstName" value={formData.firstName || ''} onChange={handleChange} required />
+                <ModalField label="Last Name" name="lastName" value={formData.lastName || ''} onChange={handleChange} required />
                 <ModalField label="Email" name="email" type="email" value={formData.email || ''} onChange={handleChange} required disabled={isEditMode} />
                 <ModalField label="Phone Number" name="phoneNumber" type="tel" value={formData.phoneNumber || ''} onChange={handleChange} pattern={PHONE_NUMBER_REGEX} title="Phone number must start with an optional '+' and be 2-15 digits (E.164 format)." />
                 <ModalSelect label="Role" name="role" value={String(formData.role)} onChange={handleChange} required options={roleOptions} />

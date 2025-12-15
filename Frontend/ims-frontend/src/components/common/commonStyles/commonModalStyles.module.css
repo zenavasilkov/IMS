@@ -8,7 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2000;
+    z-index: 100;
     animation: fadeIn 0.2s ease-out;
 }
 
@@ -192,4 +192,75 @@
     margin-bottom: 5px;
     max-width: 100%;
     min-width: 100%;
+}
+
+.searchSelectWrapper {
+    position: relative;
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.searchResultsDropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background-color: #333;
+    border: 1px solid #555;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.searchResultItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #444;
+    transition: background-color 0.15s;
+}
+
+.searchResultItem:last-child {
+    border-bottom: none;
+}
+
+.searchResultItem:hover {
+    background-color: #4a4a4a;
+}
+
+.searchResultEmail {
+    font-size: 0.85em;
+    color: #bbb;
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+.spinner {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    border: 2px solid #bbb;
+    border-top-color: #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.noResults {
+    padding: 10px 12px;
+    color: #bbb;
+    text-align: center;
+    font-style: italic;
 }

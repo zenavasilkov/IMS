@@ -1,9 +1,11 @@
 import { ImsApi } from '../axios';
 import type { BoardDto, CreateBoardDto, UpdateBoardDto } from '../../entities/ims/dto/board_dto';
+import type {BoardDtoPagedList} from "../../entities/ims/Pagination.ts";
+import type {FetchBoardsParams} from "../../entities/ims/FetchParameters.ts";
 
 export const boardService = {
-    getAllBoards: async (): Promise<BoardDto[]> => {
-        const response = await ImsApi.get<BoardDto[]>('/boards');
+    getAllBoards: async (params: FetchBoardsParams): Promise<BoardDtoPagedList> => {
+        const response = await ImsApi.get<BoardDtoPagedList>('/boards', { params: params });
         return response.data;
     },
 

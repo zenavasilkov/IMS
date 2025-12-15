@@ -19,14 +19,14 @@ public class FeedbacksController(IFeedbackService service, IMapper mapper) : Con
 {
     [Authorize("read:feedbacks")]
     [HttpGet]
-    public async Task<IEnumerable<FeedbackDto>> GetAll(
+    public async Task<PagedList<FeedbackDto>> GetAll(
         [FromQuery] PaginationParameters paginationParameters,
         [FromQuery] FeedbackFilteringParameters filter,
         CancellationToken cancellationToken)
     {
         var feedbacks = await service.GetAllAsync(cancellationToken: cancellationToken); 
 
-        var feedbackDtos = mapper.Map<IEnumerable<FeedbackDto>>(feedbacks);
+        var feedbackDtos = mapper.Map<PagedList<FeedbackDto>>(feedbacks);
          
         return feedbackDtos;
     }

@@ -114,8 +114,8 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         result.ShouldNotBeNull();
 
         var names = result.Items
-            .Where(u => u.Firstname.StartsWith(prefix))
-            .Select(u => u.Firstname.Replace($"{prefix}_", ""))
+            .Where(u => u.FirstName.StartsWith(prefix))
+            .Select(u => u.FirstName.Replace($"{prefix}_", ""))
             .ToList();
 
         names.ShouldBe(["Alice", "Bob", "Charlie", "Mike"]);
@@ -152,8 +152,8 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         result.ShouldNotBeNull();
 
         var names = result.Items
-            .Where(u => u.Firstname.StartsWith(prefix))
-            .Select(u => u.Firstname.Replace($"{prefix}_", ""))
+            .Where(u => u.FirstName.StartsWith(prefix))
+            .Select(u => u.FirstName.Replace($"{prefix}_", ""))
             .ToList();
 
         names.ShouldBe(["Mike", "Charlie", "Bob", "Alice"]);
@@ -165,8 +165,8 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         // Arrange
         var createDto = new UserDto
         {
-            Firstname = "New",
-            Lastname = "User",
+            FirstName = "New",
+            LastName = "User",
             Patronymic = "Testovich",
             Email = "new.user@test.com",
             PhoneNumber = "+375297180451",
@@ -182,7 +182,7 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         var result = await response.Content.ReadFromJsonAsync<UserDto>();
 
         result.ShouldNotBeNull();
-        result.Firstname.ShouldBe("New");
+        result.FirstName.ShouldBe("New");
         result.Email.ShouldBe("new.user@test.com");
         result.Role.ShouldBe(Role.Intern);
     }
@@ -196,8 +196,8 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         var updateDto = new UpdateUserDto(
             Email : user.Email, 
             PhoneNumber: "+375297180454", 
-            Firstname: user.Firstname, 
-            Lastname: user.Lastname, 
+            FirstName: user.Firstname, 
+            LastName: user.Lastname, 
             Patronymic: user.Patronymic, 
             Role: user.Role);
 
@@ -216,8 +216,8 @@ public class UsersControllerTests(CustomWebApplicationFactory factory) : TestHel
         result.ShouldNotBeNull();
         result.Email.ShouldBe(user.Email);
         result.PhoneNumber.ShouldBe("+375297180454");
-        result.Firstname.ShouldBe(user.Firstname);
-        result.Lastname.ShouldBe(user.Lastname);
+        result.FirstName.ShouldBe(user.Firstname);
+        result.LastName.ShouldBe(user.Lastname);
         result.Patronymic.ShouldBe(user.Patronymic);
         result.Role.ShouldBe(Role.Intern);
     }

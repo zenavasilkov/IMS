@@ -1,0 +1,20 @@
+﻿.statusNotStarted {
+    color: #ffc107;
+    font-weight: 600;
+}
+
+.statusOngoing {
+    color: #337bff;
+    font-weight: 600;
+}
+
+.statusCompleted {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.statusCancelled {
+    color: #dc3545;
+    font-weight: 600;
+    text-decoration: line-through;
+}
