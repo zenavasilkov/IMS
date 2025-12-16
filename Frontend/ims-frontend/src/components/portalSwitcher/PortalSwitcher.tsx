@@ -8,6 +8,7 @@ export const PORTALS = {
     EMPLOYEES: 'Employees',
     DEPARTMENTS: 'Departments',
     INTERVIEWS: 'Interviews',
+    INTERNSHIPS: 'Internships',
 };
 
 interface PortalSwitcherProps {
@@ -32,6 +33,8 @@ const PortalSwitcher: React.FC<PortalSwitcherProps> = ({ activePortal, onSwitch,
             <PortalButton portalName={PORTALS.EMPLOYEES} label="Employees" activePortal={activePortal} onSwitch={onSwitch} />
 
             <PortalButton portalName={PORTALS.RECRUITMENT} label="Recruitment" activePortal={activePortal} onSwitch={onSwitch} />
+
+            <PortalButton portalName={PORTALS.INTERNSHIPS} label="Internships" activePortal={activePortal} onSwitch={onSwitch} />
 
             <PortalButton portalName={PORTALS.USER_MANAGEMENT} label="User Management" activePortal={activePortal} onSwitch={onSwitch} />
 

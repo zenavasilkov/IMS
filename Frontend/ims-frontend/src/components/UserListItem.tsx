@@ -25,7 +25,7 @@ const UserListItem: React.FC<UserListItemProps> = ({ user, onEdit }) => {
     return (f + l).toUpperCase() || 'U';
   };
 
-  const initials = getInitials(user.firstname, user.lastname);
+  const initials = getInitials(user.firstName, user.lastName);
 
   return (
       <div key={user.id} className={styles.userItem}>
@@ -36,7 +36,7 @@ const UserListItem: React.FC<UserListItemProps> = ({ user, onEdit }) => {
 
         <div className={styles.userInfo}>
           <div className={styles.userName}>
-            {user.firstname} {user.lastname}
+            {user.firstName} {user.lastName}
             <span className={styles.userRoleText}>({getRoleDisplayName(user.role)})</span>
           </div>
           <div className={styles.userContact}>

@@ -5,6 +5,7 @@ import recruitmentReducer from './features/slices/recruitmentSlice.ts'
 import employeeReducer from './features/slices/employeeSlice.ts';
 import departmentReducer from './features/slices/departmentSlice.ts';
 import interviewReducer from './features/slices/interviewSlice.ts';
+import internshipReducer from './features/slices/internshipSlice';
 
 export const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
         recruitment: recruitmentReducer,
         employee: employeeReducer,
         department: departmentReducer,
-        interview: interviewReducer
+        interview: interviewReducer,
+        internship: internshipReducer,
     },
 });
 

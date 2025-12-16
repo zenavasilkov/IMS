@@ -1,12 +1,4 @@
-﻿.headingIcon {
-    width: 32px;
-    height: 32px;
-    margin-right: 15px;
-    color: #28a745;
-    filter: drop-shadow(0 0 5px rgba(40, 167, 69, 0.5));
-}
-
-.employeeList {
+﻿.employeeList {
     flex-grow: 1;
     border-radius: 8px;
     background-color: #313131;

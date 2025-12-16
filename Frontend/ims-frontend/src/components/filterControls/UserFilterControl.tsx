@@ -1,11 +1,11 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "./useAppDispatch.ts";
-import type {RootState} from "../store.ts";
-import {Role, UserSortingParameter} from "../entities/ims/enums.ts";
-import styles from '../pages/UserManagementPage/UserManagementPage.module.css';
-import commonStyles from './common/commonStyles/commonPageStyles.module.css'
-import { setFilterFirstName, setFilterLastName, setFilterRole, setSortParameter, resetFilters } from '../features/slices/userManagementSlice.ts';
+import { useAppDispatch } from "../useAppDispatch.ts";
+import type {RootState} from "../../store.ts";
+import {Role, UserSortingParameter} from "../../entities/ims/enums.ts";
+import styles from '../../pages/UserManagementPage/UserManagementPage.module.css';
+import commonStyles from '../common/commonStyles/commonPageStyles.module.css'
+import { setFilterFirstName, setFilterLastName, setFilterRole, setSortParameter, resetFilters } from '../../features/slices/userManagementSlice.ts';
 
 const UserFilterControls : React.FC = () => {
     const dispatch = useAppDispatch();

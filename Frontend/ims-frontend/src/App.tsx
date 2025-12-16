@@ -15,6 +15,7 @@ import PortalSwitcher, { PORTALS } from './components/portalSwitcher/PortalSwitc
 import DepartmentPage from "./pages/DepartmentPage/DepartmentPage.tsx";
 import EmployeePage from "./pages/EmployeePage/EmployeePage.tsx";
 import InterviewPage from "./pages/InterviewPage/InterviewPage.tsx";
+import InternshipPage from "./pages/InternshipPage/InternshipPage.tsx";
 
 const HrManagerHeader = (text : string) => <div><ManagementIcon className="App-Header-Icon" />{text}</div>;
 
@@ -47,6 +48,9 @@ function App() {
     } else if (activePortal === PORTALS.EMPLOYEES) {
       contentToRender = <EmployeePage />;
       headerTitle = HrManagerHeader("Employee Management");
+    } else if (activePortal === PORTALS.INTERNSHIPS) {
+      contentToRender = <InternshipPage/>;
+      headerTitle = HrManagerHeader("Internship Management");
     }
   } else {
     contentToRender = <div className="No-Access">Access Denied: Your role does not allow portal switching.</div>;

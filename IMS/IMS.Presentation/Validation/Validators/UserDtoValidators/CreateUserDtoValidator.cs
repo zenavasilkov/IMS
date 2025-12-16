@@ -25,11 +25,11 @@ public class CreateUserDtoValidator : AbstractValidator<CreateUserDto>
             .IsInEnum()
             .WithMessage(ValidationConstants.InvalidRole);
 
-        RuleFor(x => x.Firstname)
+        RuleFor(x => x.FirstName)
             .NotEmpty()
             .WithMessage(ValidationConstants.NotEmpty);
 
-        RuleFor(x => x.Lastname)
+        RuleFor(x => x.LastName)
             .NotEmpty()
             .WithMessage(ValidationConstants.NotEmpty);
     }

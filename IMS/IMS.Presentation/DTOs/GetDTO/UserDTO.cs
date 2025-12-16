@@ -4,11 +4,11 @@ namespace IMS.Presentation.DTOs.GetDTO;
 
 public class UserDto
 {
-    public Guid Id { get; set; }
-    public required string Email { get; set; } 
-    public required string PhoneNumber { get; set; } 
-    public required string Firstname { get; set; } 
-    public required string Lastname { get; set; } 
-    public string? Patronymic { get; set; } 
-    public Role Role { get; set; } = Role.Unassigned;
+    public Guid Id { get; init; }
+    public required string Email { get; init; } 
+    public required string PhoneNumber { get; init; } 
+    public required string FirstName { get; init; } 
+    public required string LastName { get; init; } 
+    public string? Patronymic { get; init; } 
+    public Role Role { get; init; } = Role.Unassigned;
 }

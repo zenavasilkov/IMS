@@ -40,6 +40,7 @@ export const fetchCandidateByEmail = createAsyncThunk(
             result = await candidateService.getCandidateByEmail(email) as FindCandidateByIdQueryResponse;
             return result;
         } catch (err: any) {
+            if (err.response?.message === "Candidate was not found")
             if (err.response?.status === 404) return undefined;
             return rejectWithValue('Failed to search candidate by email.');
         }
@@ -116,12 +117,11 @@ const recruitmentSlice = createSlice({
                 state.loading = false;
                 state.error = null;
             })
-            .addCase(fetchCandidateByEmail.rejected, (state, action) => {
+            .addCase(fetchCandidateByEmail.rejected, (state) => {
                 state.candidates = [];
                 state.totalPages = 1;
                 state.page = 1;
                 state.loading = false;
-                state.error = action.payload as string;
             })
             .addCase(fetchCandidates.pending, (state) => {
                 state.loading = true;

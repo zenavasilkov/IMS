@@ -2,9 +2,9 @@
 
 public class FeedbackDto
 {
-    public Guid Id { get; set; }
-    public Guid TicketId { get; set; }
-    public Guid SentById { get; set; }
-    public Guid AddressedToId { get; set; }
-    public required string Comment { get; set; }
+    public Guid Id { get; init; }
+    public Guid TicketId { get; init; }
+    public Guid SentById { get; init; }
+    public Guid AddressedToId { get; init; }
+    public required string Comment { get; init; }
 }

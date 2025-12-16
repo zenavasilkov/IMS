@@ -38,7 +38,7 @@ public class InternshipFilterBuilder : IInternshipFilterBuilder
             query = query.Where(i => i.StartDate >= _startDate);
 
         if(_endDate.HasValue)
-            query = query.Where(i => i.EndDate >= _endDate);
+            query = query.Where(i => i.StartDate < _endDate);
 
         if (_status.HasValue)
             query = query.Where(i => i.Status == _status.Value);

@@ -1,9 +1,11 @@
 import { ImsApi } from '../axios';
 import type { TicketDto, CreateTicketDto, UpdateTicketDto } from '../../entities/ims/dto/ticket_dto';
+import type {FetchTicketsParams} from "../../entities/ims/FetchParameters.ts";
+import type {TicketDtoPagedList} from "../../entities/ims/Pagination.ts";
 
 export const ticketService = {
-    getAllTickets: async (): Promise<TicketDto[]> => {
-        const response = await ImsApi.get<TicketDto[]>('/tickets');
+    getAllTickets: async (params: FetchTicketsParams): Promise<TicketDtoPagedList> => {
+        const response = await ImsApi.get<TicketDtoPagedList>('/tickets', { params: params });
         return response.data;
     },
 
@@ -21,9 +23,4 @@ export const ticketService = {
         const response = await ImsApi.put<TicketDto>(`/tickets/${id}`, data);
         return response.data;
     },
-
-    getTicketsByBoard: async (boardId: string): Promise<TicketDto[]> => {
-        const response = await ImsApi.get<TicketDto[]>(`/tickets/by-board/${boardId}`);
-        return response.data;
-    }
 };

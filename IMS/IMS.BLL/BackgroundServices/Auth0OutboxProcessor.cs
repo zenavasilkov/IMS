@@ -1,4 +1,6 @@
-﻿using Auth0.ManagementApi.Models;
+﻿using Auth0.Core.Exceptions;
+using Auth0.ManagementApi;
+using Auth0.ManagementApi.Models;
 using IMS.BLL.Exceptions;
 using IMS.BLL.Services;
 using IMS.BLL.Services.Interfaces;
@@ -37,46 +39,94 @@ public class Auth0OutboxProcessor(
 
         foreach (var message in messages)
         {
+            var email = "";
+
             try
             {
-                var createAuth0User = JsonConvert.DeserializeObject<CreateAuth0User>(message.Content);
-
-                if (createAuth0User is null) return;
-                
-                var auth0UserRequest = new UserCreateRequest
+                if (message.Type.Contains("UserRoleUpdate"))
                 {
-                    Email = createAuth0User.Email,
-                    Connection = _connection,
-                    EmailVerified = false,
-                    Password = PasswordGenerator.GenerateRandomPassword()
-                };
-                
-                var auth0User = await auth0Client.Users.CreateAsync(auth0UserRequest);
-                
-                if (!Auth0Roles.Roles.TryGetValue(createAuth0User.Role, out var auth0RoleId))
-                    throw new NotFoundException($"Role: {createAuth0User.Role} was not found");
-                
-                await auth0Client.Users.AssignRolesAsync(auth0User.UserId,
-                    new AssignRolesRequest { Roles = [auth0RoleId] });
+                    var updatePayload = JsonConvert.DeserializeObject<OutboxUserRoleUpdate>(message.Content);
+                    
+                    if (updatePayload is null) continue;
 
-                await auth0Client.Tickets.CreatePasswordChangeTicketAsync(new PasswordChangeTicketRequest
+                    email = updatePayload.Email;
+
+                    await ProcessUserRoleUpdateOutboxMessageAsync(updatePayload, auth0Client);
+                }
+                else if (message.Type.Contains("User"))
                 {
-                    UserId = auth0User.UserId
-                });
+                    var createAuth0User = JsonConvert.DeserializeObject<CreateAuth0User>(message.Content);
+
+                    if (createAuth0User is null) return;
+                    
+                    email = createAuth0User.Email;
+                    
+                    await ProcessCreateAuth0UserAsync(createAuth0User, auth0Client);
+                }
                 
                 message.ProcessedOnUtc = DateTime.UtcNow;
+            }
+            catch (ErrorApiException auth0Exception) when (auth0Exception.Message.Contains("The user already exists"))
+            {
+                message.ProcessedOnUtc = DateTime.UtcNow;
+                message.Error = auth0Exception.Message;
                 
-                logger.LogInformation("User with Email: {Email} was successfully registered in Auth0", createAuth0User.Email);
+                logger.LogWarning(auth0Exception,
+                    "Outbox message {MessageId}: User with Email {Email} already existed. Marked as processed to prevent infinite loop.",
+                    message.Id, email);
             }
             catch (Exception exception)
             {
                 message.Error = exception.Message;
-                
+
                 logger.LogError(exception, "Outbox message processing failed. Type={Type}, MessageId={MessageId}",
                     message.Type, message.Id);
             }
         }
         
         await dbContext.SaveChangesAsync(context.CancellationToken);
+    }
+
+    private async Task ProcessUserRoleUpdateOutboxMessageAsync(OutboxUserRoleUpdate message, ManagementApiClient auth0Client)
+    {
+        var auth0User = await auth0Client.Users.GetUsersByEmailAsync(message.Email);
+        var userId = auth0User.FirstOrDefault()?.UserId;
+
+        if (string.IsNullOrEmpty(userId))
+            throw new NotFoundException($"Auth0 user not found for email: {message.Email}");
+
+        if (!Auth0Roles.Roles.TryGetValue(message.NewRole, out var newAuth0RoleId))
+            throw new NotFoundException( $"Role: {message.NewRole} was not found in Auth0Roles mapping.");
+
+        await auth0Client.Users.AssignRolesAsync(userId,
+            new AssignRolesRequest { Roles = [newAuth0RoleId] });
+
+        logger.LogInformation("Role updated for Auth0 User: {Email} to {Role}", message.Email,
+            message.NewRole);
+    }
+
+    private async Task ProcessCreateAuth0UserAsync(CreateAuth0User message, ManagementApiClient auth0Client)
+    {
+        var auth0UserRequest = new UserCreateRequest
+        {
+            Email = message.Email,
+            Connection = _connection,
+            EmailVerified = false,
+            Password = PasswordGenerator.GenerateRandomPassword()
+        };
+
+        var auth0User = await auth0Client.Users.CreateAsync(auth0UserRequest);
+
+        if (!Auth0Roles.Roles.TryGetValue(message.Role, out var auth0RoleId))
+            throw new NotFoundException($"Role: {message.Role} was not found");
+
+        await auth0Client.Users.AssignRolesAsync(auth0User.UserId, new AssignRolesRequest { Roles = [auth0RoleId] });
+
+        await auth0Client.Tickets.CreatePasswordChangeTicketAsync(new PasswordChangeTicketRequest
+        {
+            UserId = auth0User.UserId
+        });
+
+        logger.LogInformation("User with Email: {Email} was successfully registered in Auth0", message.Email);
     }
 }

@@ -45,6 +45,7 @@ public class UserRepository(ImsDbContext context, IRepository<User> repository) 
             .WithRole(filter.Role)
             .WithFirstName(filter.FirstName)
             .WithLastName(filter.LastName)
+            .WithEmail(filter.Email)
             .Build(query);
 
         return query;

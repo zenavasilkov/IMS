@@ -5,8 +5,8 @@ namespace IMS.Presentation.DTOs.UpdateDTO;
 public record UpdateUserDto(
     string Email,
     string PhoneNumber,
-    string Firstname,
-    string Lastname,
+    string FirstName,
+    string LastName,
     string? Patronymic,
     Role Role
 );
