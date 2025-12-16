@@ -5,15 +5,20 @@ import styles from './common/commonStyles/commonModalStyles.module.css';
 import type {Role} from "../entities/ims/enums.ts";
 
 interface UserSearchSelectProps {
-    label: string;
+    label: string | null;
     onSelect: (id: string) => void;
     required: boolean;
     currentUserId: string;
     filterRole?: Role;
     disabled?: boolean;
+    placeholder?: string;
+    displayFullName?: boolean;
+    style?: React.CSSProperties;
 }
 
-const UserSearchSelect: React.FC<UserSearchSelectProps> = ({ label, onSelect, required, currentUserId, filterRole, disabled }) => {
+const UserSearchSelect: React.FC<UserSearchSelectProps> = ({ label, onSelect, required,
+    currentUserId, filterRole, disabled, placeholder, displayFullName, style}) => {
+
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState<UserDto[]>([]);
     const [isSearching, setIsSearching] = useState(false);
@@ -48,7 +53,10 @@ const UserSearchSelect: React.FC<UserSearchSelectProps> = ({ label, onSelect, re
             const fetchUserName = async () => {
                 try {
                     const user = await userService.getUserById(currentUserId);
-                    if (user) setSelectedUserName(`${user.firstName} ${user.lastName} (${user.email})`);
+
+                    const fullName = displayFullName ? `${user.firstName} ${user.lastName}` : '';
+
+                    if (user) setSelectedUserName(`${fullName} ${user.email}`);
                 } catch(e) {
                     console.error("Error during user fetching", e);
                     setSelectedUserName('User Not Found');
@@ -61,14 +69,14 @@ const UserSearchSelect: React.FC<UserSearchSelectProps> = ({ label, onSelect, re
     }, [currentUserId, selectedUserName]);
 
     const handleSelect = (user: UserDto) => {
-        setSelectedUserName(`${user.firstName} ${user.lastName} (${user.email})`);
+        const fullName = displayFullName ? `${user.firstName} ${user.lastName}` : '';
+        setSelectedUserName(`${fullName} ${user.email}`);
         onSelect(user.id);
         setSearchTerm('');
     };
 
-
     return (
-        <label>
+        <label style={style}>
             {label}
             <div className={styles.searchSelectWrapper}>
                 <input
@@ -80,9 +88,10 @@ const UserSearchSelect: React.FC<UserSearchSelectProps> = ({ label, onSelect, re
                         if (!e.target.value) onSelect('');
                     }}
                     required={required}
-                    placeholder={`Search by email...`}
+                    placeholder={ placeholder ? placeholder : `Search by email...`}
                     disabled={disabled || isSearching}
                     className={styles.formInput}
+
                 />
 
                 {isSearching && <div className={styles.spinner}></div>}
@@ -95,7 +104,7 @@ const UserSearchSelect: React.FC<UserSearchSelectProps> = ({ label, onSelect, re
                                 className={styles.searchResultItem}
                                 onClick={() => handleSelect(user)}
                             >
-                                <span>{user.firstName} {user.lastName}</span>
+                                { (displayFullName === true) && <span >{user.firstName} {user.lastName}</span>}
                                 <span className={styles.searchResultEmail}>{ ' ' + user.email}</span>
                             </div>
                         ))}

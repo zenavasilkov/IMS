@@ -2,6 +2,7 @@
 import type { InternshipDto } from '../../entities/ims/dto/internship_dto';
 import {internshipService} from "../../api/services";
 import type {FetchInternshipsParams} from "../../entities/ims/FetchParameters.ts";
+import type {InternshipStatus} from "../../entities/ims/enums.ts";
 
 interface InternshipState {
     internships: InternshipDto[];
@@ -10,6 +11,11 @@ interface InternshipState {
     page: number;
     totalPages: number;
     pageSize: number;
+    filterInternId: string;
+    filterMentorId: string;
+    filterStatus: InternshipStatus | '';
+    filterStartedAfter: string;
+    filterStartedBefore: string;
 }
 
 const initialState: InternshipState = {
@@ -19,6 +25,11 @@ const initialState: InternshipState = {
     page: 1,
     totalPages: 1,
     pageSize: 10,
+    filterInternId: '',
+    filterMentorId: '',
+    filterStatus: "",
+    filterStartedAfter: '',
+    filterStartedBefore: '',
 };
 
 export const fetchInternships = createAsyncThunk(
@@ -45,6 +56,21 @@ const internshipSlice = createSlice({
         setInternshipPage: (state, action: PayloadAction<number>) => {
             state.page = action.payload;
         },
+        setFilterInternId: (state, action: PayloadAction<string>) => { state.filterInternId = action.payload; state.page = 1; },
+        setFilterMentorId: (state, action: PayloadAction<string>) => { state.filterMentorId = action.payload; state.page = 1; },
+        setFilterStatus: (state, action: PayloadAction<InternshipStatus | ''>) => { state.filterStatus = action.payload; state.page = 1; },
+        setFilterStartedAfter: (state, action: PayloadAction<string>) => { state.filterStartedAfter = action.payload; state.page = 1; },
+        setFilterStartedBefore: (state, action: PayloadAction<string>) => { state.filterStartedBefore = action.payload; state.page = 1; },
+        resetInternshipFilters: (state) => {
+            Object.assign(state, {
+                filterInternId: initialState.filterInternId,
+                filterMentorId: initialState.filterMentorId,
+                filterStatus: initialState.filterStatus,
+                filterStartedAfter: initialState.filterStartedAfter,
+                filterStartedBefore: initialState.filterStartedBefore,
+                page: 1,
+            });
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -58,5 +84,13 @@ const internshipSlice = createSlice({
     },
 });
 
-export const { setInternshipPage } = internshipSlice.actions;
+export const {
+    setInternshipPage,
+    setFilterInternId,
+    setFilterMentorId,
+    setFilterStatus,
+    setFilterStartedAfter,
+    setFilterStartedBefore,
+    resetInternshipFilters
+} = internshipSlice.actions;
 export default internshipSlice.reducer;

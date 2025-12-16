@@ -18,6 +18,7 @@ import type {FetchUsersParams} from "../../entities/ims/FetchParameters.ts";
 import useMinLoadingTime from "../../hooks/useMinLoadingTime.ts";
 import userStyles from '../UserManagementPage/UserManagementPage.module.css';
 import styles from "./InternshipPage.module.css";
+import InternshipFilterControls from "../../components/filterControls/InternshipFilterControls.tsx";
 
 const INTERNSHIP_HEADER_CONFIG = [
     { label: 'Intern', flex: 3 },
@@ -56,7 +57,8 @@ const InternshipPage: React.FC = () => {
     const [hrManagerUser, setHrManagerUser] = useState<UserDto | undefined>(undefined);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [internshipToEdit, setInternshipToEdit] = useState<any>(undefined);
-    const { internships, loading, error, page, totalPages, pageSize } = useSelector((state: RootState) => state.internship);
+    const { internships, loading, error, page, totalPages, pageSize, filterInternId, filterMentorId,
+        filterStatus, filterStartedAfter, filterStartedBefore  } = useSelector((state: RootState) => state.internship);
     const [isUserDataLoading, setIsUserDataLoading] = useState(true);
     const hrManagerId = hrManagerUser?.id;
     const showPageLoader = useMinLoadingTime(loading || isUserDataLoading);
@@ -81,11 +83,17 @@ const InternshipPage: React.FC = () => {
         if (!isAuth0Loading && isAuthenticated && hrManagerId) {
             const params = {
                 PageNumber: page,
-                PageSize: pageSize
+                PageSize: pageSize,
+                InternId: filterInternId || undefined,
+                MentorId: filterMentorId || undefined,
+                Status: filterStatus === null || filterStatus === '' ? undefined : filterStatus,
+                StartedAfter: filterStartedAfter ? `${filterStartedAfter}T00:00:00Z` : undefined,
+                StartedBefore: filterStartedBefore ? `${filterStartedBefore}T23:59:59Z` : undefined,
             };
             dispatch(fetchInternships(params));
         }
-    }, [page, isAuthenticated, isAuth0Loading, dispatch, pageSize, hrManagerId]);
+    }, [page, isAuthenticated, isAuth0Loading, dispatch, pageSize, hrManagerId, filterInternId,
+        filterMentorId, filterStatus, filterStartedAfter, filterStartedBefore]);
 
     useEffect(() => {
         if (auth0User?.email && isAuthenticated) {
@@ -145,6 +153,8 @@ const InternshipPage: React.FC = () => {
             iconColor="#ff8c00"
             createButton={<button className={commonStyles.createButton} onClick={handleAdd}>Create Internship</button>}
         >
+            <InternshipFilterControls />
+
             <div className={userStyles.userListContainer}>
                 <SimpleListHeader columns={INTERNSHIP_HEADER_CONFIG} />
 

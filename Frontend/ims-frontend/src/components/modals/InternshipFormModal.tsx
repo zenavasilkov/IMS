@@ -133,6 +133,7 @@ const InternshipFormModal: React.FC<InternshipFormModalProps> = ({ isOpen, onClo
                     required
                     disabled={isEditMode}
                     filterRole={Role.Intern}
+                    displayFullName={true}
                 />
 
                 <UserSearchSelect
@@ -141,6 +142,7 @@ const InternshipFormModal: React.FC<InternshipFormModalProps> = ({ isOpen, onClo
                     onSelect={handleUserSelect('mentorId')}
                     required
                     filterRole={Role.Mentor}
+                    displayFullName={true}
                 />
 
                 <ModalField label="Start Date" name="startDate" type="date" value={formData.startDate} onChange={handleChange} required />

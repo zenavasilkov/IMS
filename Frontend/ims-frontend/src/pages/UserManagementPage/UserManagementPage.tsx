@@ -10,7 +10,7 @@ import { fetchUsers, setPage } from '../../features/slices/userManagementSlice.t
 import type { RootState } from '../../store';
 import { useAppDispatch } from '../../components/useAppDispatch';
 import PageLoader from '../../components/common/pageLoader/PageLoader';
-import UserFilterControls from "../../components/UserFilterControl.tsx";
+import UserFilterControls from "../../components/filterControls/UserFilterControl.tsx";
 import useMinLoadingTime from "../../hooks/useMinLoadingTime.ts";
 import UserFormModal from "../../components/modals/UserFormModal.tsx";
 
