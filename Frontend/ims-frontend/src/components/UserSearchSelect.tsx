@@ -88,7 +88,7 @@ const UserSearchSelect: React.FC<UserSearchSelectProps> = ({ label, onSelect, re
                         if (!e.target.value) onSelect('');
                     }}
                     required={required}
-                    placeholder={ placeholder ? placeholder : `Search by email...`}
+                    placeholder={ placeholder || `Search by email...`}
                     disabled={disabled || isSearching}
                     className={styles.formInput}
 
