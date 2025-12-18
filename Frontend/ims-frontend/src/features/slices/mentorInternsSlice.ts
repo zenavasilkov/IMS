@@ -54,7 +54,7 @@ export const fetchMentorInterns = createAsyncThunk(
             const internships = internshipResult.items || [];
             const internIds = Array.from(new Set(internships.map(i => i.internId)));
             const internPromises = internIds.map(id => userService.getUserById(id));
-            const internDtos = (await Promise.all(internPromises)).filter(u => u !== undefined) as UserDto[];
+            const internDtos = (await Promise.all(internPromises)).filter(u => u !== undefined);
             const internMap = new Map<string, UserDto>(internDtos.map(u => [u.id, u]));
             const internshipMap = new Map<string, InternshipDto>(internships.map(i => [i.internId, i]));
 
@@ -82,7 +82,9 @@ export const fetchMentorInterns = createAsyncThunk(
 
             return { items: finalInterns };
         } catch (err: any) {
-            return rejectWithValue('Failed to load mentor interns.');
+            const errorText = 'Failed to load mentor interns.';
+            console.error(err, errorText);
+            return rejectWithValue(errorText);
         }
     }
 );

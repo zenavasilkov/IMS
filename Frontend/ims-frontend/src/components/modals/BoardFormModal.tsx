@@ -25,6 +25,7 @@ const BoardFormModal: React.FC<BoardFormModalProps> = ({ isOpen, onClose, onSucc
     const [formData, setFormData] = useState(getInitialFormData(initialBoard));
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const submitButtonText = isEditMode ? 'Save Changes' : 'Create Board';
 
     useEffect(() => {
         if (isOpen) {
@@ -100,7 +101,7 @@ const BoardFormModal: React.FC<BoardFormModalProps> = ({ isOpen, onClose, onSucc
 
 
                 <button type="submit" disabled={isSubmitting || !mentorId} className={styles.submitButton}>
-                    {isSubmitting ? 'Saving...' : (isEditMode ? 'Save Changes' : 'Create Board')}
+                    {isSubmitting ? 'Saving...' : submitButtonText}
                 </button>
             </form>
         </ModalWrapper>

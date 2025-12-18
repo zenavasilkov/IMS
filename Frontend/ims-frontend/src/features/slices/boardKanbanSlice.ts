@@ -49,10 +49,7 @@ export const updateTicketDetails = createAsyncThunk(
     ) => {
         try {
             const updatedTicket = await ticketService.updateTicket(id, command);
-
-            // OPTIONAL: Update the board/refetch for UI consistency
             dispatch(fetchBoardData(updatedTicket.boardId));
-
             return updatedTicket;
         } catch (err: any) {
             return rejectWithValue('Failed to update ticket details.');
@@ -94,8 +91,10 @@ export const updateTicketStatus = createAsyncThunk(
             dispatch(updateTicketStatusLocally({ ticketId, newStatus }));
             return { ticketId, newStatus };
         } catch (err: any) {
+            const errorText = 'Failed to update ticket status. Ensure all required fields (title, deadline) are present.';
+            console.error(err, errorText);
             dispatch(fetchBoardData(boardId));
-            return rejectWithValue('Failed to update ticket status. Ensure all required fields (title, deadline) are present.' + err);
+            return rejectWithValue(errorText);
         }
     }
 );
@@ -110,7 +109,9 @@ export const createNewTicket = createAsyncThunk(
             dispatch(fetchBoardData(newTicket.boardId));
             return newTicket;
         } catch (err: any) {
-            return rejectWithValue('Failed to create new ticket.');
+            const errorText = 'Failed to create new ticket.';
+            console.error(err, errorText);
+            return rejectWithValue(errorText);
         }
     }
 );
@@ -125,7 +126,9 @@ export const addFeedbackToTicket = createAsyncThunk(
 
             return newFeedback;
         } catch (err: any) {
-            return rejectWithValue('Failed to add feedback.');
+            const errorText ='Failed to add feedback.';
+            console.error(err, errorText);
+            return rejectWithValue(errorText);
         }
     }
 );
@@ -137,8 +140,9 @@ export const updateFeedbackAction = createAsyncThunk(
             const command: UpdateFeedbackDto = { comment: newComment };
             return await feedbackService.updateFeedback(id, command);
         } catch (err: any) {
-            console.error(err, 'Failed to update comment.');
-            return rejectWithValue('Failed to update comment.');
+            const errorText = 'Failed to update comment.';
+            console.error(err, errorText);
+            return rejectWithValue(errorText);
         }
     }
 );

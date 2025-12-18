@@ -34,7 +34,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose, ticketId
             try {
                 const result = await dispatch(fetchFeedbackByTicket(ticketId)).unwrap();
                 setFeedbacks(result.feedbacks);
-            } catch (e) {
+            } catch {
                 setError("Could not load feedback history.");
             } finally {
                 setIsListLoading(false);
