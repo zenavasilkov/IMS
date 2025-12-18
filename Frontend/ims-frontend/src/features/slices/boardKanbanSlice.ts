@@ -36,7 +36,9 @@ export const fetchBoardData = createAsyncThunk(
             const tickets = ticketResult.items || [];
             return { board, boardTitle: board.title, tickets };
         } catch (err: any) {
-            return rejectWithValue('Failed to load board data.');
+            const errorText = 'Failed to load board data.';
+            console.error(err, errorText);
+            return rejectWithValue(errorText);
         }
     }
 );
@@ -52,7 +54,9 @@ export const updateTicketDetails = createAsyncThunk(
             dispatch(fetchBoardData(updatedTicket.boardId));
             return updatedTicket;
         } catch (err: any) {
-            return rejectWithValue('Failed to update ticket details.');
+            const errorText = 'Failed to update ticket details.';
+            console.error(err, errorText);
+            return rejectWithValue(errorText);
         }
     }
 );
@@ -66,7 +70,9 @@ export const fetchFeedbackByTicket = createAsyncThunk(
 
             return { ticketId, feedbacks: result.items || [] };
         } catch (err: any) {
-            return rejectWithValue('Failed to load feedback for this ticket.');
+            const errorText = 'Failed to load feedback for this ticket.';
+            console.error(err, errorText);
+            return rejectWithValue(errorText);
         }
     }
 );
