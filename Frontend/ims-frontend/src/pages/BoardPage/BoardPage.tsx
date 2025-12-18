@@ -2,7 +2,7 @@
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../components/useAppDispatch';
 import type { RootState } from '../../store';
-import { TicketStatus } from '../../entities/ims/enums';
+import {Role, TicketStatus} from '../../entities/ims/enums';
 import PageLoader from '../../components/common/pageLoader/PageLoader';
 import commonStyles from '../../components/common/commonStyles/commonPageStyles.module.css';
 import styles from './BoardPage.module.css';
@@ -14,6 +14,8 @@ import TicketFormModal from "../../components/modals/TicketFormModal.tsx";
 import {useAuth0} from "@auth0/auth0-react";
 import {fetchCurrentUserByEmail} from "../InternshipPage/InternshipPage.tsx";
 import FeedbackModal from "../../components/modals/FeedbackModal.tsx";
+import {setBoardId} from "../../features/slices/boardKanbanSlice.ts";
+import {fetchBoardByInternId} from "../../features/slices/mentorInternsSlice.ts";
 
 const DroppableColumnWrapper: React.FC<any> = ({ children, id, ...props}) => {
     const { isOver, setNodeRef } = useDroppable({ id: id});
@@ -25,12 +27,13 @@ const BoardPage: React.FC = () => {
     const dispatch = useAppDispatch();
     const { boardTitle, tickets, loading, error, boardId, boardDto } = useSelector((state: RootState) => state.boardKanban);
     const sensors = useSensors(useSensor(PointerSensor));
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false); // <-- NEW STATE
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [ticketToEdit, setTicketToEdit] = useState<TicketDto | undefined>(undefined);
     const { user: auth0User, isAuthenticated } = useAuth0();
     const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
     const [ticketForFeedback, setTicketForFeedback] = useState<TicketDto | undefined>(undefined);
     const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+    const [userRole, setUserRole] = useState<Role | null>(null);
     const internId = boardDto?.createdToId;
 
     useEffect(() => {
@@ -39,9 +42,15 @@ const BoardPage: React.FC = () => {
                 try {
                     const userDto = await fetchCurrentUserByEmail(auth0User.email as string);
 
+                    setUserRole(userDto?.role as Role)
                     setCurrentUserId(userDto?.id as string);
+
+                    if (userDto?.role === Role.Intern){
+                        const board = await fetchBoardByInternId(userDto?.id as string);
+                        dispatch(setBoardId(board?.id as string));
+                    }
                 } catch (e) {
-                    console.error("Failed to fetch current user DTO:", e);
+                    console.error(e, "Failed to fetch current user DTO:");
                 }
             };
             fetchCurrentUser();
@@ -57,16 +66,16 @@ const BoardPage: React.FC = () => {
     const handleTicketUpdateSuccess = () => {
         setIsEditModalOpen(false);
         setTicketToEdit(undefined);
-        dispatch(fetchBoardData(boardId!)); // Refetch
+        dispatch(fetchBoardData(boardId!));
     };
 
     useEffect(() => {
-        if (boardId && !boardTitle) {
+        if (boardId) {
             dispatch(fetchBoardData(boardId));
         }
     }, [boardId, boardTitle, dispatch]);
 
-    const handleDragEnd = (event: DragEndEvent) => { // Use Dnd-Kit type
+    const handleDragEnd = (event: DragEndEvent) => {
         const { over, active } = event;
 
         if (!over || !active) return;
@@ -130,12 +139,12 @@ const BoardPage: React.FC = () => {
                 <div className={styles.kanbanBoardWrapper}>
                     <div className={styles.kanbanColumnsCentering}>
                         {statusColumns.map(col => (
-                            // FIX: Use the integrated DroppableColumnWrapper
                             <DroppableColumnWrapper key={col.status} id={String(col.status)}>
                                 <KanbanColumn
                                     boardId={boardId as string}
                                     status={col.status}
                                     title={col.title}
+                                    userRole={userRole}
                                     tickets={ticketsByStatus[col.status]}
                                     onTicketCreated={handleTicketCreated}
                                     onAddFeedback={handleAddFeedback}
@@ -160,6 +169,7 @@ const BoardPage: React.FC = () => {
                 isOpen={isFeedbackModalOpen}
                 onClose={() => setIsFeedbackModalOpen(false)}
                 ticketId={ticketForFeedback?.id || null}
+                userRole={userRole}
                 currentUserId={currentUserId}
                 addressedToId={internId!}
             />

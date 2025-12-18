@@ -1,7 +1,7 @@
 ﻿import React, {useState} from 'react';
 import KanbanCard from './KanbanCard';
 import styles from './Kanban.module.css';
-import {TicketStatus} from "../../entities/ims/enums.ts";
+import {Role, TicketStatus} from "../../entities/ims/enums.ts";
 import type {TicketDto} from "../../entities/ims/dto/ticket_dto.ts";
 import TicketFormModal from "../modals/TicketFormModal.tsx";
 import {useDraggable} from "@dnd-kit/core";
@@ -10,6 +10,7 @@ interface KanbanColumnProps {
     status: TicketStatus;
     title: string;
     tickets: TicketDto[];
+    userRole: Role | null;
     onAddFeedback: (ticketId: string) => void;
     boardId: string;
     onTicketCreated: () => void;
@@ -38,8 +39,12 @@ const DraggableCardWrapper: React.FC<any> = ({ children, id}) => {
     );
 };
 
-const KanbanColumn: React.FC<KanbanColumnProps> = ({ status, title, tickets, onAddFeedback, onTicketCreated, boardId, onEditTicket }) => {
+const KanbanColumn: React.FC<KanbanColumnProps> = ({
+    status, title, tickets, onAddFeedback, onTicketCreated, boardId, onEditTicket, userRole }) => {
+
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const isMentor = userRole === Role.Mentor;
+    const showAddItem = isMentor && status === TicketStatus.ToDo;
 
     const getStatusClass = (status: TicketStatus) => {
         switch (status) {
@@ -52,7 +57,9 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ status, title, tickets, onA
     };
 
     const handleAddItemClick = () => {
-        setIsCreateModalOpen(true);
+        if (isMentor) {
+            setIsCreateModalOpen(true);
+        }
     };
 
     return (
@@ -62,17 +69,16 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ status, title, tickets, onA
                     {title}
                     <span className={styles.ticketCount}>{tickets.length}</span>
                 </div>
-                <button className={styles.headerMenuButton}>...</button>
             </div>
 
             <div className={styles.columnBody}>
                 {tickets.map((ticket) => (
                     <DraggableCardWrapper key={ticket.id} id={ticket.id} onAddFeedback={onAddFeedback}>
-                        <KanbanCard ticket={ticket} onAddFeedback={onAddFeedback} onEdit={onEditTicket}/>
+                        <KanbanCard ticket={ticket} onAddFeedback={onAddFeedback} onEdit={onEditTicket} userRole={userRole}/>
                     </DraggableCardWrapper>
                 ))}
 
-                <button className={styles.addItemButton} onClick={handleAddItemClick}>+ Add item</button>
+                {showAddItem && <button className={styles.addItemButton} onClick={handleAddItemClick}>+ Add item</button>}
             </div>
 
             <TicketFormModal

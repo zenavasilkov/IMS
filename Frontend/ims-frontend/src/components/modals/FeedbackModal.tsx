@@ -4,19 +4,19 @@ import { fetchFeedbackByTicket, addFeedbackToTicket, updateFeedbackAction } from
 import styles from './FeedbackModal.module.css';
 import {useAppDispatch} from "../useAppDispatch.ts";
 import ModalWrapper from "./modalComponents/ModalWrapper.tsx";
+import {Role} from "../../entities/ims/enums.ts";
 
 interface FeedbackModalProps {
     isOpen: boolean;
     onClose: () => void;
     ticketId: string | null;
+    userRole: Role | null;
     currentUserId: string | null;
     addressedToId: string;
 }
 
-const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose, ticketId, currentUserId, addressedToId }) => {
-
+const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose, ticketId, currentUserId, addressedToId, userRole }) => {
     const dispatch = useAppDispatch();
-
     const [feedbacks, setFeedbacks] = useState<FeedbackDto[]>([]);
     const [isListLoading, setIsListLoading] = useState(false);
     const [createComment, setCreateComment] = useState('');
@@ -24,6 +24,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose, ticketId
     const [error, setError] = useState<string | null>(null);
     const [editingFeedbackId, setEditingFeedbackId] = useState<string | null>(null);
     const [editCommentText, setEditCommentText] = useState('');
+    const isMentor = userRole === Role.Mentor;
 
     useEffect(() => {
         if (!isOpen || !ticketId) return;
@@ -130,7 +131,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose, ticketId
                     ))}
                 </div>
 
-                <div className={styles.postSection}>
+                {isMentor && <div className={styles.postSection}>
                     <textarea
                         placeholder="Leave a comment..."
                         value={createComment}
@@ -146,7 +147,7 @@ const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, onClose, ticketId
                     >
                         {isSubmitting ? 'Posting...' : 'Post Comment'}
                     </button>
-                </div>
+                </div>}
             </div>
         </ModalWrapper>
     );

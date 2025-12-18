@@ -31,11 +31,7 @@ const initialState: MentorInternsState = {
 };
 
 export const fetchBoardByInternId = async (internId: string): Promise<BoardDto | undefined> => {
-    const params: FetchBoardsParams = {
-        CreatedToId: internId,
-        PageNumber: 1,
-        PageSize: 1,
-    };
+    const params: FetchBoardsParams = { CreatedToId: internId, PageNumber: 1, PageSize: 1 };
     try {
         const result = await boardService.getAllBoards(params);
         return result.items?.[0];

@@ -9,6 +9,7 @@ import InternshipPage from "../../pages/InternshipPage/InternshipPage.tsx";
 import BoardPage from "../../pages/BoardPage/BoardPage.tsx";
 import MentorPage from "../../pages/MentorPage/MentorPage.tsx";
 import React from "react";
+import AccessDeniedPage from "../../pages/AccessDeniedPage/AccessDeniedPage.tsx";
 
 const HrManagerHeader = (text : string) => <div><ManagementIcon className="App-Header-Icon" />{text}</div>;
 const MentorHeader = (text : string) => <div><MentorIcon className="App-Header-Icon" />{text}</div>;
@@ -37,9 +38,14 @@ const MENTOR_ROUTES: Record<string, RouteResult> = {
     [PORTALS.BOARD_VIEW]: { content: <BoardPage />, headerTitle: MentorHeader("Kanban Board") },
 };
 
+const INTERN_ROUTES: Record<string, RouteResult> = {
+    [PORTALS.BOARD_VIEW]: { content: <BoardPage />, headerTitle: MentorHeader("My Kanban Board") },
+};
+
 const getPortalContent = ({ role, activePortal }: PortalRouterProps): RouteResult => {
     const hrManager = 'HRManager';
     const mentor = 'Mentor';
+    const intern = 'Intern';
 
     if (role === hrManager) {
         const result = HR_MANAGER_ROUTES[activePortal];
@@ -50,7 +56,6 @@ const getPortalContent = ({ role, activePortal }: PortalRouterProps): RouteResul
             return HR_MANAGER_ROUTES[PORTALS.RECRUITMENT];
         }
     }
-
     else if (role === mentor) {
         const result = MENTOR_ROUTES[activePortal];
 
@@ -60,10 +65,12 @@ const getPortalContent = ({ role, activePortal }: PortalRouterProps): RouteResul
             return MENTOR_ROUTES[PORTALS.MENTOR_INTERNS];
         }
     }
-
+    else if (role === intern) {
+        return INTERN_ROUTES[PORTALS.BOARD_VIEW];
+    }
     else {
         return {
-            content: <div className="No-Access">Access Denied: Your role does not allow portal switching.</div>,
+            content: <AccessDeniedPage />,
             headerTitle: "IMS Portal"
         };
     }
