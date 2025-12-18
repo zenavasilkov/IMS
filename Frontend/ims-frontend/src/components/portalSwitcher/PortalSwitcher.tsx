@@ -9,34 +9,36 @@ export const PORTALS = {
     DEPARTMENTS: 'Departments',
     INTERVIEWS: 'Interviews',
     INTERNSHIPS: 'Internships',
+    MENTOR_INTERNS: 'MentorInterns',
+    BOARD_VIEW: 'BoardView',
 };
 
 interface PortalSwitcherProps {
     activePortal: string;
     onSwitch: (portal: string) => void;
-    isVisible: boolean;
+    role: string | null;
 }
 
-const PortalSwitcher: React.FC<PortalSwitcherProps> = ({ activePortal, onSwitch, isVisible }) => {
-
-    if (!isVisible) {
-        return null;
-    }
+const PortalSwitcher: React.FC<PortalSwitcherProps> = ({ activePortal, onSwitch, role }) => {
+    const visibleToHrManager = role === "HRManager";
+    const visibleToMentor = role === "Mentor";
 
     return (
         <div className={styles.portalSwitcherContainer}>
 
-            <PortalButton portalName={PORTALS.INTERVIEWS} label="Interviews" activePortal={activePortal} onSwitch={onSwitch} />
+            { visibleToHrManager && <PortalButton portalName={PORTALS.INTERVIEWS} label="Interviews" activePortal={activePortal} onSwitch={onSwitch} />}
 
-            <PortalButton portalName={PORTALS.DEPARTMENTS} label="Departments" activePortal={activePortal} onSwitch={onSwitch} />
+            { visibleToHrManager && <PortalButton portalName={PORTALS.DEPARTMENTS} label="Departments" activePortal={activePortal} onSwitch={onSwitch} />}
 
-            <PortalButton portalName={PORTALS.EMPLOYEES} label="Employees" activePortal={activePortal} onSwitch={onSwitch} />
+            { visibleToHrManager && <PortalButton portalName={PORTALS.EMPLOYEES} label="Employees" activePortal={activePortal} onSwitch={onSwitch} />}
 
-            <PortalButton portalName={PORTALS.RECRUITMENT} label="Recruitment" activePortal={activePortal} onSwitch={onSwitch} />
+            { visibleToHrManager && <PortalButton portalName={PORTALS.RECRUITMENT} label="Recruitment" activePortal={activePortal} onSwitch={onSwitch} />}
 
-            <PortalButton portalName={PORTALS.INTERNSHIPS} label="Internships" activePortal={activePortal} onSwitch={onSwitch} />
+            { visibleToHrManager && <PortalButton portalName={PORTALS.INTERNSHIPS} label="Internships" activePortal={activePortal} onSwitch={onSwitch} />}
 
-            <PortalButton portalName={PORTALS.USER_MANAGEMENT} label="User Management" activePortal={activePortal} onSwitch={onSwitch} />
+            { visibleToHrManager && <PortalButton portalName={PORTALS.USER_MANAGEMENT} label="User Management" activePortal={activePortal} onSwitch={onSwitch} />}
+
+            { visibleToMentor && <PortalButton portalName={PORTALS.MENTOR_INTERNS} label="My Interns" activePortal={activePortal} onSwitch={onSwitch} />}
 
         </div>
     );

@@ -1,0 +1,49 @@
+﻿.boardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #444;
+}
+
+.searchBar {
+    flex-grow: 1;
+    max-width: 400px;
+    padding: 8px 15px;
+    margin-right: 20px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    background-color: #333;
+    color: #f0f0f0;
+    outline: none;
+}
+
+.saveButton {
+    background-color: #28a745;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.kanbanBoardWrapper {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    margin: 0 auto;
+    min-height: 70vh;
+    overflow-x: auto;
+    background-color: #242424;
+}
+
+
+.kanbanColumnsCentering {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    min-width: 100%;
+    align-items: stretch;
+    height: 100%;
+}

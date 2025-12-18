@@ -5,7 +5,6 @@ import type { RootState } from '../../store';
 import { useAppDispatch } from '../../components/useAppDispatch';
 import PageLoader from '../../components/common/pageLoader/PageLoader';
 import {fetchInternships, setInternshipPage} from '../../features/slices/internshipSlice';
-import { InternshipStatus } from '../../entities/ims/enums';
 import { InternshipIcon } from "../../components/common/Icons.tsx";
 import PageLayout from '../../components/PageLayout';
 import SimpleListHeader from '../../components/SimpleListHeader';
@@ -19,6 +18,7 @@ import useMinLoadingTime from "../../hooks/useMinLoadingTime.ts";
 import userStyles from '../UserManagementPage/UserManagementPage.module.css';
 import styles from "./InternshipPage.module.css";
 import InternshipFilterControls from "../../components/filterControls/InternshipFilterControls.tsx";
+import {getStatusData} from "../../features/helpers/GetInternshipStatusData.ts";
 
 const INTERNSHIP_HEADER_CONFIG = [
     { label: 'Intern', flex: 3 },
@@ -28,26 +28,16 @@ const INTERNSHIP_HEADER_CONFIG = [
     { label: 'Actions', flex: 1, textAlign: 'center' as const },
 ];
 
-const getStatusData = (status: InternshipStatus) => {
-    const text = InternshipStatus[status].replaceAll(/([A-Z])/g, ' $1').trim();
-    let className = '';
+export const fetchCurrentUserByEmail = async (email: string) => {
+    const params: FetchUsersParams = {PageNumber: 1, PageSize: 1, Email: email};
 
-    switch (status) {
-        case InternshipStatus.NotStarted:
-            className = 'statusNotStarted';
-            break;
-        case InternshipStatus.Ongoing:
-            className = 'statusOngoing';
-            break;
-        case InternshipStatus.Completed:
-            className = 'statusCompleted';
-            break;
-        case InternshipStatus.Cancelled:
-            className = 'statusCancelled';
-            break;
-        default:
+    try {
+        const result: UserDtoPagedList = await userService.getAllUsers(params);
+        return result.items?.[0] || undefined;
+    } catch (e) {
+        console.error("API Error when searching user by email:", e);
+        return undefined;
     }
-    return { text, className };
 };
 
 const InternshipPage: React.FC = () => {
@@ -63,21 +53,7 @@ const InternshipPage: React.FC = () => {
     const hrManagerId = hrManagerUser?.id;
     const showPageLoader = useMinLoadingTime(loading || isUserDataLoading);
 
-    const fetchCurrentUserByEmail = async (email: string) => {
-        const params: FetchUsersParams = {
-            PageNumber: 1,
-            PageSize: 1,
-            Email: email
-        };
 
-        try {
-            const result: UserDtoPagedList = await userService.getAllUsers(params);
-            return result.items?.[0] || undefined;
-        } catch (e) {
-            console.error("API Error when searching user by email:", e);
-            return undefined;
-        }
-    };
 
     const fetchInternshipsData = useCallback(() => {
         if (!isAuth0Loading && isAuthenticated && hrManagerId) {
@@ -155,7 +131,7 @@ const InternshipPage: React.FC = () => {
         >
             <InternshipFilterControls />
 
-            <div className={userStyles.userListContainer}>
+            <div className={styles.listContainer}>
                 <SimpleListHeader columns={INTERNSHIP_HEADER_CONFIG} />
 
                 {(internships || []).map(item => {
