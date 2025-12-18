@@ -8,13 +8,12 @@ import commonStyles from '../../components/common/commonStyles/commonPageStyles.
 import styles from './BoardPage.module.css';
 import type {TicketDto} from "../../entities/ims/dto/ticket_dto.ts";
 import KanbanColumn from "../../components/kanbanBoardComponents/KanbanColumn.tsx";
-import {fetchBoardData, updateTicketStatus} from "../../features/slices/boardKanbanSlice.ts";
+import {fetchBoardData, updateTicketStatus, setBoardId} from "../../features/slices/boardKanbanSlice.ts";
 import {DndContext, type DragEndEvent, PointerSensor, useDroppable, useSensor, useSensors} from "@dnd-kit/core";
 import TicketFormModal from "../../components/modals/TicketFormModal.tsx";
 import {useAuth0} from "@auth0/auth0-react";
 import {fetchCurrentUserByEmail} from "../InternshipPage/InternshipPage.tsx";
 import FeedbackModal from "../../components/modals/FeedbackModal.tsx";
-import {setBoardId} from "../../features/slices/boardKanbanSlice.ts";
 import {fetchBoardByInternId} from "../../features/slices/mentorInternsSlice.ts";
 
 const DroppableColumnWrapper: React.FC<any> = ({ children, id, ...props}) => {
@@ -131,7 +130,6 @@ const BoardPage: React.FC = () => {
 
     if (loading) return <PageLoader loadingText={`Loading board: ${boardId}...`} />;
     if (error) return <div className={commonStyles.errorMessage}>{error}</div>;
-
 
     return (
         <div className={styles.boardPageContainer}>
