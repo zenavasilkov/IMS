@@ -2,6 +2,7 @@
 import type { TicketDto } from '../../entities/ims/dto/ticket_dto.ts';
 import styles from './Kanban.module.css';
 import {EditTicketIcon} from "../common/Icons.tsx";
+import ReactDOM from 'react-dom';
 
 interface KanbanCardProps {
     ticket: TicketDto;
@@ -16,7 +17,7 @@ const DescriptionModal: React.FC<{ title: string, description: string, onClose: 
         <div className={styles.detailModalContent} onClick={e => e.stopPropagation()}>
             <h3 className={styles.detailModalTitle}>{title}</h3>
             <p className={styles.detailModalBody}>{description}</p>
-            <button className={styles.detailModalCloseButton} onClick={onClose}>Close</button>
+            <div className={styles.modalFooter}><button className={styles.detailModalCloseButton} onClick={onClose}>Close</button></div>
         </div>
     </div>
 );
@@ -49,11 +50,14 @@ const KanbanCard: React.FC<KanbanCardProps> = ({ ticket, onAddFeedback, onEdit, 
             <div className={styles.cardDetail}>Deadline: {new Date(ticket.deadLine).toLocaleDateString()}</div>
 
             {isDescriptionModalOpen && ticket.description && (
-                <DescriptionModal
-                    title={ticket.title || 'Ticket Details'}
-                    description={ticket.description}
-                    onClose={() => setIsDescriptionModalOpen(false)}
-                />
+                ReactDOM.createPortal(
+                    <DescriptionModal
+                        title={ticket.title || 'Ticket Details'}
+                        description={ticket.description}
+                        onClose={() => setIsDescriptionModalOpen(false)}
+                    />,
+                    document.body // Renders the modal into the main body element
+                )
             )}
         </div>
     );

@@ -45,7 +45,6 @@
 .statusPullRequest::before { border: 1px solid #f85149; background: none; }
 .statusDone::before { background-color: #8957e5; border: none; }
 
-
 .columnBody {
     flex-grow: 1;
     padding: 8px 12px;
@@ -140,7 +139,7 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.7);
-    z-index: 9999;
+    z-index: 100;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -150,6 +149,7 @@
     background-color: #21262d;
     padding: 20px;
     border-radius: 20px;
+    z-index: 100;
     width: 90%;
     max-width: 500px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.9);
@@ -159,8 +159,10 @@
     font-size: 1.5em;
     font-weight: 600;
     margin-top: 0;
+    text-align: center;
     margin-bottom: 10px;
     color: #f0f0f0;
+    z-index: 100;
 }
 
 .detailModalBody {
@@ -168,16 +170,18 @@
     line-height: 1.6;
     text-align: left;
     white-space: pre-wrap;
+    justify-content: center;
+    z-index: 100;
 }
 
 .detailModalCloseButton {
-    margin-top: 20px;
     padding: 8px 15px;
     background-color: #4a4a4a;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    z-index: 100;
 }
 
 .detailModalCloseButton:hover {
@@ -204,4 +208,11 @@
 
 .editButton:hover {
     color: #58a6ff;
+}
+
+.modalFooter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
 }

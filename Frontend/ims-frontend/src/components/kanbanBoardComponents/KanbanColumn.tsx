@@ -66,14 +66,8 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ status, title, tickets, onA
             </div>
 
             <div className={styles.columnBody}>
-                {/* FIX: Map list items to DraggableCardWrapper */}
                 {tickets.map((ticket) => (
-                    <DraggableCardWrapper
-                        key={ticket.id}
-                        id={ticket.id}
-                        onAddFeedback={onAddFeedback}
-                    >
-                        {/* Render the original KanbanCard inside the wrapper */}
+                    <DraggableCardWrapper key={ticket.id} id={ticket.id} onAddFeedback={onAddFeedback}>
                         <KanbanCard ticket={ticket} onAddFeedback={onAddFeedback} onEdit={onEditTicket}/>
                     </DraggableCardWrapper>
                 ))}
