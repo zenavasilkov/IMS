@@ -1,0 +1,218 @@
+﻿.kanbanColumn {
+    flex-shrink: 0;
+    width: 280px;
+    background-color: #161b22;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    height: 100%;
+}
+
+.columnHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-bottom: 1px solid #30363d;
+    color: #f0f0f0;
+    font-weight: 600;
+}
+
+.columnTitle {
+    display: flex;
+    align-items: center;
+}
+
+.ticketCount {
+    background-color: #30363d;
+    border-radius: 12px;
+    padding: 2px 8px;
+    margin-left: 8px;
+    font-size: 0.8em;
+    color: #8b949e;
+}
+
+.columnHeader::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+.statusTodo::before { border: 1px solid #56d364; background: none; }
+.statusInProgress::before { border: 1px solid #d29922; background: none; }
+.statusPullRequest::before { border: 1px solid #f85149; background: none; }
+.statusDone::before { background-color: #8957e5; border: none; }
+
+.columnBody {
+    flex-grow: 1;
+    padding: 8px 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.addItemButton {
+    width: 100%;
+    background: none;
+    border: none;
+    color: #8b949e;
+    padding: 8px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.9em;
+    transition: color 0.15s;
+}
+.addItemButton:hover { color: #f0f0f0; }
+
+.kanbanCard {
+    background-color: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 8px;
+    cursor: grab;
+    z-index: 10;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.15s;
+    position: relative;
+}
+
+.kanbanCard:hover {
+    border-color: #8b949e;
+}
+
+.cardStatusAndTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 4px;
+}
+
+.cardTitle {
+    flex-grow: 1;
+    text-align: left;
+    font-weight: 500;
+    color: #f0f0f0;
+    line-height: 1.3;
+    padding-right: 18px;
+}
+
+.cardDetail {
+    text-align: left;
+    font-size: 0.85em;
+    color: #8b949e;
+    margin-top: 5px;
+}
+
+.feedbackButton {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: none;
+    border: none;
+    color: #8b949e;
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 2px;
+}
+
+.feedbackButton:hover {
+    color: #f0f0f0;
+}
+
+.cardDescription {
+    font-size: 0.9em;
+    text-align: left;
+    color: #8b949e;
+    margin-bottom: 4px;
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.detailModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.detailModalContent {
+    background-color: #21262d;
+    padding: 20px;
+    border-radius: 20px;
+    z-index: 100;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.9);
+}
+
+.detailModalTitle {
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 0;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #f0f0f0;
+    z-index: 100;
+}
+
+.detailModalBody {
+    color: #8b949e;
+    line-height: 1.6;
+    text-align: left;
+    white-space: pre-wrap;
+    justify-content: center;
+    z-index: 100;
+}
+
+.detailModalCloseButton {
+    padding: 8px 15px;
+    background-color: #4a4a4a;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 100;
+}
+
+.detailModalCloseButton:hover {
+    background-color: #6a6a6a;
+}
+
+.editButton {
+    position: absolute;
+    top: 6px;
+    right: 32px;
+    background: none;
+    border: none;
+    padding: 4px;
+    color: #8b949e;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.15s;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.editButton:hover {
+    color: #58a6ff;
+}
+
+.modalFooter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}

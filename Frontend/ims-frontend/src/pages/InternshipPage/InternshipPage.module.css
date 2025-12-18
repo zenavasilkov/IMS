@@ -18,3 +18,14 @@
     font-weight: 600;
     text-decoration: line-through;
 }
+.listContainer {
+    flex-grow: 1;
+    margin: 20px auto;
+    border-radius: 20px;
+
+    height: 50vh;
+    min-width: 85%;
+    max-width: 95%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

@@ -1,0 +1,125 @@
+﻿.feedbackContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    max-height: 70vh;
+}
+
+.historySection {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 20px;
+}
+
+.feedbackItem {
+    background-color: #333;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    position: relative;
+    border: 1px solid #444;
+}
+
+.feedbackHeader {
+    font-size: 0.9em;
+    color: #bbb;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.feedbackHeader strong {
+    color: #f0f0f0;
+    margin-right: 5px;
+}
+
+.feedbackBody {
+    margin: 0;
+    color: #e0e0e0;
+    line-height: 1.4;
+    text-align: left;
+    white-space: pre-wrap;
+}
+
+.editButton {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    color: #8b949e;
+    cursor: pointer;
+    font-size: 0.8em;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.15s;
+}
+
+.editButton:hover {
+    background-color: #4a4a4a;
+}
+
+.postSection {
+    flex-shrink: 0;
+    padding-top: 10px;
+    border-top: 1px solid #555;
+}
+
+.commentInput {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    background-color: #333;
+    color: #f0f0f0;
+    box-sizing: border-box;
+    font-size: 1em;
+    resize: vertical;
+    min-height: 70px;
+    margin-bottom: 10px;
+    outline: none;
+}
+
+.commentInput:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+}
+
+.postButton, .saveButton, .cancelButton {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.postButton {
+    background-color: #007bff;
+    color: white;
+}
+
+.postButton:hover:not(:disabled) {
+    background-color: #0062cc;
+}
+
+.editForm {
+    width: 100%;
+}
+
+.editActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.saveButton {
+    background-color: #28a745;
+    color: white;
+}
+
+.cancelButton {
+    background-color: #555;
+    color: white;
+}

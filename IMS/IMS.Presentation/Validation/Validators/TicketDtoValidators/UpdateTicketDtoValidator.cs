@@ -19,8 +19,6 @@ public class UpdateTicketDtoValidator : AbstractValidator<UpdateTicketDto>
             .NotNull()
             .WithMessage(ValidationConstants.NotNull)
             .NotEmpty()
-            .WithMessage(ValidationConstants.NotEmpty)
-            .GreaterThan(DateTime.UtcNow)
-            .WithMessage(ValidationConstants.DateInPast);
+            .WithMessage(ValidationConstants.NotEmpty);
     }
 }
