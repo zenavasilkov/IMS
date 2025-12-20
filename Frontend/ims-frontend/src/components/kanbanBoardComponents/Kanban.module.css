@@ -11,7 +11,8 @@
 
 .columnHeader {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 6px;
     align-items: center;
     padding: 10px 12px;
     border-bottom: 1px solid #30363d;

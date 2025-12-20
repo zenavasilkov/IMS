@@ -74,7 +74,6 @@ const MentorPage: React.FC = () => {
 
         if (board) {
             dispatch(setBoardId(board.id));
-
             dispatch(setAppActivePortal(PORTALS.BOARD_VIEW));
         }
     };
