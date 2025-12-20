@@ -107,6 +107,24 @@ services:
       - "8100:8080"
       - "8101:8081"
 
+  frontend:
+    build:
+      context: ./Frontend/ims-frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: "http://localhost:8090/api/"
+        VITE_RECRUITMENT_API_BASE_URL: "http://localhost:8110/api/"
+        VITE_AUTH0_DOMAIN: "ims-authentication.us.auth0.com"
+        VITE_AUTH0_CLIENT_ID: "ypajuMJ2nbzL0g0dlEWTt0KpBFkcKUIq"
+        VITE_AUTH0_AUDIENCE: "https://ims-api"
+        VITE_ROLE_CLAIM_KEY: "https://<ims-authentication>/claims/roles"
+    container_name: frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - presentation
+      - recruitmentservice
+
 volumes:
   postgres-data:
   rabbitmq_data:
