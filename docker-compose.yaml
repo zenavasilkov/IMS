@@ -1,0 +1,130 @@
+services:
+  postgresdb:
+    image: postgres:16-alpine
+    container_name: postgresdb
+    env_file:
+      - ".env"
+    ports:
+      - "5433:5432"
+    restart: always
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  redis:
+    image: redis:7.2
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: rabbitmq
+    env_file:
+      - ".env"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    command: >
+      bash -c "chown -R rabbitmq:rabbitmq /var/lib/rabbitmq && rabbitmq-server"
+
+  papercut:
+    image: changemakerstudiosus/papercut-smtp:latest
+    container_name: papercut
+    ports:
+      - "37408:8080"
+      - "2525:2525"
+
+  presentation:
+    build:
+      context: .
+      dockerfile: IMS/Dockerfile
+    container_name: presentation
+    depends_on:
+      postgresdb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+      redis:
+        condition: service_started
+    env_file:
+      - ".env"
+    ports:
+      - "8090:8080"
+      - "8091:8081"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/_health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  recruitmentservice:
+    build:
+      context: .
+      dockerfile: "Recruitment Service/WebApi/Dockerfile"
+    depends_on:
+      postgresdb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    env_file:
+      - ".env"
+    ports:
+      - "8110:8080"
+      - "8111:8081"
+
+  notificationservice:
+    build:
+      context: .
+      dockerfile: NotificationService/Dockerfile
+    depends_on:
+      presentation:
+        condition: service_healthy
+      postgresdb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+      papercut:
+        condition: service_started
+    env_file:
+      - ".env"
+    ports:
+      - "8100:8080"
+      - "8101:8081"
+
+  frontend:
+    build:
+      context: ./Frontend/ims-frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: "http://localhost:8090/api/"
+        VITE_RECRUITMENT_API_BASE_URL: "http://localhost:8110/api/"
+        VITE_AUTH0_DOMAIN: "ims-authentication.us.auth0.com"
+        VITE_AUTH0_CLIENT_ID: "ypajuMJ2nbzL0g0dlEWTt0KpBFkcKUIq"
+        VITE_AUTH0_AUDIENCE: "https://ims-api"
+        VITE_ROLE_CLAIM_KEY: "https://<ims-authentication>/claims/roles"
+    container_name: frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - presentation
+      - recruitmentservice
+
+volumes:
+  postgres-data:
+  rabbitmq_data:

@@ -1,0 +1,124 @@
+.loginPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  background: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+              radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+              radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+  background-color: #1a1a1a;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.blob {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(180deg, #007bff 0%, #a855f7 100%);
+  filter: blur(80px);
+  border-radius: 50%;
+  opacity: 0.15;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loginContainer {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 48px;
+  border-radius: 24px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  text-align: center;
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.brandHeader {
+  margin-bottom: 32px;
+}
+
+.logoIcon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px auto;
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headline {
+  color: #111827;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.025em;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.loginButton {
+  background: linear-gradient(to right, #007bff, #0062cc);
+  padding: 14px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-shadow: 0 4px 6px -1px rgba(0, 123, 255, 0.2);
+}
+
+.loginButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(0, 123, 255, 0.3);
+  filter: brightness(1.1);
+}
+
+.loginButton:active {
+  transform: translateY(0);
+}
+
+.footerText {
+  margin-top: 32px;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+@media (prefers-color-scheme: dark) {
+  .loginContainer {
+    background-color: rgba(30, 30, 30, 0.9);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  .headline {
+    color: #f3f4f6;
+  }
+  .subtitle {
+    color: #9ca3af;
+  }
+  .logoIcon {
+    background: rgba(255, 255, 255, 0.1);
+    color: #60a5fa;
+  }
+}

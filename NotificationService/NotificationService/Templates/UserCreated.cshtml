@@ -1,0 +1,31 @@
+﻿@using System
+@model IMS.NotificationsCore.Messages.UserCreatedEvent
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Created - Intern Management System</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            Welcome to Intern Management System
+        </div>
+        <div class="content">
+            <p>Hello @Model.FirstName @Model.LastName,</p>
+
+            <p>Your account in the Intern Management System has been successfully created.</p>
+
+            <p>You have been assigned the role: <strong>@Model.Role</strong>.</p>
+            
+            <p>To enter the system use your email as login and password</p>
+            
+            <p>The current password is temporary, soon you will receive a message to change the password.</p>
+        </div>
+        <div class="footer">
+            &copy; @(DateTime.Now.Year) Intern Management System. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>

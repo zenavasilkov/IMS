@@ -1,0 +1,59 @@
+﻿using IMS.DAL.Entities;
+using IMS.DAL.Repositories;
+using IMS.DAL.Repositories.Interfaces;
+using Microsoft.Extensions.Caching.Distributed;
+using Newtonsoft.Json;
+using Shared.Pagination;
+using System.Linq.Expressions;
+
+namespace IMS.DAL.Caching;
+
+public class CachedRepository<TEntity>(Repository<TEntity> decorated,
+    IDistributedCache distributedCache, ImsDbContext context) : IRepository<TEntity> where TEntity : EntityBase
+{
+    public Task<TEntity> CreateAsync(TEntity entity, CancellationToken cancellationToken = default)
+        => decorated.CreateAsync(entity, cancellationToken);
+
+    public async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+    {
+        await decorated.DeleteAsync(entity, cancellationToken);
+        await distributedCache.RemoveAsync(entity.Id.ToString(), cancellationToken);
+    }
+
+    public Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? predicate = null,
+        bool trackChanges = false, CancellationToken cancellationTokent = default) =>
+        decorated.GetAllAsync(predicate, trackChanges, cancellationTokent);
+
+    public async Task<TEntity?> GetByIdAsync(Guid id, bool trackChanges = false, CancellationToken cancellationToken = default)
+    {
+        var cachedEntity = await distributedCache.GetStringAsync(id.ToString(), cancellationToken);
+
+        if (string.IsNullOrEmpty(cachedEntity))
+        {
+            var entity = await decorated.GetByIdAsync(id, trackChanges, cancellationToken);
+
+            if (entity is not null)
+                await distributedCache.SetStringAsync(id.ToString(), JsonConvert.SerializeObject(entity), cancellationToken);
+
+            return entity;
+        }
+
+        var entityFromCache = JsonConvert.DeserializeObject<TEntity?>(cachedEntity);
+
+        if (entityFromCache is not null) context.Set<TEntity>().Attach(entityFromCache);
+
+        return entityFromCache;
+    }
+
+    public Task<PagedList<TEntity>> GetPagedAsync(Expression<Func<TEntity, bool>>? predicate,
+        PaginationParameters paginationParameters, bool trackChanges = false, CancellationToken cancellationToken = default) =>
+        decorated.GetPagedAsync(predicate, paginationParameters, trackChanges, cancellationToken);
+
+    public async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+    { 
+        var updatedEntity =  await decorated.UpdateAsync(entity, cancellationToken);
+        await distributedCache.RemoveAsync(entity.Id.ToString(), cancellationToken);
+        return updatedEntity;
+    }
+        
+}

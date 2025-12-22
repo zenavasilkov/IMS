@@ -1,0 +1,30 @@
+﻿.portalSwitcherContainer {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 5px 0;
+    margin-right: 20px;
+}
+
+.portalButton {
+    background-color: #4a4a4a;
+    color: #f0f0f0;
+    border: 1px solid #555;
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+}
+
+.portalButton:hover {
+    background-color: #555;
+}
+
+.portalButton.active {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+    font-weight: 600;
+}

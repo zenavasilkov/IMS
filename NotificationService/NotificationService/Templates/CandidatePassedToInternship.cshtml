@@ -1,0 +1,27 @@
+﻿@using System
+@using RecruitmentNotifications.Messages
+@model CandidatePassedToInternshipEvent
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Congratulations - Next Stage</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">You've Advanced to the Internship Stage</div>
+        <div class="content">
+            <p>Hello,</p>
+
+            <p>We are pleased to inform you that you have been selected to move forward to the internship stage.</p>
+            <p>Our team will reach out to you shortly with scheduling details.</p>
+
+            <p>Best regards,<br />Recruitment Team</p>
+        </div>
+        <div class="footer">
+            &copy; @(DateTime.Now.Year) Recruitment System. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>

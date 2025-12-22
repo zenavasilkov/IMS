@@ -1,0 +1,29 @@
+﻿@using System
+@model IMS.NotificationsCore.Messages.FeedbackCreatedEvent
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Feedback Received</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            New Feedback Received
+        </div>
+        <div class="content">
+            <p>Hello,</p>
+
+            <p>You have received new feedback in the Intern Management System.</p>
+
+            <div class="highlight">Comment: @Model.Comment</div>
+
+            <p>Best regards,<br />Intern Management System Team</p>
+        </div>
+        <div class="footer">
+            &copy; @(DateTime.Now.Year) Intern Management System. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>

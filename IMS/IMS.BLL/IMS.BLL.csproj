@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Quartz.Extensions.Hosting" Version="3.15.1" />
+    <PackageReference Include="RestSharp" Version="112.1.0" />
+    <ProjectReference Include="..\IMS.DAL\IMS.DAL.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+    <PackageReference Include="Auth0.ManagementApi" Version="7.42.0" />
+	<PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
+	<PackageReference Include="Grpc.Core" Version="2.46.6" />
+	<PackageReference Include="Grpc.Tools" Version="2.76.0">
+	 <PrivateAssets>all</PrivateAssets>
+	 <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="15.0.1" />
+    <PackageReference Include="IMS.gRPC.Contracts" Version="4.0.0" />
+	<PackageReference Include="Innowise.IMS.Core" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Grpc\createUser.proto">
+      <GrpcServices>Server</GrpcServices>
+    </None>
+    <Protobuf Include="Grpc\createUser.proto" GrpcServices="Server" />
+  </ItemGroup>
+
+</Project>

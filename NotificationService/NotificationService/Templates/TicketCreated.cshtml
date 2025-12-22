@@ -1,0 +1,34 @@
+﻿@using System
+@model IMS.NotificationsCore.Messages.TicketCreatedEvent
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Assignment Created</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            New Assignment Created
+        </div>
+        <div class="content">
+            <p>Hello,</p>
+
+            <p>A new assignment has been created and assigned to you in the Intern Management System:</p>
+
+            <div class="highlight">
+                <strong>Title:</strong> @Model.Title <br />
+                <strong>Description:</strong> @Model.Description <br />
+                <strong>Deadline:</strong> @Model.Deadline.ToString("MMMM dd, yyyy HH:mm")
+            </div>
+
+            <p>Best regards,<br />Intern Management System Team</p>
+        </div>
+        <div class="footer">
+            &copy; @(DateTime.Now.Year) Intern Management System. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>
+

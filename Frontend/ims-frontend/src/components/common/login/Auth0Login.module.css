@@ -1,0 +1,154 @@
+.profileContainer {    
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 15px 8px 8px;
+    
+    background-color: #333;
+    border-radius: 40px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    position: relative;
+}
+
+.profileContainer:hover {
+    background-color: #444;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    line-height: 1.2;
+}
+
+.userName {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #f0f0f0;
+    white-space: nowrap;
+}
+
+.userRole {
+    padding-top: 2px;
+    font-size: 0.9em;
+    color: #bbb;
+    white-space: nowrap; 
+}
+
+.dropdownArrow {
+    width: 18px;
+    height: 18px;
+    color: #f0f0f0;
+    margin-left: 5px;
+    transition: transform 0.2s;
+}
+
+.profileContainer.open .dropdownArrow {
+    transform: rotate(180deg);
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 10px;
+    width: 300px;
+    background-color: #3a3a3a;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+    z-index: 2000;
+}
+
+.menuItem, .settingsItem {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    color: #f0f0f0;
+    text-align: left;
+    transition: background-color 0.15s;
+    user-select: none;
+}
+
+.menuItem:not(.disabled):hover {
+    background-color: #4a4a4a;
+    cursor: pointer;
+}
+
+.menuItem svg {
+    margin-right: 12px;
+    width: 20px;
+    height: 20px;
+}
+
+.separator {
+    height: 1px;
+    background-color: #4a4a4a;
+    margin: 8px 0;
+}
+
+.settingsItem {
+    justify-content: space-between;
+    padding-right: 20px;
+}
+
+.settingsLabel {
+    flex-grow: 1;
+}
+
+.languageSelector {
+    padding: 4px 10px;
+    border-radius: 15px;
+    border: 1px solid #666;
+    background-color: #3a3a3a;
+    color: #f0f0f0;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.logoutButton {
+    color: #ff6b6b;
+    font-size: 16px;
+}
+
+.logoutButton svg {
+    color: #ff6b6b;
+}
+
+.toggleSwitch {
+    width: 40px;
+    height: 20px;
+    background-color: #6c757d;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.toggleSwitch.active {
+    background-color: #007bff;
+}
+
+.toggleHandle {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: white;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.2s;
+}
+
+.toggleSwitch.active .toggleHandle {
+    transform: translateX(20px);
+}

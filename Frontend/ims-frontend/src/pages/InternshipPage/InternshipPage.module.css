@@ -1,0 +1,31 @@
+﻿.statusNotStarted {
+    color: #ffc107;
+    font-weight: 600;
+}
+
+.statusOngoing {
+    color: #337bff;
+    font-weight: 600;
+}
+
+.statusCompleted {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.statusCancelled {
+    color: #dc3545;
+    font-weight: 600;
+    text-decoration: line-through;
+}
+.listContainer {
+    flex-grow: 1;
+    margin: 20px auto;
+    border-radius: 20px;
+
+    height: 50vh;
+    min-width: 85%;
+    max-width: 95%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

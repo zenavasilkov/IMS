@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+	<PackageId>IMS.gRPC.Contracts</PackageId>
+	<Description>gRPC contracts</Description>
+	<Version>4.0.0</Version>
+	<Author>Evgeny</Author>
+	<Product>IMS.gRPC</Product>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<RepositoryUrl>https://github.com/zenavasilkov/IMS</RepositoryUrl>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MagicOnion" Version="7.0.6" />
+  </ItemGroup>
+
+</Project>

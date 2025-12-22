@@ -1,0 +1,116 @@
+name: CI Pipeline (Dev)
+
+on:
+  push:
+    branches: ["Dev"]
+  pull_request:
+    branches: ["Dev"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and analyze
+    runs-on: ubuntu-latest
+
+    services:
+      rabbitmq:
+        image: rabbitmq:4-management
+        ports:
+          - 5672:5672
+          - 15672:15672
+        options: >-
+          --health-cmd="rabbitmqctl status"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+      
+      redis:
+        image: redis:7.2
+        ports:
+          - "5140:6379"
+        options:
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'zulu'
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Install Coverlet for .NET
+        run: dotnet tool install --global coverlet.console
+
+      - name: Install SonarScanner for .NET
+        run: dotnet tool install --global dotnet-sonarscanner
+      
+      - name: SonarQube Begin Analysis
+        shell: pwsh
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          $projectKey = "zenavasilkov_IMS"
+          $organization = "evgeny"
+          $coverageReportPath = "coverage.opencover.xml"
+          $sonarCoverageParam = "/d:sonar.cs.opencover.reportsPaths=""$coverageReportPath"""
+
+          dotnet-sonarscanner begin `
+              /k:"$projectKey" `
+              /o:"$organization" `
+              /d:sonar.login="$env:SONAR_TOKEN" `
+              /d:sonar.coverage.exclusions="**/*" `
+              /d:sonar.exclusions="**/Migrations/**,**/*Migration*.cs,**/Dockerfile,**/*appsettings*.json" `
+              $sonarCoverageParam
+              
+      - name: Build IMS solution
+        run: dotnet build IMS/IMS.sln --no-incremental
+
+      - name: Build NotificationService
+        run: dotnet build NotificationService/NotificationService.sln --no-incremental
+
+      - name: Build Recruitment Service solution
+        run: dotnet build "Recruitment Service/RecruitmentService.sln" --no-incremental
+
+      - name: Run Tests and Collect Coverage
+        shell: pwsh
+        env:
+          ConnectionStrings__Redis: localhost:5140
+        run: |
+          $solutionPath = "IMS/IMS.sln"
+          $coverageReportPath = "coverage.opencover.xml"
+
+          dotnet test $solutionPath `
+              --no-build `
+              /p:CollectCoverage=true `
+              /p:CoverletOutputFormat=opencover `
+              /p:CoverletOutput="$coverageReportPath"
+
+      - name: Run RecruitmentService Architecture Tests
+        run: dotnet test "Recruitment Service/ArchitectureTests/ArchitectureTests.csproj" --no-build
+              
+      - name: SonarQube End Analysis
+        shell: pwsh
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet-sonarscanner end /d:sonar.login="$env:SONAR_TOKEN"
