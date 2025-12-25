@@ -1,11 +1,15 @@
-﻿using Domain.Contracts.Repositories;
+﻿using Amazon.S3;
+using Domain.Contracts.BlobStorage;
+using Domain.Contracts.Repositories;
 using Infrastructure.BackgroundJobs;
+using Infrastructure.BlobStorage;
 using Infrastructure.Interceptors;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Quartz;
 
 namespace Infrastructure;
@@ -20,7 +24,8 @@ public static class DependencyInjection
             .AddDbContext(configuration)
             .AddInterceptors()
             .AddOutboxProcessor()
-            .AddRepositories();
+            .AddRepositories()
+            .AddBlobStorage(configuration);
 
         return services;
     }
@@ -87,5 +92,28 @@ public static class DependencyInjection
         {
             dbContext.Database.Migrate();
         }
+    }
+
+    private static IServiceCollection AddBlobStorage(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<BlobStorageOptions>(configuration.GetSection(BlobStorageOptions.SectionName));
+        
+        services.AddSingleton<IAmazonS3>(scope =>
+        {
+            var blobStorageOptions = scope.GetRequiredService<IOptions<BlobStorageOptions>>().Value;
+
+            var config = new AmazonS3Config
+            {
+                ServiceURL = blobStorageOptions.Endpoint,
+                ForcePathStyle = true,
+                UseHttp = true
+            };
+
+            return new AmazonS3Client(blobStorageOptions.AccessKey, blobStorageOptions.SecretKey, config);
+        });
+
+        services.AddScoped<IBlobService, S3BlobService>();
+
+        return services;
     }
 }

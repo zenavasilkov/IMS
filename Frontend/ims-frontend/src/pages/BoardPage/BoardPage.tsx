@@ -127,8 +127,7 @@ const BoardPage: React.FC = () => {
         dispatch(fetchBoardData(boardId!));
     };
 
-
-    if (loading) return <PageLoader loadingText={`Loading board: ${boardId}...`} />;
+    if (loading) return <PageLoader loadingText={`Loading board ${boardDto?.title}...`} />;
     if (error) return <div className={commonStyles.errorMessage}>{error}</div>;
 
     return (

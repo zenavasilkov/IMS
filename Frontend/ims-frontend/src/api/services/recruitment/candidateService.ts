@@ -3,8 +3,7 @@ import type {
     RegisterCandidateCommand,
     FindCandidateByEmailQueryResponse,
     FindCandidateByIdQueryResponse,
-    GetAllCandidatesQueryResponse,
-    UpdateCvLinkCommand
+    GetAllCandidatesQueryResponse
 } from '../../../entities/recruitment/dto/candidate_dto';
 
 export const candidateService = {
@@ -17,9 +16,17 @@ export const candidateService = {
         await RecruitmentApi.put(`/candidates/accept-to-internship`, {}, { params: { Id: candidateId } });
     },
 
-    updateCvLink: async (data: UpdateCvLinkCommand): Promise<FindCandidateByIdQueryResponse> => {
-        const response = await RecruitmentApi.put<FindCandidateByIdQueryResponse>('/candidates/update-cv-link', data);
-        return response.data;
+    uploadCv: async (candidateId: string, file: File): Promise<void> => {
+        const formData = new FormData();
+        formData.append('file', file);
+        await RecruitmentApi.put(`/candidates/${candidateId}/cv`, formData, {headers: {'Content-Type': 'multipart/form-data'}});
+    },
+
+    getCvViewUrl: async (candidateId: string): Promise<string> => {
+        const response = await RecruitmentApi.get<{ url: string } | string>(`/candidates/${candidateId}/cv`);
+        if (typeof response.data === 'string') return response.data;
+        // @ts-ignore
+        return response.data.url || response.data;
     },
 
     getCandidateByEmail: async (email: string): Promise<FindCandidateByEmailQueryResponse> => {

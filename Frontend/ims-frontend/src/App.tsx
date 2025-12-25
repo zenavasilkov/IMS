@@ -46,7 +46,7 @@ function App() {
         />
 
         <div className="App-Title">{headerTitle}</div>
-        <Auth0Login /> 
+        <Auth0Login />
       </nav>
 
       <main className="App-Main-Content">{content}</main>

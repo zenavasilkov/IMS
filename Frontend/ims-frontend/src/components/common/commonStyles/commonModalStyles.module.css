@@ -264,3 +264,64 @@
     text-align: center;
     font-style: italic;
 }
+
+.dropZone {
+    border: 2px dashed #555;
+    border-radius: 8px;
+    padding: 30px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #2a2a2a;
+    transition: all 0.2s ease;
+    margin-top: 10px;
+}
+
+.dropZone:hover {
+    border-color: #007bff;
+    background-color: #333;
+}
+
+.dragging {
+    border-color: #00ff88;
+    background-color: #3a3a3a;
+    transform: scale(1.02);
+}
+
+.placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #bbb;
+}
+
+.uploadIcon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.orText {
+    font-size: 0.8em;
+    color: #777;
+    margin-top: 5px;
+}
+
+.fileInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #f0f0f0;
+}
+
+.icon {
+    font-size: 30px;
+    margin-bottom: 5px;
+}
+
+.fileName {
+    font-weight: 600;
+}
+
+.fileSize {
+    font-size: 0.8em;
+    color: #999;
+}

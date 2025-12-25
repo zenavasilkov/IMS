@@ -44,8 +44,3 @@ export interface FindCandidateByIdQueryResponsePagedList {
 export interface GetAllCandidatesQueryResponse {
     candidates: FindCandidateByIdQueryResponsePagedList;
 }
-
-export interface UpdateCvLinkCommand {
-    id: string;
-    newCvLink?: string | null;
-}
