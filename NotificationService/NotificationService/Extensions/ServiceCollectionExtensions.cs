@@ -34,8 +34,7 @@ public static class ServiceCollectionExtensions
                     host.Username(rabbitMqOptions.UserName);
                     host.Password(rabbitMqOptions.Password);
                 });
-
-
+                
                 configurator.ConfigureEndpoints(context);
             });
         });

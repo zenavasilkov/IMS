@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Innowise.IMS.Core" Version="2.1.0" />
     <PackageReference Include="Innowise.Pagination" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.3.0" />
     <PackageReference Include="System.Text.Json" Version="9.0.1" />
   </ItemGroup>
 

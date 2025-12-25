@@ -74,7 +74,6 @@ const RegisterCandidateModal: React.FC<RegisterCandidateModalProps> = ({ isOpen,
                 <ModalField label="Last Name" name="lastName" value={formData.lastName || ''} onChange={handleChange} required />
                 <ModalField label="Email" name="email" type="email" value={formData.email || ''} onChange={handleChange} required />
                 <ModalField label="Phone Number" name="phoneNumber" type="tel" value={formData.phoneNumber || ''} onChange={handleChange} pattern={PHONE_NUMBER_REGEX} title="Must be a valid phone number format." />
-                <ModalField label="CV Link" name="cvLink" type="url" value={formData.cvLink || ''} onChange={handleChange} />
                 <ModalField label="LinkedIn Profile" name="linkedIn" type="url" value={formData.linkedIn || ''} onChange={handleChange} />
 
                 <button type="submit" disabled={isSubmitting} className={styles.submitButton}>

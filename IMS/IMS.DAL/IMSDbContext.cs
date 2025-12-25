@@ -1,5 +1,4 @@
 ﻿using IMS.DAL.Entities;
-using IMS.DAL.Interceptors;
 using IMS.DAL.Outbox;
 using Microsoft.EntityFrameworkCore;
 
