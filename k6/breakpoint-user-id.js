@@ -1,16 +1,10 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
-
-const CLIENT_ID = __ENV.AUTH0_CLIENT_ID;
-const CLIENT_SECRET = __ENV.AUTH0_CLIENT_SECRET;
-const AUDIENCE = __ENV.AUTH0_AUDIENCE;
-const DOMAIN = __ENV.AUTH0_DOMAIN;
-
-const BASE_URL = 'http://presentation:8080/api'; 
+import { authenticate, getParams, config } from './utils.js';
 
 export const options = {
   stages: [
-    { duration: '1m', target: 50 },
+    { duration: '30s', target: 50 },
     { duration: '2m', target: 500 },
     { duration: '2m', target: 2000 },
   ],
@@ -21,24 +15,10 @@ export const options = {
 };
 
 export function setup() {
-  const authUrl = `https://${DOMAIN}/oauth/token`;
-  const authPayload = JSON.stringify({
-    client_id: CLIENT_ID,
-    client_secret: CLIENT_SECRET,
-    audience: AUDIENCE,
-    grant_type: 'client_credentials',
-  });
-  
-  const authHeaders = { headers: { 'Content-Type': 'application/json' } };
-  const authRes = http.post(authUrl, authPayload, authHeaders);
-
-  if (authRes.status !== 200) {
-    throw new Error(`Auth failed: ${authRes.status} ${authRes.body}`);
-  }
-  const token = authRes.json().access_token;
-  const userHeaders = { headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' } };
-  const listUrl = `${BASE_URL}/users?PageNumber=1&PageSize=1`;
-  const listRes = http.get(listUrl, userHeaders);
+  const token = authenticate();
+  const params = getParams(token);
+  const listUrl = `${config.services.presentation}/users?PageNumber=1&PageSize=1`;
+  const listRes = http.get(listUrl, params);
   
   if (listRes.status !== 200) {
     throw new Error(`Failed to fetch users list: ${listRes.status}`);
@@ -57,20 +37,10 @@ export function setup() {
 }
 
 export default function (data) {
-  const { authToken, userId } = data;
+  const params = getParams(data.authToken);
+  const res = http.get(`${config.services.presentation}/users/${data.userId}`, params);
 
-  const params = {
-    headers: {
-      'Authorization': `Bearer ${authToken}`,
-      'Content-Type': 'application/json',
-    },
-  };
-
-  const res = http.get(`${BASE_URL}/users/${userId}`, params);
-
-  check(res, {
-    'status is 200': (r) => r.status === 200,
-  });
+  check(res, {'status is 200': (r) => r.status === 200});
 
   sleep(1);
 }
