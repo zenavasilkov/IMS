@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: papercut
+spec:
+  selector:
+    matchLabels:
+      app: papercut
+  template:
+    metadata:
+      labels:
+        app: papercut
+    spec:
+      containers:
+      - name: papercut
+        image: changemakerstudiosus/papercut-smtp:latest
+        ports:
+        - containerPort: 8080
+        - containerPort: 2525
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: papercut
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 37408
+    targetPort: 8080
+  - port: 2525
+    targetPort: 2525
+  selector:
+    app: papercut

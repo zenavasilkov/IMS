@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: presentation
+spec:
+  selector:
+    matchLabels:
+      app: presentation
+  template:
+    metadata:
+      labels:
+        app: presentation
+    spec:
+      containers:
+      - name: presentation
+        image: ims-presentation:local
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - secretRef:
+            name: ims-secrets
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: presentation
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8090 
+    targetPort: 8080 
+  selector:
+    app: presentation
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recruitmentservice
+spec:
+  selector:
+    matchLabels:
+      app: recruitmentservice
+  template:
+    metadata:
+      labels:
+        app: recruitmentservice
+    spec:
+      containers:
+      - name: recruitmentservice
+        image: ims-recruitment:local
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - secretRef:
+            name: ims-secrets
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recruitmentservice
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8110
+    targetPort: 8080
+  selector:
+    app: recruitmentservice
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notificationservice
+spec:
+  selector:
+    matchLabels:
+      app: notificationservice
+  template:
+    metadata:
+      labels:
+        app: notificationservice
+    spec:
+      containers:
+      - name: notificationservice
+        image: ims-notification:local
+        imagePullPolicy: IfNotPresent
+        envFrom:
+        - secretRef:
+            name: ims-secrets
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notificationservice
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8100
+    targetPort: 8080
+  selector:
+    app: notificationservice
