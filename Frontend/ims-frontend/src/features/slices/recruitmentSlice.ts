@@ -1,8 +1,7 @@
 ﻿import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
 import { candidateService } from '../../api/services/recruitment';
 import type {
-    FindCandidateByIdQueryResponse,
-    UpdateCvLinkCommand
+    FindCandidateByIdQueryResponse
 } from '../../entities/recruitment/dto/candidate_dto.ts';
 
 export interface FetchCandidatesParams {
@@ -47,6 +46,20 @@ export const fetchCandidateByEmail = createAsyncThunk(
     }
 );
 
+export const uploadCandidateCv = createAsyncThunk<string, { id: string; file: File }, { state: { recruitment: RecruitmentState } }>(
+    'recruitment/uploadCandidateCv',
+    async ({ id, file }, { rejectWithValue }) => {
+        try {
+            await candidateService.uploadCv(id, file);
+            return id;
+        } catch (err: any) {
+            console.error('API Error during CV upload:', err);
+            const errorMessage = (err.response?.data?.message || err.message) || 'Failed to upload CV.';
+            return rejectWithValue(errorMessage);
+        }
+    }
+);
+
 export const fetchCandidates = createAsyncThunk(
     'recruitment/fetchCandidates',
     async (params: FetchCandidatesParams, { rejectWithValue }) => {
@@ -71,20 +84,6 @@ export const acceptCandidate = createAsyncThunk<string, string,  { state: { recr
             return candidateId;
         } catch (err: any) {
             const errorMessage = err.response?.data?.message || 'Failed to accept candidate.';
-            return rejectWithValue(errorMessage);
-        }
-    }
-);
-
-export const updateCandidateCv = createAsyncThunk<string,UpdateCvLinkCommand, { state: { recruitment: RecruitmentState } }>(
-    'recruitment/updateCandidateCv',
-    async (command, { rejectWithValue }) => {
-        try {
-            await candidateService.updateCvLink(command);
-            return command.id;
-        } catch (err: any) {
-            console.error('API Error during CV link update:', err);
-            const errorMessage = (err.response?.data?.message || err.message) || 'Failed to update CV link.';
             return rejectWithValue(errorMessage);
         }
     }
@@ -137,8 +136,15 @@ const recruitmentSlice = createSlice({
                 state.error = action.payload as string;
                 state.candidates = [];
             })
-            .addCase(updateCandidateCv.rejected, (state, action) => {
+            .addCase(uploadCandidateCv.rejected, (state, action) => {
                 state.error = action.payload as string;
+            })
+            .addCase(uploadCandidateCv.fulfilled, (state, action) => {
+                const candidate = state.candidates.find(c => c.id === action.meta.arg.id);
+                if (candidate) {
+                    candidate.cvLink = "uploaded";
+                }
+                state.error = null;
             })
             .addCase(acceptCandidate.pending, (state, action) => {
                 state.acceptingCandidates.push(action.meta.arg);

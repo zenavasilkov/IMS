@@ -12,9 +12,10 @@ public static class ApiRoutes
 
         public const string ByEmail = "by-email/{email}";
         public const string AcceptToInternship = "accept-to-internship";
-        public const string UpdateCvLink = "update-cv-link";
+        public const string UpdateCv = $"{Id}/cv";
         public const string Register = "register";
         public const string GetAll = "get-all";
+        public const string GetCvUrl = $"{Id}/cv";
     }
 
     public static class Departments

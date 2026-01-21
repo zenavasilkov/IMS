@@ -71,7 +71,7 @@ const getPortalContent = ({ role, activePortal }: PortalRouterProps): RouteResul
     else {
         return {
             content: <AccessDeniedPage />,
-            headerTitle: "IMS Portal"
+            headerTitle: ""
         };
     }
 };

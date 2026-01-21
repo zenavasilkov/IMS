@@ -20,11 +20,12 @@ import PaginationControls from "../../components/PaginationControls.tsx";
 import PageLayout from "../../components/PageLayout.tsx";
 import SimpleListHeader from "../../components/SimpleListHeader.tsx";
 import useMinLoadingTime from "../../hooks/useMinLoadingTime.ts";
+import {candidateService} from "../../api/services/recruitment";
 
 const RECRUITMENT_HEADER_CONFIG = [
     { label: 'Name/Contact', flex: 2, textAlign: 'left' as const },
-    { label: 'Status', flex: 1, textAlign: 'center' as const },
-    { label: 'Actions', flex: 1.5, textAlign: 'center' as const },
+    { label: 'Status', flex: 0.5, textAlign: 'center' as const },
+    { label: 'Actions', flex: 2, textAlign: 'center' as const },
 ];
 
 const RecruitmentPage: React.FC = () => {
@@ -47,6 +48,20 @@ const RecruitmentPage: React.FC = () => {
             dispatch(fetchCandidates(params));
         }
     }, [page, isAuthenticated, isAuth0Loading, dispatch, pageSize]);
+
+    const handleViewCv = async (candidateId: string) => {
+        try {
+            const url = await candidateService.getCvViewUrl(candidateId);
+            if (url) {
+                window.open(url, '_blank');
+            } else {
+                alert("Could not retrieve file URL");
+            }
+        } catch (error) {
+            console.error("Failed to open CV", error);
+            alert("Failed to open CV. It might not exist.");
+        }
+    };
 
     useEffect(() => {
         fetchCandidatesData()
@@ -130,11 +145,20 @@ const RecruitmentPage: React.FC = () => {
                                 <span className={styles.name}>{candidate.firstName} {candidate.lastName}</span>
                                 <span className={styles.contact}>{candidate.email} | {candidate.phoneNumber}</span>
                             </div>
-                            <span className={styles.status}>{candidate.isApplied ? 'Accepted' : 'Invited'}</span>
-                            <div className={styles.actions}>
+                            <span className={styles.status} style={{ flex: 0.5, textAlign: 'center' }}>{candidate.isApplied ? 'Accepted' : 'Invited'}</span>
+                            <div className={styles.actions} style={{ flex: 2, textAlign: 'center' }}>
                                 <button className={commonStyles.actionButton} disabled={isDisabled} onClick={() => handleScheduleInterview(candidate.id)}>Interview</button>
                                 <button className={commonStyles.actionButton} disabled={isDisabled} onClick={() => handleAccept(candidate.id)}>Accept</button>
                                 <button className={commonStyles.actionButton} onClick={() => handleUpdateCv(candidate)}>Update CV</button>
+                                {candidate.cvLink && (
+                                    <button
+                                        className={commonStyles.actionButton}
+                                        onClick={() => handleViewCv(candidate.id)}
+                                        title="View CV"
+                                    >
+                                        View CV
+                                    </button>
+                                )}
                             </div>
                         </div>
                     );
@@ -167,7 +191,6 @@ const RecruitmentPage: React.FC = () => {
                 onClose={() => setIsCvModalOpen(false)}
                 onSuccess={handleCvUpdateSuccess}
                 candidateId={candidateToUpdateCv?.id || ''}
-                currentCvLink={candidateToUpdateCv?.cvLink}
             />
         </PageLayout>
     );
